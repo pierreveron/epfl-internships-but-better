@@ -1,12 +1,20 @@
-import { ActionIcon, Checkbox, Collapse, Group, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Checkbox,
+  Collapse,
+  Flex,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
 
 import { useMemo, useState } from "react";
 
 import { locationsAtom } from "@/atoms";
+import { getFlagEmojiWithName } from "@/utils/countries";
 import { IconChevronDown } from "@tabler/icons";
 import { useAtom } from "jotai";
 import { focusAtom } from "jotai-optics";
-import { getFlagEmojiWithName } from "@/utils/countries";
 
 const TRANSITION_DURATION_IN_MS = 300;
 
@@ -25,8 +33,6 @@ export default function LocationCheckbox({ country }: { country: string }) {
 
   const items = cities.map((value) => (
     <Checkbox
-      mt="xs"
-      ml={33}
       label={value.name}
       key={value.name}
       checked={value.selected}
@@ -47,7 +53,7 @@ export default function LocationCheckbox({ country }: { country: string }) {
   const countryLabel = countryEmoji ? countryEmoji + " " + country : country;
 
   return (
-    <>
+    <Flex direction="column">
       <Group>
         <Checkbox
           checked={allChecked}
@@ -80,8 +86,10 @@ export default function LocationCheckbox({ country }: { country: string }) {
         )}
       </Group>
       <Collapse in={opened} transitionDuration={TRANSITION_DURATION_IN_MS}>
-        {items}
+        <Stack spacing="xs" ml="md" mt="xs">
+          {items}
+        </Stack>
       </Collapse>
-    </>
+    </Flex>
   );
 }

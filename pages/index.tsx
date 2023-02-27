@@ -161,25 +161,27 @@ export default function Home({ data }: Props) {
             <Button>Select locations</Button>
           </Popover.Target>
           <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
-            <Button
-              variant="subtle"
-              disabled={nbCitiesSelected === 0}
-              onClick={() =>
-                setSelectableLocations((locations) => {
-                  Object.keys(locations).forEach((country) => {
-                    locations[country].forEach((city) => {
-                      city.selected = false;
+            <Stack spacing="xs">
+              <Button
+                variant="subtle"
+                disabled={nbCitiesSelected === 0}
+                onClick={() =>
+                  setSelectableLocations((locations) => {
+                    Object.keys(locations).forEach((country) => {
+                      locations[country].forEach((city) => {
+                        city.selected = false;
+                      });
                     });
-                  });
-                  return { ...locations };
-                })
-              }
-            >
-              Reset
-            </Button>
-            {Object.keys(selectableLocations).map((country) => (
-              <LocationsCheckbox key={country} country={country} />
-            ))}
+                    return { ...locations };
+                  })
+                }
+              >
+                Reset
+              </Button>
+              {Object.keys(selectableLocations).map((country) => (
+                <LocationsCheckbox key={country} country={country} />
+              ))}
+            </Stack>
           </Popover.Dropdown>
         </Popover>
         <Popover position="bottom-start" shadow="md">
