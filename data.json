@@ -1045,8 +1045,8 @@
     "company": "QuantCo",
     "location": [
       {
-        "city": null,
-        "country": "Europe"
+        "city": "Europe",
+        "country": null
       }
     ],
     "number": 42867,
@@ -3692,8 +3692,8 @@
     "company": "QuantCo",
     "location": [
       {
-        "city": null,
-        "country": "Europe"
+        "city": "Europe",
+        "country": null
       }
     ],
     "number": 42868,

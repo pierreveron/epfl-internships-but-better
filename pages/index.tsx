@@ -12,6 +12,8 @@ interface Props {
 
 const PAGE_SIZE = 15;
 
+const NOT_SPECIFIED = "Not specified";
+
 export default function Home({ data }: Props) {
   // sort data only once on initial render with useMemo
   const sortedData = useMemo(
@@ -40,12 +42,9 @@ export default function Home({ data }: Props) {
         }
         citiesByCountry[l.country]?.push({ name: l.city, selected: false });
       } else {
-        // push an empty list if city is null
-        if (l.city === null) {
-          citiesByCountry[l.country] = [];
-          return;
-        }
-        citiesByCountry[l.country] = [{ name: l.city, selected: false }];
+        citiesByCountry[l.country ?? NOT_SPECIFIED] = [
+          { name: l.city, selected: false },
+        ];
       }
     });
     return citiesByCountry;
@@ -69,17 +68,15 @@ export default function Home({ data }: Props) {
     let data = sortedData;
     if (nbCitiesSelected !== 0) {
       data = data.filter((d) => {
-        let locationSelected =
+        return (
           d.location.filter((l) => {
-            if (l.city === null) {
-              return true;
-            }
             return (
-              selectableLocations[l.country]?.find((c) => c.name === l.city)
-                ?.selected ?? true
+              selectableLocations[l.country ?? NOT_SPECIFIED]?.find(
+                (c) => c.name === l.city
+              )?.selected || false
             );
-          }).length > 0;
-        return locationSelected;
+          }).length > 0
+        );
       });
     }
 
@@ -148,6 +145,7 @@ export default function Home({ data }: Props) {
           <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
             <Button
               variant="subtle"
+              disabled={nbCitiesSelected === 0}
               onClick={() =>
                 setSelectableLocations((locations) => {
                   Object.keys(locations).forEach((country) => {
@@ -180,7 +178,7 @@ export default function Home({ data }: Props) {
               <ul style={{ listStyle: "none" }}>
                 {location.map((loc) => (
                   <li key={`${loc.city}_${loc.country}`}>
-                    {loc.city}, {loc.country}
+                    {loc.city}, {loc.country ?? NOT_SPECIFIED}
                   </li>
                 ))}
               </ul>
