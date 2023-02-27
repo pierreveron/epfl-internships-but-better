@@ -6,6 +6,7 @@ import { locationsAtom } from "@/atoms";
 import { IconChevronDown } from "@tabler/icons";
 import { useAtom } from "jotai";
 import { focusAtom } from "jotai-optics";
+import { getFlagEmojiWithName } from "@/utils/countries";
 
 const TRANSITION_DURATION_IN_MS = 300;
 
@@ -42,13 +43,16 @@ export default function LocationCheckbox({ country }: { country: string }) {
     />
   ));
 
+  const countryEmoji = getFlagEmojiWithName(country);
+  const countryLabel = countryEmoji ? countryEmoji + " " + country : country;
+
   return (
     <>
       <Group>
         <Checkbox
           checked={allChecked}
           indeterminate={indeterminate}
-          label={country}
+          label={countryLabel}
           transitionDuration={0}
           onChange={() => {
             setCities((cities) => {
