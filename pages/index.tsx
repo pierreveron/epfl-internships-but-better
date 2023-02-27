@@ -24,6 +24,8 @@ export default function Home({ data }: Props) {
 
   const locations = useMemo(() => data.map((d) => d.location), [data]);
 
+  const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
+
   // group cities by country
   const citiesByCountry = useMemo(() => {
     const citiesByCountry: Record<string, SelectableCity[]> = {};
@@ -54,13 +56,43 @@ export default function Home({ data }: Props) {
     setShowOnlyPositionsNotYetCompleted,
   ] = useState(false);
 
+  const nbCitiesSelected = useMemo(() => {
+    return Object.keys(selectableLocations).reduce((acc, country) => {
+      const cities = selectableLocations[country];
+      const selectedCities = cities?.filter((city) => city.selected);
+      return acc + (selectedCities?.length || 0);
+    }, 0);
+  }, [selectableLocations]);
+
   // filter sorted data on the registered column
   const filteredData = useMemo(() => {
-    if (showOnlyPositionsNotYetCompleted) {
-      return sortedData.filter((d) => d.registered < d.positions);
+    let data = sortedData;
+    if (nbCitiesSelected !== 0) {
+      data = data.filter((d) => {
+        let locationSelected =
+          d.location.filter((l) => {
+            if (l.city === null) {
+              return true;
+            }
+            return (
+              selectableLocations[l.country]?.find((c) => c.name === l.city)
+                ?.selected ?? true
+            );
+          }).length > 0;
+        return locationSelected;
+      });
     }
-    return sortedData;
-  }, [showOnlyPositionsNotYetCompleted, sortedData]);
+
+    if (showOnlyPositionsNotYetCompleted) {
+      return data.filter((d) => d.registered < d.positions);
+    }
+    return data;
+  }, [
+    showOnlyPositionsNotYetCompleted,
+    selectableLocations,
+    sortedData,
+    nbCitiesSelected,
+  ]);
 
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
     columnAccessor: "company",
@@ -91,23 +123,13 @@ export default function Home({ data }: Props) {
     setRecords(d.slice(from, to));
   }, [page, filteredData]);
 
-  const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
-
   useEffect(() => {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry]);
 
   useEffect(() => {
-    let nbCitiesSelected = Object.keys(selectableLocations).reduce(
-      (acc, country) => {
-        const cities = selectableLocations[country];
-        const selectedCities = cities?.filter((city) => city.selected);
-        return acc + (selectedCities?.length || 0);
-      },
-      0
-    );
     console.log("Number of cities selected:", nbCitiesSelected);
-  }, [selectableLocations]);
+  }, [nbCitiesSelected]);
 
   return (
     <Stack style={{ height: "100vh" }}>
