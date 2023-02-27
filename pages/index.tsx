@@ -189,20 +189,22 @@ export default function Home({ data }: Props) {
             <Button>Select formats</Button>
           </Popover.Target>
           <Popover.Dropdown>
-            <Button
-              variant="subtle"
-              disabled={
-                selectableFormats.filter((v) => v.selected).length === 0
-              }
-              onClick={() =>
-                setSelectableFormats((locations) => {
-                  return locations.map((l) => ({ ...l, selected: false }));
-                })
-              }
-            >
-              Reset
-            </Button>
-            <FormatsCheckboxes />
+            <Stack spacing="xs">
+              <Button
+                variant="subtle"
+                disabled={
+                  selectableFormats.filter((v) => v.selected).length === 0
+                }
+                onClick={() =>
+                  setSelectableFormats((locations) => {
+                    return locations.map((l) => ({ ...l, selected: false }));
+                  })
+                }
+              >
+                Reset
+              </Button>
+              <FormatsCheckboxes />
+            </Stack>
           </Popover.Dropdown>
         </Popover>
       </Flex>
