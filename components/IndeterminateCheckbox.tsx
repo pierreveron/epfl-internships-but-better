@@ -1,54 +1,46 @@
 import { ActionIcon, Checkbox, Collapse, Group, Text } from "@mantine/core";
 
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
-import { LocationsContext } from "@/contexts/LocationsContext";
-import { useForceUpdate } from "@mantine/hooks";
+import locationsAtom from "@/atoms/locationsAtom";
 import { IconChevronDown } from "@tabler/icons";
+import { useAtom } from "jotai";
+import { focusAtom } from "jotai-optics";
+
+const TRANSITION_DURATION_IN_MS = 300;
 
 export function IndeterminateCheckbox({ country }: { country: string }) {
-  const { locations, setLocations } = useContext(LocationsContext)!;
-
-  //   const cities = Array.from(new Set(locations.get(country)));
-
-  const cities = useMemo(
-    () => Array.from(new Set(locations.get(country))),
-    [locations, country]
+  const citiesAtom = useMemo(
+    () => focusAtom(locationsAtom, (optic) => optic.prop(country)),
+    [country]
   );
+
+  const [cities, setCities] = useAtom(citiesAtom);
 
   const allChecked = cities.every((value) => value.selected);
   const indeterminate = cities.some((value) => value.selected) && !allChecked;
 
   const [opened, setOpened] = useState(false);
 
-  const forceUpdate = useForceUpdate();
-
-  const items = cities.map((value, index) => (
+  const items = cities.map((value) => (
     <Checkbox
       mt="xs"
       ml={33}
       label={value.name}
       key={value.name}
-      //   key={randomId()}
       checked={value.selected}
       onChange={(event) => {
-        setLocations((locations) => {
-          const newCities = locations.get(country)?.map((l) => {
+        setCities((cities) => {
+          return cities.map((l) => {
             if (l.name === value.name) {
               return { ...l, selected: event.currentTarget.checked };
             }
             return l;
           });
-          locations.set(country, newCities!);
-          return new Map(locations);
-          //   return locations;
         });
-        // forceUpdate();
       }}
     />
   ));
-
-  const transitionDurationInMs = 300;
 
   return (
     <>
@@ -59,12 +51,10 @@ export function IndeterminateCheckbox({ country }: { country: string }) {
           label={country}
           transitionDuration={0}
           onChange={() => {
-            setLocations((locations) => {
-              const newCities = locations.get(country)?.map((l) => {
+            setCities((cities) => {
+              return cities.map((l) => {
                 return { ...l, selected: !allChecked };
               });
-              locations.set(country, newCities!);
-              return new Map(locations);
             });
           }}
         />
@@ -76,7 +66,7 @@ export function IndeterminateCheckbox({ country }: { country: string }) {
             <ActionIcon onClick={() => setOpened((opened) => !opened)}>
               <IconChevronDown
                 style={{
-                  transitionDuration: transitionDurationInMs + "ms",
+                  transitionDuration: TRANSITION_DURATION_IN_MS + "ms",
                   transform: opened ? "rotate(0.5turn)" : undefined,
                 }}
                 size={18}
@@ -85,7 +75,7 @@ export function IndeterminateCheckbox({ country }: { country: string }) {
           </Group>
         )}
       </Group>
-      <Collapse in={opened} transitionDuration={transitionDurationInMs}>
+      <Collapse in={opened} transitionDuration={TRANSITION_DURATION_IN_MS}>
         {items}
       </Collapse>
     </>

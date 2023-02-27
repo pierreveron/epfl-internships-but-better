@@ -1,7 +1,8 @@
+import locationsAtom from "@/atoms/locationsAtom";
 import { IndeterminateCheckbox } from "@/components/IndeterminateCheckbox";
-import { LocationsContext } from "@/contexts/LocationsContext";
 import { RowData, SelectableCity } from "@/types";
 import { Button, Flex, Popover, Stack, Switch } from "@mantine/core";
+import { useAtom } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 
@@ -23,49 +24,30 @@ export default function Home({ data }: Props) {
 
   const locations = useMemo(() => data.map((d) => d.location), [data]);
 
-  // const countries = useMemo(
-  //   () =>
-  //     locations
-  //       .flat()
-  //       .map((l) => l.country)
-  //       .filter((c, i, a) => a.indexOf(c) === i),
-  //   [locations]
-  // );
-
-  // const countries = Array.from(new Set(locations.flat().map((l) => l.country)));
-
   // group cities by country
   const citiesByCountry = useMemo(() => {
-    const citiesByCountry = new Map<string, SelectableCity[]>();
+    const citiesByCountry: Record<string, SelectableCity[]> = {};
     locations.flat().forEach((l) => {
-      if (citiesByCountry.has(l.country)) {
+      if (citiesByCountry.hasOwnProperty(l.country)) {
         // check if city is already in the list
         if (
-          citiesByCountry
-            .get(l.country)
-            ?.map((c) => c.name)
-            .includes(l.city) ||
+          citiesByCountry[l.country]?.map((c) => c.name).includes(l.city) ||
           l.city === null
         ) {
           return;
         }
-        citiesByCountry.get(l.country)?.push({ name: l.city, selected: false });
+        citiesByCountry[l.country]?.push({ name: l.city, selected: false });
       } else {
         // push an empty list if city is null
         if (l.city === null) {
-          citiesByCountry.set(l.country, []);
+          citiesByCountry[l.country] = [];
           return;
         }
-        citiesByCountry.set(l.country, [{ name: l.city, selected: false }]);
+        citiesByCountry[l.country] = [{ name: l.city, selected: false }];
       }
     });
     return citiesByCountry;
   }, [locations]);
-
-  const countries = useMemo(
-    () => Array.from(citiesByCountry.keys()),
-    [citiesByCountry]
-  );
 
   const [
     showOnlyPositionsNotYetCompleted,
@@ -109,22 +91,23 @@ export default function Home({ data }: Props) {
     setRecords(d.slice(from, to));
   }, [page, filteredData]);
 
-  const [selectableLocations, setSelectableLocations] =
-    useState<Map<string, SelectableCity[]>>(citiesByCountry);
+  const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
 
   useEffect(() => {
-    let nbCitiesSelected = Array.from(selectableLocations.keys()).reduce(
-      (acc, c) => {
-        const cities = selectableLocations.get(c);
-        const selectedCities = cities?.filter((c) => c.selected);
+    setSelectableLocations(citiesByCountry);
+  }, [citiesByCountry]);
+
+  useEffect(() => {
+    let nbCitiesSelected = Object.keys(selectableLocations).reduce(
+      (acc, country) => {
+        const cities = selectableLocations[country];
+        const selectedCities = cities?.filter((city) => city.selected);
         return acc + (selectedCities?.length || 0);
       },
       0
     );
     console.log("Number of cities selected:", nbCitiesSelected);
   }, [selectableLocations]);
-
-  const [currentUser, setCurrentUser] = useState(new Map().set("name", "Test"));
 
   return (
     <Stack style={{ height: "100vh" }}>
@@ -136,50 +119,31 @@ export default function Home({ data }: Props) {
             setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
           }
         />
-        <TestContext.Provider
-          value={{
-            currentUser,
-            setCurrentUser,
-          }}
-        >
-          <LocationsContext.Provider
-            value={{
-              locations: selectableLocations,
-              setLocations: setSelectableLocations,
-            }}
-          >
-            <Popover position="bottom-start" shadow="md">
-              <Popover.Target>
-                <Button>Select locations</Button>
-              </Popover.Target>
-              <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
-                <Button
-                  variant="subtle"
-                  onClick={() =>
-                    setSelectableLocations(
-                      (locations) =>
-                        new Map(
-                          Array.from(locations).map(([country, cities]) => [
-                            country,
-                            cities.map((city) => ({
-                              ...city,
-                              selected: false,
-                            })),
-                          ])
-                        )
-                    )
-                  }
-                >
-                  Reset
-                </Button>
-                {countries.map((country) => (
-                  <IndeterminateCheckbox key={country} country={country} />
-                ))}
-                {/* <IndeterminateCheckbox country={"France"} /> */}
-              </Popover.Dropdown>
-            </Popover>
-          </LocationsContext.Provider>
-        </TestContext.Provider>
+        <Popover position="bottom-start" shadow="md">
+          <Popover.Target>
+            <Button>Select locations</Button>
+          </Popover.Target>
+          <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
+            <Button
+              variant="subtle"
+              onClick={() =>
+                setSelectableLocations((locations) => {
+                  Object.keys(locations).forEach((country) => {
+                    locations[country].forEach((city) => {
+                      city.selected = false;
+                    });
+                  });
+                  return { ...locations };
+                })
+              }
+            >
+              Reset
+            </Button>
+            {Object.keys(selectableLocations).map((country) => (
+              <IndeterminateCheckbox key={country} country={country} />
+            ))}
+          </Popover.Dropdown>
+        </Popover>
       </Flex>
       <DataTable
         withBorder
@@ -222,7 +186,6 @@ export default function Home({ data }: Props) {
 import { promises as fs } from "fs";
 import path from "path";
 
-import { TestContext } from "@/contexts/TestContext";
 import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
