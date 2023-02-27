@@ -1,6 +1,6 @@
-import locationsAtom from "@/atoms/locationsAtom";
-import { IndeterminateCheckbox } from "@/components/IndeterminateCheckbox";
-import { RowData, SelectableCity } from "@/types";
+import { formatAtom, locationsAtom } from "@/atoms";
+import LocationsCheckbox from "@/components/LocationsCheckbox";
+import { Format, RowData, SelectableCity, SelectableFormat } from "@/types";
 import { Button, Flex, Popover, Stack, Switch } from "@mantine/core";
 import { useAtom } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
@@ -27,6 +27,15 @@ export default function Home({ data }: Props) {
   const locations = useMemo(() => data.map((d) => d.location), [data]);
 
   const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
+  const [selectableFormats, setSelectableFormats] = useAtom(formatAtom);
+
+  useEffect(() => {
+    setSelectableFormats(
+      Array.from(new Set(data.map((d) => d.format))).map((format) => {
+        return { name: format, selected: false };
+      }) as SelectableFormat[]
+    );
+  }, [data, setSelectableFormats]);
 
   // group cities by country
   const citiesByCountry = useMemo(() => {
@@ -80,6 +89,14 @@ export default function Home({ data }: Props) {
       });
     }
 
+    if (selectableFormats.some((f) => f.selected)) {
+      data = data.filter((d) => {
+        return (
+          selectableFormats.find((f) => f.name === d.format)?.selected || false
+        );
+      });
+    }
+
     if (showOnlyPositionsNotYetCompleted) {
       return data.filter((d) => d.registered < d.positions);
     }
@@ -89,6 +106,7 @@ export default function Home({ data }: Props) {
     selectableLocations,
     sortedData,
     nbCitiesSelected,
+    selectableFormats,
   ]);
 
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
@@ -160,8 +178,29 @@ export default function Home({ data }: Props) {
               Reset
             </Button>
             {Object.keys(selectableLocations).map((country) => (
-              <IndeterminateCheckbox key={country} country={country} />
+              <LocationsCheckbox key={country} country={country} />
             ))}
+          </Popover.Dropdown>
+        </Popover>
+        <Popover position="bottom-start" shadow="md">
+          <Popover.Target>
+            <Button>Select formats</Button>
+          </Popover.Target>
+          <Popover.Dropdown>
+            <Button
+              variant="subtle"
+              disabled={
+                selectableFormats.filter((v) => v.selected).length === 0
+              }
+              onClick={() =>
+                setSelectableFormats((locations) => {
+                  return locations.map((l) => ({ ...l, selected: false }));
+                })
+              }
+            >
+              Reset
+            </Button>
+            <FormatsCheckboxes />
           </Popover.Dropdown>
         </Popover>
       </Flex>
@@ -207,6 +246,7 @@ import { promises as fs } from "fs";
 import path from "path";
 
 import { GetStaticProps } from "next";
+import FormatsCheckboxes from "@/components/FormatsCheckboxes";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   //Find the absolute path of the json directory

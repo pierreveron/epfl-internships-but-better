@@ -17,3 +17,7 @@ export type Location = {
 };
 
 export type SelectableCity = { name: string; selected: boolean };
+
+export type Format = "PDM coordonné" | "Stage" | "Stage ou PDM";
+
+export type SelectableFormat = { name: Format; selected: boolean };

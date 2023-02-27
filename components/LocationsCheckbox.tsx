@@ -2,14 +2,14 @@ import { ActionIcon, Checkbox, Collapse, Group, Text } from "@mantine/core";
 
 import { useMemo, useState } from "react";
 
-import locationsAtom from "@/atoms/locationsAtom";
+import { locationsAtom } from "@/atoms";
 import { IconChevronDown } from "@tabler/icons";
 import { useAtom } from "jotai";
 import { focusAtom } from "jotai-optics";
 
 const TRANSITION_DURATION_IN_MS = 300;
 
-export function IndeterminateCheckbox({ country }: { country: string }) {
+export default function LocationCheckbox({ country }: { country: string }) {
   const citiesAtom = useMemo(
     () => focusAtom(locationsAtom, (optic) => optic.prop(country)),
     [country]
