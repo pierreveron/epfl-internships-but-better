@@ -2,14 +2,24 @@ import { formatAtom, locationsAtom } from "@/atoms";
 import FormatsCheckboxes from "@/components/FormatsCheckboxes";
 import LocationsCheckbox from "@/components/LocationsCheckbox";
 import { RowData, SelectableCity, SelectableFormat } from "@/types";
-import { Button, Group, Popover, Stack, Switch } from "@mantine/core";
-import { IconChevronDown } from "@tabler/icons";
+import {
+  Button,
+  Group,
+  HoverCard,
+  Popover,
+  Stack,
+  Switch,
+  Text,
+  ThemeIcon,
+} from "@mantine/core";
+import { IconChevronDown, IconInfoCircle } from "@tabler/icons";
 import { useAtom } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 
 interface Props {
   data: RowData[];
+  dataDate: string;
 }
 
 const PAGE_SIZE = 15;
@@ -37,7 +47,7 @@ const sortBy = (
   return sortingDirection === "desc" ? dataSorted.reverse() : dataSorted;
 };
 
-export default function Home({ data }: Props) {
+export default function Home({ data, dataDate }: Props) {
   const locations = useMemo(() => data.map((d) => d.location), [data]);
 
   const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
@@ -219,6 +229,25 @@ export default function Home({ data }: Props) {
             </Stack>
           </Popover.Dropdown>
         </Popover>
+        <Group ml="auto" spacing="xs">
+          <Text c="dimmed">Last update: {dataDate}</Text>
+          <HoverCard width={280} shadow="md">
+            <HoverCard.Target>
+              <ThemeIcon
+                variant="light"
+                color="gray"
+                style={{ cursor: "pointer" }}
+              >
+                <IconInfoCircle size={18} />
+              </ThemeIcon>
+            </HoverCard.Target>
+            <HoverCard.Dropdown>
+              <Text size="sm">
+                Data could not be up-to-date as it has to be changed manually.
+              </Text>
+            </HoverCard.Dropdown>
+          </HoverCard>
+        </Group>
       </Group>
       <DataTable
         withBorder
@@ -266,10 +295,21 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const fileName = "internships-with-good-locations.json";
   const dataPath = path.join(process.cwd(), "/" + fileName);
 
+  // get the modification date of the file
+  const stats = await fs.stat(dataPath);
+  const modificationDate = stats.mtime;
+
+  // format the date as DD.MM.YYYY
+  const formattedDate = modificationDate.toLocaleDateString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
   const fileContents = await fs.readFile(dataPath, "utf8");
   const data: RowData[] = JSON.parse(fileContents);
 
   return {
-    props: { data },
+    props: { data, dataDate: formattedDate },
   };
 };
