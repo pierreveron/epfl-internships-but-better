@@ -26,11 +26,7 @@ const PAGE_SIZE = 15;
 
 const NOT_SPECIFIED = "Not specified";
 
-const sortBy = (
-  data: RowData[],
-  columnAccessor: string,
-  sortingDirection: "desc" | "asc"
-) => {
+const sortBy = (data: RowData[], columnAccessor: string) => {
   let dataSorted = data;
   if (columnAccessor === "company") {
     dataSorted = data.sort((a, b) => {
@@ -44,22 +40,12 @@ const sortBy = (
       );
     });
   }
-  return sortingDirection === "desc" ? dataSorted.reverse() : dataSorted;
+
+  return dataSorted;
 };
 
 export default function Home({ data, dataDate }: Props) {
   const locations = useMemo(() => data.map((d) => d.location), [data]);
-
-  const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
-  const [selectableFormats, setSelectableFormats] = useAtom(formatAtom);
-
-  useEffect(() => {
-    setSelectableFormats(
-      Array.from(new Set(data.map((d) => d.format))).map((format) => {
-        return { name: format, selected: false };
-      }) as SelectableFormat[]
-    );
-  }, [data, setSelectableFormats]);
 
   // group cities by country
   const citiesByCountry = useMemo(() => {
@@ -83,10 +69,20 @@ export default function Home({ data, dataDate }: Props) {
     return citiesByCountry;
   }, [locations]);
 
-  const [
-    showOnlyPositionsNotYetCompleted,
-    setShowOnlyPositionsNotYetCompleted,
-  ] = useState(false);
+  const [selectableFormats, setSelectableFormats] = useAtom(formatAtom);
+  const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
+
+  useEffect(() => {
+    setSelectableFormats(
+      Array.from(new Set(data.map((d) => d.format))).map((format) => {
+        return { name: format, selected: false };
+      }) as SelectableFormat[]
+    );
+  }, [data, setSelectableFormats]);
+
+  useEffect(() => {
+    setSelectableLocations(citiesByCountry);
+  }, [citiesByCountry, setSelectableLocations]);
 
   const nbCitiesSelected = useMemo(() => {
     return Object.keys(selectableLocations).reduce((acc, country) => {
@@ -96,20 +92,32 @@ export default function Home({ data, dataDate }: Props) {
     }, 0);
   }, [selectableLocations]);
 
+  const [page, setPage] = useState(1);
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
-    columnAccessor: "company",
-    direction: "asc",
+    columnAccessor: "creationDate",
+    direction: "desc",
   });
 
+  useEffect(() => {
+    setPage(1);
+  }, [sortStatus]);
+
   const sortedData = useMemo(() => {
-    return sortBy(data, sortStatus.columnAccessor, sortStatus.direction);
-  }, [sortStatus, data]);
+    debugger;
+    return sortBy(data, sortStatus.columnAccessor);
+  }, [sortStatus.columnAccessor, data]);
 
   const [records, setRecords] = useState(sortedData.slice(0, PAGE_SIZE));
+  const [
+    showOnlyPositionsNotYetCompleted,
+    setShowOnlyPositionsNotYetCompleted,
+  ] = useState(false);
 
   // filter sorted data on the registered column
   const filteredData = useMemo(() => {
+    debugger;
     let data = sortedData;
+
     if (nbCitiesSelected !== 0) {
       data = data.filter((d) => {
         return (
@@ -135,34 +143,29 @@ export default function Home({ data, dataDate }: Props) {
     if (showOnlyPositionsNotYetCompleted) {
       return data.filter((d) => d.registered < d.positions);
     }
+
     return data;
   }, [
+    sortedData,
     showOnlyPositionsNotYetCompleted,
     selectableLocations,
-    sortedData,
     nbCitiesSelected,
     selectableFormats,
   ]);
 
   useEffect(() => {
-    let d = filteredData;
-    setRecords(d.slice(0, PAGE_SIZE));
-    setPage(1);
-  }, [sortStatus, filteredData]);
-
-  const [page, setPage] = useState(1);
-
-  useEffect(() => {
+    debugger;
     const from = (page - 1) * PAGE_SIZE;
     const to = from + PAGE_SIZE;
 
     let d = filteredData;
-    setRecords(d.slice(from, to));
-  }, [page, filteredData]);
 
-  useEffect(() => {
-    setSelectableLocations(citiesByCountry);
-  }, [citiesByCountry, setSelectableLocations]);
+    if (sortStatus.direction === "desc") {
+      d = d.slice().reverse();
+    }
+
+    setRecords(d.slice(from, to));
+  }, [page, filteredData, sortStatus.direction]);
 
   return (
     <Stack style={{ height: "100vh" }} p="xl">
