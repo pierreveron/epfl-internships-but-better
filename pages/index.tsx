@@ -1,7 +1,8 @@
 import { formatAtom, locationsAtom } from "@/atoms";
 import LocationsCheckbox from "@/components/LocationsCheckbox";
-import { Format, RowData, SelectableCity, SelectableFormat } from "@/types";
-import { Button, Flex, Popover, Stack, Switch } from "@mantine/core";
+import { RowData, SelectableCity, SelectableFormat } from "@/types";
+import { Button, Group, Popover, Stack, Switch } from "@mantine/core";
+import { IconChevronDown } from "@tabler/icons";
 import { useAtom } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
@@ -14,16 +15,28 @@ const PAGE_SIZE = 15;
 
 const NOT_SPECIFIED = "Not specified";
 
-export default function Home({ data }: Props) {
-  // sort data only once on initial render with useMemo
-  const sortedData = useMemo(
-    () =>
-      data.sort((a, b) => {
-        return a.company.localeCompare(b.company);
-      }),
-    [data]
-  );
+const sortBy = (
+  data: RowData[],
+  columnAccessor: string,
+  sortingDirection: "desc" | "asc"
+) => {
+  let dataSorted = data;
+  if (columnAccessor === "company") {
+    dataSorted = data.sort((a, b) => {
+      return a.company.localeCompare(b.company);
+    });
+  } else if (columnAccessor === "creationDate") {
+    dataSorted = data.sort((a, b) => {
+      return (
+        new Date(a.creationDate.split(".").reverse().join("-")).getTime() -
+        new Date(b.creationDate.split(".").reverse().join("-")).getTime()
+      );
+    });
+  }
+  return sortingDirection === "desc" ? dataSorted.reverse() : dataSorted;
+};
 
+export default function Home({ data }: Props) {
   const locations = useMemo(() => data.map((d) => d.location), [data]);
 
   const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
@@ -72,6 +85,18 @@ export default function Home({ data }: Props) {
     }, 0);
   }, [selectableLocations]);
 
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
+    columnAccessor: "company",
+    direction: "asc",
+  });
+
+  const sortedData = useMemo(() => {
+    return sortBy(data, sortStatus.columnAccessor, sortStatus.direction);
+    // return sortStatus.direction === "desc" ? dataSorted.reverse() : dataSorted;
+  }, [sortStatus, data]);
+
+  const [records, setRecords] = useState(sortedData.slice(0, PAGE_SIZE));
+
   // filter sorted data on the registered column
   const filteredData = useMemo(() => {
     let data = sortedData;
@@ -109,17 +134,11 @@ export default function Home({ data }: Props) {
     selectableFormats,
   ]);
 
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
-    columnAccessor: "company",
-    direction: "asc",
-  });
-  const [records, setRecords] = useState(sortedData.slice(0, PAGE_SIZE));
-
   useEffect(() => {
     let d = filteredData;
-    if (sortStatus.direction === "desc") {
-      d = d.slice().reverse();
-    }
+    // if (sortStatus.direction === "desc") {
+    //   d = d.slice().reverse();
+    // }
     setRecords(d.slice(0, PAGE_SIZE));
     setPage(1);
   }, [sortStatus, filteredData]);
@@ -131,24 +150,24 @@ export default function Home({ data }: Props) {
     const to = from + PAGE_SIZE;
 
     let d = filteredData;
-    if (sortStatus.direction === "desc") {
-      d = d.slice().reverse();
-    }
+    // if (sortStatus.direction === "desc") {
+    //   d = d.slice().reverse();
+    // }
 
     setRecords(d.slice(from, to));
   }, [page, filteredData]);
 
   useEffect(() => {
     setSelectableLocations(citiesByCountry);
-  }, [citiesByCountry]);
+  }, [citiesByCountry, setSelectableLocations]);
 
   useEffect(() => {
     console.log("Number of cities selected:", nbCitiesSelected);
   }, [nbCitiesSelected]);
 
   return (
-    <Stack style={{ height: "100vh" }}>
-      <Flex direction="row">
+    <Stack style={{ height: "100vh" }} p="xl">
+      <Group>
         <Switch
           label="Show only positions not yet completed"
           checked={showOnlyPositionsNotYetCompleted}
@@ -158,7 +177,9 @@ export default function Home({ data }: Props) {
         />
         <Popover position="bottom-start" shadow="md">
           <Popover.Target>
-            <Button>Select locations</Button>
+            <Button rightIcon={<IconChevronDown size={18} />} variant="outline">
+              Select locations
+            </Button>
           </Popover.Target>
           <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
             <Stack spacing="xs">
@@ -186,7 +207,9 @@ export default function Home({ data }: Props) {
         </Popover>
         <Popover position="bottom-start" shadow="md">
           <Popover.Target>
-            <Button>Select formats</Button>
+            <Button rightIcon={<IconChevronDown size={18} />} variant="outline">
+              Select formats
+            </Button>
           </Popover.Target>
           <Popover.Dropdown>
             <Stack spacing="xs">
@@ -207,7 +230,7 @@ export default function Home({ data }: Props) {
             </Stack>
           </Popover.Dropdown>
         </Popover>
-      </Flex>
+      </Group>
       <DataTable
         withBorder
         highlightOnHover
@@ -232,7 +255,7 @@ export default function Home({ data }: Props) {
           { accessor: "registered", textAlignment: "center" },
           { accessor: "positions", textAlignment: "center" },
           { accessor: "professor" },
-          { accessor: "creationDate" },
+          { accessor: "creationDate", sortable: true, width: 150 },
         ]}
         sortStatus={sortStatus}
         onSortStatusChange={setSortStatus}
@@ -249,8 +272,8 @@ export default function Home({ data }: Props) {
 import { promises as fs } from "fs";
 import path from "path";
 
-import { GetStaticProps } from "next";
 import FormatsCheckboxes from "@/components/FormatsCheckboxes";
+import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   //Find the absolute path of the json directory
