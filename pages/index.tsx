@@ -73,92 +73,109 @@ export default function Home({ data, dataDate }: Props) {
   }, [citiesByCountry, setSelectableLocations]);
 
   return (
-    <Stack style={{ height: "100vh" }} p="xl">
-      <Group>
-        <Switch
-          label="Show only positions not yet completed"
-          checked={showOnlyPositionsNotYetCompleted}
-          onChange={(event) =>
-            setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
-          }
+    <>
+      <Head>
+        <title>EPFL Interships but better</title>
+        <meta
+          name="description"
+          content="EPFL interships interface redesigned to be more user-friendly"
         />
-        <Popover position="bottom-start" shadow="md">
-          <Popover.Target>
-            <Button rightIcon={<IconChevronDown size={18} />} variant="outline">
-              Select locations
-            </Button>
-          </Popover.Target>
-          <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
-            <Stack spacing="xs">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Stack style={{ height: "100vh" }} p="xl">
+        <Group>
+          <Switch
+            label="Show only positions not yet completed"
+            checked={showOnlyPositionsNotYetCompleted}
+            onChange={(event) =>
+              setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
+            }
+          />
+          <Popover position="bottom-start" shadow="md">
+            <Popover.Target>
               <Button
-                variant="subtle"
-                disabled={nbCitiesSelected === 0}
-                onClick={() =>
-                  setSelectableLocations((locations) => {
-                    Object.keys(locations).forEach((country) => {
-                      locations[country].forEach((city) => {
-                        city.selected = false;
+                rightIcon={<IconChevronDown size={18} />}
+                variant="outline"
+              >
+                Select locations
+              </Button>
+            </Popover.Target>
+            <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
+              <Stack spacing="xs">
+                <Button
+                  variant="subtle"
+                  disabled={nbCitiesSelected === 0}
+                  onClick={() =>
+                    setSelectableLocations((locations) => {
+                      Object.keys(locations).forEach((country) => {
+                        locations[country].forEach((city) => {
+                          city.selected = false;
+                        });
                       });
-                    });
-                    return { ...locations };
-                  })
-                }
-              >
-                Reset
-              </Button>
-              {Object.keys(selectableLocations).map((country) => (
-                <LocationsCheckbox key={country} country={country} />
-              ))}
-            </Stack>
-          </Popover.Dropdown>
-        </Popover>
-        <Popover position="bottom-start" shadow="md">
-          <Popover.Target>
-            <Button rightIcon={<IconChevronDown size={18} />} variant="outline">
-              Select formats
-            </Button>
-          </Popover.Target>
-          <Popover.Dropdown>
-            <Stack spacing="xs">
+                      return { ...locations };
+                    })
+                  }
+                >
+                  Reset
+                </Button>
+                {Object.keys(selectableLocations).map((country) => (
+                  <LocationsCheckbox key={country} country={country} />
+                ))}
+              </Stack>
+            </Popover.Dropdown>
+          </Popover>
+          <Popover position="bottom-start" shadow="md">
+            <Popover.Target>
               <Button
-                variant="subtle"
-                disabled={
-                  selectableFormats.filter((v) => v.selected).length === 0
-                }
-                onClick={() =>
-                  setSelectableFormats((locations) => {
-                    return locations.map((l) => ({ ...l, selected: false }));
-                  })
-                }
+                rightIcon={<IconChevronDown size={18} />}
+                variant="outline"
               >
-                Reset
+                Select formats
               </Button>
-              <FormatsCheckboxes />
-            </Stack>
-          </Popover.Dropdown>
-        </Popover>
-        <Group ml="auto" spacing="xs">
-          <Text c="dimmed">Last update: {dataDate}</Text>
-          <HoverCard width={280} shadow="md">
-            <HoverCard.Target>
-              <ThemeIcon
-                variant="light"
-                color="gray"
-                style={{ cursor: "pointer" }}
-              >
-                <IconInfoCircle size={18} />
-              </ThemeIcon>
-            </HoverCard.Target>
-            <HoverCard.Dropdown>
-              <Text size="sm">
-                Data could not be up-to-date as it has to be changed manually.
-              </Text>
-            </HoverCard.Dropdown>
-          </HoverCard>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <Stack spacing="xs">
+                <Button
+                  variant="subtle"
+                  disabled={
+                    selectableFormats.filter((v) => v.selected).length === 0
+                  }
+                  onClick={() =>
+                    setSelectableFormats((locations) => {
+                      return locations.map((l) => ({ ...l, selected: false }));
+                    })
+                  }
+                >
+                  Reset
+                </Button>
+                <FormatsCheckboxes />
+              </Stack>
+            </Popover.Dropdown>
+          </Popover>
+          <Group ml="auto" spacing="xs">
+            <Text c="dimmed">Last update: {dataDate}</Text>
+            <HoverCard width={280} shadow="md">
+              <HoverCard.Target>
+                <ThemeIcon
+                  variant="light"
+                  color="gray"
+                  style={{ cursor: "pointer" }}
+                >
+                  <IconInfoCircle size={18} />
+                </ThemeIcon>
+              </HoverCard.Target>
+              <HoverCard.Dropdown>
+                <Text size="sm">
+                  Data could not be up-to-date as it has to be changed manually.
+                </Text>
+              </HoverCard.Dropdown>
+            </HoverCard>
+          </Group>
         </Group>
-      </Group>
-      <Table data={data} />
-    </Stack>
+        <Table data={data} />
+      </Stack>
+    </>
   );
 }
 
@@ -166,6 +183,7 @@ import { promises as fs } from "fs";
 import path from "path";
 
 import { GetStaticProps } from "next";
+import Head from "next/head";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const fileName = "internships-with-good-locations.json";
