@@ -1,4 +1,5 @@
 import { formatAtom, locationsAtom } from "@/atoms";
+import FormatsCheckboxes from "@/components/FormatsCheckboxes";
 import LocationsCheckbox from "@/components/LocationsCheckbox";
 import { RowData, SelectableCity, SelectableFormat } from "@/types";
 import { Button, Group, Popover, Stack, Switch } from "@mantine/core";
@@ -92,7 +93,6 @@ export default function Home({ data }: Props) {
 
   const sortedData = useMemo(() => {
     return sortBy(data, sortStatus.columnAccessor, sortStatus.direction);
-    // return sortStatus.direction === "desc" ? dataSorted.reverse() : dataSorted;
   }, [sortStatus, data]);
 
   const [records, setRecords] = useState(sortedData.slice(0, PAGE_SIZE));
@@ -136,9 +136,6 @@ export default function Home({ data }: Props) {
 
   useEffect(() => {
     let d = filteredData;
-    // if (sortStatus.direction === "desc") {
-    //   d = d.slice().reverse();
-    // }
     setRecords(d.slice(0, PAGE_SIZE));
     setPage(1);
   }, [sortStatus, filteredData]);
@@ -150,20 +147,12 @@ export default function Home({ data }: Props) {
     const to = from + PAGE_SIZE;
 
     let d = filteredData;
-    // if (sortStatus.direction === "desc") {
-    //   d = d.slice().reverse();
-    // }
-
     setRecords(d.slice(from, to));
   }, [page, filteredData]);
 
   useEffect(() => {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry, setSelectableLocations]);
-
-  useEffect(() => {
-    console.log("Number of cities selected:", nbCitiesSelected);
-  }, [nbCitiesSelected]);
 
   return (
     <Stack style={{ height: "100vh" }} p="xl">
@@ -268,11 +257,9 @@ export default function Home({ data }: Props) {
   );
 }
 
-// Fetching data from the JSON file
 import { promises as fs } from "fs";
 import path from "path";
 
-import FormatsCheckboxes from "@/components/FormatsCheckboxes";
 import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
