@@ -2852,11 +2852,7 @@
         "company": "Rolex SA, Manufacture des montres",
         "location": [
             {
-                "city": "Biel",
-                "country": "Switzerland"
-            },
-            {
-                "city": "Bienne",
+                "city": "Biel/Bienne",
                 "country": "Switzerland"
             }
         ],
