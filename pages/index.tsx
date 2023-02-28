@@ -1,6 +1,12 @@
-import { formatAtom, locationsAtom } from "@/atoms";
+import {
+  formatAtom,
+  locationsAtom,
+  nbCitiesSelectedAtom,
+  showOnlyPositionsNotYetCompletedAtom,
+} from "@/atoms";
 import FormatsCheckboxes from "@/components/FormatsCheckboxes";
 import LocationsCheckbox from "@/components/LocationsCheckbox";
+import Table from "@/components/Table";
 import { RowData, SelectableCity, SelectableFormat } from "@/types";
 import {
   Button,
@@ -13,46 +19,23 @@ import {
   ThemeIcon,
 } from "@mantine/core";
 import { IconChevronDown, IconInfoCircle } from "@tabler/icons";
-import { useAtom } from "jotai";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
-import { useEffect, useMemo, useState } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useEffect, useMemo } from "react";
 
 interface Props {
   data: RowData[];
   dataDate: string;
 }
 
-const PAGE_SIZE = 15;
-
 const NOT_SPECIFIED = "Not specified";
-
-const sortBy = (data: RowData[], columnAccessor: string) => {
-  let dataSorted = data;
-  if (columnAccessor === "company") {
-    dataSorted = data.sort((a, b) => {
-      return a.company.localeCompare(b.company);
-    });
-  } else if (columnAccessor === "creationDate") {
-    dataSorted = data.sort((a, b) => {
-      return (
-        new Date(a.creationDate.split(".").reverse().join("-")).getTime() -
-        new Date(b.creationDate.split(".").reverse().join("-")).getTime()
-      );
-    });
-  }
-
-  return dataSorted;
-};
 
 export default function Home({ data, dataDate }: Props) {
   const locations = useMemo(() => data.map((d) => d.location), [data]);
 
-  // group cities by country
   const citiesByCountry = useMemo(() => {
     const citiesByCountry: Record<string, SelectableCity[]> = {};
     locations.flat().forEach((l) => {
       if (citiesByCountry.hasOwnProperty(l.country)) {
-        // check if city is already in the list
         if (
           citiesByCountry[l.country]?.map((c) => c.name).includes(l.city) ||
           l.city === null
@@ -71,6 +54,11 @@ export default function Home({ data, dataDate }: Props) {
 
   const [selectableFormats, setSelectableFormats] = useAtom(formatAtom);
   const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
+  const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
+  const [
+    showOnlyPositionsNotYetCompleted,
+    setShowOnlyPositionsNotYetCompleted,
+  ] = useAtom(showOnlyPositionsNotYetCompletedAtom);
 
   useEffect(() => {
     setSelectableFormats(
@@ -83,89 +71,6 @@ export default function Home({ data, dataDate }: Props) {
   useEffect(() => {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry, setSelectableLocations]);
-
-  const nbCitiesSelected = useMemo(() => {
-    return Object.keys(selectableLocations).reduce((acc, country) => {
-      const cities = selectableLocations[country];
-      const selectedCities = cities?.filter((city) => city.selected);
-      return acc + (selectedCities?.length || 0);
-    }, 0);
-  }, [selectableLocations]);
-
-  const [page, setPage] = useState(1);
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
-    columnAccessor: "creationDate",
-    direction: "desc",
-  });
-
-  useEffect(() => {
-    setPage(1);
-  }, [sortStatus]);
-
-  const sortedData = useMemo(() => {
-    debugger;
-    return sortBy(data, sortStatus.columnAccessor);
-  }, [sortStatus.columnAccessor, data]);
-
-  const [records, setRecords] = useState(sortedData.slice(0, PAGE_SIZE));
-  const [
-    showOnlyPositionsNotYetCompleted,
-    setShowOnlyPositionsNotYetCompleted,
-  ] = useState(false);
-
-  // filter sorted data on the registered column
-  const filteredData = useMemo(() => {
-    debugger;
-    let data = sortedData;
-
-    if (nbCitiesSelected !== 0) {
-      data = data.filter((d) => {
-        return (
-          d.location.filter((l) => {
-            return (
-              selectableLocations[l.country ?? NOT_SPECIFIED]?.find(
-                (c) => c.name === l.city
-              )?.selected || false
-            );
-          }).length > 0
-        );
-      });
-    }
-
-    if (selectableFormats.some((f) => f.selected)) {
-      data = data.filter((d) => {
-        return (
-          selectableFormats.find((f) => f.name === d.format)?.selected || false
-        );
-      });
-    }
-
-    if (showOnlyPositionsNotYetCompleted) {
-      return data.filter((d) => d.registered < d.positions);
-    }
-
-    return data;
-  }, [
-    sortedData,
-    showOnlyPositionsNotYetCompleted,
-    selectableLocations,
-    nbCitiesSelected,
-    selectableFormats,
-  ]);
-
-  useEffect(() => {
-    debugger;
-    const from = (page - 1) * PAGE_SIZE;
-    const to = from + PAGE_SIZE;
-
-    let d = filteredData;
-
-    if (sortStatus.direction === "desc") {
-      d = d.slice().reverse();
-    }
-
-    setRecords(d.slice(from, to));
-  }, [page, filteredData, sortStatus.direction]);
 
   return (
     <Stack style={{ height: "100vh" }} p="xl">
@@ -252,39 +157,7 @@ export default function Home({ data, dataDate }: Props) {
           </HoverCard>
         </Group>
       </Group>
-      <DataTable
-        withBorder
-        highlightOnHover
-        records={records}
-        columns={[
-          { accessor: "name", width: "20%" },
-          { accessor: "company", sortable: true, width: "15%" },
-          {
-            accessor: "location",
-            render: ({ location }) => (
-              <ul style={{ listStyle: "none" }}>
-                {location.map((loc) => (
-                  <li key={`${loc.city}_${loc.country}`}>
-                    {loc.city}, {loc.country ?? NOT_SPECIFIED}
-                  </li>
-                ))}
-              </ul>
-            ),
-          },
-          { accessor: "number" },
-          { accessor: "format" },
-          { accessor: "registered", textAlignment: "center" },
-          { accessor: "positions", textAlignment: "center" },
-          { accessor: "professor" },
-          { accessor: "creationDate", sortable: true, width: 150 },
-        ]}
-        sortStatus={sortStatus}
-        onSortStatusChange={setSortStatus}
-        totalRecords={filteredData.length}
-        recordsPerPage={PAGE_SIZE}
-        page={page}
-        onPageChange={(p) => setPage(p)}
-      />
+      <Table data={data} />
     </Stack>
   );
 }
