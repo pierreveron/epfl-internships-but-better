@@ -276,9 +276,9 @@ import FormatsCheckboxes from "@/components/FormatsCheckboxes";
 import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  //Find the absolute path of the json directory
-  const dataPath = path.join(process.cwd(), "/data.json");
-  //Read the json data file data.json
+  const fileName = "internships-with-good-locations.json";
+  const dataPath = path.join(process.cwd(), "/" + fileName);
+
   const fileContents = await fs.readFile(dataPath, "utf8");
   const data: RowData[] = JSON.parse(fileContents);
 
