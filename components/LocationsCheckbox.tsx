@@ -71,7 +71,7 @@ export default function LocationCheckbox({ country }: { country: string }) {
         {cities.length > 0 && (
           <Group spacing="xs">
             <Text size="xs">
-              {cities.filter((v) => v.selected).length}/{cities.length}
+              {cities.filter((v) => v.selected).length}/{cities.length} cities
             </Text>
             <ActionIcon onClick={() => setOpened((opened) => !opened)}>
               <IconChevronDown
