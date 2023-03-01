@@ -1,3 +1,6 @@
+/**
+ * @see https://gist.github.com/themeteorchef/dcffd74ca3ab45277c81
+ */
 const isoCountries = {
   AF: "Afghanistan",
   AX: "Aland Islands",
@@ -264,6 +267,17 @@ function getCountryCode(
   }
 }
 
+/**
+ * @see https://dev.to/jorik/country-code-to-flag-emoji-a21
+ */
+function getFlagEmoji(countryCode: keyof typeof isoCountries) {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split("")
+    .map((char) => 127397 + char.charCodeAt(0));
+  return String.fromCodePoint(...codePoints);
+}
+
 export function getFlagEmojiWithName(countryName: string) {
   const countryCode = getCountryCode(countryName);
   if (countryCode) {
@@ -271,12 +285,4 @@ export function getFlagEmojiWithName(countryName: string) {
   } else {
     return null;
   }
-}
-
-function getFlagEmoji(countryCode: keyof typeof isoCountries) {
-  const codePoints = countryCode
-    .toUpperCase()
-    .split("")
-    .map((char) => 127397 + char.charCodeAt(0));
-  return String.fromCodePoint(...codePoints);
 }
