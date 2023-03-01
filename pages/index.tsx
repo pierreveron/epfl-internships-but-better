@@ -146,9 +146,53 @@ export default function Home({ data, dataDate }: Props) {
               <span style={{ whiteSpace: "nowrap" }}>IS-Academia</span>.
             </Title>
             <Text>
-              The official interface is not specially user-friendly, especially
-              when it comes to filtering locations. Here, you can look with ease
-              for internships at a specific city.
+              The official interface tends to be not particularly user-friendly,
+              especially when it comes to filtering locations. For example, if
+              you want to look for internships in{" "}
+              <Text span fw={700}>
+                Lausanne
+              </Text>
+              , you have to select{" "}
+              <Text span fw={700}>
+                &quot;Lausanne&quot;
+              </Text>{" "}
+              but also{" "}
+              <Text span fw={700}>
+                &quot;Lausanne/Geneva&quot;
+              </Text>
+              ,{" "}
+              <Text span fw={700}>
+                &quot;Lausanne/Genève&quot;
+              </Text>{" "}
+              or{" "}
+              <Text span fw={700}>
+                &quot;Lausanne/Zurich&quot;
+              </Text>{" "}
+              and so many more.
+            </Text>
+
+            <Text>
+              This concept notably aims to adress this particular issue. The
+              exact cities have been extracted from the original list of
+              locations using{" "}
+              <Text
+                span
+                fw={700}
+                c="red"
+                style={{
+                  background:
+                    "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  animation: "shine 2s infinite linear",
+                  backgroundSize: "200% 100%",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                GPT-3
+              </Text>
+              .
             </Text>
 
             <Text>
