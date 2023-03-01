@@ -134,7 +134,7 @@ export default function Table({ data }: { data: RowData[] }) {
           textAlignment: "center",
           title: "Candidates",
         },
-        { accessor: "positions", textAlignment: "center" },
+        { accessor: "positions", textAlignment: "center", title: "Places" },
         { accessor: "professor" },
         { accessor: "creationDate", sortable: true, width: 150 },
       ]}
