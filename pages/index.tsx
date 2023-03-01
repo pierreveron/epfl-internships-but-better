@@ -9,6 +9,7 @@ import LocationsCheckbox from "@/components/LocationsCheckbox";
 import Table from "@/components/Table";
 import { RowData, SelectableCity, SelectableFormat } from "@/types";
 import {
+  Alert,
   Button,
   Divider,
   Group,
@@ -22,9 +23,14 @@ import {
   Title,
 } from "@mantine/core";
 import { useCounter, useDisclosure, useLocalStorage } from "@mantine/hooks";
-import { IconChevronDown, IconInfoCircle } from "@tabler/icons";
+import {
+  IconAlertCircle,
+  IconChevronDown,
+  IconInfoCircle,
+} from "@tabler/icons";
 import { useAtom, useAtomValue } from "jotai";
-import { useCallback, useEffect, useMemo } from "react";
+import Head from "next/head";
+import { useEffect, useMemo } from "react";
 
 interface Props {
   data: RowData[];
@@ -209,10 +215,49 @@ export default function Home({ data, dataDate }: Props) {
               </>
             )}
             {modalPageCounter > 0 && (
-              <Text>
-                The table is populated with internships targeting Computer
-                Science students.
-              </Text>
+              <>
+                <Text>
+                  The data used here are internships targeting{" "}
+                  <Text span fw={700}>
+                    Computer Science
+                  </Text>{" "}
+                  students.
+                </Text>
+                <Text>
+                  If you are from this department, you can use this website to
+                  to browse available internships assuming the data is{" "}
+                  <Text span fw={700}>
+                    up-to-date
+                  </Text>
+                  . Current data dates from the{" "}
+                  <Text
+                    span
+                    fw={700}
+                    style={{
+                      background:
+                        "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      animation: "shine 2s infinite linear",
+                      backgroundSize: "200% 100%",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {dataDate}
+                  </Text>
+                  .
+                </Text>
+                <Alert
+                  icon={<IconAlertCircle size={16} />}
+                  title="This website don't fully replace IS-Academia"
+                  color="red"
+                >
+                  Once you identify an internship of interest, please take note
+                  of its number and look for it on IS-Academia, where you can
+                  submit your application.
+                </Alert>
+              </>
             )}
 
             <Group>
@@ -326,7 +371,6 @@ import { promises as fs } from "fs";
 import path from "path";
 
 import { GetStaticProps } from "next";
-import Head from "next/head";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const fileName = "internships-with-good-locations.json";
