@@ -142,13 +142,13 @@ export default function Home({ data, dataDate }: Props) {
           <Stack>
             <Divider />
             <Title order={4}>
-              This website is a redesign concept of the official Internships tab
-              on <span style={{ whiteSpace: "nowrap" }}>IS-Academia</span>.
+              This website is a redesign concept of the Internships tab on{" "}
+              <span style={{ whiteSpace: "nowrap" }}>IS-Academia</span>.
             </Title>
             <Text>
               The official interface is not specially user-friendly, especially
-              when it comes to filtering locations. Here you can look with ease
-              for internships at a specific location.
+              when it comes to filtering locations. Here, you can look with ease
+              for internships at a specific city.
             </Text>
 
             <Text>
