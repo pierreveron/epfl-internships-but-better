@@ -129,7 +129,11 @@ export default function Table({ data }: { data: RowData[] }) {
         },
         { accessor: "number" },
         { accessor: "format" },
-        { accessor: "registered", textAlignment: "center" },
+        {
+          accessor: "registered",
+          textAlignment: "center",
+          title: "Candidates",
+        },
         { accessor: "positions", textAlignment: "center" },
         { accessor: "professor" },
         { accessor: "creationDate", sortable: true, width: 150 },
