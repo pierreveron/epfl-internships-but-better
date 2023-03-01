@@ -274,7 +274,8 @@ export default function Home({ data, dataDate }: Props) {
       <Stack style={{ height: "100vh" }} p="xl">
         <Group>
           <Switch
-            label="Show only positions not yet completed"
+            styles={{ label: { width: 200 }, body: { alignItems: "center" } }}
+            label="Show only internships with less candidates than places"
             checked={showOnlyPositionsNotYetCompleted}
             onChange={(event) =>
               setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
