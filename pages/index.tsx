@@ -362,6 +362,7 @@ export default function Home({ data, dataDate }: Props) {
           </Group>
         </Group>
         <Table data={data} />
+        <Footer />
       </Stack>
     </>
   );
@@ -370,6 +371,7 @@ export default function Home({ data, dataDate }: Props) {
 import { promises as fs } from "fs";
 import path from "path";
 
+import Footer from "@/components/Footer";
 import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
