@@ -21,6 +21,7 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
+import { useDisclosure, useLocalStorage } from "@mantine/hooks";
 import { IconChevronDown, IconInfoCircle } from "@tabler/icons";
 import { useAtom, useAtomValue } from "jotai";
 import { useEffect, useMemo } from "react";
@@ -75,7 +76,26 @@ export default function Home({ data, dataDate }: Props) {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry, setSelectableLocations]);
 
-  const [isModalOpened, { close: closeModal }] = useDisclosure(true);
+  const [hasModalBeenClosed, setHasModalBeenClosed] = useLocalStorage({
+    key: "modal-closed",
+    defaultValue: false,
+  });
+
+  const [isModalOpened, { close: closeModal, open: openModal }] =
+    useDisclosure(false);
+
+  useEffect(() => {
+    if (!hasModalBeenClosed) {
+      openModal();
+    } else {
+      closeModal();
+    }
+  }, [hasModalBeenClosed, closeModal, openModal]);
+
+  const closeModalAndSavePreference = () => {
+    closeModal();
+    setHasModalBeenClosed(true);
+  };
 
   return (
     <>
@@ -88,47 +108,62 @@ export default function Home({ data, dataDate }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Modal
-        opened={isModalOpened}
-        onClose={closeModal}
-        withCloseButton={false}
-        size="auto"
-        closeOnClickOutside={false}
-        closeOnEscape={false}
-        title={
-          <Title order={1}>
-            Welcome to{" "}
-            <Text c="red">
-              EPFL internships{" "}
-              <Text
-                span
-                style={{
-                  background:
-                    "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  animation: "shine 2s infinite linear",
-                  backgroundSize: "200% 100%",
-                }}
-              >
-                BUT better
+      {!hasModalBeenClosed && (
+        <Modal
+          opened={isModalOpened}
+          onClose={closeModalAndSavePreference}
+          withCloseButton={false}
+          size="50%"
+          closeOnClickOutside={false}
+          closeOnEscape={false}
+          title={
+            <Title order={1}>
+              Welcome to{" "}
+              <Text c="red">
+                EPFL internships{" "}
+                <Text
+                  span
+                  style={{
+                    background:
+                      "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    animation: "shine 2s infinite linear",
+                    backgroundSize: "200% 100%",
+                  }}
+                >
+                  BUT better
+                </Text>
               </Text>
+            </Title>
+          }
+        >
+          <Stack>
+            <Divider />
+            <Title order={4}>
+              This website is a redesign concept of the official Internships tab
+              on <span style={{ whiteSpace: "nowrap" }}>IS-Academia</span>.
+            </Title>
+            <Text>
+              The official interface is not specially user-friendly, especially
+              when it comes to filtering locations. Here you can look with ease
+              for internships at a specific location.
             </Text>
-          </Title>
-        }
-      >
-        <Stack>
-          <Divider />
-          <Text></Text>
 
-          <Group>
-            <Button ml="auto" onClick={closeModal}>
-              I understand
-            </Button>
-          </Group>
-        </Stack>
-      </Modal>
+            <Text>
+              The table is populated with internships targeting Computer Science
+              students.
+            </Text>
+
+            <Group>
+              <Button ml="auto" onClick={closeModalAndSavePreference}>
+                I understand
+              </Button>
+            </Group>
+          </Stack>
+        </Modal>
+      )}
       <Stack style={{ height: "100vh" }} p="xl">
         <Group>
           <Switch
@@ -200,7 +235,7 @@ export default function Home({ data, dataDate }: Props) {
             </Popover.Dropdown>
           </Popover>
           <Group ml="auto" spacing="xs">
-            <Text c="dimmed">Last update: {dataDate}</Text>
+            <Text c="dimmed">Last data update: {dataDate}</Text>
             <HoverCard width={280} shadow="md">
               <HoverCard.Target>
                 <ThemeIcon
@@ -228,7 +263,6 @@ export default function Home({ data, dataDate }: Props) {
 import { promises as fs } from "fs";
 import path from "path";
 
-import { useCounter, useDisclosure } from "@mantine/hooks";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 
