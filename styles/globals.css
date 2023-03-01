@@ -12,3 +12,7 @@
     background-position: 200% 0%;
   }
 }
+
+.mantine-ScrollArea-viewport {
+  overscroll-behavior: none;
+}
