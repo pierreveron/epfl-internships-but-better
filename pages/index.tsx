@@ -113,7 +113,6 @@ export default function Home({ data, dataDate }: Props) {
           opened={isModalOpened}
           onClose={closeModalAndSavePreference}
           withCloseButton={false}
-          size="50%"
           closeOnClickOutside={false}
           closeOnEscape={false}
           title={
@@ -131,6 +130,7 @@ export default function Home({ data, dataDate }: Props) {
                     WebkitTextFillColor: "transparent",
                     animation: "shine 2s infinite linear",
                     backgroundSize: "200% 100%",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   BUT better
