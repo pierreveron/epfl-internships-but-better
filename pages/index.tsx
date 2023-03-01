@@ -10,13 +10,16 @@ import Table from "@/components/Table";
 import { RowData, SelectableCity, SelectableFormat } from "@/types";
 import {
   Button,
+  Divider,
   Group,
   HoverCard,
+  Modal,
   Popover,
   Stack,
   Switch,
   Text,
   ThemeIcon,
+  Title,
 } from "@mantine/core";
 import { IconChevronDown, IconInfoCircle } from "@tabler/icons";
 import { useAtom, useAtomValue } from "jotai";
@@ -72,6 +75,8 @@ export default function Home({ data, dataDate }: Props) {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry, setSelectableLocations]);
 
+  const [isModalOpened, { close: closeModal }] = useDisclosure(true);
+
   return (
     <>
       <Head>
@@ -83,6 +88,47 @@ export default function Home({ data, dataDate }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Modal
+        opened={isModalOpened}
+        onClose={closeModal}
+        withCloseButton={false}
+        size="auto"
+        closeOnClickOutside={false}
+        closeOnEscape={false}
+        title={
+          <Title order={1}>
+            Welcome to{" "}
+            <Text c="red">
+              EPFL internships{" "}
+              <Text
+                span
+                style={{
+                  background:
+                    "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  animation: "shine 2s infinite linear",
+                  backgroundSize: "200% 100%",
+                }}
+              >
+                BUT better
+              </Text>
+            </Text>
+          </Title>
+        }
+      >
+        <Stack>
+          <Divider />
+          <Text></Text>
+
+          <Group>
+            <Button ml="auto" onClick={closeModal}>
+              I understand
+            </Button>
+          </Group>
+        </Stack>
+      </Modal>
       <Stack style={{ height: "100vh" }} p="xl">
         <Group>
           <Switch
@@ -182,6 +228,7 @@ export default function Home({ data, dataDate }: Props) {
 import { promises as fs } from "fs";
 import path from "path";
 
+import { useCounter, useDisclosure } from "@mantine/hooks";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 
