@@ -21,10 +21,10 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import { useDisclosure, useLocalStorage } from "@mantine/hooks";
+import { useCounter, useDisclosure, useLocalStorage } from "@mantine/hooks";
 import { IconChevronDown, IconInfoCircle } from "@tabler/icons";
 import { useAtom, useAtomValue } from "jotai";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 interface Props {
   data: RowData[];
@@ -92,10 +92,20 @@ export default function Home({ data, dataDate }: Props) {
     }
   }, [hasModalBeenClosed, closeModal, openModal]);
 
-  const closeModalAndSavePreference = () => {
-    closeModal();
-    setHasModalBeenClosed(true);
-  };
+  const [
+    modalPageCounter,
+    {
+      increment: incrementModalPageCounter,
+      decrement: decrementModalPageCounter,
+    },
+  ] = useCounter(0);
+
+  useEffect(() => {
+    if (modalPageCounter > 1) {
+      closeModal();
+      setHasModalBeenClosed(true);
+    }
+  }, [closeModal, setHasModalBeenClosed, modalPageCounter]);
 
   return (
     <>
@@ -111,10 +121,10 @@ export default function Home({ data, dataDate }: Props) {
       {!hasModalBeenClosed && (
         <Modal
           opened={isModalOpened}
-          onClose={closeModalAndSavePreference}
           withCloseButton={false}
           closeOnClickOutside={false}
           closeOnEscape={false}
+          onClose={() => {}}
           title={
             <Title order={1}>
               Welcome to{" "}
@@ -145,64 +155,72 @@ export default function Home({ data, dataDate }: Props) {
               This website is a redesign concept of the Internships tab on{" "}
               <span style={{ whiteSpace: "nowrap" }}>IS-Academia</span>.
             </Title>
-            <Text>
-              The official interface tends to be not particularly user-friendly,
-              especially when it comes to filtering locations. For example, if
-              you want to look for internships in{" "}
-              <Text span fw={700}>
-                Lausanne
-              </Text>
-              , you have to select{" "}
-              <Text span fw={700}>
-                &quot;Lausanne&quot;
-              </Text>{" "}
-              but also{" "}
-              <Text span fw={700}>
-                &quot;Lausanne/Geneva&quot;
-              </Text>
-              ,{" "}
-              <Text span fw={700}>
-                &quot;Lausanne/Genève&quot;
-              </Text>{" "}
-              or{" "}
-              <Text span fw={700}>
-                &quot;Lausanne/Zurich&quot;
-              </Text>{" "}
-              and so many more.
-            </Text>
+            {modalPageCounter == 0 && (
+              <>
+                <Text>
+                  The official interface tends to be not particularly
+                  user-friendly, especially when it comes to filtering
+                  locations. For example, if you want to look for internships in{" "}
+                  <Text span fw={700}>
+                    Lausanne
+                  </Text>
+                  , you have to select{" "}
+                  <Text span fw={700}>
+                    &quot;Lausanne&quot;
+                  </Text>{" "}
+                  but also{" "}
+                  <Text span fw={700}>
+                    &quot;Lausanne/Geneva&quot;
+                  </Text>
+                  ,{" "}
+                  <Text span fw={700}>
+                    &quot;Lausanne/Genève&quot;
+                  </Text>{" "}
+                  or{" "}
+                  <Text span fw={700}>
+                    &quot;Lausanne/Zurich&quot;
+                  </Text>{" "}
+                  and so many more.
+                </Text>
 
-            <Text>
-              This concept notably aims to adress this particular issue. The
-              exact cities have been extracted from the original list of
-              locations using{" "}
-              <Text
-                span
-                fw={700}
-                c="red"
-                style={{
-                  background:
-                    "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  animation: "shine 2s infinite linear",
-                  backgroundSize: "200% 100%",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                GPT-3
+                <Text>
+                  This concept notably aims to adress this particular issue. The
+                  exact cities have been extracted from the original list of
+                  locations using{" "}
+                  <Text
+                    span
+                    fw={700}
+                    c="red"
+                    style={{
+                      background:
+                        "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      animation: "shine 2s infinite linear",
+                      backgroundSize: "200% 100%",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    GPT-3
+                  </Text>
+                  .
+                </Text>
+              </>
+            )}
+            {modalPageCounter > 0 && (
+              <Text>
+                The table is populated with internships targeting Computer
+                Science students.
               </Text>
-              .
-            </Text>
-
-            <Text>
-              The table is populated with internships targeting Computer Science
-              students.
-            </Text>
+            )}
 
             <Group>
-              <Button ml="auto" onClick={closeModalAndSavePreference}>
-                I understand
+              {modalPageCounter > 0 && (
+                <Button onClick={decrementModalPageCounter}>Back</Button>
+              )}
+              <Button ml="auto" onClick={incrementModalPageCounter}>
+                {modalPageCounter == 0 ? "Next" : "Done"}
               </Button>
             </Group>
           </Stack>
