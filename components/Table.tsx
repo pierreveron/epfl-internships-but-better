@@ -2,9 +2,13 @@ import {
   formatAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
+  showOnlyFavoriteAtom,
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
 import { RowData } from "@/types";
+import { Checkbox } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
+import { IconStar } from "@tabler/icons";
 import { useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
@@ -38,6 +42,13 @@ export default function Table({ data }: { data: RowData[] }) {
   const showOnlyPositionsNotYetCompleted = useAtomValue(
     showOnlyPositionsNotYetCompletedAtom
   );
+  const showOnlyFavorite = useAtomValue(showOnlyFavoriteAtom);
+
+  const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
+    key: "favorite-internships",
+    getInitialValueInEffect: false,
+    defaultValue: [] as number[],
+  });
 
   const [page, setPage] = useState(1);
   const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
@@ -53,11 +64,22 @@ export default function Table({ data }: { data: RowData[] }) {
     return sortBy(data, sortStatus.columnAccessor);
   }, [sortStatus.columnAccessor, data]);
 
-  const [records, setRecords] = useState(sortedData.slice(0, PAGE_SIZE));
+  const [records, setRecords] = useState(
+    sortedData.slice(0, PAGE_SIZE).map((d) => {
+      return {
+        ...d,
+        favorite: favoriteInternships.includes(d.number),
+      };
+    })
+  );
 
   // filter sorted data on the registered column
   const filteredData = useMemo(() => {
     let data = sortedData;
+
+    if (showOnlyFavorite) {
+      return data.filter((d) => favoriteInternships.includes(d.number));
+    }
 
     if (nbCitiesSelected !== 0) {
       data = data.filter((d) => {
@@ -88,6 +110,7 @@ export default function Table({ data }: { data: RowData[] }) {
     return data;
   }, [
     sortedData,
+    showOnlyFavorite,
     showOnlyPositionsNotYetCompleted,
     selectableLocations,
     nbCitiesSelected,
@@ -104,8 +127,17 @@ export default function Table({ data }: { data: RowData[] }) {
       d = d.slice().reverse();
     }
 
-    setRecords(d.slice(from, to));
-  }, [page, filteredData, sortStatus.direction]);
+    d = d.slice(from, to);
+    // add favorite property if present in favoriteInternships
+    d = d.map((d) => {
+      return {
+        ...d,
+        favorite: favoriteInternships.includes(d.number),
+      };
+    });
+
+    setRecords(d);
+  }, [page, filteredData, sortStatus.direction, favoriteInternships]);
 
   return (
     <DataTable
@@ -113,6 +145,28 @@ export default function Table({ data }: { data: RowData[] }) {
       highlightOnHover
       records={records}
       columns={[
+        {
+          accessor: "favorite",
+          render: ({ favorite, number }) => (
+            <Checkbox
+              icon={({ className }) => <IconStar className={className} />}
+              checked={favorite}
+              onClick={(event) => {
+                let checked = event.currentTarget.checked;
+                setFavoriteInternships((favorites) => {
+                  if (checked) {
+                    if (!favorites.includes(number)) {
+                      return [...favorites, number];
+                    }
+                    return favorites;
+                  } else {
+                    return favorites.filter((f) => f !== number);
+                  }
+                });
+              }}
+            />
+          ),
+        },
         { accessor: "name", width: "20%" },
         { accessor: "company", sortable: true, width: "15%" },
         {

@@ -2,6 +2,7 @@ import {
   formatAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
+  showOnlyFavoriteAtom,
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
 import FormatsCheckboxes from "@/components/FormatsCheckboxes";
@@ -69,6 +70,7 @@ export default function Home({ data, dataDate }: Props) {
     showOnlyPositionsNotYetCompleted,
     setShowOnlyPositionsNotYetCompleted,
   ] = useAtom(showOnlyPositionsNotYetCompletedAtom);
+  const [showOnlyFavorite, setShowOnlyFavorite] = useAtom(showOnlyFavoriteAtom);
 
   useEffect(() => {
     setSelectableFormats(
@@ -279,6 +281,14 @@ export default function Home({ data, dataDate }: Props) {
             checked={showOnlyPositionsNotYetCompleted}
             onChange={(event) =>
               setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
+            }
+          />
+          <Switch
+            styles={{ label: { width: 200 }, body: { alignItems: "center" } }}
+            label="Show only favorite internships"
+            checked={showOnlyFavorite}
+            onChange={(event) =>
+              setShowOnlyFavorite(event.currentTarget.checked)
             }
           />
           <Popover position="bottom-start" shadow="md">

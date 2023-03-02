@@ -9,6 +9,7 @@ export type RowData = {
   positions: number;
   professor: string;
   creationDate: string;
+  favorite: boolean;
 };
 
 export type Location = {
