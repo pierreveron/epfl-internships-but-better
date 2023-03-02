@@ -74,7 +74,7 @@ export default function Home({ data, dataDate }: Props) {
 
   useEffect(() => {
     setSelectableFormats(
-      Array.from(new Set(data.map((d) => d.format))).map((format) => {
+      Array.from(new Set(data.flatMap((d) => d.format))).map((format) => {
         return { name: format, selected: false };
       }) as SelectableFormat[]
     );
@@ -341,8 +341,8 @@ export default function Home({ data, dataDate }: Props) {
                     selectableFormats.filter((v) => v.selected).length === 0
                   }
                   onClick={() =>
-                    setSelectableFormats((locations) => {
-                      return locations.map((l) => ({ ...l, selected: false }));
+                    setSelectableFormats((formats) => {
+                      return formats.map((f) => ({ ...f, selected: false }));
                     })
                   }
                 >
@@ -389,21 +389,10 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const fileName = "internships-with-good-locations.json";
   const dataPath = path.join(process.cwd(), "/" + fileName);
 
-  // get the modification date of the file
-  const stats = await fs.stat(dataPath);
-  const modificationDate = stats.mtime;
-
-  // format the date as DD.MM.YYYY
-  const formattedDate = modificationDate.toLocaleDateString("de-DE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-
   const fileContents = await fs.readFile(dataPath, "utf8");
-  const data: RowData[] = JSON.parse(fileContents);
+  const { dataDate, data } = JSON.parse(fileContents);
 
   return {
-    props: { data, dataDate: formattedDate },
+    props: { data, dataDate },
   };
 };

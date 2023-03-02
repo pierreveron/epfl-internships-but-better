@@ -4,7 +4,7 @@ export type RowData = {
   company: string;
   location: Location[];
   number: number;
-  format: string;
+  format: Format[];
   registered: number;
   positions: number;
   professor: string;
@@ -19,6 +19,6 @@ export type Location = {
 
 export type SelectableCity = { name: string; selected: boolean };
 
-export type Format = "PDM coordonné" | "Stage" | "Stage ou PDM";
+export type Format = "internship" | "project";
 
 export type SelectableFormat = { name: Format; selected: boolean };

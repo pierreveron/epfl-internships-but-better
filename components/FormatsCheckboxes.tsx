@@ -1,6 +1,7 @@
 import { Checkbox, Stack } from "@mantine/core";
 
 import { formatAtom } from "@/atoms";
+import { formatToLabel } from "@/utils/format";
 import { useAtom } from "jotai";
 
 export default function FormatsCheckboxes() {
@@ -10,7 +11,7 @@ export default function FormatsCheckboxes() {
     <Stack spacing="xs">
       {formats.map((value) => (
         <Checkbox
-          label={value.name}
+          label={formatToLabel(value.name)}
           key={value.name}
           checked={value.selected}
           onChange={(event) => {

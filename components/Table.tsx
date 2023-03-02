@@ -6,7 +6,8 @@ import {
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
 import { RowData } from "@/types";
-import { Checkbox } from "@mantine/core";
+import { formatToLabel } from "@/utils/format";
+import { Checkbox, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { IconStar } from "@tabler/icons";
 import { useAtomValue } from "jotai";
@@ -98,7 +99,9 @@ export default function Table({ data }: { data: RowData[] }) {
     if (selectableFormats.some((f) => f.selected)) {
       data = data.filter((d) => {
         return (
-          selectableFormats.find((f) => f.name === d.format)?.selected || false
+          d.format.filter((f) => {
+            return selectableFormats.find((sf) => sf.name === f)?.selected;
+          }).length > 0
         );
       });
     }
@@ -182,7 +185,33 @@ export default function Table({ data }: { data: RowData[] }) {
           ),
         },
         { accessor: "number" },
-        { accessor: "format" },
+        {
+          accessor: "format",
+          render: ({ format }) => {
+            const someFormatsSelected = selectableFormats.some(
+              (f) => f.selected
+            );
+            return (
+              <ul style={{ listStyle: "none" }}>
+                {format.map((f) => {
+                  let color: string | undefined;
+                  if (
+                    someFormatsSelected &&
+                    !selectableFormats.find((sf) => sf.name === f)?.selected
+                  ) {
+                    color = "dimmed";
+                  }
+
+                  return (
+                    <li key={f}>
+                      <Text color={color}>{formatToLabel(f)}</Text>
+                    </li>
+                  );
+                })}
+              </ul>
+            );
+          },
+        },
         {
           accessor: "registered",
           textAlignment: "center",
@@ -190,7 +219,7 @@ export default function Table({ data }: { data: RowData[] }) {
         },
         { accessor: "positions", textAlignment: "center", title: "Places" },
         { accessor: "professor" },
-        { accessor: "creationDate", sortable: true, width: 150 },
+        { accessor: "creationDate", sortable: true },
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
