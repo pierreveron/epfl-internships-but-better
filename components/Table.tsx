@@ -220,7 +220,15 @@ export default function Table({ data }: { data: RowData[] }) {
           title: "Candidates",
         },
         { accessor: "positions", textAlignment: "center", title: "Places" },
-        { accessor: "professor" },
+        {
+          accessor: "professor",
+          render: ({ professor, format }) => {
+            if (format.includes("project") && professor === null) {
+              return "To find (if project)";
+            }
+            return professor;
+          },
+        },
         { accessor: "creationDate", sortable: true },
       ]}
       sortStatus={sortStatus}
