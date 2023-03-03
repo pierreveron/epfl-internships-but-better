@@ -2,7 +2,7 @@ import {
   formatAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
-  showOnlyFavoriteAtom,
+  showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
 import { RowData } from "@/types";
@@ -43,7 +43,7 @@ export default function Table({ data }: { data: RowData[] }) {
   const showOnlyPositionsNotYetCompleted = useAtomValue(
     showOnlyPositionsNotYetCompletedAtom
   );
-  const showOnlyFavorite = useAtomValue(showOnlyFavoriteAtom);
+  const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
 
   const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
     key: "favorite-internships",
@@ -88,7 +88,7 @@ export default function Table({ data }: { data: RowData[] }) {
       });
     }
 
-    if (showOnlyFavorite) {
+    if (showOnlyFavorites) {
       data = data.filter((d) => favoriteInternships.includes(d.number));
     }
 
@@ -113,7 +113,7 @@ export default function Table({ data }: { data: RowData[] }) {
     return data;
   }, [
     sortedData,
-    showOnlyFavorite,
+    showOnlyFavorites,
     showOnlyPositionsNotYetCompleted,
     selectableLocations,
     nbCitiesSelected,

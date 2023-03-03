@@ -2,7 +2,7 @@ import {
   formatAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
-  showOnlyFavoriteAtom,
+  showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
 import Footer from "@/components/Footer";
@@ -72,7 +72,9 @@ export default function Home({ data, dataDate }: Props) {
     showOnlyPositionsNotYetCompleted,
     setShowOnlyPositionsNotYetCompleted,
   ] = useAtom(showOnlyPositionsNotYetCompletedAtom);
-  const [showOnlyFavorite, setShowOnlyFavorite] = useAtom(showOnlyFavoriteAtom);
+  const [showOnlyFavorites, setShowOnlyFavorite] = useAtom(
+    showOnlyFavoritesAtom
+  );
 
   useEffect(() => {
     setSelectableFormats(
@@ -313,15 +315,15 @@ export default function Home({ data, dataDate }: Props) {
                 label: { maxWidth: 200 },
                 body: { alignItems: "center" },
               }}
-              label="Show only options with less candidates than places"
+              label="Show only offers with less candidates than places"
               checked={showOnlyPositionsNotYetCompleted}
               onChange={(event) =>
                 setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
               }
             />
             <Switch
-              label="Show only favorite"
-              checked={showOnlyFavorite}
+              label="Show only favorites"
+              checked={showOnlyFavorites}
               onChange={(event) =>
                 setShowOnlyFavorite(event.currentTarget.checked)
               }
