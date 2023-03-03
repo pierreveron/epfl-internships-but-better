@@ -204,7 +204,9 @@ export default function Table({ data }: { data: RowData[] }) {
 
                   return (
                     <li key={f}>
-                      <Text color={color}>{formatToLabel(f)}</Text>
+                      <Text color={color} style={{ whiteSpace: "nowrap" }}>
+                        {formatToLabel(f)}
+                      </Text>
                     </li>
                   );
                 })}
