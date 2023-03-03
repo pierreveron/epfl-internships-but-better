@@ -89,7 +89,7 @@ export default function Table({ data }: { data: RowData[] }) {
     }
 
     if (showOnlyFavorite) {
-      return data.filter((d) => favoriteInternships.includes(d.number));
+      data = data.filter((d) => favoriteInternships.includes(d.number));
     }
 
     if (nbCitiesSelected !== 0) {
@@ -107,7 +107,7 @@ export default function Table({ data }: { data: RowData[] }) {
     }
 
     if (showOnlyPositionsNotYetCompleted) {
-      return data.filter((d) => d.registered < d.positions);
+      data = data.filter((d) => d.registered < d.positions);
     }
 
     return data;
