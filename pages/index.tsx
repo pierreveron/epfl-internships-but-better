@@ -270,7 +270,7 @@ export default function Home({ data, dataDate }: Props) {
         <Group>
           <Switch
             styles={{ label: { width: 200 }, body: { alignItems: "center" } }}
-            label="Show only internships with less candidates than places"
+            label="Show only options with less candidates than places"
             checked={showOnlyPositionsNotYetCompleted}
             onChange={(event) =>
               setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
@@ -278,7 +278,7 @@ export default function Home({ data, dataDate }: Props) {
           />
           <Switch
             styles={{ label: { width: 200 }, body: { alignItems: "center" } }}
-            label="Show only favorite internships"
+            label="Show only favorite"
             checked={showOnlyFavorite}
             onChange={(event) =>
               setShowOnlyFavorite(event.currentTarget.checked)
