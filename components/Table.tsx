@@ -78,6 +78,16 @@ export default function Table({ data }: { data: RowData[] }) {
   const filteredData = useMemo(() => {
     let data = sortedData;
 
+    if (selectableFormats.some((f) => f.selected)) {
+      data = data.filter((d) => {
+        return (
+          d.format.filter((f) => {
+            return selectableFormats.find((sf) => sf.name === f)?.selected;
+          }).length > 0
+        );
+      });
+    }
+
     if (showOnlyFavorite) {
       return data.filter((d) => favoriteInternships.includes(d.number));
     }
@@ -91,16 +101,6 @@ export default function Table({ data }: { data: RowData[] }) {
                 (c) => c.name === l.city
               )?.selected || false
             );
-          }).length > 0
-        );
-      });
-    }
-
-    if (selectableFormats.some((f) => f.selected)) {
-      data = data.filter((d) => {
-        return (
-          d.format.filter((f) => {
-            return selectableFormats.find((sf) => sf.name === f)?.selected;
           }).length > 0
         );
       });
