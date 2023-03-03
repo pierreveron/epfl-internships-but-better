@@ -59,7 +59,13 @@ export default function Table({ data }: { data: RowData[] }) {
 
   useEffect(() => {
     setPage(1);
-  }, [sortStatus]);
+  }, [
+    sortStatus,
+    selectableLocations,
+    selectableFormats,
+    showOnlyPositionsNotYetCompleted,
+    showOnlyFavorites,
+  ]);
 
   const sortedData = useMemo(() => {
     return sortBy(data, sortStatus.columnAccessor);
