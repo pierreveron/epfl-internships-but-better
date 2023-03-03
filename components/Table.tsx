@@ -154,7 +154,7 @@ export default function Table({ data }: { data: RowData[] }) {
             <Checkbox
               icon={({ className }) => <IconStar className={className} />}
               checked={favorite}
-              onClick={(event) => {
+              onChange={(event) => {
                 let checked = event.currentTarget.checked;
                 setFavoriteInternships((favorites) => {
                   if (checked) {
