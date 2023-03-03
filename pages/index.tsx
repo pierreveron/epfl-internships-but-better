@@ -6,7 +6,7 @@ import {
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
 import Footer from "@/components/Footer";
-import FormatsCheckboxes from "@/components/FormatsCheckboxes";
+import FormatsSegmentedControl from "@/components/FormatsSegmentedControl";
 import LocationsCheckbox from "@/components/LocationsCheckbox";
 import Table from "@/components/Table";
 import { RowData, SelectableCity, SelectableFormat } from "@/types";
@@ -18,6 +18,7 @@ import {
   HoverCard,
   Modal,
   Popover,
+  SegmentedControl,
   Stack,
   Switch,
   Text,
@@ -267,85 +268,67 @@ export default function Home({ data, dataDate }: Props) {
         </Stack>
       </Modal>
       <Stack style={{ height: "100vh" }} p="xl">
-        <Group>
-          <Switch
-            styles={{ label: { width: 200 }, body: { alignItems: "center" } }}
-            label="Show only options with less candidates than places"
-            checked={showOnlyPositionsNotYetCompleted}
-            onChange={(event) =>
-              setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
-            }
-          />
-          <Switch
-            styles={{ label: { width: 200 }, body: { alignItems: "center" } }}
-            label="Show only favorite"
-            checked={showOnlyFavorite}
-            onChange={(event) =>
-              setShowOnlyFavorite(event.currentTarget.checked)
-            }
-          />
-          <Popover position="bottom-start" shadow="md">
-            <Popover.Target>
-              <Button
-                rightIcon={<IconChevronDown size={18} />}
-                variant="outline"
-              >
-                Select locations
-              </Button>
-            </Popover.Target>
-            <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
-              <Stack spacing="xs">
+        <Group position="apart">
+          <Group>
+            <FormatsSegmentedControl />
+
+            <Popover position="bottom-start" shadow="md">
+              <Popover.Target>
                 <Button
-                  variant="subtle"
-                  disabled={nbCitiesSelected === 0}
-                  onClick={() =>
-                    setSelectableLocations((locations) => {
-                      Object.keys(locations).forEach((country) => {
-                        locations[country].forEach((city) => {
-                          city.selected = false;
+                  rightIcon={<IconChevronDown size={18} />}
+                  variant="outline"
+                >
+                  Select locations
+                </Button>
+              </Popover.Target>
+              <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
+                <Stack spacing="xs">
+                  <Button
+                    variant="subtle"
+                    disabled={nbCitiesSelected === 0}
+                    onClick={() =>
+                      setSelectableLocations((locations) => {
+                        Object.keys(locations).forEach((country) => {
+                          locations[country].forEach((city) => {
+                            city.selected = false;
+                          });
                         });
-                      });
-                      return { ...locations };
-                    })
-                  }
-                >
-                  Reset
-                </Button>
-                {Object.keys(selectableLocations).map((country) => (
-                  <LocationsCheckbox key={country} country={country} />
-                ))}
-              </Stack>
-            </Popover.Dropdown>
-          </Popover>
-          <Popover position="bottom-start" shadow="md">
-            <Popover.Target>
-              <Button
-                rightIcon={<IconChevronDown size={18} />}
-                variant="outline"
-              >
-                Select formats
-              </Button>
-            </Popover.Target>
-            <Popover.Dropdown>
-              <Stack spacing="xs">
-                <Button
-                  variant="subtle"
-                  disabled={
-                    selectableFormats.filter((v) => v.selected).length === 0
-                  }
-                  onClick={() =>
-                    setSelectableFormats((formats) => {
-                      return formats.map((f) => ({ ...f, selected: false }));
-                    })
-                  }
-                >
-                  Reset
-                </Button>
-                <FormatsCheckboxes />
-              </Stack>
-            </Popover.Dropdown>
-          </Popover>
-          <Group ml="auto" spacing="xs">
+                        return { ...locations };
+                      })
+                    }
+                  >
+                    Reset
+                  </Button>
+                  {Object.keys(selectableLocations).map((country) => (
+                    <LocationsCheckbox key={country} country={country} />
+                  ))}
+                </Stack>
+              </Popover.Dropdown>
+            </Popover>
+          </Group>
+
+          <Group>
+            <Switch
+              styles={{
+                label: { maxWidth: 200 },
+                body: { alignItems: "center" },
+              }}
+              label="Show only options with less candidates than places"
+              checked={showOnlyPositionsNotYetCompleted}
+              onChange={(event) =>
+                setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
+              }
+            />
+            <Switch
+              label="Show only favorite"
+              checked={showOnlyFavorite}
+              onChange={(event) =>
+                setShowOnlyFavorite(event.currentTarget.checked)
+              }
+            />
+          </Group>
+
+          <Group spacing="xs">
             <Text c="dimmed">Last data update: {dataDate}</Text>
             <HoverCard width={280} shadow="md">
               <HoverCard.Target>
