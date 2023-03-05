@@ -134,19 +134,7 @@ export default function Home({ data, dataDate }: Props) {
             Welcome to{" "}
             <Text c="red">
               EPFL internships{" "}
-              <Text
-                span
-                style={{
-                  background:
-                    "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  animation: "shine 2s infinite linear",
-                  backgroundSize: "200% 100%",
-                  whiteSpace: "nowrap",
-                }}
-              >
+              <Text span className="shine">
                 BUT better
               </Text>
             </Text>
@@ -191,21 +179,7 @@ export default function Home({ data, dataDate }: Props) {
                 This concept notably aims to address this particular issue. The
                 exact cities have been extracted from the original list of
                 locations using{" "}
-                <Text
-                  span
-                  fw={700}
-                  c="red"
-                  style={{
-                    background:
-                      "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    animation: "shine 2s infinite linear",
-                    backgroundSize: "200% 100%",
-                    whiteSpace: "nowrap",
-                  }}
-                >
+                <Text span fw={700} c="red" className="shine">
                   GPT-3
                 </Text>
                 .
@@ -228,20 +202,7 @@ export default function Home({ data, dataDate }: Props) {
                   up-to-date
                 </Text>
                 . Current data dates from the{" "}
-                <Text
-                  span
-                  fw={700}
-                  style={{
-                    background:
-                      "linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%)",
-                    backgroundClip: "text",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    animation: "shine 2s infinite linear",
-                    backgroundSize: "200% 100%",
-                    whiteSpace: "nowrap",
-                  }}
-                >
+                <Text span fw={700} className="shine">
                   {dataDate}
                 </Text>
                 .
