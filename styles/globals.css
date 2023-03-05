@@ -5,7 +5,7 @@
 }
 
 .shine {
-  background: linear-gradient(to right, #fa5252 0%, #fd7e14 10%, #fa5252 20%);
+  background: linear-gradient(to right, #fa5252 0%, #fd7e14 15%, #fa5252 30%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
