@@ -18,7 +18,6 @@ import {
   HoverCard,
   Modal,
   Popover,
-  SegmentedControl,
   Stack,
   Switch,
   Text,
@@ -189,7 +188,7 @@ export default function Home({ data, dataDate }: Props) {
               </Text>
 
               <Text>
-                This concept notably aims to adress this particular issue. The
+                This concept notably aims to address this particular issue. The
                 exact cities have been extracted from the original list of
                 locations using{" "}
                 <Text
