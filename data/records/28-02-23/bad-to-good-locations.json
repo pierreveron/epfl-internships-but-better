@@ -1,0 +1,235 @@
+{
+  "Bern / remote": [{ "city": "Bern", "country": "Switzerland" }],
+  "Lausanne/Zurich": [
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Zurich", "country": "Switzerland" }
+  ],
+  "Le Plessis-Robinson": [
+    { "city": "Le Plessis-Robinson", "country": "France" }
+  ],
+  "Noisy-le-Grand": [{ "city": "Noisy-le-Grand", "country": "France" }],
+  "Denges (VD)": [{ "city": "Denges", "country": "Switzerland" }],
+  "Lausanne / travail à distance": [
+    { "city": "Lausanne", "country": "Switzerland" }
+  ],
+  "Rolle": [{ "city": "Rolle", "country": "Switzerland" }],
+  "EPFL": [{ "city": "Lausanne", "country": "Switzerland" }],
+  "Lausanne": [{ "city": "Lausanne", "country": "Switzerland" }],
+  "St-Sulpice / VD": [{ "city": "St-Sulpice", "country": "Switzerland" }],
+  "Geneva": [{ "city": "Geneva", "country": "Switzerland" }],
+  "Paris": [{ "city": "Paris", "country": "France" }],
+  "Yverdon": [{ "city": "Yverdon", "country": "Switzerland" }],
+  "GENEVA": [{ "city": "Geneva", "country": "Switzerland" }],
+  "EPFL Innovation Park": [{ "city": "Lausanne", "country": "Switzerland" }],
+  "Neuchâtel": [{ "city": "Neuchâtel", "country": "Switzerland" }],
+  "Josefstrasse 219, Zurich": [{ "city": "Zurich", "country": "Switzerland" }],
+  "Zurich": [{ "city": "Zurich", "country": "Switzerland" }],
+  "EDF R&D Renardières": [{ "city": "Renardières", "country": "France" }],
+  "Lausanne, EPFL Innovation Park": [
+    { "city": "Lausanne", "country": "Switzerland" }
+  ],
+  "Fribourg": [{ "city": "Fribourg", "country": "Switzerland" }],
+  "Renens": [{ "city": "Renens", "country": "Switzerland" }],
+  "Antony, France": [{ "city": "Antony", "country": "France" }],
+  "Genève": [{ "city": "Geneva", "country": "Switzerland" }],
+  "Le Bourget du Lac (France,73)": [
+    { "city": "Le Bourget du Lac", "country": "France" }
+  ],
+  "Swisscom Digital Lab, EPFL Innovation Park, Bat F, 1015 Lausanne": [
+    { "city": "Lausanne", "country": "Switzerland" }
+  ],
+  "Zürich, Nyon or Homeoffice": [
+    { "city": "Zurich", "country": "Switzerland" },
+    { "city": "Nyon", "country": "Switzerland" }
+  ],
+  "Oracle Labs Zurich, Switzerland (other locations or work from home available upon agreement)": [
+    { "city": "Zurich", "country": "Switzerland" }
+  ],
+  "Geneve": [{ "city": "Geneva", "country": "Switzerland" }],
+  "remote in Switzerland (we also have an office in Zürich)": [
+    { "city": "Zurich", "country": "Switzerland" }
+  ],
+  "Zürich": [{ "city": "Zurich", "country": "Switzerland" }],
+  "Chilly-Mazarin": [{ "city": "Chilly-Mazarin", "country": "France" }],
+  "Sophia Antipolis - France": [
+    { "city": "Sophia Antipolis", "country": "France" }
+  ],
+  "CERN/Geneva": [{ "city": "Geneva", "country": "Switzerland" }],
+  ":NANTERRE": [{ "city": "Nanterre", "country": "France" }],
+  "Versoix": [{ "city": "Versoix", "country": "Switzerland" }],
+  "Palaiseau, FR": [{ "city": "Palaiseau", "country": "France" }],
+  "Hybrid": [{ "city": "Hybrid", "country": "Not precised" }],
+  "GRENOBLE (France)": [{ "city": "Grenoble", "country": "France" }],
+  "Sachseln, OW": [{ "city": "Sachseln", "country": "Switzerland" }],
+  "Europe": [{ "city": "Europe", "country": "Not precised" }],
+  "Nyon": [{ "city": "Nyon", "country": "Switzerland" }],
+  "RENENS VD": [{ "city": "Renens", "country": "Switzerland" }],
+  "Vers-chez-les-blanc, VD": [
+    { "city": "Vers-chez-les-blanc", "country": "Switzerland" }
+  ],
+  "Neuchâtel or Bern": [
+    { "city": "Neuchâtel", "country": "Switzerland" },
+    { "city": "Bern", "country": "Switzerland" }
+  ],
+  "Cambridge, MA, USA": [{ "city": "Cambridge", "country": "United States" }],
+  "Princeton, NJ, USA": [{ "city": "Princeton", "country": "United States" }],
+  "Milano": [{ "city": "Milan", "country": "Italy" }],
+  "Lausanne/Geneva": [
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Geneva", "country": "Switzerland" }
+  ],
+  "E-Scopics, Aix-en-Provence, France": [
+    { "city": "Aix-en-Provence", "country": "France" }
+  ],
+  "Martigny": [{ "city": "Martigny", "country": "Switzerland" }],
+  "The student will have the opportunity to work in a stimulating environment with other students in different locations (Lausanne, Bern, Zurich) in Switzerland depending on the needs of the projects.": [
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Bern", "country": "Switzerland" },
+    { "city": "Zurich", "country": "Switzerland" }
+  ],
+  "Hinwil, Switzerland": [{ "city": "Hinwil", "country": "Switzerland" }],
+  "Lyon, 69009 France": [{ "city": "Lyon", "country": "France" }],
+  "Payerne": [{ "city": "Payerne", "country": "Switzerland" }],
+  "Lausanne / Geneva": [
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Geneva", "country": "Switzerland" }
+  ],
+  "CROLLES": [{ "city": "Crolles", "country": "France" }],
+  "France, PACA, 13 - Istres": [{ "city": "Istres", "country": "France" }],
+  "Aix en Provence, France": [
+    { "city": "Aix-en-Provence", "country": "France" }
+  ],
+  "La Chaux-de-Fonds": [
+    { "city": "La Chaux-de-Fonds", "country": "Switzerland" }
+  ],
+  "Boudry 2017": [{ "city": "Boudry", "country": "Switzerland" }],
+  "Sophia Antipolis": [{ "city": "Sophia Antipolis", "country": "France" }],
+  "Lausanne-Prilly": [
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Prilly", "country": "Switzerland" }
+  ],
+  "LIRIS Lab and INRIA  (Lyon)": [{ "city": "Lyon", "country": "France" }],
+  "Lausanne / remote work": [{ "city": "Lausanne", "country": "Switzerland" }],
+  "Corgémont": [{ "city": "Corgémont", "country": "Switzerland" }],
+  "Cheseaux-sur-Lausanne, VD": [
+    { "city": "Cheseaux-sur-Lausanne", "country": "Switzerland" }
+  ],
+  "Grenoble (FR)": [{ "city": "Grenoble", "country": "France" }],
+  "Grenoble, France": [{ "city": "Grenoble", "country": "France" }],
+  "Martigny/Epalinges": [
+    { "city": "Martigny", "country": "Switzerland" },
+    { "city": "Epalinges", "country": "Switzerland" }
+  ],
+  "The student will have the opportunity to work in different locations (Lausanne, Bern, Zurich, Thun) in Switzerland depending on the needs of the projects.": [
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Bern", "country": "Switzerland" },
+    { "city": "Zurich", "country": "Switzerland" },
+    { "city": "Thun", "country": "Switzerland" }
+  ],
+  "icCube - Route de la Pierre 22, 1024 Ecublens": [
+    { "city": "Ecublens", "country": "Switzerland" }
+  ],
+  "Brig": [{ "city": "Brig", "country": "Switzerland" }],
+  "CH 8400 Winterthur": [{ "city": "Winterthur", "country": "Switzerland" }],
+  "Baden": [{ "city": "Baden", "country": "Switzerland" }],
+  "Bern": [{ "city": "Bern", "country": "Switzerland" }],
+  "Baden-Dättwil": [{ "city": "Baden-Dättwil", "country": "Switzerland" }],
+  "Heidelberg, South Germany": [{ "city": "Heidelberg", "country": "Germany" }],
+  "Belgium, Leuven": [{ "city": "Leuven", "country": "Belgium" }],
+  "Stuttgart": [{ "city": "Stuttgart", "country": "Germany" }],
+  "Schaan, Liechtenstein": [{ "city": "Schaan", "country": "Liechtenstein" }],
+  "Biel/Bienne": [{ "city": "Biel/Bienne", "country": "Switzerland" }],
+  "Berne": [{ "city": "Berne", "country": "Switzerland" }],
+  "Vernier (GE) or Ostermundigen (BE)": [
+    { "city": "Vernier", "country": "Switzerland" },
+    { "city": "Ostermundigen", "country": "Switzerland" }
+  ],
+  "imec, Leuven": [{ "city": "Leuven", "country": "Belgium" }],
+  "Rue Mauborget 1, 1003, Lausanne": [
+    { "city": "Lausanne", "country": "Switzerland" }
+  ],
+  "Jules-¬Gonin Eye Hospital, Lausanne": [
+    { "city": "Lausanne", "country": "Switzerland" }
+  ],
+  "Lucerne/Lausanne": [
+    { "city": "Lucerne", "country": "Switzerland" },
+    { "city": "Lausanne", "country": "Switzerland" }
+  ],
+  "Clamart, France": [{ "city": "Clamart", "country": "France" }],
+  "Saarbrücken, Germany": [{ "city": "Saarbrücken", "country": "Germany" }],
+  "Chemin du Vernay 14a, Gland": [
+    { "city": "Gland", "country": "Switzerland" }
+  ],
+  "CSEM SA, Rue Jaquet-Droz 1, CH-2002 Neuchâtel": [
+    { "city": "Neuchâtel", "country": "Switzerland" }
+  ],
+  "Lausanne, Suisse": [{ "city": "Lausanne", "country": "Switzerland" }],
+  "1010 Lausanne": [{ "city": "Lausanne", "country": "Switzerland" }],
+  "Grenoble": [{ "city": "Grenoble", "country": "France" }],
+  "The student will have the opportunity to work in an stimulating environment with other students in different locations (Lausanne, Bern, Zurich) and at different observation sites depending on the needs of the projects.": [
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Bern", "country": "Switzerland" },
+    { "city": "Zurich", "country": "Switzerland" }
+  ],
+  "Thoune": [{ "city": "Thun", "country": "Switzerland" }],
+  "Ghent, Belgium": [{ "city": "Ghent", "country": "Belgium" }],
+  "Moungins - France": [{ "city": "Moungins", "country": "France" }],
+  "Renens, Vaud": [{ "city": "Renens", "country": "Switzerland" }],
+  "Bern, Zurich, Rapperswil-Jona": [
+    { "city": "Bern", "country": "Switzerland" },
+    { "city": "Zurich", "country": "Switzerland" },
+    { "city": "Rapperswil-Jona", "country": "Switzerland" }
+  ],
+  "Milan (Italy)": [{ "city": "Milan", "country": "Italy" }],
+  "Bern, Baar, Baden oder Zürich": [
+    { "city": "Bern", "country": "Switzerland" },
+    { "city": "Baar", "country": "Switzerland" },
+    { "city": "Baden", "country": "Switzerland" },
+    { "city": "Zurich", "country": "Switzerland" }
+  ],
+  "Schaffhausen": [{ "city": "Schaffhausen", "country": "Switzerland" }],
+  "Zürich, Lausanne or Thun": [
+    { "city": "Zurich", "country": "Switzerland" },
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Thun", "country": "Switzerland" }
+  ],
+  "Cheseaux Sur Lausanne": [
+    { "city": "Cheseaux Sur Lausanne", "country": "Switzerland" }
+  ],
+  "Brest": [{ "city": "Brest", "country": "France" }],
+  "Ollioules": [{ "city": "Ollioules", "country": "France" }],
+  "Neuchâtel (NE)": [{ "city": "Neuchâtel", "country": "Switzerland" }],
+  "Zürich or Hybrid": [{ "city": "Zurich", "country": "Switzerland" }],
+  "The student will have the opportunity to work in a stimulating environment with other students in different locations (Lausanne, Bern, Zurich) and at different observation sites depending on the needs of the projects.": [
+    { "city": "Lausanne", "country": "Switzerland" },
+    { "city": "Bern", "country": "Switzerland" },
+    { "city": "Zurich", "country": "Switzerland" }
+  ],
+  "Au centre ville de Lausanne": [
+    { "city": "Lausanne", "country": "Switzerland" }
+  ],
+  "Paris/Toulouse": [
+    { "city": "Paris", "country": "France" },
+    { "city": "Toulouse", "country": "France" }
+  ],
+  "Sophia-Antipolis": [{ "city": "Sophia Antipolis", "country": "France" }],
+  "Montréal": [{ "city": "Montréal", "country": "Canada" }],
+  "Lausanne, Place de Milan": [
+    { "city": "Lausanne", "country": "Switzerland" }
+  ],
+  "Ecublens": [{ "city": "Ecublens", "country": "Switzerland" }],
+  "Mex (near Lausanne)": [{ "city": "Mex", "country": "Switzerland" }],
+  "Aubonne, Suisse": [{ "city": "Aubonne", "country": "Switzerland" }],
+  "Baar": [{ "city": "Baar", "country": "Switzerland" }],
+  "Marcy-l'Étoile": [{ "city": "Marcy-l'Étoile", "country": "France" }],
+  "Vitry-sur-Seine (94)": [{ "city": "Vitry-sur-Seine", "country": "France" }],
+  "USA": [{ "city": "Not precised", "country": "United States" }],
+  "Rueil-Malmaison, France": [
+    { "city": "Rueil-Malmaison", "country": "France" }
+  ],
+  "Sion": [{ "city": "Sion", "country": "Switzerland" }],
+  "Itzig / Luxembourg": [{ "city": "Itzig", "country": "Luxembourg" }],
+  "Tokyo": [{ "city": "Tokyo", "country": "Japan" }],
+  "Inselspital Bern": [{ "city": "Bern", "country": "Switzerland" }],
+  "Toulouse": [{ "city": "Toulouse", "country": "France" }]
+}
