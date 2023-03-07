@@ -31,6 +31,10 @@ const sortBy = (data: RowData[], columnAccessor: string) => {
         new Date(b.creationDate.split(".").reverse().join("-")).getTime()
       );
     });
+  } else if (columnAccessor === "salary") {
+    dataSorted = data.sort((a, b) => {
+      return a.salary - b.salary;
+    });
   }
 
   return dataSorted;
@@ -236,6 +240,7 @@ export default function Table({ data }: { data: RowData[] }) {
           },
         },
         { accessor: "creationDate", sortable: true },
+        { accessor: "salary", sortable: true },
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}

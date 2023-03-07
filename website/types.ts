@@ -10,6 +10,7 @@ export type RowData = {
   professor: string;
   creationDate: string;
   favorite: boolean;
+  salary: number;
 };
 
 export type Location = {

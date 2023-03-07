@@ -323,7 +323,7 @@ import path from "path";
 import { GetStaticProps } from "next";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const fileName = "internships-with-good-locations.json";
+  const fileName = "internships-with-good-locations-and-salaries.json";
   const dataPath = path.join(process.cwd(), "/" + fileName);
 
   const fileContents = await fs.readFile(dataPath, "utf8");
