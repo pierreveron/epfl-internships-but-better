@@ -240,7 +240,11 @@ export default function Table({ data }: { data: RowData[] }) {
           },
         },
         { accessor: "creationDate", sortable: true },
-        { accessor: "salary", sortable: true },
+        {
+          accessor: "salary",
+          sortable: true,
+          render: ({ salary }) => salary ?? "Unspecified",
+        },
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
