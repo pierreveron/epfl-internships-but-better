@@ -1,6 +1,7 @@
 import {
   formatAtom,
   locationsAtom,
+  minimumSalaryAtom,
   nbCitiesSelectedAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
@@ -17,6 +18,7 @@ import {
   Group,
   HoverCard,
   Modal,
+  NumberInput,
   Popover,
   Stack,
   Switch,
@@ -65,6 +67,7 @@ export default function Home({ data, dataDate }: Props) {
   }, [locations]);
 
   const [selectableFormats, setSelectableFormats] = useAtom(formatAtom);
+  const [minimumSalary, setMinimumSalary] = useAtom(minimumSalaryAtom);
   const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const [
@@ -267,6 +270,14 @@ export default function Home({ data, dataDate }: Props) {
                 </Stack>
               </Popover.Dropdown>
             </Popover>
+
+            <NumberInput
+              placeholder="Minimum salary"
+              value={minimumSalary}
+              onChange={setMinimumSalary}
+              step={500}
+              min={0}
+            />
           </Group>
 
           <Group>

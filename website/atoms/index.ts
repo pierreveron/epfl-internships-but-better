@@ -6,6 +6,7 @@ export const locationsAtom = atom<Record<string, SelectableCity[]>>({});
 export const formatAtom = atom<SelectableFormat[]>([]);
 export const showOnlyPositionsNotYetCompletedAtom = atom<boolean>(false);
 export const showOnlyFavoritesAtom = atom<boolean>(false);
+export const minimumSalaryAtom = atom<number | undefined>(undefined);
 
 export const nbCitiesSelectedAtom = atom((get) => {
   const locations = get(locationsAtom);
