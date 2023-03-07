@@ -104,7 +104,7 @@
   "CROLLES": [{ "city": "Crolles", "country": "France" }],
   "France, PACA, 13 - Istres": [{ "city": "Istres", "country": "France" }],
   "Aix en Provence, France": [
-    { "city": "Aix en Provence", "country": "France" }
+    { "city": "Aix-en-Provence", "country": "France" }
   ],
   "La Chaux-de-Fonds": [
     { "city": "La Chaux-de-Fonds", "country": "Switzerland" }
