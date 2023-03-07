@@ -88,7 +88,7 @@ def extract_data_from_html_file(folder_name):
         }
 
         with open(folder_name + 'internships.json', 'w') as json_file:
-            json.dump(final_obj, json_file, indent=4, ensure_ascii=False)
+            json.dump(final_obj, json_file, indent=2, ensure_ascii=False)
 
 
 def list_format_labels(data):

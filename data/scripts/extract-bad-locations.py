@@ -12,7 +12,7 @@ def extract_bad_locations(folder_name):
         print("Number of locations:", len(bad_locations))
 
     with open(folder_name + 'bad-locations.json', 'w') as json_file:
-        json.dump(bad_locations, json_file, indent=4, ensure_ascii=False)
+        json.dump(bad_locations, json_file, indent=2, ensure_ascii=False)
 
 
 def list_bad_locations(data):

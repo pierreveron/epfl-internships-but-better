@@ -20,7 +20,7 @@ def map_bad_locations_to_good_locations(folder_name):
 
     with open(folder_name + 'internships-with-good-locations.json', 'w') as json_file:
         json.dump(record, json_file,
-                  indent=4, ensure_ascii=False)
+                  indent=2, ensure_ascii=False)
 
 
 def list_countries(locations_map_data):

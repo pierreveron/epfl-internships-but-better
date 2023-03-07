@@ -26,7 +26,7 @@ def add_scrapped_data(folder_name):
             # row['salary'] = elem['salary']
 
     with open(internships_file_name, 'w') as json_file:
-        json.dump(record, json_file, indent=4, ensure_ascii=False)
+        json.dump(record, json_file, indent=2, ensure_ascii=False)
 
 
 def list_length_labels(scrapped_data):
