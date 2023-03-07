@@ -61,10 +61,10 @@
   "Avenu de Provence 12, 1007 Lausanne": [
     { "city": "Lausanne", "country": "Switzerland" }
   ],
-  "Hybrid": [],
+  "Hybrid": [{ "city": "Hybrid", "country": "Not precised" }],
   "GRENOBLE (France)": [{ "city": "Grenoble", "country": "France" }],
   "Sachseln, OW": [{ "city": "Sachseln", "country": "Switzerland" }],
-  "Europe": [],
+  "Europe": [{ "city": "Europe", "country": "Not precised" }],
   "Nyon": [{ "city": "Nyon", "country": "Switzerland" }],
   "* Your workplace will be shared between Rollomatic Headquarter (Le Landeron) and one of our innovation cells: EPFL Innovation Park or Swiss Innovation Park Biel/Bienne * Partial remote work possible": [
     { "city": "Le Landeron", "country": "Switzerland" },
@@ -242,7 +242,7 @@
   "barcelona": [{ "city": "Barcelona", "country": "Spain" }],
   "Marcy-l'Étoile": [{ "city": "Marcy-l'Étoile", "country": "France" }],
   "Vitry-sur-Seine (94)": [{ "city": "Vitry-sur-Seine", "country": "France" }],
-  "USA": [{ "city": "United States", "country": "United States" }],
+  "USA": [{ "city": "Not precised", "country": "United States" }],
   "Rueil-Malmaison, France": [
     { "city": "Rueil-Malmaison", "country": "France" }
   ],

@@ -1290,7 +1290,12 @@
       "id": 3470588793,
       "name": "Cyber Security Intern - AgTech Solutions",
       "company": "Equal Profit Sàrl",
-      "location": [],
+      "location": [
+        {
+          "city": "Hybrid",
+          "country": "Not precised"
+        }
+      ],
       "number": 43320,
       "format": ["internship", "project"],
       "registered": 4,
@@ -1405,7 +1410,12 @@
       "id": 3440273349,
       "name": "Data Science",
       "company": "QuantCo",
-      "location": [],
+      "location": [
+        {
+          "city": "Europe",
+          "country": "Not precised"
+        }
+      ],
       "number": 42867,
       "format": ["internship"],
       "registered": 3,
@@ -5173,7 +5183,12 @@
       "id": 3440273806,
       "name": "Software Engineering",
       "company": "QuantCo",
-      "location": [],
+      "location": [
+        {
+          "city": "Europe",
+          "country": "Not precised"
+        }
+      ],
       "number": 42868,
       "format": ["internship"],
       "registered": 4,
@@ -5949,7 +5964,7 @@
       "company": "Revolutionaging Inc.",
       "location": [
         {
-          "city": "United States",
+          "city": "Not precised",
           "country": "United States"
         }
       ],
