@@ -1,0 +1,6261 @@
+{
+  "dataDate": "07.03.2023",
+  "data": [
+    {
+      "id": 3472275597,
+      "name": "Big Data engineer for Mobile Network Analytics and Stream processing application",
+      "company": "Swisscom AG",
+      "location": [
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43382,
+      "format": ["internship"],
+      "registered": 6,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "28.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3396903320,
+      "name": "Optimize automatic evaluation of student answer correctness with GPT3 through templating",
+      "company": "Taskbase",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42132,
+      "format": ["project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": "Prof. Jaggi Martin",
+      "creationDate": "16.12.2022",
+      "length": "No preference",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3453207861,
+      "name": "STAGE INGÉNIERIE SYSTÈME : MODÉLISATION D'UN SYSTÈME DE PRÉPARATION DE MISSION H/F",
+      "company": "MBDA",
+      "location": [
+        {
+          "city": "Le Plessis-Robinson",
+          "country": "France"
+        }
+      ],
+      "number": 43030,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3465705096,
+      "name": "[STAGE] DEVELOPPEUR INFORMATIQUE INDUSTRIELLE (F/ H)",
+      "company": "CORIANCE",
+      "location": [
+        {
+          "city": "Noisy-le-Grand",
+          "country": "France"
+        }
+      ],
+      "number": 43245,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3441288067,
+      "name": "3D Robot Simulation Development",
+      "company": "Isochronic AG",
+      "location": [
+        {
+          "city": "Denges",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42886,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "07.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3411825183,
+      "name": "3D and panoramic visualization of historical photographs",
+      "company": "Volumen SàRL",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42315,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "06.01.2023",
+      "length": "2-3 months",
+      "hiringTime": ["Period 3: July - September (2023)"]
+    },
+    {
+      "id": 3447383964,
+      "name": "3D pose estimation for Edge devices",
+      "company": "Cisco Systems International SARL",
+      "location": [
+        {
+          "city": "Rolle",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42948,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3464736238,
+      "name": "5G Testbed",
+      "company": "Pavonis Sàrl",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43219,
+      "format": ["project"],
+      "registered": 1,
+      "positions": 2,
+      "professor": "Prof. Al Hassanieh Haitham",
+      "creationDate": "21.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457286884,
+      "name": "A Devops and data driven approach for detecting payment fraud or issues within the ticketing industry",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43099,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457445897,
+      "name": "AI & Visualytics for talent and skills management",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43110,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3437053955,
+      "name": "AI For Precision Medicine",
+      "company": "Metadvice (Suisse) SA",
+      "location": [
+        {
+          "city": "St-Sulpice",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42791,
+      "format": ["internship", "project"],
+      "registered": 5,
+      "positions": 4,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3446679321,
+      "name": "AI Generated Video Thumbnails for the Streaming Platform Play Suisse",
+      "company": "SRG SSR",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42933,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3389537171,
+      "name": "AI Research Engineer",
+      "company": "GLEAMER",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        }
+      ],
+      "number": 42047,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3401161507,
+      "name": "AI Software Intern",
+      "company": "Ecorobotix SA",
+      "location": [
+        {
+          "city": "Yverdon",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42199,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.12.2022",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2022-2023)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3453875864,
+      "name": "AI User Profiling",
+      "company": "MADA Communications SA",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43052,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "13.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3455879269,
+      "name": "AI and Synthetic Data Generation in Healthcare",
+      "company": "AXA REV - Group Operations",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43074,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "14.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3426810226,
+      "name": "AI in Integrated Photonics",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42505,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "23.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3433510798,
+      "name": "AI-based NoC graph allocation",
+      "company": "Synthara AG",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42720,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "31.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3457449230,
+      "name": "Abstracting Proprietary Serverless Cloud Building Blocks for Easier Development and Compliance",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43112,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3431259311,
+      "name": "Acquisition d'images IoT pour estimation du couvert végétal par intelligence artificielle",
+      "company": "EDF R&D",
+      "location": [
+        {
+          "city": "Renardières",
+          "country": "France"
+        }
+      ],
+      "number": 42579,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3471891480,
+      "name": "Add support for trapping nullchecks to GraalVM Native Image",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43365,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3449169830,
+      "name": "Adversarial Attacks against Neural Machine Translation",
+      "company": "armasuisse",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42980,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3431953490,
+      "name": "Aerospace smart sensors - R&D embedded software developer",
+      "company": "Meggitt SA",
+      "location": [
+        {
+          "city": "Fribourg",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42590,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3440805501,
+      "name": "Algorithm engineering intern",
+      "company": "Freshape SA",
+      "location": [
+        {
+          "city": "Renens",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42876,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "07.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3453825258,
+      "name": "Algorithmes et outils pour l'optimisation du design des essais cliniques : état de l'art et implémentation dans MonolixSuite",
+      "company": "LIXOFT",
+      "location": [
+        {
+          "city": "Antony",
+          "country": "France"
+        }
+      ],
+      "number": 43042,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3432521819,
+      "name": "Alternance / Stage - BI Engineer",
+      "company": "Numberly",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        }
+      ],
+      "number": 42636,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 5,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3432477461,
+      "name": "Alternance / Stage - Data Project Manager",
+      "company": "Numberly",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        }
+      ],
+      "number": 42633,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 5,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3460099987,
+      "name": "Améliorer la gouvernance des identités et des accès",
+      "company": "Rolex",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43161,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3466294031,
+      "name": "Améliorer un processus de production en utilisant la Data Science",
+      "company": "Rolex",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43264,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3450179145,
+      "name": "Analyse de réponse impulsionnelle UWB",
+      "company": "STMicroelectronics (Grenoble 2) SAS",
+      "location": [
+        {
+          "city": "Le Bourget du Lac",
+          "country": "France"
+        }
+      ],
+      "number": 42997,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3464904826,
+      "name": "Analyser et optimiser la planification des chaines de traitement du DataWarehouse",
+      "company": "Rolex",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43220,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3466263824,
+      "name": "Artificial Tabular Data Generation",
+      "company": "Swisscom AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43258,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3432910256,
+      "name": "Associate Security Consultant Intern",
+      "company": "SEC Consult (Schweiz) AG",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Nyon",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42670,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "31.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3418043050,
+      "name": "Augmented Reality and Sensing at ams OSRAM",
+      "company": "ams International AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42398,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "12.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3448998123,
+      "name": "Automated Machine Learning with Explainability (AutoMLx)",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42968,
+      "format": ["internship", "project"],
+      "registered": 5,
+      "positions": 4,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3432229280,
+      "name": "Automatic Video Semantic Analysis",
+      "company": "SRG SSR",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42621,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3439612417,
+      "name": "Automatic content creation from website",
+      "company": "Immensive SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42858,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3429573564,
+      "name": "Automatic summarization tool for video conferences",
+      "company": "Immensive SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42551,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "26.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3457383023,
+      "name": "Azure DevOps dashboard",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43106,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3480942636,
+      "name": "BCI(EEG) for user interface",
+      "company": "Logitech Europe SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43514,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "07.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3397815140,
+      "name": "Back-end engineer intern",
+      "company": "Fincome",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        }
+      ],
+      "number": 42142,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3433493609,
+      "name": "Backend developer intern at cybersecurity scaleup",
+      "company": "Exeon Analytics",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42719,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "31.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3438227904,
+      "name": "Blockchain Security Engineer (Intern)",
+      "company": "ChainSecurity",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42824,
+      "format": ["internship"],
+      "registered": 7,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "03.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3439776107,
+      "name": "Building Static Analysis Tools for Code Quality & Code Security",
+      "company": "SonarSource",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42860,
+      "format": ["internship"],
+      "registered": 4,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3460037564,
+      "name": "Building a chatbot to interact with Workplace-as-a-Service end users and manage incident and request flow",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43157,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457289996,
+      "name": "Building of a real-time data pipeline for collection, enrichment and visualization of network flows in a multi-cloud context",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43102,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3444288261,
+      "name": "Business Intelligence Internship",
+      "company": "Compagnie Financière Tradition",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42906,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3459003377,
+      "name": "CHARGE DE RECHERCHE TRAITEMENT AUTOMATIQUE DU LANGAGE (H/F)",
+      "company": "SANOFI",
+      "location": [
+        {
+          "city": "Chilly-Mazarin",
+          "country": "France"
+        }
+      ],
+      "number": 43146,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398059096,
+      "name": "CPU Memory BIST Analysis Investigation",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42152,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3398064589,
+      "name": "CPU Microarchitecture - Dead Blocks predictors",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42164,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3398064102,
+      "name": "CPU Microarchitecture modelling and exploration - Temporal ICache Prefetching",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42163,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3398065071,
+      "name": "CPU design exploration assisted by genetic algorithms",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42165,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3432728761,
+      "name": "Challenges in Computer & Network Security",
+      "company": "CERN - European Organization for Nuclear Research",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42653,
+      "format": ["internship", "project"],
+      "registered": 4,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3463719911,
+      "name": "Chargé de la cartographie du Système d'Information (H/F) en Stage",
+      "company": "Axa France",
+      "location": [
+        {
+          "city": "Nanterre",
+          "country": "France"
+        }
+      ],
+      "number": 43201,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3392654856,
+      "name": "Cloud Engineer Intern",
+      "company": "Pix4D",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42083,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3449718961,
+      "name": "Cloud Security at Oracle",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42987,
+      "format": ["internship"],
+      "registered": 4,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3429569900,
+      "name": "Collaborative tools inside 3D online metaverse",
+      "company": "Immensive SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42548,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "26.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3466505637,
+      "name": "Commodity Trading: Data Scientist",
+      "company": "Avere Commodities SA",
+      "location": [
+        {
+          "city": "Versoix",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43277,
+      "format": ["internship", "project"],
+      "registered": 5,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3435789715,
+      "name": "Comparaison d'algorithmes de création  de politique sous forme de jeu de règles floues (F/H)",
+      "company": "Thales Research and Technology",
+      "location": [
+        {
+          "city": "Palaiseau",
+          "country": "France"
+        }
+      ],
+      "number": 42770,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3471202493,
+      "name": "Computer vision internship at SamanTree Medical",
+      "company": "SamanTree Medical SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43333,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3449892875,
+      "name": "Concurrence stack NB & UWB",
+      "company": "STMicroelectronics (Grenoble 2) SAS",
+      "location": [
+        {
+          "city": "Le Bourget du Lac",
+          "country": "France"
+        }
+      ],
+      "number": 42993,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3432016697,
+      "name": "Connecting Financial Markets Together: Link detection and Forecasting",
+      "company": "DCM Systematic",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42598,
+      "format": ["internship", "project"],
+      "registered": 4,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3432967244,
+      "name": "Consultant en stratégie - secteur énergie",
+      "company": "E-CUBE Strategy Consultants SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42676,
+      "format": ["internship"],
+      "registered": 3,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "31.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3398062717,
+      "name": "Core testbench boot sequence optimization",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42160,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3470588793,
+      "name": "Cyber Security Intern - AgTech Solutions",
+      "company": "Equal Profit Sàrl",
+      "location": [
+        {
+          "city": "Hybrid",
+          "country": "Not precised"
+        }
+      ],
+      "number": 43320,
+      "format": ["internship", "project"],
+      "registered": 4,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "25.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3443826358,
+      "name": "Cybersecurity analysis and testing of system firmware R&D SW Internship",
+      "company": "VIRTUAL OPEN SYSTEMS",
+      "location": [
+        {
+          "city": "Grenoble",
+          "country": "France"
+        }
+      ],
+      "number": 42900,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3460084549,
+      "name": "Data Analytics & AI for Health Management in Precision Drives",
+      "company": "maxon",
+      "location": [
+        {
+          "city": "Sachseln",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43160,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "17.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3475930314,
+      "name": "Data Engineer/ Data Analyst",
+      "company": "Cross Systems",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43448,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3444260335,
+      "name": "Data Engineering Internship",
+      "company": "Compagnie Financière Tradition",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42905,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3444319035,
+      "name": "Data Engineering Summer Internship",
+      "company": "Compagnie Financière Tradition",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42907,
+      "format": ["internship"],
+      "registered": 8,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "2-3 months",
+      "hiringTime": ["Period 3: July - September (2023)"]
+    },
+    {
+      "id": 3440273349,
+      "name": "Data Science",
+      "company": "QuantCo",
+      "location": [
+        {
+          "city": "Europe",
+          "country": "Not precised"
+        }
+      ],
+      "number": 42867,
+      "format": ["internship"],
+      "registered": 3,
+      "positions": 5,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3410761650,
+      "name": "Data Science Consultant",
+      "company": "Artifact",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42297,
+      "format": ["internship"],
+      "registered": 7,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "04.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3444126146,
+      "name": "Data Science Internship",
+      "company": "Compagnie Financière Tradition",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42902,
+      "format": ["internship", "project"],
+      "registered": 6,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3446141479,
+      "name": "Data Science Internship - Price Modeling",
+      "company": "DNEXT Inteligence SA",
+      "location": [
+        {
+          "city": "Nyon",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42928,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3455623420,
+      "name": "Data Scientist Intern",
+      "company": "Wisear",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        }
+      ],
+      "number": 43072,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "14.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3481136293,
+      "name": "Data analysis to improve industrial problem solving",
+      "company": "Rollomatic SA",
+      "location": [
+        {
+          "city": "Le Landeron",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Biel/Bienne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43525,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "07.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3444615356,
+      "name": "Data scientist",
+      "company": "KimboCare",
+      "location": [
+        {
+          "city": "Renens",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42908,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3444193993,
+      "name": "Data-centric ML for Digital Nutrition & Health",
+      "company": "Nestlé Research",
+      "location": [
+        {
+          "city": "Vers-chez-les-blanc",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42903,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3471889256,
+      "name": "Deadlock detection for GraalVM Native Image",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43363,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3402385054,
+      "name": "Deep Learning Algorithms for Sleep Staging using Wearables",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42210,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.12.2022",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2022-2023)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3463149722,
+      "name": "Deep Learning at SLB Research Boston",
+      "company": "Schlumberger-Doll Research",
+      "location": [
+        {
+          "city": "Cambridge",
+          "country": "United States"
+        }
+      ],
+      "number": 43187,
+      "format": ["internship"],
+      "registered": 4,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3442828996,
+      "name": "Deep Learning for Biomedical Data Understanding and Cancer Diagnosis",
+      "company": "NEC Labs America",
+      "location": [
+        {
+          "city": "Princeton",
+          "country": "United States"
+        }
+      ],
+      "number": 42893,
+      "format": ["internship", "project"],
+      "registered": 4,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3461697903,
+      "name": "Deep Learning for Natural Language Processing",
+      "company": "Illuin",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        }
+      ],
+      "number": 43174,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "17.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3433228059,
+      "name": "Deep Learning models for Continuous Blood Pressure Estimation",
+      "company": "Revheal",
+      "location": [
+        {
+          "city": "Milano",
+          "country": "Italy"
+        }
+      ],
+      "number": 42702,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "31.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3435095941,
+      "name": "Deep/Machine learning in Computational Digital Pathology for Precision Medicine",
+      "company": "Lausanne University Hospital (CHUV)",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42754,
+      "format": ["internship", "project"],
+      "registered": 10,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3451352234,
+      "name": "Democratize Ultrasound with AI",
+      "company": "E-Scopics",
+      "location": [
+        {
+          "city": "Aix-en-Provence",
+          "country": "France"
+        }
+      ],
+      "number": 43011,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "11.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398059595,
+      "name": "Develop a Hierarchical Cloning Implementation Flow",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42153,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3435423265,
+      "name": "Develop a Mapping Tool (GIS) for Orbital Space Visualization",
+      "company": "Space-Campus (arma suisse CyD)",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42759,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3435481216,
+      "name": "Develop a Module to Help Decision Making for Space Collision Avoidance Maneuvers",
+      "company": "Space-Campus (arma suisse CyD)",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42761,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3470766647,
+      "name": "Develop active learning or Machine Learning system to automaticaly detect key words in documents",
+      "company": "OriginFood",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43327,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "26.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3402710380,
+      "name": "Development of a Real-Time State Estimator for an F1 Race Car",
+      "company": "Sauber Motorsport AG",
+      "location": [
+        {
+          "city": "Hinwil",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42221,
+      "format": ["internship"],
+      "registered": 4,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.12.2022",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2022-2023)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3458499030,
+      "name": "Development of a model validation pipeline",
+      "company": "Novadiscovery",
+      "location": [
+        {
+          "city": "Lyon",
+          "country": "France"
+        }
+      ],
+      "number": 43134,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3414190231,
+      "name": "Development of an embedded Battery SoC estimation algorithm",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42364,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3446758621,
+      "name": "Development on embedded system",
+      "company": "MeteoSwiss",
+      "location": [
+        {
+          "city": "Payerne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42935,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457499168,
+      "name": "Digital Twin Security Framework for Smart cities",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43116,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3463206410,
+      "name": "Document representation for end to end encrypted search and machine learning",
+      "company": "Ketl",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43189,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3463205538,
+      "name": "Document semantic division via visual and textual recognition using Machine learning",
+      "company": "Ketl",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43188,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3399127116,
+      "name": "Développement d'outils de management de la production »",
+      "company": "Tronics Microsystems SA",
+      "location": [
+        {
+          "city": "Crolles",
+          "country": "France"
+        }
+      ],
+      "number": 42171,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "19.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3391876285,
+      "name": "Développement d'un outil d'ajout dynamique d'objets statiques ou mobiles dans un visuel 3D H/F",
+      "company": "Dassault Aviation",
+      "location": [
+        {
+          "city": "Istres",
+          "country": "France"
+        }
+      ],
+      "number": 42072,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "12.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3451351129,
+      "name": "Développement de Biomarqueurs Ultrasonores Innovants pour l'Élastographie des Muscles Respiratoires",
+      "company": "E-Scopics",
+      "location": [
+        {
+          "city": "Aix-en-Provence",
+          "country": "France"
+        }
+      ],
+      "number": 43010,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "11.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3399130907,
+      "name": "Développement de modules de test dynamique sur MEMS par détection synchrone »",
+      "company": "Tronics Microsystems SA",
+      "location": [
+        {
+          "city": "Crolles",
+          "country": "France"
+        }
+      ],
+      "number": 42172,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "19.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3413462145,
+      "name": "Développement et caractérisation d'alliages pour l'industrie horlogère (H/F)",
+      "company": "TAG Heuer",
+      "location": [
+        {
+          "city": "La Chaux-de-Fonds",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42341,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "09.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3329006963,
+      "name": "Développement, mise en service et industrialisation d'une machine de mesure 3D multisenseurs",
+      "company": "Acrotec R&D",
+      "location": [
+        {
+          "city": "Boudry",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 40967,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "26.09.2022",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2022-2023)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3446073044,
+      "name": "Développer des outils pour l'analyse des données en masse pour l'amélioration des performances chronométriques des mouvements",
+      "company": "Rolex",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42925,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3481073951,
+      "name": "Développeur.euse backend",
+      "company": "Resilio SA",
+      "location": [
+        {
+          "city": "Renens",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43519,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "07.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3432467409,
+      "name": "Edge AI empowered by early exiting",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42632,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3398057073,
+      "name": "Efficiency Verification and Improvements of Performance Driven Power Management features at Core Block Level",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42148,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3398056258,
+      "name": "Efficient support of complex access patterns of Scalable Matrix Extension",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42147,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3468720687,
+      "name": "ElectroStatic Discharge (ESD) Prediction",
+      "company": "Logitech Europe SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43299,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "23.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3466456408,
+      "name": "Embedded Systems Development in Drone Delivery",
+      "company": "Rigi Technologies",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43273,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3477949309,
+      "name": "Embedded fuzzing testbench",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43494,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "03.03.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3437056523,
+      "name": "Embedded systems and algorithms for renewable gas analyzers",
+      "company": "Bright Sensors SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42792,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "No preference",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3391396069,
+      "name": "Embedded systems and algorithms for renewable gas analyzers",
+      "company": "Bright Sensors SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42065,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "11.12.2022",
+      "length": "No preference",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3459879369,
+      "name": "Enabling analytics on hybrid graphs",
+      "company": "INRIA Rhône-Alpes",
+      "location": [
+        {
+          "city": "Lyon",
+          "country": "France"
+        }
+      ],
+      "number": 43155,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3439120870,
+      "name": "Engineering internship in climate tech company",
+      "company": "Infrascreen",
+      "location": [
+        {
+          "city": "Renens",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42846,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3411824615,
+      "name": "Enhance the search engine of a patrimonial dataset with A.I.",
+      "company": "Volumen SàRL",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42314,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "06.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3449022974,
+      "name": "Enhancing the Oracle Open-Source Developer Experience",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42969,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 6,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3480934023,
+      "name": "Entrainer et gérer un modèle de Machine Learning afin extraire des données Cybersécurité",
+      "company": "Rolex",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43511,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "07.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3474583508,
+      "name": "Ergonomic Explorations",
+      "company": "Logitech Europe SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43432,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457507679,
+      "name": "Evaluating robustness of space systems",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43117,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3437317355,
+      "name": "Evaluation of Orbital Maneuvers in Space",
+      "company": "Space-Campus (arma suisse CyD)",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42803,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3449089722,
+      "name": "Extending Oracle Cloud App Platform",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42974,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 4,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3449082402,
+      "name": "Extending a Distributed Graph Engine (Oracle Labs PGX)",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42971,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3449084943,
+      "name": "Extending a Web-Based Enterprise Data Science Platform",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42972,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3432028822,
+      "name": "FALSE START DETECTION AND/OR LINE VIOLATION",
+      "company": "Swiss Timing Ltd",
+      "location": [
+        {
+          "city": "Corgémont",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42600,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3464916501,
+      "name": "FOTA improvement",
+      "company": "Nagravision SA",
+      "location": [
+        {
+          "city": "Cheseaux-sur-Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43222,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3398062277,
+      "name": "FPGA implementation of a CPU",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42159,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3398060561,
+      "name": "Flexible Emulator Unit Power Environment Development",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42155,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3398063642,
+      "name": "Formal verification of PMU events",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42162,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3443530301,
+      "name": "Framework & Tools for Linux Embedded Virtualization  R&D SW Internship",
+      "company": "VIRTUAL OPEN SYSTEMS",
+      "location": [
+        {
+          "city": "Grenoble",
+          "country": "France"
+        }
+      ],
+      "number": 42897,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3420650611,
+      "name": "Front end Developer - Internship",
+      "company": "Edge Laboratories AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42422,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3434959082,
+      "name": "FullStack Engineer",
+      "company": "Groover Music",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        }
+      ],
+      "number": 42750,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3471890558,
+      "name": "Fuzz GraalVM to detect performance issues",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43364,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3420836349,
+      "name": "Generative approaches in Neural Combinatorial Optimization",
+      "company": "Naver Labs Europe",
+      "location": [
+        {
+          "city": "Grenoble",
+          "country": "France"
+        }
+      ],
+      "number": 42426,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3449121535,
+      "name": "Graph Machine Learning at Oracle",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42975,
+      "format": ["internship", "project"],
+      "registered": 5,
+      "positions": 4,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3449148166,
+      "name": "Graph Support in the Oracle Database",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42976,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3436094561,
+      "name": "Groupe Mutuel - Devenir un développeur JAVA / API / SQL",
+      "company": "Groupe Mutuel",
+      "location": [
+        {
+          "city": "Martigny",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Epalinges",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42775,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3398057674,
+      "name": "Hardware Stack protection mechanism",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42149,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3398066035,
+      "name": "High performance Physical Implementation",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42167,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3457287840,
+      "name": "How to apply Artificial intelligence to large code base for improved quality?",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43100,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3439022115,
+      "name": "Hybrid UAS",
+      "company": "Urartu Systems SA",
+      "location": [
+        {
+          "city": "Payerne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42842,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 4,
+      "professor": null,
+      "creationDate": "05.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398063131,
+      "name": "ISA-Formal verification applied to ARMv9-A SME",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42161,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3473822478,
+      "name": "IT insurtech barcelona",
+      "company": "Internauto Gestion SA",
+      "location": [
+        {
+          "city": "Barcelona",
+          "country": "Spain"
+        }
+      ],
+      "number": 43410,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "28.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3453871591,
+      "name": "Identify Security Levels in Satellites Communication Links",
+      "company": "Space-Campus (arma suisse CyD)",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Thun",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43051,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3471892793,
+      "name": "Implement JVM Compiler Interface (JVMCI) for new Java bytecode interpreter",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43366,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398058175,
+      "name": "Implement Register Bank prefetching techniques",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42150,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3471904855,
+      "name": "Implement a minimal Java Runtime Environment for polyglot programming",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43368,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398060983,
+      "name": "Improve ARM capacity to detect and debug CPU defects on FPGA / Silicon",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42156,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3463207035,
+      "name": "Improve search ranking of an enterprise search platform",
+      "company": "Ketl",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43190,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3464955450,
+      "name": "Improving BLE AoA with ML",
+      "company": "Nagravision SA",
+      "location": [
+        {
+          "city": "Cheseaux-sur-Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43229,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3458640211,
+      "name": "Infrastructure and Software Development",
+      "company": "Voltiris",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43140,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3418659153,
+      "name": "Ingénieur Cloud/DevOps",
+      "company": "SecuLabs SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42404,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "12.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3475159980,
+      "name": "Ingénieur Process-Mining -H/F",
+      "company": "Dassault Aviation",
+      "location": [
+        {
+          "city": "Saint-Cloud",
+          "country": "France"
+        }
+      ],
+      "number": 43436,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3449278983,
+      "name": "Integrating AI technology (NLP) into data analytics product",
+      "company": "icCube",
+      "location": [
+        {
+          "city": "Ecublens",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42985,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3457447949,
+      "name": "Integration of Privacy-Preserving Machine-Learning for Health Insurance Industry",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43111,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3453091700,
+      "name": "Intern for Kistler Innovation Lab",
+      "company": "Kistler Instrumente AG",
+      "location": [
+        {
+          "city": "Winterthur",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43028,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3425672184,
+      "name": "Internship - Power Systems of the Future: Technologies and business models (w/m/d)",
+      "company": "Hitachi ABB Power Grids",
+      "location": [
+        {
+          "city": "Baden",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42495,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.01.2023",
+      "length": "No preference",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3453209375,
+      "name": "Internship Data Scientist - Product Analyst",
+      "company": "Distran AG",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43031,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3439361524,
+      "name": "Internship Software Engineering (w/m)",
+      "company": "BKW Energie AG",
+      "location": [
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42855,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3425667991,
+      "name": "Internship in Physics Informed Machine Learning for Power Grids Applications (m/f/d)",
+      "company": "Hitachi ABB Power Grids",
+      "location": [
+        {
+          "city": "Baden-Dättwil",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42493,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.01.2023",
+      "length": "No preference",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3460037152,
+      "name": "Internship in Software Development for Web Applications",
+      "company": "ABB Corporate Research Center - Switzerland",
+      "location": [
+        {
+          "city": "Baden-Dättwil",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43156,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3431577771,
+      "name": "Internship in automatization of drone survey",
+      "company": "Infrastructure Management Consultants, Sàrl (IMC)",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42587,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3446977823,
+      "name": "Internship on \"Information Extraction on Materials Science Documents\" [2023-01-113-GML]",
+      "company": "NEC Laboratories Europe GmbH",
+      "location": [
+        {
+          "city": "Heidelberg",
+          "country": "Germany"
+        }
+      ],
+      "number": 42943,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3435687673,
+      "name": "Internship opportunities at imec",
+      "company": "IMEC",
+      "location": [
+        {
+          "city": "Leuven",
+          "country": "Belgium"
+        }
+      ],
+      "number": 42763,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 5,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3465559450,
+      "name": "Internship or Master Thesis in Audio Signal Processing, Acoustics or Sound Field Analysis and Synthesis or Metamaterials",
+      "company": "Sony Europe B.V., Zweigniederlassung Deutschland",
+      "location": [
+        {
+          "city": "Stuttgart",
+          "country": "Germany"
+        }
+      ],
+      "number": 43243,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3465562735,
+      "name": "Internship or Master Thesis in Deep Learning",
+      "company": "Sony Europe B.V., Zweigniederlassung Deutschland",
+      "location": [
+        {
+          "city": "Stuttgart",
+          "country": "Germany"
+        }
+      ],
+      "number": 43244,
+      "format": ["internship", "project"],
+      "registered": 4,
+      "positions": 4,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3446889606,
+      "name": "Internship or Master Thesis on Blockchain [2023-02-116-SEC]",
+      "company": "NEC Laboratories Europe GmbH",
+      "location": [
+        {
+          "city": "Heidelberg",
+          "country": "Germany"
+        }
+      ],
+      "number": 42941,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3446884900,
+      "name": "Internship or Master Thesis on ML Security and Privacy [2022-07-106-SEC]",
+      "company": "NEC Laboratories Europe GmbH",
+      "location": [
+        {
+          "city": "Heidelberg",
+          "country": "Germany"
+        }
+      ],
+      "number": 42940,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3472484783,
+      "name": "Internship or Thesis Student - Mechatronics Prototypes Development",
+      "company": "Hilti AG",
+      "location": [
+        {
+          "city": "Schaan",
+          "country": "Liechtenstein"
+        }
+      ],
+      "number": 43383,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "28.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3446898727,
+      "name": "Internship/Master Thesis on IoT/TEE Security [2021-10-98-SEC]",
+      "company": "NEC Laboratories Europe GmbH",
+      "location": [
+        {
+          "city": "Heidelberg",
+          "country": "Germany"
+        }
+      ],
+      "number": 42942,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3464949771,
+      "name": "Intégration d'un capteur Innovant",
+      "company": "Rolex SA, Manufacture des montres",
+      "location": [
+        {
+          "city": "Biel/Bienne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43227,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398060139,
+      "name": "Investigate ML for CPU Power and Performance Improvement",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42154,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3457522462,
+      "name": "Investigate the impact of AI-powered coding assistants on developer productivity, code quality, and time-to-market.",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43118,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3432248263,
+      "name": "Java/Python ICT project manager",
+      "company": "ArgYou AG",
+      "location": [
+        {
+          "city": "Berne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42623,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3473105195,
+      "name": "Johnson Electric AI summer internship program 2023",
+      "company": "Johnson Electric Switzerland AG",
+      "location": [
+        {
+          "city": "Murten",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43399,
+      "format": ["internship"],
+      "registered": 4,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "28.02.2023",
+      "length": "2-3 months",
+      "hiringTime": ["Period 3: July - September (2023)"]
+    },
+    {
+      "id": 3479208218,
+      "name": "Junior Data Scientist - Data driven enhancement for sustainability of manufacturing processes in food and advanced materials",
+      "company": "Bühler AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43500,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "06.03.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3436843986,
+      "name": "Junior Product Owner",
+      "company": "BRP Bizzozero & Partners",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42787,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3466283597,
+      "name": "Knowledge aware Language Models",
+      "company": "Swisscom AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43262,
+      "format": ["internship", "project"],
+      "registered": 5,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3466268429,
+      "name": "Knowledge graph abstraction layers",
+      "company": "Swisscom AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43260,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398058655,
+      "name": "L2 Translation Lookaside Buffer Clustering improvements",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42151,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3450627839,
+      "name": "LEVERAGING ROAD SAFETY USING VIRTUAL REALITY",
+      "company": "Touring Club Suisse",
+      "location": [
+        {
+          "city": "Vernier",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Ostermundigen",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43004,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3450354917,
+      "name": "Large language models \"red teaming\"",
+      "company": "armasuisse",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43001,
+      "format": ["internship"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398061849,
+      "name": "Learning process to select relevant subset of parameters",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42158,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3438663590,
+      "name": "Learning to walk without the brain: multidisciplinary approaches to  understand neurocircuit mechanisms of locomotion",
+      "company": "IMEC",
+      "location": [
+        {
+          "city": "Leuven",
+          "country": "Belgium"
+        }
+      ],
+      "number": 42834,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "04.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3421896490,
+      "name": "Lifecycle Analysis as Code",
+      "company": "Kleis Technology",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42449,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3395154201,
+      "name": "MACHINE LEARNING, DEEP LEARNING and IMAGE ANALYISIS: DIAGNOSTICS and TRANSLATIONAL RESEARCH at LAUSANNE UNIVERSITY EYE HOSPITAL",
+      "company": "Hôpital Ophtalmique Jules-Gonin",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42108,
+      "format": ["internship"],
+      "registered": 9,
+      "positions": 6,
+      "professor": null,
+      "creationDate": "14.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3455322717,
+      "name": "Machine Learning",
+      "company": "Pratt& Whitney",
+      "location": [
+        {
+          "city": "Lucerne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43065,
+      "format": ["internship"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "14.02.2023",
+      "length": "2-3 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3453290112,
+      "name": "Machine Learning Intern",
+      "company": "Thinkgate AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43034,
+      "format": ["internship"],
+      "registered": 5,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.02.2023",
+      "length": "2-3 months",
+      "hiringTime": ["Period 3: July - September (2023)"]
+    },
+    {
+      "id": 3471783186,
+      "name": "Machine Learning Intern",
+      "company": "Talent.com",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43357,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 5,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3438975845,
+      "name": "Machine Learning Internship",
+      "company": "logmind",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42840,
+      "format": ["internship"],
+      "registered": 3,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "05.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3449150084,
+      "name": "Machine Learning for CyberSecurity and Compliance",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42977,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3449164885,
+      "name": "Machine Learning for Data Integration",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42978,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3449168686,
+      "name": "Machine Learning for Health Care",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42979,
+      "format": ["internship", "project"],
+      "registered": 5,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3432027985,
+      "name": "Machine Learning in Computational Design and Fabrication",
+      "company": "Max-Planck-Institut für Informatik",
+      "location": [
+        {
+          "city": "Saarbrücken",
+          "country": "Germany"
+        }
+      ],
+      "number": 42599,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3449170749,
+      "name": "Machine Learning in Database Systems",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42981,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3421865992,
+      "name": "Machine Learning internship",
+      "company": "Jawsome SA",
+      "location": [
+        {
+          "city": "Gland",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42447,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.01.2023",
+      "length": "No preference",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3402450753,
+      "name": "Machine-learning-based algorithms to detect fetal hypoxia using cardiotocography",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42215,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.12.2022",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3465350437,
+      "name": "Market Microstructure Research Intern",
+      "company": "Oryctérope Transalpin SARL, a TransMarket Group Company",
+      "location": [
+        {
+          "city": "Martigny",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43235,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3471944460,
+      "name": "Master Trainee - \"Information extraction from high-volume data in the Food Safety domain\"",
+      "company": "Nestlé Institute of Health Sciences SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43373,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3417887346,
+      "name": "Master Trainee in Sensory Evaluation (discriminative tests)",
+      "company": "Nestlé Research",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42396,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "12.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3398065563,
+      "name": "Metal Insulator Metal compiler",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42166,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3412519274,
+      "name": "Migration hétérogène des machines virtuelles sur des architectures de processeurs hétérogènes",
+      "company": "Grenoble INP",
+      "location": [
+        {
+          "city": "Grenoble",
+          "country": "France"
+        }
+      ],
+      "number": 42330,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "08.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3464937868,
+      "name": "Mobile app to collect data using BLE",
+      "company": "Nagravision SA",
+      "location": [
+        {
+          "city": "Cheseaux-sur-Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43223,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3435406620,
+      "name": "Module Development for Automatic Management of Space-related NOTAM",
+      "company": "Space-Campus (arma suisse CyD)",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42756,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3464361916,
+      "name": "Modélisation des systèmes de commande et contrôle C2 et de Wargaming militaires",
+      "company": "armasuisse Science & Technology",
+      "location": [
+        {
+          "city": "Thun",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43217,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3462921317,
+      "name": "Monitor and analyse the amount of modulated light during daily activities",
+      "company": "Azalea vision",
+      "location": [
+        {
+          "city": "Ghent",
+          "country": "Belgium"
+        }
+      ],
+      "number": 43185,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "19.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3446072201,
+      "name": "NLP Data Science Intern",
+      "company": "Effixis",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42924,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "09.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3443322332,
+      "name": "NLP and UI development  for Digital Nutrition & Health",
+      "company": "Nestlé Research",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42895,
+      "format": ["internship"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3455966023,
+      "name": "Native Cloud Developer for Co-innovation on E-mobility",
+      "company": "SAP AG",
+      "location": [
+        {
+          "city": "Moungins",
+          "country": "France"
+        }
+      ],
+      "number": 43075,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "14.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3471906280,
+      "name": "Native javac for annotation processors using GraalVM Espresso",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43369,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3413649139,
+      "name": "Network simulator",
+      "company": "Hive-Zox International SA",
+      "location": [
+        {
+          "city": "Renens",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42346,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3449176451,
+      "name": "OS Scheduling for Native Cloud Applications",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42983,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3439113445,
+      "name": "Offensive Security",
+      "company": "Compass Security Schweiz AG",
+      "location": [
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Rapperswil-Jona",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42843,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3432802320,
+      "name": "Oliver Wyman - Data&Analytics - Intern Analyst - Milan",
+      "company": "Oliver Wyman Italy",
+      "location": [
+        {
+          "city": "Milan",
+          "country": "Italy"
+        }
+      ],
+      "number": 42661,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 10,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3466529119,
+      "name": "Optimiser une ligne de production grâce à l'utilisation d'un logiciel de simulation à évènement discret",
+      "company": "Rolex",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43278,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398061413,
+      "name": "Optimization of data structure consumed by a Machine Learning algorithm",
+      "company": "ARM FRANCE",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42157,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3449172431,
+      "name": "Oracle Database Multilingual Engine - Modern Programming Languages in the Database",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42982,
+      "format": ["internship"],
+      "registered": 3,
+      "positions": 4,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3413502972,
+      "name": "PAID INTERNSHIP IN DATASCIENCE - 4/6 MONTHS",
+      "company": "Procter & Gamble",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42343,
+      "format": ["internship", "project"],
+      "registered": 13,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "09.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3466265703,
+      "name": "Pattern detection over distributed tracing graphs",
+      "company": "Swisscom AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43259,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3463209008,
+      "name": "Performance characterization and behavior of a micro-services architecture",
+      "company": "Ketl",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43192,
+      "format": ["internship", "project"],
+      "registered": 4,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3466260305,
+      "name": "Please Explain your Neural Net? - Interpretability framework for deep learning",
+      "company": "Swisscom AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43257,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3471941441,
+      "name": "Porting of a low power RTOS on a new BLE SoC",
+      "company": "CSEM S.A",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43372,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3476598431,
+      "name": "Praktikum Software Engineer Full Stack (w/d/m)",
+      "company": "BSI Business Systems Integration AG",
+      "location": [
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Baar",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Baden",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zürich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43464,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "02.03.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3439782405,
+      "name": "Praktikum im Bereich Supply Chain & Procurement",
+      "company": "ABB Corporate Research Center - Switzerland",
+      "location": [
+        {
+          "city": "Schaffhausen",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42861,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3413404120,
+      "name": "Privacy preserving data processing in hybrid cloud setups",
+      "company": "armasuisse Science & Technology",
+      "location": [
+        {
+          "city": "Zürich",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Thun",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42339,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3465533235,
+      "name": "Procurement Process Excellence and Digital Transformation Intern Team Member RA",
+      "company": "ABB Corporate Research Center - Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43241,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3476606660,
+      "name": "Product Owner Intership",
+      "company": "GF Machining Solutions SA",
+      "location": [
+        {
+          "city": "Biel/Bienne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43465,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.03.2023",
+      "length": "2-3 months",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3471849919,
+      "name": "Programming model for GraalVM Native Image",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43359,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3429294011,
+      "name": "Python/QT Developer for Mechanical Simulation",
+      "company": "Akselos",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42544,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "26.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3466077559,
+      "name": "Quantifying evolution of cyber-security technologies",
+      "company": "armasuisse",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43254,
+      "format": ["internship", "project"],
+      "registered": 5,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "No preference",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3432234582,
+      "name": "Recommender System for Video the Streaming Platform Play Suisse",
+      "company": "SRG SSR",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42622,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3433066925,
+      "name": "Reconnaissance de programmes par réseaux de neurones de graphes",
+      "company": "INRIA - Sophia",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42693,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "31.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3401983643,
+      "name": "Reinforcement learning for the race strategy application in Formula 1",
+      "company": "Sauber Motorsport AG",
+      "location": [
+        {
+          "city": "Hinwil",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42204,
+      "format": ["internship"],
+      "registered": 8,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.12.2022",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3481134437,
+      "name": "Research and implementation of numerical methods in differential geometry",
+      "company": "Rollomatic SA",
+      "location": [
+        {
+          "city": "Landeron",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43524,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "07.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3458503507,
+      "name": "Responders identification and biomarkers selection",
+      "company": "Novadiscovery",
+      "location": [
+        {
+          "city": "Lyon",
+          "country": "France"
+        }
+      ],
+      "number": 43136,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3434088614,
+      "name": "Reverse engineering of code  by side channel",
+      "company": "Nagra Kudelski Group",
+      "location": [
+        {
+          "city": "Cheseaux Sur Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42744,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457523962,
+      "name": "Rover Digital Twin",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43119,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3423470961,
+      "name": "STAGE - Ingénieur Conception Logiciel- F/H",
+      "company": "NAVAL GROUP",
+      "location": [
+        {
+          "city": "Brest",
+          "country": "France"
+        }
+      ],
+      "number": 42471,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "18.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3420976819,
+      "name": "STAGE - Reverse Engineering Equipements Maritimes - F/H",
+      "company": "NAVAL GROUP",
+      "location": [
+        {
+          "city": "Ollioules",
+          "country": "France"
+        }
+      ],
+      "number": 42432,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "16.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3408828245,
+      "name": "STAGE INGÉNIERIE SYSTÈME : RÉALISATION D'UN GUIDE - MODÉLISATION SYSTÈMES PRÉPARATION DE MISSION H/F",
+      "company": "MBDA",
+      "location": [
+        {
+          "city": "Le Plessis-Robinson",
+          "country": "France"
+        }
+      ],
+      "number": 42285,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3464282554,
+      "name": "Satellite-derived PV power forecasting via spatiotemporal graph neural networks",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43213,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457288617,
+      "name": "Scalable stadium seating engine on cloud technologies",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43101,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3473771092,
+      "name": "Security of Endpoint Energy Grid Devices",
+      "company": "armasuisse",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43407,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "28.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3477884843,
+      "name": "Semantic shaft registration",
+      "company": "Schindler EPFL Lab",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43492,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "03.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3464958984,
+      "name": "Sensors Fusion Location Technique",
+      "company": "Nagravision SA",
+      "location": [
+        {
+          "city": "Cheseaux-sur-Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43230,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3477535585,
+      "name": "Signal Processing & Data Science Internship/Master Thesis",
+      "company": "Resmonics AG",
+      "location": [
+        {
+          "city": "Zürich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43485,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "03.03.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3389535552,
+      "name": "Signal Processing and Data Science Internship",
+      "company": "Resmonics AG",
+      "location": [
+        {
+          "city": "Zürich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42046,
+      "format": ["internship"],
+      "registered": 10,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "08.12.2022",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3435467446,
+      "name": "Simulate Optical Staring for Space Awareness Observation",
+      "company": "Space-Campus (arma suisse CyD)",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42760,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457409181,
+      "name": "Smart Social Media Sensor",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43107,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3466470727,
+      "name": "Software Development in Drone Delivery",
+      "company": "Rigi Technologies",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43276,
+      "format": ["internship", "project"],
+      "registered": 4,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3431460011,
+      "name": "Software Engineer",
+      "company": "Electro Medical Systems SA EMS",
+      "location": [
+        {
+          "city": "Nyon",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42582,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3440273806,
+      "name": "Software Engineering",
+      "company": "QuantCo",
+      "location": [
+        {
+          "city": "Europe",
+          "country": "Not precised"
+        }
+      ],
+      "number": 42868,
+      "format": ["internship"],
+      "registered": 4,
+      "positions": 5,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3466470002,
+      "name": "Software and Networking Internship in Drone Delivery",
+      "company": "Rigi Technologies",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43275,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3471991371,
+      "name": "Solutions to help children regulate & enjoy gaming more",
+      "company": "Logitech Europe SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43374,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3453883731,
+      "name": "Spacecraft Attitude Determination Using Artificial Intelligence and Light Curves",
+      "company": "Space-Campus (arma suisse CyD)",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        },
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43055,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3475218913,
+      "name": "Spatial Computing - volumetric video conferencing",
+      "company": "Logitech Europe SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43439,
+      "format": ["internship", "project"],
+      "registered": 4,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "01.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3475234590,
+      "name": "Spatial Computing - volumetric video quality",
+      "company": "Logitech Europe SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43440,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "01.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3427526643,
+      "name": "Stage - full stack devloppement",
+      "company": "IPMC Cliniques",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42519,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "24.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3475167488,
+      "name": "Stage : Ingénieur développement informatique H/F",
+      "company": "Dassault Aviation",
+      "location": [
+        {
+          "city": "Saint-Cloud",
+          "country": "France"
+        }
+      ],
+      "number": 43437,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "01.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3475992358,
+      "name": "Stage : Réalisation d'un projet de migration d'une solution de pilotage de la qualité fournisseurs H/F",
+      "company": "Dassault Aviation",
+      "location": [
+        {
+          "city": "Saint-Cloud",
+          "country": "France"
+        }
+      ],
+      "number": 43453,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3439979319,
+      "name": "Stage contrôle d'un exosquelette",
+      "company": "Wandercraft",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        }
+      ],
+      "number": 42864,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3424152472,
+      "name": "Stage de Pré-embauche   Business Intelligence",
+      "company": "The Blockchain Group",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        },
+        {
+          "city": "Toulouse",
+          "country": "France"
+        }
+      ],
+      "number": 42477,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "19.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3424293878,
+      "name": "Stage de Pré-embauche  Data Science - Factorisation - Datalake",
+      "company": "The Blockchain Group",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        },
+        {
+          "city": "Toulouse",
+          "country": "France"
+        }
+      ],
+      "number": 42481,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "19.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3437079249,
+      "name": "Stage de Pré-embauche - Data Science - Factorisation - Web Sémantique H/F",
+      "company": "The Blockchain Group",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        },
+        {
+          "city": "Toulouse",
+          "country": "France"
+        }
+      ],
+      "number": 42794,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3437060255,
+      "name": "Stage de Pré-embauche - Data Science - IA - Legaltech H/F",
+      "company": "The Blockchain Group",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        },
+        {
+          "city": "Toulouse",
+          "country": "France"
+        }
+      ],
+      "number": 42793,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3437085283,
+      "name": "Stage de Pré-embauche - Data Science - NLP - WEB 3 H/F",
+      "company": "The Blockchain Group",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        },
+        {
+          "city": "Toulouse",
+          "country": "France"
+        }
+      ],
+      "number": 42795,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3424206737,
+      "name": "Stage de Pré-embauche Développeur Python/web",
+      "company": "The Blockchain Group",
+      "location": [
+        {
+          "city": "Paris",
+          "country": "France"
+        },
+        {
+          "city": "Toulouse",
+          "country": "France"
+        }
+      ],
+      "number": 42480,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 3,
+      "professor": null,
+      "creationDate": "19.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3411019518,
+      "name": "Stage ingénieur solveur de contraintes Python",
+      "company": "Qualcomm France",
+      "location": [
+        {
+          "city": "Sophia Antipolis",
+          "country": "France"
+        }
+      ],
+      "number": 42302,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "04.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3437469564,
+      "name": "Stagiaire - Science des données et apprentissage automatique",
+      "company": "CRIM - Centre de recherche informatique de Montréal",
+      "location": [
+        {
+          "city": "Montréal",
+          "country": "Canada"
+        }
+      ],
+      "number": 42809,
+      "format": ["internship", "project"],
+      "registered": 3,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3469547086,
+      "name": "Stagiaire IT: Développement d'APIs pour un outil de calcul en Python utilisé pour l'automatisation et le monitoring de tests en assurance vie",
+      "company": "Vaudoise Assurances",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43307,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "24.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3456329662,
+      "name": "Stagiaire Ingénieur.e DevOps - 100% (H/F)",
+      "company": "Phida Invest SA",
+      "location": [
+        {
+          "city": "Renens",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43092,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "14.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3439858182,
+      "name": "Stagiaire Software Engineer Java (Spring/Angular) ou .Net/Angular (h/f)",
+      "company": "Softcom Technologies SA",
+      "location": [
+        {
+          "city": "Fribourg",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42862,
+      "format": ["internship"],
+      "registered": 2,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "06.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3413202460,
+      "name": "Stagiaire Solutions Climat/Climate solutions Intern",
+      "company": "The Climate Action Accelerator",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42337,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3464057118,
+      "name": "Stochastic ML for managing car charging stations",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43210,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3407796905,
+      "name": "Storage space optimization",
+      "company": "Migros Online SA",
+      "location": [
+        {
+          "city": "Ecublens",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42275,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "29.12.2022",
+      "length": "No preference",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3448931077,
+      "name": "Super Resolution images for human inspection",
+      "company": "Bobst SA",
+      "location": [
+        {
+          "city": "Mex",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42966,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3432029904,
+      "name": "Supply chain - Integrated Operation Planning (IOP)",
+      "company": "Merck Serono S.A.",
+      "location": [
+        {
+          "city": "Aubonne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42601,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3471837851,
+      "name": "Support for OpenJDK Project Panama in GraalVM Native Image",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43358,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3432037322,
+      "name": "TRANSPONDER MONITORING",
+      "company": "Swiss Timing Ltd",
+      "location": [
+        {
+          "city": "Corgémont",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42604,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3466269928,
+      "name": "Task-specific language modelling for Swisscom Customer Care",
+      "company": "Swisscom AG",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43261,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3394277196,
+      "name": "Technology Management / Management Consulting IT",
+      "company": "armasuisse",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42098,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "13.12.2022",
+      "length": "No preference",
+      "hiringTime": ["Period 1: February - September (2023)"]
+    },
+    {
+      "id": 3437104125,
+      "name": "The \"Über-Nic\" Project",
+      "company": "Liquid-Markets GmbH",
+      "location": [
+        {
+          "city": "Baar",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42798,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3465362095,
+      "name": "Trading Associate Intern",
+      "company": "Oryctérope Transalpin SARL, a TransMarket Group Company",
+      "location": [
+        {
+          "city": "Martigny",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43237,
+      "format": ["internship"],
+      "registered": 5,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "21.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3413526937,
+      "name": "Trainee NLP Engineer",
+      "company": "DNEXT Inteligence SA",
+      "location": [
+        {
+          "city": "Nyon",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42344,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "09.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3473821244,
+      "name": "Training at a Insurtech",
+      "company": "Internauto Gestion SA",
+      "location": [
+        {
+          "city": "Barcelona",
+          "country": "Spain"
+        }
+      ],
+      "number": 43409,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "28.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3464273452,
+      "name": "Transfer learning of graph neural networks for large-scale PV power forecasting",
+      "company": "CSEM - Centre suisse d'électronique et de microtechnique SA",
+      "location": [
+        {
+          "city": "Neuchâtel",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43212,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457375094,
+      "name": "TrustID MFA for RDP and Windows Logon",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43105,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3398054657,
+      "name": "UN STAGIAIRE - CHARGE DE QUALIFICATION VALIDATION (H/F)",
+      "company": "SANOFI",
+      "location": [
+        {
+          "city": "Marcy-l'Étoile",
+          "country": "France"
+        }
+      ],
+      "number": 42146,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "17.12.2022",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2022-2023)"]
+    },
+    {
+      "id": 3450355291,
+      "name": "UN STAGIAIRE - CHARGÉ DE DÉVELOPPEMENT BIO-INFORMATIQUE (H/F)",
+      "company": "SANOFI",
+      "location": [
+        {
+          "city": "Vitry-sur-Seine",
+          "country": "France"
+        }
+      ],
+      "number": 43002,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "10.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3472062860,
+      "name": "USA: Mobile app dev (Flutter)",
+      "company": "Revolutionaging Inc.",
+      "location": [
+        {
+          "city": "Not precised",
+          "country": "United States"
+        }
+      ],
+      "number": 43378,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "2-3 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3477152869,
+      "name": "Use AI for Motion Sensor",
+      "company": "Nagravision SA",
+      "location": [
+        {
+          "city": "Cheseaux-sur-Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43478,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "03.03.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3471907387,
+      "name": "Use TRegex for java.util.regex in GraalVM Espresso",
+      "company": "Oracle Labs Switzerland",
+      "location": [
+        {
+          "city": "Zurich",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43370,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "27.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3432040567,
+      "name": "VOLUMETRIC RENDERING FROM 2D SEGMENTATION",
+      "company": "Swiss Timing Ltd",
+      "location": [
+        {
+          "city": "Corgémont",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42605,
+      "format": ["internship", "project"],
+      "registered": 2,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "30.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3411823863,
+      "name": "Valorisation du fonds patrimonial Jules Jacot-Guillarmod",
+      "company": "Volumen SàRL",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 42313,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "06.01.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3411430442,
+      "name": "Vibrations here to stresses there: virtual sensing methods for offshore wind turbines monitoring",
+      "company": "IFP Energies nouvelles",
+      "location": [
+        {
+          "city": "Rueil-Malmaison",
+          "country": "France"
+        }
+      ],
+      "number": 42309,
+      "format": ["internship"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "05.01.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)"
+      ]
+    },
+    {
+      "id": 3466299523,
+      "name": "Virtual Power Plant (VPP) de producteurs distribués",
+      "company": "Studer Innotec",
+      "location": [
+        {
+          "city": "Sion",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43266,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "22.02.2023",
+      "length": "No preference",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3443804704,
+      "name": "Virtualization Solution for Embedded Mixed-Critical Systems R&D SW Internship",
+      "company": "VIRTUAL OPEN SYSTEMS",
+      "location": [
+        {
+          "city": "Grenoble",
+          "country": "France"
+        }
+      ],
+      "number": 42898,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3436216522,
+      "name": "Web Application Firewall Developer",
+      "company": "jemmic",
+      "location": [
+        {
+          "city": "Itzig",
+          "country": "Luxembourg"
+        }
+      ],
+      "number": 42779,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "02.02.2023",
+      "length": "4-6 months",
+      "hiringTime": [
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3432865724,
+      "name": "Web Development and Webdesign",
+      "company": "Passiv Energie Japan Inc.",
+      "location": [
+        {
+          "city": "Tokyo",
+          "country": "Japan"
+        }
+      ],
+      "number": 42663,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 2,
+      "professor": null,
+      "creationDate": "31.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3457300792,
+      "name": "Web-compatible VPN client",
+      "company": "Elca Informatique SA",
+      "location": [
+        {
+          "city": "Lausanne",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43103,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "15.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3443811354,
+      "name": "WebAssembly in embedded use cases R&D SW Internship",
+      "company": "VIRTUAL OPEN SYSTEMS",
+      "location": [
+        {
+          "city": "Grenoble",
+          "country": "France"
+        }
+      ],
+      "number": 42899,
+      "format": ["internship"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "08.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3456772151,
+      "name": "[MASTER THESIS] Innovating PET - Using AI to Synthesize CT-like Images",
+      "company": "Siemens Healthineers",
+      "location": [
+        {
+          "city": "Bern",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43095,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "14.02.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    },
+    {
+      "id": 3463208075,
+      "name": "information extraction based on named entity extraction",
+      "company": "Ketl",
+      "location": [
+        {
+          "city": "Geneva",
+          "country": "Switzerland"
+        }
+      ],
+      "number": 43191,
+      "format": ["internship", "project"],
+      "registered": 1,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "20.02.2023",
+      "length": "No preference",
+      "hiringTime": [
+        "Period 1: February - September (2023)",
+        "Period 2: July - February (2023-2024)",
+        "Period 3: July - September (2023)"
+      ]
+    },
+    {
+      "id": 3433581638,
+      "name": "modélisation comportementale d'amplificateur de puissance radiofréquence 5G",
+      "company": "NXP Semiconductor",
+      "location": [
+        {
+          "city": "Toulouse",
+          "country": "France"
+        }
+      ],
+      "number": 42724,
+      "format": ["internship", "project"],
+      "registered": 0,
+      "positions": 1,
+      "professor": null,
+      "creationDate": "31.01.2023",
+      "length": "4-6 months",
+      "hiringTime": ["Period 2: July - February (2023-2024)"]
+    }
+  ]
+}
