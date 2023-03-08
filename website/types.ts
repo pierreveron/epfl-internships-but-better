@@ -8,6 +8,7 @@ export type RowData = {
   registered: number;
   positions: number;
   professor: string;
+  length: string;
   creationDate: string;
   favorite: boolean;
   salary: number;
@@ -23,3 +24,5 @@ export type SelectableCity = { name: string; selected: boolean };
 export type Format = "internship" | "project";
 
 export type SelectableFormat = { name: Format; selected: boolean };
+
+export type SelectableLength = { name: string; selected: boolean };

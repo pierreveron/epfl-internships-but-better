@@ -1,5 +1,6 @@
 import {
   formatAtom,
+  lengthAtom,
   locationsAtom,
   minimumSalaryAtom,
   nbCitiesSelectedAtom,
@@ -45,6 +46,7 @@ export default function Table({ data }: { data: RowData[] }) {
   const minimumSalary = useAtomValue(minimumSalaryAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const selectableFormats = useAtomValue(formatAtom);
+  const selectableLengths = useAtomValue(lengthAtom);
   const selectableLocations = useAtomValue(locationsAtom);
   const showOnlyPositionsNotYetCompleted = useAtomValue(
     showOnlyPositionsNotYetCompletedAtom
@@ -69,6 +71,7 @@ export default function Table({ data }: { data: RowData[] }) {
     sortStatus,
     selectableLocations,
     selectableFormats,
+    selectableLengths,
     showOnlyPositionsNotYetCompleted,
     showOnlyFavorites,
     minimumSalary,
@@ -105,6 +108,12 @@ export default function Table({ data }: { data: RowData[] }) {
       data = data.filter((d) => d.salary >= minimumSalary);
     }
 
+    if (selectableLengths.some((f) => f.selected)) {
+      data = data.filter((d) => {
+        return selectableLengths.find((sf) => sf.name === d.length)?.selected;
+      });
+    }
+
     if (showOnlyFavorites) {
       data = data.filter((d) => favoriteInternships.includes(d.number));
     }
@@ -136,6 +145,7 @@ export default function Table({ data }: { data: RowData[] }) {
     nbCitiesSelected,
     selectableFormats,
     minimumSalary,
+    selectableLengths,
   ]);
 
   useEffect(() => {
@@ -253,6 +263,7 @@ export default function Table({ data }: { data: RowData[] }) {
           sortable: true,
           render: ({ salary }) => (salary ? `${salary} CHF` : "Unspecified"),
         },
+        { accessor: "length" },
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
