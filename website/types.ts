@@ -11,7 +11,7 @@ export type RowData = {
   length: string;
   creationDate: string;
   favorite: boolean;
-  salary: number;
+  salary: number | null;
 };
 
 export type Location = {

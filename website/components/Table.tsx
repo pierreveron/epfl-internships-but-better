@@ -35,6 +35,12 @@ const sortBy = (data: RowData[], columnAccessor: string) => {
     });
   } else if (columnAccessor === "salary") {
     dataSorted = data.sort((a, b) => {
+      if (a.salary === null) {
+        return 1;
+      }
+      if (b.salary === null) {
+        return -1;
+      }
       return a.salary - b.salary;
     });
   }
@@ -104,8 +110,10 @@ export default function Table({ data }: { data: RowData[] }) {
       });
     }
 
-    if (minimumSalary) {
-      data = data.filter((d) => d.salary >= minimumSalary);
+    if (minimumSalary !== undefined) {
+      data = data.filter((d) => {
+        return d.salary !== null && d.salary >= minimumSalary;
+      });
     }
 
     if (selectableLengths.some((f) => f.selected)) {
@@ -258,12 +266,13 @@ export default function Table({ data }: { data: RowData[] }) {
           },
         },
         { accessor: "creationDate", sortable: true },
+        { accessor: "length" },
         {
           accessor: "salary",
           sortable: true,
-          render: ({ salary }) => (salary ? `${salary} CHF` : "Unspecified"),
+          render: ({ salary }) =>
+            salary === null ? "Unspecified" : `${salary} CHF`,
         },
-        { accessor: "length" },
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
