@@ -1,9 +1,10 @@
-import { SelectableCity, SelectableFormat } from "@/types";
+import { SelectableCity, SelectableFormat, SelectableLength } from "@/types";
 import { atom } from "jotai";
 
 export const locationsAtom = atom<Record<string, SelectableCity[]>>({});
 
 export const formatAtom = atom<SelectableFormat[]>([]);
+export const lengthAtom = atom<SelectableLength[]>([]);
 export const showOnlyPositionsNotYetCompletedAtom = atom<boolean>(false);
 export const showOnlyFavoritesAtom = atom<boolean>(false);
 

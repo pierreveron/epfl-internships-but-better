@@ -1,5 +1,6 @@
 import {
   formatAtom,
+  lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
   showOnlyFavoritesAtom,
@@ -7,9 +8,16 @@ import {
 } from "@/atoms";
 import Footer from "@/components/Footer";
 import FormatsSegmentedControl from "@/components/FormatsSegmentedControl";
+import LengthsCheckboxes from "@/components/LengthsCheckboxes";
 import LocationsCheckbox from "@/components/LocationsCheckbox";
 import Table from "@/components/Table";
-import { RowData, SelectableCity, SelectableFormat } from "@/types";
+
+import {
+  RowData,
+  SelectableCity,
+  SelectableFormat,
+  SelectableLength,
+} from "@/types";
 import {
   Alert,
   Button,
@@ -30,7 +38,7 @@ import {
   IconChevronDown,
   IconInfoCircle,
 } from "@tabler/icons";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo } from "react";
 
@@ -64,7 +72,8 @@ export default function Home({ data, dataDate }: Props) {
     return citiesByCountry;
   }, [locations]);
 
-  const [selectableFormats, setSelectableFormats] = useAtom(formatAtom);
+  const setSelectableFormats = useSetAtom(formatAtom);
+  const [selectableLengths, setSelectableLengths] = useAtom(lengthAtom);
   const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const [
@@ -82,6 +91,14 @@ export default function Home({ data, dataDate }: Props) {
       }) as SelectableFormat[]
     );
   }, [data, setSelectableFormats]);
+
+  useEffect(() => {
+    setSelectableLengths(
+      Array.from(new Set(data.flatMap((d) => d.length))).map((length) => {
+        return { name: length, selected: false };
+      }) as SelectableLength[]
+    );
+  }, [data, setSelectableLengths]);
 
   useEffect(() => {
     setSelectableLocations(citiesByCountry);
@@ -264,6 +281,35 @@ export default function Home({ data, dataDate }: Props) {
                   {Object.keys(selectableLocations).map((country) => (
                     <LocationsCheckbox key={country} country={country} />
                   ))}
+                </Stack>
+              </Popover.Dropdown>
+            </Popover>
+
+            <Popover position="bottom-start" shadow="md">
+              <Popover.Target>
+                <Button
+                  rightIcon={<IconChevronDown size={18} />}
+                  variant="outline"
+                >
+                  Select lengths
+                </Button>
+              </Popover.Target>
+              <Popover.Dropdown>
+                <Stack spacing="xs">
+                  <Button
+                    variant="subtle"
+                    disabled={
+                      selectableLengths.filter((v) => v.selected).length === 0
+                    }
+                    onClick={() =>
+                      setSelectableLengths((lengths) => {
+                        return lengths.map((f) => ({ ...f, selected: false }));
+                      })
+                    }
+                  >
+                    Reset
+                  </Button>
+                  <LengthsCheckboxes />
                 </Stack>
               </Popover.Dropdown>
             </Popover>

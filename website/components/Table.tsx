@@ -1,5 +1,6 @@
 import {
   formatAtom,
+  lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
   showOnlyFavoritesAtom,
@@ -39,6 +40,7 @@ const sortBy = (data: RowData[], columnAccessor: string) => {
 export default function Table({ data }: { data: RowData[] }) {
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const selectableFormats = useAtomValue(formatAtom);
+  const selectableLengths = useAtomValue(lengthAtom);
   const selectableLocations = useAtomValue(locationsAtom);
   const showOnlyPositionsNotYetCompleted = useAtomValue(
     showOnlyPositionsNotYetCompletedAtom
@@ -63,6 +65,7 @@ export default function Table({ data }: { data: RowData[] }) {
     sortStatus,
     selectableLocations,
     selectableFormats,
+    selectableLengths,
     showOnlyPositionsNotYetCompleted,
     showOnlyFavorites,
   ]);
@@ -91,6 +94,12 @@ export default function Table({ data }: { data: RowData[] }) {
             return selectableFormats.find((sf) => sf.name === f)?.selected;
           }).length > 0
         );
+      });
+    }
+
+    if (selectableLengths.some((f) => f.selected)) {
+      data = data.filter((d) => {
+        return selectableLengths.find((sf) => sf.name === d.length)?.selected;
       });
     }
 
@@ -124,6 +133,7 @@ export default function Table({ data }: { data: RowData[] }) {
     selectableLocations,
     nbCitiesSelected,
     selectableFormats,
+    selectableLengths,
   ]);
 
   useEffect(() => {
@@ -236,6 +246,7 @@ export default function Table({ data }: { data: RowData[] }) {
           },
         },
         { accessor: "creationDate", sortable: true },
+        { accessor: "length" },
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
