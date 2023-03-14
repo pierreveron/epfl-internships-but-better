@@ -6,6 +6,7 @@ import {
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
+import CompanySelect from "@/components/CompanySelect";
 import Footer from "@/components/Footer";
 import FormatsSegmentedControl from "@/components/FormatsSegmentedControl";
 import LengthsCheckboxes from "@/components/LengthsCheckboxes";
@@ -99,6 +100,12 @@ export default function Home({ data, dataDate }: Props) {
       }) as SelectableLength[]
     );
   }, [data, setSelectableLengths]);
+
+  const companies = useMemo(() => {
+    return Array.from(new Set(data.flatMap((d) => d.company))).sort((a, b) =>
+      a.localeCompare(b)
+    );
+  }, [data]);
 
   useEffect(() => {
     setSelectableLocations(citiesByCountry);
@@ -313,6 +320,8 @@ export default function Home({ data, dataDate }: Props) {
                 </Stack>
               </Popover.Dropdown>
             </Popover>
+
+            <CompanySelect companies={companies} />
           </Group>
 
           <Group>
