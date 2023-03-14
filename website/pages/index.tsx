@@ -1,4 +1,5 @@
 import {
+  companyAtom,
   formatAtom,
   lengthAtom,
   locationsAtom,
@@ -15,6 +16,7 @@ import Table from "@/components/Table";
 import {
   RowData,
   SelectableCity,
+  SelectableCompany,
   SelectableFormat,
   SelectableLength,
 } from "@/types";
@@ -73,6 +75,7 @@ export default function Home({ data, dataDate }: Props) {
   }, [locations]);
 
   const setSelectableFormats = useSetAtom(formatAtom);
+  const setSelectableCompanies = useSetAtom(companyAtom);
   const [selectableLengths, setSelectableLengths] = useAtom(lengthAtom);
   const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
@@ -99,6 +102,16 @@ export default function Home({ data, dataDate }: Props) {
       }) as SelectableLength[]
     );
   }, [data, setSelectableLengths]);
+
+  useEffect(() => {
+    setSelectableCompanies(
+      (
+        Array.from(new Set(data.flatMap((d) => d.company))).map((company) => {
+          return { name: company, selected: false };
+        }) as SelectableCompany[]
+      ).sort((a, b) => a.name.localeCompare(b.name))
+    );
+  }, [data, setSelectableCompanies]);
 
   useEffect(() => {
     setSelectableLocations(citiesByCountry);
@@ -313,6 +326,35 @@ export default function Home({ data, dataDate }: Props) {
                 </Stack>
               </Popover.Dropdown>
             </Popover>
+
+            <Popover position="bottom-start" shadow="md">
+              <Popover.Target>
+                <Button
+                  rightIcon={<IconChevronDown size={18} />}
+                  variant="outline"
+                >
+                  Select companies
+                </Button>
+              </Popover.Target>
+              <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
+                <Stack spacing="xs">
+                  <Button
+                    variant="subtle"
+                    disabled={
+                      selectableLengths.filter((v) => v.selected).length === 0
+                    }
+                    onClick={() =>
+                      setSelectableLengths((lengths) => {
+                        return lengths.map((f) => ({ ...f, selected: false }));
+                      })
+                    }
+                  >
+                    Reset
+                  </Button>
+                  <CompaniesCheckboxes />
+                </Stack>
+              </Popover.Dropdown>
+            </Popover>
           </Group>
 
           <Group>
@@ -367,6 +409,7 @@ import { promises as fs } from "fs";
 import path from "path";
 
 import { GetStaticProps } from "next";
+import CompaniesCheckboxes from "@/components/CompaniesCheckboxes";
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const fileName = "internships-with-good-locations.json";

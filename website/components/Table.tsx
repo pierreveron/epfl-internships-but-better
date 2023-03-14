@@ -1,4 +1,5 @@
 import {
+  companyAtom,
   formatAtom,
   lengthAtom,
   locationsAtom,
@@ -42,6 +43,7 @@ export default function Table({ data }: { data: RowData[] }) {
   const selectableFormats = useAtomValue(formatAtom);
   const selectableLengths = useAtomValue(lengthAtom);
   const selectableLocations = useAtomValue(locationsAtom);
+  const selectableCompanies = useAtomValue(companyAtom);
   const showOnlyPositionsNotYetCompleted = useAtomValue(
     showOnlyPositionsNotYetCompletedAtom
   );
@@ -66,6 +68,7 @@ export default function Table({ data }: { data: RowData[] }) {
     selectableLocations,
     selectableFormats,
     selectableLengths,
+    selectableCompanies,
     showOnlyPositionsNotYetCompleted,
     showOnlyFavorites,
   ]);
@@ -103,6 +106,13 @@ export default function Table({ data }: { data: RowData[] }) {
       });
     }
 
+    if (selectableCompanies.some((f) => f.selected)) {
+      data = data.filter((d) => {
+        return selectableCompanies.find((sf) => sf.name === d.company)
+          ?.selected;
+      });
+    }
+
     if (showOnlyFavorites) {
       data = data.filter((d) => favoriteInternships.includes(d.number));
     }
@@ -134,6 +144,7 @@ export default function Table({ data }: { data: RowData[] }) {
     nbCitiesSelected,
     selectableFormats,
     selectableLengths,
+    selectableCompanies,
   ]);
 
   useEffect(() => {
