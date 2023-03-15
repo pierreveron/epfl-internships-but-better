@@ -81,7 +81,7 @@
   ],
   "Cambridge, MA, USA": [{ "city": "Cambridge", "country": "United States" }],
   "Princeton, NJ, USA": [{ "city": "Princeton", "country": "United States" }],
-  "Milano": [{ "city": "Milano", "country": "Italy" }],
+  "Milano": [{ "city": "Milan", "country": "Italy" }],
   "Lausanne/Geneva": [
     { "city": "Lausanne", "country": "Switzerland" },
     { "city": "Geneva", "country": "Switzerland" }
