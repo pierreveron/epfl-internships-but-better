@@ -70,6 +70,12 @@ export default function Home({ data, dataDate }: Props) {
         ];
       }
     });
+
+    Object.keys(citiesByCountry).forEach((country) => {
+      citiesByCountry[country] = citiesByCountry[country].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+    });
     return citiesByCountry;
   }, [locations]);
 
