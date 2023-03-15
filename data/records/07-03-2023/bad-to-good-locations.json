@@ -81,7 +81,7 @@
   ],
   "Cambridge, MA, USA": [{ "city": "Cambridge", "country": "United States" }],
   "Princeton, NJ, USA": [{ "city": "Princeton", "country": "United States" }],
-  "Milano": [{ "city": "Milano", "country": "Italy" }],
+  "Milano": [{ "city": "Milan", "country": "Italy" }],
   "Lausanne/Geneva": [
     { "city": "Lausanne", "country": "Switzerland" },
     { "city": "Geneva", "country": "Switzerland" }
@@ -208,7 +208,7 @@
     { "city": "Lausanne", "country": "Switzerland" }
   ],
   "Cheseaux Sur Lausanne": [
-    { "city": "Cheseaux Sur Lausanne", "country": "Switzerland" }
+    { "city": "Cheseaux-sur-Lausanne", "country": "Switzerland" }
   ],
   "Brest": [{ "city": "Brest", "country": "France" }],
   "Ollioules": [{ "city": "Ollioules", "country": "France" }],
