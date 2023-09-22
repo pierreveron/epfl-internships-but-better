@@ -21,17 +21,17 @@
     "@types/react-dom": "18.0.11",
     "@vercel/analytics": "^0.1.11",
     "eslint": "8.34.0",
-    "eslint-config-next": "13.1.6",
     "jotai": "^2.0.2",
     "jotai-optics": "^0.3.0",
     "mantine-datatable": "^1.8.6",
-    "next": "13.1.6",
+    "next": "^13.5.2",
     "optics-ts": "^2.4.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "typescript": "4.9.5"
   },
   "devDependencies": {
-    "@swc-jotai/react-refresh": "^0.0.4"
+    "@swc-jotai/react-refresh": "^0.0.4",
+    "eslint-config-next": "^13.5.2"
   }
 }
