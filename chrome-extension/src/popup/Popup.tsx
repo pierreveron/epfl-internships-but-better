@@ -1,30 +1,27 @@
-import { useState } from 'react'
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
+import { getCurrentTab } from '../utils/chrome-helpers'
 
-function App() {
-  const [count, setCount] = useState(0)
-
+export default function Popup() {
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <h1 className="tw-text-4xl">EPFL internships but better</h1>
+      <button
+        onClick={async () => {
+          const tab = await getCurrentTab()
+
+          if (!tab || !tab.id) return
+
+          chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ['content/index.js'],
+          })
+          chrome.scripting.insertCSS({
+            target: { tabId: tab.id },
+            files: ['content/index.css'],
+          })
+        }}
+      >
+        Execute script
+      </button>
     </>
   )
 }
-
-export default App
