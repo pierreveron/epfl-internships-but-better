@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npm run build:popup && npm run build:content",
-    "build:popup": "tsc && vite build",
+    "build:popup": "tsc && vite build --emptyOutDir",
     "watch:popup": "tsc && vite build --watch",
     "build:content": "tsc && vite build --config vite.config.content.ts",
     "watch:content": "tsc && vite build --config vite.config.content.ts --watch",
