@@ -41,7 +41,7 @@ import {
 } from "@tabler/icons";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface Props {
   data: RowData[];
@@ -50,7 +50,35 @@ interface Props {
 
 const NOT_SPECIFIED = "Not specified";
 
-export default function Home({ data, dataDate }: Props) {
+export default function Home() {
+  const [data, setData] = useState<RowData[]>([]);
+  const [dataDate, setDataDate] = useState<string>("");
+
+  const updateData = () => {
+    const data = localStorage.getItem("jobOffers");
+
+    if (!data) {
+      return;
+    }
+
+    const { offers, lastUpdated }: { offers: RowData[]; lastUpdated: string } =
+      JSON.parse(data);
+
+    setData(offers);
+    setDataDate(new Date(lastUpdated).toLocaleDateString("fr-CH"));
+  };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.localStorage) {
+      window.addEventListener("jobOffersUpdated", () => {
+        console.log("jobOffersUpdated");
+        updateData();
+      });
+
+      updateData();
+    }
+  }, []);
+
   const locations = useMemo(() => data.map((d) => d.location), [data]);
 
   const citiesByCountry = useMemo(() => {
@@ -377,20 +405,3 @@ export default function Home({ data, dataDate }: Props) {
     </>
   );
 }
-
-import { promises as fs } from "fs";
-import path from "path";
-
-import { GetStaticProps } from "next";
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const fileName = "internships-with-good-locations.json";
-  const dataPath = path.join(process.cwd(), "/" + fileName);
-
-  const fileContents = await fs.readFile(dataPath, "utf8");
-  const { dataDate, data } = JSON.parse(fileContents);
-
-  return {
-    props: { data, dataDate },
-  };
-};
