@@ -14,7 +14,7 @@ const HEADERS = [
   'location',
   'sustainabilityLabel',
   'number',
-  'type',
+  'format',
   'registered',
   'positions',
   'professor',
