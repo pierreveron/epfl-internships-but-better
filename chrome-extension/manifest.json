@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "EPFL internships but better",
+  "version": "1.0.0",
+  "action": { "default_popup": "index.html", "default_icon": "favicon.ico" },
+  "permissions": ["scripting", "activeTab", "storage"],
+  "background": {
+    "service_worker": "src/scripts/serviceWorker.ts"
+  },
+  "content_scripts": [
+    {
+      "js": ["src/scripts/contentScript.ts"],
+      "matches": ["https://epfl-internships-but-better.vercel.app/*"]
+    }
+  ],
+  "host_permissions": ["https://epfl-internships-but-better-api.onrender.com/*"]
+}

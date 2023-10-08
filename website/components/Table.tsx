@@ -194,7 +194,7 @@ export default function Table({ data }: { data: RowData[] }) {
             />
           ),
         },
-        { accessor: "name", width: "20%" },
+        { accessor: "title", title: "Offer", width: "20%" },
         { accessor: "company", sortable: true, width: "15%" },
         {
           accessor: "location",
