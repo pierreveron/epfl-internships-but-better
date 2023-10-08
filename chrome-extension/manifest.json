@@ -12,5 +12,6 @@
       "js": ["src/scripts/contentScript.ts"],
       "matches": ["https://epfl-internships-but-better.vercel.app/*"]
     }
-  ]
+  ],
+  "host_permissions": ["https://epfl-internships-but-better-api.onrender.com/*"]
 }
