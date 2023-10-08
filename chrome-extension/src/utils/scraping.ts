@@ -40,10 +40,20 @@ function allProgress(
   return Promise.all(proms)
 }
 
+function fetchAndDecode(url: string) {
+  return fetch(url)
+    .then(function (response) {
+      return response.arrayBuffer()
+    })
+    .then(function (buffer) {
+      const decoder = new TextDecoder('iso-8859-15')
+      return decoder.decode(buffer)
+    })
+}
+
 async function fetchPortalCell() {
   const url = 'https://isa.epfl.ch/imoniteur_ISAP/!PORTAL14S.portalCell?ww_k_cell=308197177'
-  const response = await fetch(url)
-  const data = await response.text()
+  const data = await fetchAndDecode(url)
   return parse(data)
 }
 
@@ -66,6 +76,10 @@ function extractDataFromPortalCell(portalCell: HTMLElement, id: string): Formatt
     professor = null
   }
 
+  rowData.title = rowData.title.trim()
+
+  rowData.company = rowData.company.trim()
+
   rowData.location = rowData.location.trim()
 
   return { ...rowData, format, professor, registered: Number(rowData.registered), positions: Number(rowData.positions) }
@@ -73,8 +87,7 @@ function extractDataFromPortalCell(portalCell: HTMLElement, id: string): Formatt
 
 async function extractDataFromPage(id: string) {
   const url = BASE_URL + id
-  const response = await fetch(url)
-  const data = await response.text()
+  const data = await fetchAndDecode(url)
 
   return extractData(data)
 }
