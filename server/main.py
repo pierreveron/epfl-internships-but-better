@@ -8,5 +8,4 @@ app = FastAPI()
 
 @app.post("/clean-locations")
 async def clean_locations(locations: Annotated[List[str], Body()]):
-    # return locations
     return clean_locations_openai(locations)
