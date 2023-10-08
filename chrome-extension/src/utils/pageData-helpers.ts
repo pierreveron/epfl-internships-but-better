@@ -3,6 +3,8 @@ import { PageData } from './types'
 export function extractData(xml: string): PageData {
   const parsed = parse(xml)
 
+  const length = extractDataFromDetail(parsed, 'STAGE_LABEL_DUREEND1')
+
   const hiringTime = getHiringTime(parsed)
   //   console.log(hiringTime)
 
@@ -28,6 +30,7 @@ export function extractData(xml: string): PageData {
   //   console.log('Related masters', relatedMasters)
 
   return {
+    length,
     hiringTime,
     salary,
     benefits,

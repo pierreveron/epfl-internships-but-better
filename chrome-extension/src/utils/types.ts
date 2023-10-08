@@ -31,6 +31,7 @@ export type Location = {
 export type Format = 'internship' | 'project'
 
 export type PageData = {
+  length: string
   hiringTime: string
   salary: string
   benefits: string
