@@ -1,33 +1,68 @@
 import { parse, HTMLElement } from 'node-html-parser'
 import { PageData } from './types'
+
+// const labels = [
+//   'STAGE_LABEL_FORMAT',
+//   'STAGE_LABEL_NBPLACES',
+//   'STAGE_LABEL_DUREEND1',
+//   'STAGE_LABEL_ENTRMERE',
+//   'STAGE_LABEL_ADRESSE',
+//   'STAGE_LABEL_URL',
+//   'STAGE_LABEL_LOC',
+//   'STAGE_LABEL_TITRE2',
+//   'STAGE_LABEL_MOBILE2',
+//   'STAGE_LABEL_EMAIL',
+//   'STAGE_LABEL_TELPROF2',
+//   'STAGE_LABEL_DESCRIPTION',
+//   'STAGE_LABEL_PLAN_TRAVAIL',
+//   'STAGE_LABEL_CONN_REQU',
+//   'STAGE_LABEL_LANGUES_REQUISES',
+//   'STAGE_LABEL_LOCALISATION',
+//   'STAGE_LABEL_SALAIRE',
+//   'STAGE_LABEL_BENEF',
+//   'STAGE_LABEL_FICHIER',
+//   'STAGE_LABEL_RESPONSABLE',
+//   'STAGE_LABEL_RMQ',
+//   'STAGE_LABEL_CONDINSCR',
+//   'STAGE_LABEL_DESCRIPTIONTRAVAIL',
+//   'STAGE_LABEL_RESP',
+//   'STAGE_LABEL_CADRETRAVAIL',
+//   'STAGE_LABEL_FONCTIONS',
+//   'STAGE_LABEL_COMP',
+//   'STAGE_LABEL_TITRE',
+//   'STAGE_LABEL_MOBILE',
+//   'STAGE_LABEL_TELPROF',
+//   'STAGE_LABEL_FAX2',
+//   'STAGE_LABEL_EMAIL2',
+//   'STAGE_LABEL_TYPETRAVAIL',
+//   'STAGE_LABEL_ETUEPFL',
+//   'STAGE_LABEL_OBJ',
+//   'STAGE_LABEL_RENOUV',
+//   'STAGE_LABEL_DUREE',
+//   'STAGE_LABEL_DEBUT',
+//   'STAGE_LABEL_FIN',
+// ]
+
 export function extractData(xml: string): PageData {
   const parsed = parse(xml)
 
   const length = extractDataFromDetail(parsed, 'STAGE_LABEL_DUREEND1')
 
   const hiringTime = getHiringTime(parsed)
-  //   console.log(hiringTime)
 
   const salary = extractDataFromDetail(parsed, 'STAGE_LABEL_SALAIRE')
-  //   console.log(salary)
 
   const benefits = extractDataFromDetail(parsed, 'STAGE_LABEL_BENEF')
-  //   console.log(benefits)
 
   const description = extractDataFromDetail(parsed, 'STAGE_LABEL_DESCRIPTION')
-  //   console.log(description)
 
   const requiredSkills = extractDataFromDetail(parsed, 'STAGE_LABEL_CONN_REQU')
-  //   console.log(requiredSkills)
 
   const remarks = extractDataFromDetail(parsed, 'STAGE_LABEL_RMQ')
-  //   console.log(remarks)
 
   const languages = getLanguages(parsed)
-  //   console.log('Languages', languages)
 
   const relatedMasters = getRelatedMasters(parsed)
-  //   console.log('Related masters', relatedMasters)
 
   return {
     length,
