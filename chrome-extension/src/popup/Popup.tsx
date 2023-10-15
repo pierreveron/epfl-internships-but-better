@@ -88,7 +88,7 @@ export default function Popup() {
               <label
                 className={classNames(
                   'tw-text-sm tw-font-semibold tw-text-gray-900 tw-border-2 tw-border-[red] tw-rounded-full tw-h-8 tw-aspect-square tw-flex tw-justify-center tw-items-center',
-                  isOnIsaJobBoard && 'tw-bg-[red] tw-text-white',
+                  isOnIsaJobBoard && 'tw-bg-[red] tw-text-white tw-opacity-40',
                 )}
               >
                 1
