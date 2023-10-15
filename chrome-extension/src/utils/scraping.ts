@@ -102,6 +102,10 @@ export async function scrapeJobs(callback: (offersLoaded: number) => void): Prom
     .slice(1)
     .map((e) => e.id)
 
+  if (jobsIds.length === 0) {
+    throw new Error('No jobs found')
+  }
+
   const jobs = jobsIds.map((id) => fetchAndExtract(portalCell, id))
 
   return allProgress(jobs, (offersLoaded) => {
