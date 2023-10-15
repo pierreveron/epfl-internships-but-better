@@ -100,10 +100,12 @@ async function fetchAndExtract(portalCell: HTMLElement, id: string): Promise<Off
 }
 
 export async function scrapeJobs(callback: (text: string) => void): Promise<OfferWithLocationToBeFormatted[]> {
-  const jobsIds = Array.from(document.querySelectorAll("[id^='stage_']")).map((e) => e.id.split('_')[2])
-  console.log(jobsIds)
-
   const portalCell = await fetchPortalCell()
+
+  const jobsIds = portalCell
+    .querySelectorAll('tr')
+    .slice(1)
+    .map((e) => e.id)
 
   const jobs = jobsIds.map((id) => fetchAndExtract(portalCell, id))
 
