@@ -46,7 +46,7 @@ function fetchAndDecode(url: string) {
     })
 }
 
-async function fetchPortalCell() {
+export async function fetchPortalCell() {
   const url = 'https://isa.epfl.ch/imoniteur_ISAP/!PORTAL14S.portalCell?ww_k_cell=308197177'
   const data = await fetchAndDecode(url)
   return parse(data)
