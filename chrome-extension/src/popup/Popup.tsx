@@ -116,7 +116,7 @@ export default function Popup() {
                 2
               </label>
 
-              <div className="tw-group tw-relative tw-flex-1">
+              <div aria-disabled={isOnIsaJobBoard} className="tw-group tw-relative tw-flex-1">
                 <input
                   disabled={!isOnIsaJobBoard}
                   className={classNames(
@@ -138,12 +138,7 @@ export default function Popup() {
                   }}
                 />
 
-                <span
-                  className={classNames(
-                    'tw-pointer-events-none tw-absolute tw--bottom-5 tw-left-0 tw-right-0 tw-w-full tw-opacity-0 tw-transition-opacity',
-                    !isOnIsaJobBoard && 'group-hover:tw-opacity-100',
-                  )}
-                >
+                <span className="tw-pointer-events-none tw-absolute tw--bottom-5 tw-left-0 tw-right-0 tw-w-full tw-opacity-0 tw-transition-opacity group-aria-disabled:tw-opacity-0">
                   Click on the button above first.
                 </span>
               </div>
