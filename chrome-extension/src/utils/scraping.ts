@@ -1,4 +1,5 @@
 import { HTMLElement, parse } from 'node-html-parser'
+import { getCurrentTab } from './chrome-helpers'
 import { extractData } from './pageData-helpers'
 import {
   FormattedPortalCellRowData,
@@ -105,6 +106,12 @@ export async function scrapeJobs(callback: (offersLoaded: number) => void): Prom
   if (jobsIds.length === 0) {
     throw new Error('No jobs found')
   }
+
+  const tab = await getCurrentTab()
+
+  chrome.tabs.sendMessage(tab.id!, {
+    offersCount: jobsIds.length,
+  })
 
   const jobs = jobsIds.map((id) => fetchAndExtract(portalCell, id))
 

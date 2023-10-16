@@ -133,7 +133,22 @@ export default function Popup() {
                       : 'Let the magic happen'
                   }
                   onClick={async () => {
+                    const tab = await getCurrentTab()
+
+                    if (!tab || !tab.id || tab.url !== ISA_JOB_BOARD_URL) return
+
+                    chrome.scripting.executeScript({
+                      target: { tabId: tab.id },
+                      files: ['content/index.js'],
+                    })
+
+                    chrome.scripting.insertCSS({
+                      target: { tabId: tab.id },
+                      files: ['content/index.css'],
+                    })
+
                     chrome.runtime.sendMessage({ message: 'init' })
+
                     setIsLoading(true)
                   }}
                 />

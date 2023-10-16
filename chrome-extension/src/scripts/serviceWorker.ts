@@ -1,3 +1,5 @@
+import { getCurrentTab } from '../utils/chrome-helpers'
+import { ISA_JOB_BOARD_URL, API_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
 import { Offer, Location, OfferWithLocationToBeFormatted } from '../utils/types'
 
@@ -6,12 +8,23 @@ chrome.runtime.onMessage.addListener(async function (request) {
 
   let jobOffers: OfferWithLocationToBeFormatted[] = []
 
+  const tab = await getCurrentTab()
+
+  if (!tab || !tab.id || tab.url !== ISA_JOB_BOARD_URL) {
+    console.error('The current tab is not the ISA job board')
+    return
+  }
+
   try {
-    jobOffers = await scrapeJobs((offersLoaded) =>
+    jobOffers = await scrapeJobs((offersLoaded) => {
+      chrome.tabs.sendMessage(tab.id!, {
+        offersLoaded,
+      })
+
       chrome.runtime.sendMessage({
         offersLoaded,
-      }),
-    )
+      })
+    })
   } catch (error) {
     console.error('Error:', error)
 
@@ -30,7 +43,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
 
   console.log('Formatting the locations')
 
-  fetch('http://localhost:8000/clean-locations', {
+  fetch(API_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
