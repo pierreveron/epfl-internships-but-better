@@ -1,7 +1,7 @@
 import { getCurrentTab } from '../utils/chrome-helpers'
-import { ISA_JOB_BOARD_URL, API_URL } from '../utils/constants'
+import { ISA_JOB_BOARD_URL, API_URL, NEW_JOB_BOARD_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
-import { Offer, Location, OfferWithLocationToBeFormatted } from '../utils/types'
+import { Location, Offer, OfferWithLocationToBeFormatted } from '../utils/types'
 
 chrome.runtime.onMessage.addListener(async function (request) {
   if (request.message !== 'init') return
@@ -74,6 +74,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
         })
         .then(() => {
           console.log('Saved!')
+          chrome.tabs.create({ url: NEW_JOB_BOARD_URL })
         })
     })
     .catch((error) => {
