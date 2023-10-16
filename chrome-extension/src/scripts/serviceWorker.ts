@@ -1,10 +1,7 @@
-import { ISA_JOB_BOARD_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
 import { Offer, Location, OfferWithLocationToBeFormatted } from '../utils/types'
 
-chrome.runtime.onMessage.addListener(async function (request, sender) {
-  if (!sender.tab || sender.tab.url !== ISA_JOB_BOARD_URL) return
-
+chrome.runtime.onMessage.addListener(async function (request) {
   if (request.message !== 'init') return
 
   let jobOffers: OfferWithLocationToBeFormatted[] = []
