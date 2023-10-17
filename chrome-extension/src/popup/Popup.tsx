@@ -142,11 +142,6 @@ export default function Popup() {
                       files: ['content/index.js'],
                     })
 
-                    chrome.scripting.insertCSS({
-                      target: { tabId: tab.id },
-                      files: ['content/index.css'],
-                    })
-
                     chrome.runtime.sendMessage({ message: 'init' })
 
                     setIsLoading(true)
