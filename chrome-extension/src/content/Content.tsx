@@ -1,7 +1,8 @@
-import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { ArrowLongRightIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment, useEffect, useState } from 'react'
 import styles from '../styles/index.css?inline'
+import loadingStyle from '../styles/loading-dots.css?inline'
 
 export default function Content() {
   const [offersCount, setOffersCount] = useState<number | null>(null)
@@ -28,9 +29,11 @@ export default function Content() {
       const style = document.createElement('style')
       style.innerHTML = styles
 
-      const sheet = new CSSStyleSheet()
-      sheet.replaceSync(styles)
-      shadow.adoptedStyleSheets = [sheet]
+      const sheetTailwind = new CSSStyleSheet()
+      sheetTailwind.replaceSync(styles)
+      const sheetLoading = new CSSStyleSheet()
+      sheetLoading.replaceSync(loadingStyle)
+      shadow.adoptedStyleSheets = [sheetTailwind, sheetLoading]
 
       // Move root to shadow DOM
       root.shadowRoot!.appendChild(root.childNodes[0]!)
@@ -77,33 +80,30 @@ export default function Content() {
                       <XMarkIcon className="tw-h-6 tw-w-6" aria-hidden="true" />
                     </button>
                   </div>
-                  <div className="sm:tw-flex sm:tw-items-start">
-                    <div className="tw-mx-auto tw-flex tw-h-12 tw-w-12 tw-flex-shrink-0 tw-items-center tw-justify-center tw-rounded-full tw-bg-red-100 sm:tw-mx-0 sm:tw-h-10 sm:tw-w-10">
-                      <ExclamationTriangleIcon className="tw-h-6 tw-w-6 tw-text-red-600" aria-hidden="true" />
-                    </div>
-                    <div className="tw-mt-3 tw-text-center sm:tw-ml-4 sm:tw-mt-0 sm:tw-text-left">
-                      <Dialog.Title as="h3" className="tw-text-base tw-font-semibold tw-leading-6 tw-text-gray-900">
-                        Deactivate account
-                      </Dialog.Title>
-                      <div className="tw-mt-2">
-                        <p className="tw-text-sm tw-text-gray-500">
-                          Are you sure you want to deactivate your account? All of your data will be permanently removed
-                          from our servers forever. This action cannot be undone.
-                        </p>
-                      </div>
+                  <div className="tw-mt-3 tw-text-center sm:tw-ml-4 sm:tw-mt-0 sm:tw-text-left">
+                    <Dialog.Title as="h3" className="tw-text-base tw-font-semibold tw-leading-6 tw-text-gray-900">
+                      Exporting offers
+                    </Dialog.Title>
+                    <div className="tw-mt-2">
+                      {offersCount ? (
+                        <p className="tw-text-sm tw-text-gray-500">{`${offersLoaded}/${offersCount}`}</p>
+                      ) : (
+                        <div className="dot-flashing tw-ml-4"></div>
+                      )}
                     </div>
                   </div>
                   <div className="tw-mt-5 sm:tw-mt-4 sm:tw-flex sm:tw-flex-row-reverse">
                     <button
                       type="button"
-                      className="tw-inline-flex tw-w-full tw-justify-center tw-rounded-md tw-bg-red-600 tw-px-3 tw-py-2 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm hover:tw-bg-red-500 sm:tw-ml-3 sm:tw-w-auto"
+                      className="tw-inline-flex tw-w-full tw-justify-center tw-items-center tw-rounded-md tw-bg-red-600 tw-px-3 tw-py-2 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm hover:tw-bg-red-500 sm:tw-ml-3 sm:tw-w-auto"
                       onClick={() => setOpen(false)}
                     >
-                      Deactivate
+                      Go
+                      <ArrowLongRightIcon className="tw-h-6 tw-w-6 tw-text-white" aria-hidden="true" />
                     </button>
                     <button
                       type="button"
-                      className="tw-mt-3 tw-inline-flex tw-w-full tw-justify-center tw-rounded-md tw-bg-white tw-px-3 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-shadow-sm tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 sm:tw-mt-0 sm:tw-w-auto"
+                      className="tw-mt-3 tw-inline-flex tw-w-full tw-justify-center tw-items-center tw-rounded-md tw-bg-white tw-px-3 tw-py-2 tw-text-sm tw-font-semibold tw-text-gray-900 tw-shadow-sm tw-ring-1 tw-ring-inset tw-ring-gray-300 hover:tw-bg-gray-50 sm:tw-mt-0 sm:tw-w-auto"
                       onClick={() => setOpen(false)}
                     >
                       Cancel
