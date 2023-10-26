@@ -1,5 +1,5 @@
 import { getCurrentTab } from '../utils/chrome-helpers'
-import { ISA_JOB_BOARD_URL, API_URL, NEW_JOB_BOARD_URL } from '../utils/constants'
+import { ISA_JOB_BOARD_URL, /*API_URL,*/ NEW_JOB_BOARD_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
 import { Location, Offer, OfferWithLocationToBeFormatted } from '../utils/types'
 
@@ -16,18 +16,13 @@ chrome.runtime.onMessage.addListener(async function (request) {
   }
 
   try {
-    jobOffers = await scrapeJobs((offersLoaded) => {
-      chrome.tabs.sendMessage(tab.id!, {
-        offersLoaded,
-      })
-
+    jobOffers = await scrapeJobs((offersCount, offersLoaded) => {
       chrome.runtime.sendMessage({
+        offersCount,
         offersLoaded,
       })
     })
   } catch (error) {
-    console.error('Error:', error)
-
     chrome.runtime.sendMessage({
       error,
     })
@@ -36,6 +31,10 @@ chrome.runtime.onMessage.addListener(async function (request) {
 
   if (!jobOffers) return
 
+  chrome.tabs.create({ url: NEW_JOB_BOARD_URL })
+
+  return
+
   const locationsToBeFormatted = jobOffers.map((offer) => offer.location)
   console.log('Locations:', locationsToBeFormatted)
   const stringifiedLocations = JSON.stringify(locationsToBeFormatted)
@@ -43,7 +42,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
 
   console.log('Formatting the locations')
 
-  fetch(API_URL, {
+  fetch('http://localhost:8000/clean-locations', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

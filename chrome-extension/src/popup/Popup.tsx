@@ -7,11 +7,10 @@ import { fetchPortalCell } from '../utils/scraping'
 export default function Popup() {
   const [isError, setIsError] = useState(false)
   const [isOnIsaJobBoard, setIsOnIsaJobBoard] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
 
   const [offersCount, setOffersCount] = useState<number | null>(null)
 
-  const [offersLoaded, setOffersLoaded] = useState<number>(0)
+  const [offersLoaded, setOffersLoaded] = useState<number | null>(null)
 
   useEffect(() => {
     async function fetchOffersCount() {
@@ -122,29 +121,20 @@ export default function Popup() {
                   className={classNames(
                     'tw-rounded-md tw-bg-[red] tw-px-2.5 tw-py-1.5 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm hover:tw-bg-[red] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[red] tw-w-full',
                     'disabled:tw-cursor-not-allowed disabled:tw-opacity-40',
-                    isLoading ? 'tw-cursor-wait' : 'tw-cursor-pointer',
+                    offersLoaded != null ? 'tw-cursor-wait' : 'tw-cursor-pointer',
                   )}
                   type="button"
                   value={
-                    isLoading
-                      ? offersCount
+                    offersLoaded !== null
+                      ? offersLoaded > 0
                         ? `${offersLoaded}/${offersCount} offers extracted`
                         : 'Waiting...'
                       : 'Let the magic happen'
                   }
                   onClick={async () => {
-                    const tab = await getCurrentTab()
-
-                    if (!tab || !tab.id || tab.url !== ISA_JOB_BOARD_URL) return
-
-                    chrome.scripting.executeScript({
-                      target: { tabId: tab.id },
-                      files: ['content/index.js'],
-                    })
+                    setOffersLoaded(0)
 
                     chrome.runtime.sendMessage({ message: 'init' })
-
-                    setIsLoading(true)
                   }}
                 />
 

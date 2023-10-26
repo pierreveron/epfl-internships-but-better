@@ -1,5 +1,4 @@
 import { HTMLElement, parse } from 'node-html-parser'
-import { getCurrentTab } from './chrome-helpers'
 import { extractData } from './pageData-helpers'
 import {
   FormattedPortalCellRowData,
@@ -95,7 +94,9 @@ async function fetchAndExtract(portalCell: HTMLElement, id: string): Promise<Off
   return { id, ...portalCellData, ...pageData }
 }
 
-export async function scrapeJobs(callback: (offersLoaded: number) => void): Promise<OfferWithLocationToBeFormatted[]> {
+export async function scrapeJobs(
+  callback: (offersCount: number, offersLoaded: number) => void,
+): Promise<OfferWithLocationToBeFormatted[]> {
   const portalCell = await fetchPortalCell()
 
   const jobsIds = portalCell
@@ -107,15 +108,9 @@ export async function scrapeJobs(callback: (offersLoaded: number) => void): Prom
     throw new Error('No jobs found')
   }
 
-  const tab = await getCurrentTab()
-
-  chrome.tabs.sendMessage(tab.id!, {
-    offersCount: jobsIds.length,
-  })
-
   const jobs = jobsIds.map((id) => fetchAndExtract(portalCell, id))
 
   return allProgress(jobs, (offersLoaded) => {
-    callback(offersLoaded)
+    callback(jobsIds.length, offersLoaded)
   })
 }
