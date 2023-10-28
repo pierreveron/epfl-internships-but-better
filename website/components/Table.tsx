@@ -11,10 +11,10 @@ import { RowData } from "@/types";
 import { formatToLabel } from "@/utils/format";
 import { Checkbox, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { IconStar } from "@tabler/icons";
 import { useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
+import HeartIcon from "./HeartIcon";
 
 const PAGE_SIZE = 15;
 
@@ -175,11 +175,10 @@ export default function Table({ data }: { data: RowData[] }) {
         {
           accessor: "favorite",
           render: ({ favorite, number }) => (
-            <Checkbox
-              icon={({ className }) => <IconStar className={className} />}
+            <HeartIcon
               checked={favorite}
-              onChange={(event) => {
-                let checked = event.currentTarget.checked;
+              onClick={() => {
+                let checked = !favorite;
                 setFavoriteInternships((favorites) => {
                   if (checked) {
                     if (!favorites.includes(number)) {
