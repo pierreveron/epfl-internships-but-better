@@ -1,5 +1,6 @@
 import {
   formatAtom,
+  formattingOffersAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
@@ -69,6 +70,8 @@ export default function Home() {
       abortFormatting();
     };
 
+    setIsFormattingLocations(true);
+
     const formattedOffers = await formatLocations(offers);
 
     window.onbeforeunload = null;
@@ -89,6 +92,8 @@ export default function Home() {
 
     setData(formattedOffers);
     setDataDate(new Date(lastUpdated).toLocaleDateString("fr-CH"));
+
+    setIsFormattingLocations(false);
   };
 
   useEffect(() => {
@@ -134,6 +139,7 @@ export default function Home() {
   const setSelectableLengths = useSetAtom(lengthAtom);
   const setSelectableLocations = useSetAtom(locationsAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
+  const setIsFormattingLocations = useSetAtom(formattingOffersAtom);
 
   useEffect(() => {
     setSelectableFormats(

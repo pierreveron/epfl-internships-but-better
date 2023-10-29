@@ -6,6 +6,8 @@ import {
 } from "@/types";
 import { atom } from "jotai";
 
+export const formattingOffersAtom = atom<boolean>(false);
+
 export const locationsAtom = atom<Record<string, SelectableCity[]>>({});
 
 export const formatAtom = atom<SelectableFormat[]>([]);

@@ -1,6 +1,7 @@
 import {
   companyAtom,
   formatAtom,
+  formattingOffersAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
@@ -39,6 +40,7 @@ const sortBy = (data: Offer[], columnAccessor: string) => {
 };
 
 export default function Table({ data }: { data: Offer[] }) {
+  const isFormatingLocations = useAtomValue(formattingOffersAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const selectableFormats = useAtomValue(formatAtom);
   const selectableLengths = useAtomValue(lengthAtom);
@@ -170,6 +172,8 @@ export default function Table({ data }: { data: Offer[] }) {
     <DataTable
       withBorder
       highlightOnHover
+      fetching={isFormatingLocations}
+      loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
       records={records}
       columns={[
         {
