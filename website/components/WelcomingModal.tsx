@@ -54,27 +54,19 @@ const PageOne = () => (
 const PageTwo = ({ dataDate }: { dataDate: string }) => (
   <>
     <Text>
-      The data used here are internships targeting{" "}
-      <Text span fw={700}>
-        Computer Science
-      </Text>{" "}
-      students.
+      The data used to build this website is extracted from the official
+      interface of IS-Academia. It is then processed and stored locally on your
+      computer.
     </Text>
+
     <Text>
-      If you are from this department, you can use this website to to browse
-      available internships assuming the data is{" "}
-      <Text span fw={700}>
-        up-to-date
-      </Text>
-      . Current data dates from the{" "}
-      <Text span fw={700} className="shine">
-        {dataDate}
-      </Text>
-      .
+      The data is not updated automatically. You can update it manually by
+      following the instructions of the Chrome extension.
     </Text>
+
     <Alert
       icon={<IconAlertCircle size={16} />}
-      title="This website don't fully replace IS-Academia"
+      title="This website don't replace IS-Academia"
       color="red"
     >
       Once you identify an internship of interest, please take note of its
