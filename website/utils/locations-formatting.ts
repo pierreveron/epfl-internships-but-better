@@ -1,7 +1,6 @@
 import { Offer, OfferWithLocationToBeFormatted, Location } from "../../types";
 
-// const API_URL = "https://epfl-internships-but-better-api.onrender.com";
-const API_URL = "http://localhost:8000";
+const API_URL = "https://epfl-internships-but-better-api.onrender.com";
 
 const controller = new AbortController();
 
