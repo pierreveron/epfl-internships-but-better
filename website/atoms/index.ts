@@ -1,9 +1,4 @@
-import {
-  SelectableCity,
-  SelectableCompany,
-  SelectableFormat,
-  SelectableLength,
-} from "@/types";
+import { SelectableCity, SelectableFormat, SelectableLength } from "@/types";
 import { atom } from "jotai";
 
 export const formattingOffersAtom = atom<boolean>(false);
