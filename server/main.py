@@ -7,6 +7,7 @@ from clean_bad_locations_openai import clean_locations as clean_locations_openai
 app = FastAPI()
 
 origins = [
+    "https://epfl-internships-but-better.vercel.app",
     "http://localhost:3000",
 ]
 
