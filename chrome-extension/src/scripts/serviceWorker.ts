@@ -1,54 +1,42 @@
-import { ISA_JOB_BOARD_URL } from '../utils/constants'
-import { Location, Offer, OfferWithLocationToBeFormatted } from '../utils/types'
+import { getCurrentTab } from '../utils/chrome-helpers'
+import { ISA_JOB_BOARD_URL, NEW_JOB_BOARD_URL } from '../utils/constants'
+import { scrapeJobs } from '../utils/scraping'
+import { OfferWithLocationToBeFormatted } from '../utils/types'
 
-chrome.runtime.onMessage.addListener(function (request, sender) {
-  if (!sender.tab || sender.tab.url !== ISA_JOB_BOARD_URL) return
+chrome.runtime.onMessage.addListener(async function (request) {
+  if (request.message !== 'init') return
 
-  if (!request.jobOffers) return
+  let jobOffers: OfferWithLocationToBeFormatted[] = []
 
-  const jobOffers = request.jobOffers as OfferWithLocationToBeFormatted[]
+  const tab = await getCurrentTab()
 
-  const locationsToBeFormatted = jobOffers.map((offer) => offer.location)
-  console.log('Locations:', locationsToBeFormatted)
-  const stringifiedLocations = JSON.stringify(locationsToBeFormatted)
-  console.log('Stringified locations:', stringifiedLocations)
+  if (!tab || !tab.id || tab.url !== ISA_JOB_BOARD_URL) {
+    console.error('The current tab is not the ISA job board')
+    return
+  }
 
-  console.log('Formatting the locations')
+  try {
+    jobOffers = await scrapeJobs((offersCount, offersLoaded) => {
+      chrome.runtime.sendMessage({
+        offersCount,
+        offersLoaded,
+      })
+    })
+  } catch (error) {
+    chrome.runtime.sendMessage({
+      error,
+    })
+    return
+  }
 
-  fetch('http://localhost:8000/clean-locations', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  if (!jobOffers) return
+
+  await chrome.storage.local.set({
+    jobOffers: {
+      offers: jobOffers,
+      lastUpdated: Date.now(),
     },
-    body: stringifiedLocations,
   })
-    .then((response) => response.json())
-    .then((data: { locations: { [key: string]: Location[] } }) => {
-      console.log('Formatted!:', data)
-      const { locations } = data
-      // Replace offers original location by new one
 
-      const correctedJobOffers = jobOffers.map((offer) => ({
-        ...offer,
-        location: locations[offer.location],
-      })) as Offer[]
-      return correctedJobOffers
-    })
-    .then((jobOffers: Offer[]) => {
-      console.log('Saving job offers in local storage of the extension', jobOffers)
-
-      chrome.storage.local
-        .set({
-          jobOffers: {
-            offers: jobOffers,
-            lastUpdated: Date.now(),
-          },
-        })
-        .then(() => {
-          console.log('Saved!')
-        })
-    })
-    .catch((error) => {
-      console.error('Error:', error)
-    })
+  chrome.tabs.create({ url: NEW_JOB_BOARD_URL })
 })

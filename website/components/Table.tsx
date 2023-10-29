@@ -1,26 +1,27 @@
 import {
   companyAtom,
   formatAtom,
+  formattingOffersAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
-import { RowData } from "@/types";
 import { formatToLabel } from "@/utils/format";
-import { Checkbox, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { IconStar } from "@tabler/icons";
 import { useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
+import { Offer } from "../../types";
+import HeartIcon from "./HeartIcon";
 
 const PAGE_SIZE = 15;
 
 const NOT_SPECIFIED = "Not specified";
 
-const sortBy = (data: RowData[], columnAccessor: string) => {
+const sortBy = (data: Offer[], columnAccessor: string) => {
   let dataSorted = data;
   if (columnAccessor === "company") {
     dataSorted = data.sort((a, b) => {
@@ -38,7 +39,8 @@ const sortBy = (data: RowData[], columnAccessor: string) => {
   return dataSorted;
 };
 
-export default function Table({ data }: { data: RowData[] }) {
+export default function Table({ data }: { data: Offer[] }) {
+  const isFormatingLocations = useAtomValue(formattingOffersAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const selectableFormats = useAtomValue(formatAtom);
   const selectableLengths = useAtomValue(lengthAtom);
@@ -52,7 +54,7 @@ export default function Table({ data }: { data: RowData[] }) {
   const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
     key: "favorite-internships",
     getInitialValueInEffect: false,
-    defaultValue: [] as number[],
+    defaultValue: [] as string[],
   });
 
   const [page, setPage] = useState(1);
@@ -156,30 +158,31 @@ export default function Table({ data }: { data: RowData[] }) {
 
     d = d.slice(from, to);
     // add favorite property if present in favoriteInternships
-    d = d.map((d) => {
+    const records = d.map((d) => {
       return {
         ...d,
         favorite: favoriteInternships.includes(d.number),
       };
     });
 
-    setRecords(d);
+    setRecords(records);
   }, [page, filteredData, sortStatus.direction, favoriteInternships]);
 
   return (
     <DataTable
       withBorder
       highlightOnHover
+      fetching={isFormatingLocations}
+      loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
       records={records}
       columns={[
         {
           accessor: "favorite",
           render: ({ favorite, number }) => (
-            <Checkbox
-              icon={({ className }) => <IconStar className={className} />}
+            <HeartIcon
               checked={favorite}
-              onChange={(event) => {
-                let checked = event.currentTarget.checked;
+              onClick={() => {
+                let checked = !favorite;
                 setFavoriteInternships((favorites) => {
                   if (checked) {
                     if (!favorites.includes(number)) {

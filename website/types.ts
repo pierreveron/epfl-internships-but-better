@@ -1,6 +1,6 @@
 export type RowData = {
   id: number;
-  name: string;
+  title: string;
   company: string;
   location: Location[];
   number: number;
@@ -10,7 +10,6 @@ export type RowData = {
   professor: string;
   length: string;
   creationDate: string;
-  favorite: boolean;
 };
 
 export type Location = {

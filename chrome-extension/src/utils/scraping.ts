@@ -5,7 +5,6 @@ import {
   Format as OfferFormat,
   OfferWithLocationToBeFormatted,
   OriginalPortalCellRowData,
-  PageData,
 } from './types'
 
 const HEADERS = [
@@ -25,16 +24,12 @@ const BASE_URL = 'https://isa.epfl.ch/imoniteur_ISAP/!PORTAL14S.portalCell?ww_k_
 
 const zip = (a: string[], b: string[]) => a.map((k, i) => ({ [k]: b[i] }))
 
-function allProgress(
-  proms: Promise<OfferWithLocationToBeFormatted>[],
-  progress_cb: (p: number, data?: PageData) => void,
-) {
+function allProgress(proms: Promise<OfferWithLocationToBeFormatted>[], progress_cb: (p: number) => void) {
   let d = 0
   progress_cb(0)
   for (const p of proms) {
-    p.then((res) => {
-      d++
-      progress_cb((d * 100) / proms.length, res)
+    p.then(() => {
+      progress_cb(++d)
     })
   }
   return Promise.all(proms)
@@ -51,7 +46,7 @@ function fetchAndDecode(url: string) {
     })
 }
 
-async function fetchPortalCell() {
+export async function fetchPortalCell() {
   const url = 'https://isa.epfl.ch/imoniteur_ISAP/!PORTAL14S.portalCell?ww_k_cell=308197177'
   const data = await fetchAndDecode(url)
   return parse(data)
@@ -99,17 +94,23 @@ async function fetchAndExtract(portalCell: HTMLElement, id: string): Promise<Off
   return { id, ...portalCellData, ...pageData }
 }
 
-export async function scrapeJobs(callback: (text: string) => void): Promise<OfferWithLocationToBeFormatted[]> {
-  const jobsIds = Array.from(document.querySelectorAll("[id^='stage_']")).map((e) => e.id.split('_')[2])
-  console.log(jobsIds)
-
+export async function scrapeJobs(
+  callback: (offersCount: number, offersLoaded: number) => void,
+): Promise<OfferWithLocationToBeFormatted[]> {
   const portalCell = await fetchPortalCell()
+
+  const jobsIds = portalCell
+    .querySelectorAll('tr')
+    .slice(1)
+    .map((e) => e.id)
+
+  if (jobsIds.length === 0) {
+    throw new Error('No jobs found')
+  }
 
   const jobs = jobsIds.map((id) => fetchAndExtract(portalCell, id))
 
-  return allProgress(jobs, (p, data) => {
-    console.log(data)
-    callback(`% Done = ${p.toFixed(2)}`)
-    console.log(`% Done = ${p.toFixed(2)}`)
+  return allProgress(jobs, (offersLoaded) => {
+    callback(jobsIds.length, offersLoaded)
   })
 }
