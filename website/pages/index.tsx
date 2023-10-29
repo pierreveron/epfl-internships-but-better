@@ -15,10 +15,12 @@ import {
   SelectableFormat,
   SelectableLength,
 } from "@/types";
+import { abortFormatting, formatLocations } from "@/utils/locations-formatting";
 import { Stack } from "@mantine/core";
 import { useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
+import { Offer, OfferWithLocationToBeFormatted } from "../../types";
 
 interface Props {
   data: RowData[];
@@ -28,20 +30,64 @@ interface Props {
 const NOT_SPECIFIED = "Not specified";
 
 export default function Home() {
-  const [data, setData] = useState<RowData[]>([]);
+  const [data, setData] = useState<Offer[]>([]);
   const [dataDate, setDataDate] = useState<string>("");
 
-  const updateData = () => {
+  const loadOffers = async () => {
     const data = localStorage.getItem("jobOffers");
+
+    console.log("Loading job offers from local storage of the extension");
+
+    if (data) {
+      const { offers, lastUpdated }: { offers: Offer[]; lastUpdated: string } =
+        JSON.parse(data);
+
+      setData(offers);
+      setDataDate(new Date(lastUpdated).toLocaleDateString("fr-CH"));
+    } else {
+      updateData();
+    }
+  };
+
+  const updateData = async () => {
+    const data = localStorage.getItem("offersWithLocationToBeFormatted");
 
     if (!data) {
       return;
     }
 
-    const { offers, lastUpdated }: { offers: RowData[]; lastUpdated: string } =
+    const {
+      offers,
+      lastUpdated,
+    }: { offers: OfferWithLocationToBeFormatted[]; lastUpdated: string } =
       JSON.parse(data);
 
-    setData(offers);
+    window.onbeforeunload = function () {
+      return "Data is currently processed and will be lost if you leave the page, are you sure?";
+    };
+    window.onunload = function () {
+      abortFormatting();
+    };
+
+    const formattedOffers = await formatLocations(offers);
+
+    window.onbeforeunload = null;
+    window.onunload = null;
+
+    if (formattedOffers === null) {
+      console.log("An error occured while formatting the offers");
+      return;
+    }
+
+    localStorage.setItem(
+      "jobOffers",
+      JSON.stringify({
+        offers: formattedOffers,
+        lastUpdated,
+      })
+    );
+
+    setData(formattedOffers);
     setDataDate(new Date(lastUpdated).toLocaleDateString("fr-CH"));
   };
 
@@ -52,7 +98,7 @@ export default function Home() {
         updateData();
       });
 
-      updateData();
+      loadOffers();
     }
   }, []);
 

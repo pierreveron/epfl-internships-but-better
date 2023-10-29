@@ -1,7 +1,7 @@
 import { getCurrentTab } from '../utils/chrome-helpers'
-import { ISA_JOB_BOARD_URL, /*API_URL,*/ NEW_JOB_BOARD_URL } from '../utils/constants'
+import { ISA_JOB_BOARD_URL, NEW_JOB_BOARD_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
-import { Location, Offer, OfferWithLocationToBeFormatted } from '../utils/types'
+import { OfferWithLocationToBeFormatted } from '../utils/types'
 
 chrome.runtime.onMessage.addListener(async function (request) {
   if (request.message !== 'init') return
@@ -31,52 +31,12 @@ chrome.runtime.onMessage.addListener(async function (request) {
 
   if (!jobOffers) return
 
-  chrome.tabs.create({ url: NEW_JOB_BOARD_URL })
-
-  return
-
-  const locationsToBeFormatted = jobOffers.map((offer) => offer.location)
-  console.log('Locations:', locationsToBeFormatted)
-  const stringifiedLocations = JSON.stringify(locationsToBeFormatted)
-  console.log('Stringified locations:', stringifiedLocations)
-
-  console.log('Formatting the locations')
-
-  fetch('http://localhost:8000/clean-locations', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+  await chrome.storage.local.set({
+    jobOffers: {
+      offers: jobOffers,
+      lastUpdated: Date.now(),
     },
-    body: stringifiedLocations,
   })
-    .then((response) => response.json())
-    .then((data: { locations: { [key: string]: Location[] } }) => {
-      console.log('Formatted!:', data)
-      const { locations } = data
-      // Replace offers original location by new one
 
-      const correctedJobOffers = jobOffers.map((offer) => ({
-        ...offer,
-        location: locations[offer.location],
-      })) as Offer[]
-      return correctedJobOffers
-    })
-    .then((jobOffers: Offer[]) => {
-      console.log('Saving job offers in local storage of the extension', jobOffers)
-
-      chrome.storage.local
-        .set({
-          jobOffers: {
-            offers: jobOffers,
-            lastUpdated: Date.now(),
-          },
-        })
-        .then(() => {
-          console.log('Saved!')
-          chrome.tabs.create({ url: NEW_JOB_BOARD_URL })
-        })
-    })
-    .catch((error) => {
-      console.error('Error:', error)
-    })
+  chrome.tabs.create({ url: NEW_JOB_BOARD_URL })
 })
