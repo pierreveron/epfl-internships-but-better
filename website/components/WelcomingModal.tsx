@@ -12,6 +12,78 @@ import { useCounter, useDisclosure, useLocalStorage } from "@mantine/hooks";
 import { IconAlertCircle } from "@tabler/icons";
 import { useEffect } from "react";
 
+const PageOne = () => (
+  <>
+    <Text>
+      The official interface tends to be not particularly user-friendly,
+      especially when it comes to filtering locations. For example, if you want
+      to look for internships in{" "}
+      <Text span fw={700}>
+        Lausanne
+      </Text>
+      , you have to select{" "}
+      <Text span fw={700}>
+        &quot;Lausanne&quot;
+      </Text>{" "}
+      but also{" "}
+      <Text span fw={700}>
+        &quot;Lausanne/Geneva&quot;
+      </Text>
+      ,{" "}
+      <Text span fw={700}>
+        &quot;Lausanne/Genève&quot;
+      </Text>{" "}
+      or{" "}
+      <Text span fw={700}>
+        &quot;Lausanne/Zurich&quot;
+      </Text>{" "}
+      and so many more.
+    </Text>
+
+    <Text>
+      This concept notably aims to address this particular issue. The exact
+      cities have been extracted from the original list of locations using{" "}
+      <Text span fw={700} c="red" className="shine">
+        GPT-3
+      </Text>
+      .
+    </Text>
+  </>
+);
+
+const PageTwo = ({ dataDate }: { dataDate: string }) => (
+  <>
+    <Text>
+      The data used here are internships targeting{" "}
+      <Text span fw={700}>
+        Computer Science
+      </Text>{" "}
+      students.
+    </Text>
+    <Text>
+      If you are from this department, you can use this website to to browse
+      available internships assuming the data is{" "}
+      <Text span fw={700}>
+        up-to-date
+      </Text>
+      . Current data dates from the{" "}
+      <Text span fw={700} className="shine">
+        {dataDate}
+      </Text>
+      .
+    </Text>
+    <Alert
+      icon={<IconAlertCircle size={16} />}
+      title="This website don't fully replace IS-Academia"
+      color="red"
+    >
+      Once you identify an internship of interest, please take note of its
+      number and look for it on IS-Academia, where you can submit your
+      application.
+    </Alert>
+  </>
+);
+
 export default function WelcomingModal({ dataDate }: { dataDate: string }) {
   const [hasModalBeenClosed, setHasModalBeenClosed] = useLocalStorage({
     key: "modal-closed",
@@ -63,77 +135,8 @@ export default function WelcomingModal({ dataDate }: { dataDate: string }) {
           This website is a redesign concept of the Internships tab on{" "}
           <span style={{ whiteSpace: "nowrap" }}>IS-Academia</span>.
         </Title>
-        {modalPageCounter == 0 && (
-          <>
-            <Text>
-              The official interface tends to be not particularly user-friendly,
-              especially when it comes to filtering locations. For example, if
-              you want to look for internships in{" "}
-              <Text span fw={700}>
-                Lausanne
-              </Text>
-              , you have to select{" "}
-              <Text span fw={700}>
-                &quot;Lausanne&quot;
-              </Text>{" "}
-              but also{" "}
-              <Text span fw={700}>
-                &quot;Lausanne/Geneva&quot;
-              </Text>
-              ,{" "}
-              <Text span fw={700}>
-                &quot;Lausanne/Genève&quot;
-              </Text>{" "}
-              or{" "}
-              <Text span fw={700}>
-                &quot;Lausanne/Zurich&quot;
-              </Text>{" "}
-              and so many more.
-            </Text>
-
-            <Text>
-              This concept notably aims to address this particular issue. The
-              exact cities have been extracted from the original list of
-              locations using{" "}
-              <Text span fw={700} c="red" className="shine">
-                GPT-3
-              </Text>
-              .
-            </Text>
-          </>
-        )}
-        {modalPageCounter > 0 && (
-          <>
-            <Text>
-              The data used here are internships targeting{" "}
-              <Text span fw={700}>
-                Computer Science
-              </Text>{" "}
-              students.
-            </Text>
-            <Text>
-              If you are from this department, you can use this website to to
-              browse available internships assuming the data is{" "}
-              <Text span fw={700}>
-                up-to-date
-              </Text>
-              . Current data dates from the{" "}
-              <Text span fw={700} className="shine">
-                {dataDate}
-              </Text>
-              .
-            </Text>
-            <Alert
-              icon={<IconAlertCircle size={16} />}
-              title="This website don't fully replace IS-Academia"
-              color="red"
-            >
-              Once you identify an internship of interest, please take note of
-              its number and look for it on IS-Academia, where you can submit
-              your application.
-            </Alert>
-          </>
-        )}
+        {modalPageCounter == 0 && <PageOne />}
+        {modalPageCounter > 0 && <PageTwo dataDate={dataDate} />}
 
         <Group>
           {modalPageCounter > 0 && (
