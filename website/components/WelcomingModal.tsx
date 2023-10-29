@@ -51,7 +51,7 @@ const PageOne = () => (
   </>
 );
 
-const PageTwo = ({ dataDate }: { dataDate: string }) => (
+const PageTwo = () => (
   <>
     <Text>
       The data used to build this website is extracted from the official
@@ -76,7 +76,7 @@ const PageTwo = ({ dataDate }: { dataDate: string }) => (
   </>
 );
 
-export default function WelcomingModal({ dataDate }: { dataDate: string }) {
+export default function WelcomingModal() {
   const [hasModalBeenClosed, setHasModalBeenClosed] = useLocalStorage({
     key: "modal-closed",
     defaultValue: false,
@@ -128,7 +128,7 @@ export default function WelcomingModal({ dataDate }: { dataDate: string }) {
           <span style={{ whiteSpace: "nowrap" }}>IS-Academia</span>.
         </Title>
         {modalPageCounter == 0 && <PageOne />}
-        {modalPageCounter > 0 && <PageTwo dataDate={dataDate} />}
+        {modalPageCounter > 0 && <PageTwo />}
 
         <Group>
           {modalPageCounter > 0 && (

@@ -10,23 +10,13 @@ import Footer from "@/components/Footer";
 import Table from "@/components/Table";
 import WelcomingModal from "@/components/WelcomingModal";
 
-import {
-  RowData,
-  SelectableCity,
-  SelectableFormat,
-  SelectableLength,
-} from "@/types";
+import { SelectableCity, SelectableFormat, SelectableLength } from "@/types";
 import { abortFormatting, formatLocations } from "@/utils/locations-formatting";
 import { Stack } from "@mantine/core";
 import { useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferWithLocationToBeFormatted } from "../../types";
-
-interface Props {
-  data: RowData[];
-  dataDate: string;
-}
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -179,7 +169,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <WelcomingModal dataDate={dataDate} />
+      <WelcomingModal />
 
       <Stack style={{ height: "100vh" }} p="xl">
         <ActionBar
