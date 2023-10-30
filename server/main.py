@@ -1,10 +1,17 @@
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Request
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Annotated
+
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 
 app = FastAPI()
+limiter = Limiter(key_func=get_remote_address)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 origins = [
     "https://epfl-internships-but-better.vercel.app",
@@ -21,5 +28,8 @@ app.add_middleware(
 
 
 @app.post("/clean-locations")
-async def clean_locations(locations: Annotated[List[str], Body()]):
+@limiter.limit("3/day")
+async def clean_locations(request: Request, locations: Annotated[List[str], Body()]):
+    if len(locations) > 500:
+        return {"error": "Too many locations"}
     return clean_locations_openai(locations)

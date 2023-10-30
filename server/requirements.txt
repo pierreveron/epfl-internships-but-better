@@ -6,3 +6,4 @@ openai==0.28.1
 pydantic==1.10.11
 orjson==3.9.7
 langchain[llms]
+slowapi==0.1.8
