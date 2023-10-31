@@ -63,7 +63,7 @@ export default function Popup() {
 
       <div className="tw-space-y-2">
         <p className="tw-text-sm tw-text-gray-500 tw-text-left">
-          This extension will automatically extract the job offers from IS-Academia and display them in a more
+          This extension will automatically export the job offers from IS-Academia and display them in a more
           user-friendly way.
         </p>
 
@@ -136,7 +136,7 @@ export default function Popup() {
                 >
                   {offersLoaded !== null ? (
                     offersLoaded > 0 ? (
-                      `${offersLoaded}/${offersCount} offers extracted`
+                      `${offersLoaded}/${offersCount} offers exported`
                     ) : (
                       <div className="dot-flashing tw-mx-auto" />
                     )
