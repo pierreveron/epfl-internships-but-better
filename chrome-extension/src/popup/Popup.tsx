@@ -142,7 +142,7 @@ export default function Popup() {
                   }}
                 />
 
-                <span className="tw-pointer-events-none tw-absolute tw--bottom-5 tw-left-0 tw-right-0 tw-w-full tw-opacity-0 tw-transition-opacity group-aria-disabled:tw-opacity-0">
+                <span className="tw-pointer-events-none tw-absolute tw--bottom-5 tw-left-0 tw-right-0 tw-w-full tw-opacity-0 tw-transition-opacity group-hover:tw-opacity-100 group-aria-disabled:tw-opacity-0">
                   Click on the button above first.
                 </span>
               </div>
