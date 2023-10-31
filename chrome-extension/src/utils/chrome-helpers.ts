@@ -13,10 +13,7 @@ async function sendMessageToActiveTab<T = unknown>(message: T) {
 
 async function goToPageOrOpenNewTab(url: string) {
   const tabs = await chrome.tabs.query({ currentWindow: true })
-  console.log(
-    'tabs',
-    tabs.map((tab) => tab.url),
-  )
+
   const tabId = tabs.find((tab) => tab.url === url)?.id
 
   if (tabId) {

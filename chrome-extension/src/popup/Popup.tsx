@@ -15,7 +15,6 @@ export default function Popup() {
   useEffect(() => {
     async function fetchOffersCount() {
       const portalCell = await fetchPortalCell()
-      console.log('portalCell', portalCell)
 
       const offers = portalCell.querySelectorAll('tr').slice(1)
 

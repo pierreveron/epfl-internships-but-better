@@ -86,7 +86,6 @@ function getHiringTime(parsed: HTMLElement): string {
   for (let i = 1; i < 4; i++) {
     const value = parsed.querySelector(`detail[c_detailmodele="DETSTAGE_CHK_P${i}"]`)!
     const text = value.childNodes[1].textContent
-    // console.log(text)
     if (text) {
       hiringTime = text
       break
