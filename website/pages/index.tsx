@@ -10,7 +10,7 @@ import Footer from "@/components/Footer";
 import Table from "@/components/Table";
 import WelcomingModal from "@/components/WelcomingModal";
 
-import { SelectableCity, SelectableFormat, SelectableLength } from "@/types";
+import { SelectableCity, SelectableLength } from "@/types";
 import { abortFormatting, formatLocations } from "@/utils/locations-formatting";
 import { Stack } from "@mantine/core";
 import { useAtomValue, useSetAtom } from "jotai";
@@ -132,12 +132,11 @@ export default function Home() {
   const setIsFormattingLocations = useSetAtom(formattingOffersAtom);
 
   useEffect(() => {
-    setSelectableFormats(
-      Array.from(new Set(data.flatMap((d) => d.format))).map((format) => {
-        return { name: format, selected: false };
-      }) as SelectableFormat[]
-    );
-  }, [data, setSelectableFormats]);
+    setSelectableFormats([
+      { name: "internship", selected: false },
+      { name: "project", selected: false },
+    ]);
+  }, [setSelectableFormats]);
 
   useEffect(() => {
     setSelectableLengths(
