@@ -120,27 +120,30 @@ export default function Popup() {
               </label>
 
               <div aria-disabled={isOnIsaJobBoard} className="tw-group tw-relative tw-flex-1">
-                <input
+                <button
                   disabled={!isOnIsaJobBoard}
                   className={classNames(
                     'tw-rounded-md tw-bg-[red] tw-px-2.5 tw-py-1.5 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm hover:tw-bg-[red] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[red] tw-w-full',
                     'disabled:tw-cursor-not-allowed disabled:tw-opacity-40',
+                    'tw-h-8',
                     offersLoaded != null ? 'tw-cursor-wait' : 'tw-cursor-pointer',
                   )}
-                  type="button"
-                  value={
-                    offersLoaded !== null
-                      ? offersLoaded > 0
-                        ? `${offersLoaded}/${offersCount} offers extracted`
-                        : 'Waiting...'
-                      : 'Let the magic happen'
-                  }
                   onClick={async () => {
                     setOffersLoaded(0)
 
                     chrome.runtime.sendMessage({ message: 'init' })
                   }}
-                />
+                >
+                  {offersLoaded !== null ? (
+                    offersLoaded > 0 ? (
+                      `${offersLoaded}/${offersCount} offers extracted`
+                    ) : (
+                      <div className="dot-flashing tw-mx-auto" />
+                    )
+                  ) : (
+                    'Let the magic happen'
+                  )}
+                </button>
 
                 <span className="tw-pointer-events-none tw-absolute tw--bottom-5 tw-left-0 tw-right-0 tw-w-full tw-opacity-0 tw-transition-opacity group-hover:tw-opacity-100 group-aria-disabled:tw-opacity-0">
                   Click on the button above first.
