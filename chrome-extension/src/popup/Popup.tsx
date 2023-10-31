@@ -74,8 +74,12 @@ export default function Popup() {
         <p className="tw-text-sm tw-text-gray-500 tw-text-left">You will also be able to save your favorite offers.</p>
       </div>
 
-      <p className="tw-text-sm tw-text-gray-500 tw-text-left">
-        {offersCount ? `${offersCount} offers found` : 'Click on the buttons below to start.'}
+      <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-font-semibold">
+        {!isOnIsaJobBoard
+          ? 'Reopen the extension after clicking on the button below.'
+          : offersCount
+          ? `${offersCount} offers found`
+          : "Let's see how many offers you have..."}
       </p>
 
       {isError ? (
