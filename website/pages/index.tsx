@@ -53,6 +53,8 @@ export default function Home() {
     }: { offers: OfferWithLocationToBeFormatted[]; lastUpdated: string } =
       JSON.parse(data);
 
+    setDataDate(new Date(lastUpdated).toLocaleDateString("fr-CH"));
+
     window.onbeforeunload = function () {
       return "Data is currently processed and will be lost if you leave the page, are you sure?";
     };
@@ -81,7 +83,6 @@ export default function Home() {
     );
 
     setData(formattedOffers);
-    setDataDate(new Date(lastUpdated).toLocaleDateString("fr-CH"));
 
     setIsFormattingLocations(false);
   };
