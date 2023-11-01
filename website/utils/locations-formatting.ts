@@ -35,7 +35,9 @@ export function formatLocations(jobOffers: OfferWithLocationToBeFormatted[]) {
       // Replace offers original location by new one
       const correctedJobOffers = jobOffers.map((offer) => ({
         ...offer,
-        location: locations[offer.location],
+        location: locations[offer.location] || [
+          { city: offer.location, country: null },
+        ],
       })) as Offer[];
       return correctedJobOffers;
     })
