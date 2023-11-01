@@ -12,7 +12,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return {
       ...oldCons,
       log: function (message?: any, ...optionalParams: any[]) {
-        if (!process.env.DEVELOPMENT) return;
+        if (!process.env.NEXT_PUBLIC_DEVELOPMENT) return;
         oldCons.log(message, ...optionalParams);
       },
     };
