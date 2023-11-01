@@ -24,7 +24,11 @@ export function formatLocations(jobOffers: OfferWithLocationToBeFormatted[]) {
     },
     body: stringifiedLocations,
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (response.ok) return response.json();
+
+      throw new Error("Network response was not ok.");
+    })
     .then((data: { locations: { [key: string]: Location[] } }) => {
       console.log("Formatted!:", data);
       const { locations } = data;
