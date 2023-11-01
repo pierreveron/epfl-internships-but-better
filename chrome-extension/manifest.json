@@ -5,7 +5,7 @@
   "description": "An extension to export jobs offers from EPFL IS-Academia platform to a more user-friendly website.",
   "icons": { "48": "icon48.png", "128": "icon128.png", "500": "icon.png" },
   "action": { "default_popup": "index.html" },
-  "permissions": ["scripting", "activeTab", "storage"],
+  "permissions": ["activeTab", "storage"],
   "background": {
     "service_worker": "src/scripts/serviceWorker.ts"
   },
