@@ -2,7 +2,9 @@
   "manifest_version": 3,
   "name": "EPFL internships but better",
   "version": "0.0.0.1",
-  "action": { "default_popup": "index.html", "default_icon": "favicon.ico" },
+  "description": "An extension to export jobs offers from EPFL IS-Academia platform to a more user-friendly website.",
+  "icons": { "48": "icon48.png", "128": "icon128.png", "500": "icon.png" },
+  "action": { "default_popup": "index.html" },
   "permissions": ["scripting", "activeTab", "storage"],
   "background": {
     "service_worker": "src/scripts/serviceWorker.ts"
