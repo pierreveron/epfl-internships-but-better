@@ -13,8 +13,5 @@
       "matches": ["https://epfl-internships-but-better.vercel.app/*"]
     }
   ],
-  "host_permissions": [
-    "https://epfl-internships-but-better-api.onrender.com/*",
-    "https://isa.epfl.ch/*"
-  ]
+  "host_permissions": ["https://isa.epfl.ch/*"]
 }
