@@ -42,6 +42,7 @@ export default function Home() {
   };
 
   const updateData = async () => {
+    abortFormatting();
     const data = localStorage.getItem("offersWithLocationToBeFormatted");
 
     if (!data) {
