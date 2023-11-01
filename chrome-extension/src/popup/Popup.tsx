@@ -120,7 +120,7 @@ export default function Popup() {
 
               <div aria-disabled={isOnIsaJobBoard} className="tw-group tw-relative tw-flex-1">
                 <button
-                  disabled={!isOnIsaJobBoard}
+                  disabled={!isOnIsaJobBoard || offersLoaded !== null}
                   className={classNames(
                     'tw-rounded-md tw-bg-[red] tw-px-2.5 tw-py-1.5 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm hover:tw-bg-[red] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[red] tw-w-full',
                     'disabled:tw-cursor-not-allowed disabled:tw-opacity-40',
