@@ -5,11 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:popup && npm run build:content",
-    "build:popup": "tsc && vite build --emptyOutDir",
-    "watch:popup": "tsc && vite build --watch",
-    "build:content": "tsc && vite build --config vite.config.content.ts",
-    "watch:content": "tsc && vite build --config vite.config.content.ts --watch",
+    "build": "tsc && vite build",
+    "watch": "tsc && vite build --watch",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
