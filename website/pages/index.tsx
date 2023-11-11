@@ -1,6 +1,7 @@
 import {
   formatAtom,
   formattingOffersAtom,
+  isAsideOpenAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
@@ -12,12 +13,11 @@ import WelcomingModal from "@/components/WelcomingModal";
 
 import { SelectableCity, SelectableLength } from "@/types";
 import { abortFormatting, formatLocations } from "@/utils/locations-formatting";
-import { Anchor, Stack, AppShell, Skeleton } from "@mantine/core";
+import { Anchor, AppShell, Skeleton, Stack } from "@mantine/core";
 import { useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferWithLocationToBeFormatted } from "../../types";
-import { useDisclosure } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -134,6 +134,7 @@ export default function Home() {
   const setSelectableLocations = useSetAtom(locationsAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const setIsFormattingLocations = useSetAtom(formattingOffersAtom);
+  const isAsideOpen = useAtomValue(isAsideOpenAtom);
 
   useEffect(() => {
     setSelectableFormats([
@@ -160,9 +161,6 @@ export default function Home() {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry, setSelectableLocations]);
 
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(false);
-
   return (
     <>
       <Head>
@@ -181,7 +179,7 @@ export default function Home() {
         aside={{
           width: 300,
           breakpoint: "sm",
-          collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+          collapsed: { mobile: !isAsideOpen, desktop: !isAsideOpen },
         }}
         padding="xl"
       >

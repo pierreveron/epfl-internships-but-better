@@ -2,6 +2,7 @@ import {
   companyAtom,
   formatAtom,
   formattingOffersAtom,
+  isAsideOpenAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
@@ -11,7 +12,7 @@ import {
 import { formatToLabel } from "@/utils/format";
 import { Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { Offer } from "../../types";
@@ -52,6 +53,7 @@ export default function Table({ data }: { data: Offer[] }) {
     showOnlyPositionsNotYetCompletedAtom
   );
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
+  const setIsAsideOpen = useSetAtom(isAsideOpenAtom);
 
   const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
     key: "favorite-internships",
@@ -274,6 +276,9 @@ export default function Table({ data }: { data: Offer[] }) {
       recordsPerPage={PAGE_SIZE}
       page={page}
       onPageChange={(p) => setPage(p)}
+      onRowClick={({ record, index, event }) => {
+        setIsAsideOpen((value) => !value);
+      }}
     />
   );
 }
