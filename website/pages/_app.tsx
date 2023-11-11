@@ -1,4 +1,5 @@
 import "@mantine/core/styles.css";
+import "mantine-datatable/styles.css";
 import "@/styles/globals.css";
 
 import type { AppProps } from "next/app";
