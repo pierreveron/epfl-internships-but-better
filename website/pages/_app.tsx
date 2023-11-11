@@ -1,6 +1,8 @@
+import "@mantine/core/styles.css";
 import "@/styles/globals.css";
+
 import type { AppProps } from "next/app";
-import { Anchor, MantineProvider } from "@mantine/core";
+import { Anchor, MantineProvider, createTheme } from "@mantine/core";
 import { Analytics } from "@vercel/analytics/react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -19,20 +21,17 @@ export default function App({ Component, pageProps }: AppProps) {
     };
   })(console);
 
+  const theme = createTheme({
+    /** Put your mantine theme override here */
+    primaryColor: "red",
+  });
+
   // Then redefine the old console
   console = newConsole;
 
   return (
     <>
-      <MantineProvider
-        withGlobalStyles
-        withNormalizeCSS
-        theme={{
-          /** Put your mantine theme override here */
-          colorScheme: "light",
-          primaryColor: "red",
-        }}
-      >
+      <MantineProvider theme={theme}>
         <ErrorBoundary
           fallback={
             <div className="tw-h-screen tw-flex tw-flex-col tw-justify-center tw-items-center">

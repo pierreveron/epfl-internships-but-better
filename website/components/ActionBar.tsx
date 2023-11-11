@@ -41,18 +41,21 @@ export default function ActionBar({
   );
 
   return (
-    <Group position="apart">
+    <Group justify="space-between">
       <Group>
         <FormatsSegmentedControl />
 
         <Popover position="bottom-start" shadow="md">
           <Popover.Target>
-            <Button rightIcon={<IconChevronDown size={18} />} variant="outline">
+            <Button
+              rightSection={<IconChevronDown size={18} />}
+              variant="outline"
+            >
               Select locations
             </Button>
           </Popover.Target>
           <Popover.Dropdown style={{ maxHeight: 300, overflowY: "scroll" }}>
-            <Stack spacing="xs">
+            <Stack gap="xs">
               <Button
                 variant="subtle"
                 disabled={nbCitiesSelected === 0}
@@ -78,12 +81,15 @@ export default function ActionBar({
 
         <Popover position="bottom-start" shadow="md">
           <Popover.Target>
-            <Button rightIcon={<IconChevronDown size={18} />} variant="outline">
+            <Button
+              rightSection={<IconChevronDown size={18} />}
+              variant="outline"
+            >
               Select lengths
             </Button>
           </Popover.Target>
           <Popover.Dropdown>
-            <Stack spacing="xs">
+            <Stack gap="xs">
               <Button
                 variant="subtle"
                 disabled={
@@ -124,7 +130,7 @@ export default function ActionBar({
         />
       </Group>
 
-      <Group spacing="xs">
+      <Group gap="xs">
         <Text c="dimmed">Last data update: {dataDate}</Text>
         <HoverCard width={280} shadow="md">
           <HoverCard.Target>

@@ -2,9 +2,9 @@ import { Anchor, Group, Image, Text } from "@mantine/core";
 
 export default function Footer() {
   return (
-    <Group spacing="xl">
+    <Group gap="xl">
       <Image width={50} height={50} src="../favicon.ico" alt="website logo" />
-      <Text color="dimmed">
+      <Text c="dimmed">
         This website is not affiliated to EPFL. It is a personal project from{" "}
         <Anchor
           href="https://www.linkedin.com/in/pierre-veron/"

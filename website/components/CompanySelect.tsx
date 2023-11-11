@@ -13,7 +13,7 @@ export default function CompanySelect({ companies }: { companies: string[] }) {
       clearable
       value={selectedCompany}
       onChange={(value) => setSelectedCompany(value)}
-      nothingFound="No options"
+      nothingFoundMessage="No options"
       data={companies}
       maxDropdownHeight={300}
     />
