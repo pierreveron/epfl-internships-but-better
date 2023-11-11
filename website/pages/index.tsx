@@ -178,7 +178,6 @@ export default function Home() {
       <WelcomingModal />
 
       <AppShell
-        // style={{ height: "100vh" }}
         aside={{
           width: 300,
           breakpoint: "sm",
@@ -194,10 +193,8 @@ export default function Home() {
               <Skeleton key={index} h={28} mt="sm" animate={false} />
             ))}
         </AppShell.Aside>
-        <AppShell.Main>
-          <Stack
-          // style={{ height: "100vh" }}
-          >
+        <AppShell.Main style={{ height: "100vh" }}>
+          <Stack style={{ height: "100%" }}>
             <ActionBar
               nbCitiesSelected={nbCitiesSelected}
               companies={companies}
