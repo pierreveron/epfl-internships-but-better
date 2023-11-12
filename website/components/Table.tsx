@@ -187,7 +187,8 @@ export default function Table({ data }: { data: Offer[] }) {
           render: ({ favorite, number }) => (
             <HeartIcon
               checked={favorite}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 let checked = !favorite;
                 setFavoriteInternships((favorites) => {
                   if (checked) {
