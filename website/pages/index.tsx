@@ -11,9 +11,10 @@ import Footer from "@/components/Footer";
 import Table from "@/components/Table";
 import WelcomingModal from "@/components/WelcomingModal";
 
+import OfferDescription from "@/components/OfferDescription";
 import { SelectableCity, SelectableLength } from "@/types";
 import { abortFormatting, formatLocations } from "@/utils/locations-formatting";
-import { Anchor, AppShell, Skeleton, Stack } from "@mantine/core";
+import { Anchor, AppShell, Stack } from "@mantine/core";
 import { useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
@@ -184,12 +185,7 @@ export default function Home() {
         padding="xl"
       >
         <AppShell.Aside p="xl">
-          Aside
-          {Array(15)
-            .fill(0)
-            .map((_, index) => (
-              <Skeleton key={index} h={28} mt="sm" animate={false} />
-            ))}
+          <OfferDescription />
         </AppShell.Aside>
         <AppShell.Main style={{ height: "100vh" }}>
           <Stack style={{ height: "100%" }}>
