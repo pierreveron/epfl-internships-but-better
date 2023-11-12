@@ -2,12 +2,12 @@ import {
   companyAtom,
   formatAtom,
   formattingOffersAtom,
-  isAsideOpenAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
+  asideAtom,
 } from "@/atoms";
 import { formatToLabel } from "@/utils/format";
 import { Text } from "@mantine/core";
@@ -40,7 +40,7 @@ const sortBy = (data: Offer[], columnAccessor: string) => {
   return dataSorted;
 };
 
-type TableRecord = Offer & { favorite: boolean };
+export type TableRecord = Offer & { favorite: boolean };
 
 export default function Table({ data }: { data: Offer[] }) {
   const isFormatingLocations = useAtomValue(formattingOffersAtom);
@@ -53,7 +53,7 @@ export default function Table({ data }: { data: Offer[] }) {
     showOnlyPositionsNotYetCompletedAtom
   );
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
-  const setIsAsideOpen = useSetAtom(isAsideOpenAtom);
+  const setAside = useSetAtom(asideAtom);
 
   const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
     key: "favorite-internships",
@@ -276,8 +276,11 @@ export default function Table({ data }: { data: Offer[] }) {
       recordsPerPage={PAGE_SIZE}
       page={page}
       onPageChange={(p) => setPage(p)}
-      onRowClick={({ record, index, event }) => {
-        setIsAsideOpen((value) => !value);
+      onRowClick={({ record }) => {
+        setAside({
+          open: true,
+          offer: record,
+        });
       }}
     />
   );
