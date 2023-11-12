@@ -1,7 +1,7 @@
 import {
+  asideAtom,
   formatAtom,
   formattingOffersAtom,
-  isAsideOpenAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
@@ -12,10 +12,11 @@ import Table from "@/components/Table";
 import WelcomingModal from "@/components/WelcomingModal";
 
 import OfferDescription from "@/components/OfferDescription";
+import XMarkIcon from "@/components/icons/XMarkIcon";
 import { SelectableCity, SelectableLength } from "@/types";
 import { abortFormatting, formatLocations } from "@/utils/locations-formatting";
 import { Anchor, AppShell, Stack } from "@mantine/core";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferWithLocationToBeFormatted } from "../../types";
@@ -135,7 +136,7 @@ export default function Home() {
   const setSelectableLocations = useSetAtom(locationsAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const setIsFormattingLocations = useSetAtom(formattingOffersAtom);
-  const isAsideOpen = useAtomValue(isAsideOpenAtom);
+  const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom);
 
   useEffect(() => {
     setSelectableFormats([
@@ -185,6 +186,12 @@ export default function Home() {
         padding="xl"
       >
         <AppShell.Aside p="xl">
+          <div
+            className="tw-p-2 hover:tw-bg-gray-200 tw-rounded tw-flex tw-w-fit"
+            onClick={() => setAside({ open: false, offer: null })}
+          >
+            <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-600" />
+          </div>
           <OfferDescription />
         </AppShell.Aside>
         <AppShell.Main style={{ height: "100vh" }}>
