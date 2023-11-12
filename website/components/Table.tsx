@@ -207,7 +207,6 @@ export default function Table({ data }: { data: Offer[] }) {
           accessor: "title",
           title: "Offer",
           width: "20%",
-          render: () => <div></div>,
         },
         { accessor: "company", sortable: true, width: "15%" },
         {
