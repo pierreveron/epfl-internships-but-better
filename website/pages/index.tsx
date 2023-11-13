@@ -15,7 +15,7 @@ import OfferDescription from "@/components/OfferDescription";
 import XMarkIcon from "@/components/icons/XMarkIcon";
 import { SelectableCity, SelectableLength } from "@/types";
 import { abortFormatting, formatLocations } from "@/utils/locations-formatting";
-import { Anchor, AppShell, Stack } from "@mantine/core";
+import { Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
@@ -186,13 +186,17 @@ export default function Home() {
         padding="xl"
       >
         <AppShell.Aside p="xl">
-          <div
-            className="tw-p-2 hover:tw-bg-gray-200 tw-rounded tw-flex tw-w-fit"
-            onClick={() => setAside({ open: false, offer: null })}
-          >
-            <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-600" />
-          </div>
-          <OfferDescription />
+          <AppShell.Section>
+            <div
+              className="tw-p-2 hover:tw-bg-gray-200 tw-rounded tw-flex tw-w-fit"
+              onClick={() => setAside({ open: false, offer: null })}
+            >
+              <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-600" />
+            </div>
+          </AppShell.Section>
+          <AppShell.Section grow component={ScrollArea}>
+            <OfferDescription />
+          </AppShell.Section>
         </AppShell.Aside>
         <AppShell.Main style={{ height: "100vh" }}>
           <Stack style={{ height: "100%" }}>
