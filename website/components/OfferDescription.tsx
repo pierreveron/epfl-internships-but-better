@@ -83,7 +83,7 @@ export default function OfferDescription() {
 
       <div className="tw-mt-4">
         <h3 className="tw-text-xl tw-font-medium">Description</h3>
-        <p className="tw-text-gray-900">
+        <p className="tw-text-gray-900" style={{ wordBreak: "break-word" }}>
           {asideOffer?.description ?? "Not specified"}
         </p>
       </div>
