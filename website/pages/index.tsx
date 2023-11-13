@@ -179,13 +179,17 @@ export default function Home() {
 
       <AppShell
         aside={{
-          width: 300,
-          breakpoint: "sm",
+          width: {
+            base: 500,
+            lg: isAsideOpen ? "40%" : 0,
+          },
+          breakpoint: "md",
           collapsed: { mobile: !isAsideOpen, desktop: !isAsideOpen },
         }}
         padding="xl"
       >
-        <AppShell.Aside pt="xl" pl="xl">
+        {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
+        <AppShell.Aside {...(isAsideOpen && { pt: "xl", pl: "xl" })}>
           <AppShell.Section>
             <div
               className="tw-p-2 hover:tw-bg-gray-200 tw-rounded tw-flex tw-w-fit"
