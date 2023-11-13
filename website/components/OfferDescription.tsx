@@ -17,7 +17,7 @@ export default function OfferDescription() {
   // const isFavorite = favoriteInternships.includes(asideOffer?.number ?? "");
 
   return (
-    <>
+    <div>
       <h2 className="tw-text-2xl tw-font-bold">{asideOffer?.title}</h2>
       <p className="tw-text-lg tw-font-medium tw-italic">
         {asideOffer?.company}
@@ -87,6 +87,6 @@ export default function OfferDescription() {
           {asideOffer?.description ?? "Not specified"}
         </p>
       </div>
-    </>
+    </div>
   );
 }
