@@ -185,7 +185,7 @@ export default function Home() {
         }}
         padding="xl"
       >
-        <AppShell.Aside p="xl">
+        <AppShell.Aside pt="xl" pl="xl">
           <AppShell.Section>
             <div
               className="tw-p-2 hover:tw-bg-gray-200 tw-rounded tw-flex tw-w-fit"
@@ -194,7 +194,7 @@ export default function Home() {
               <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-600" />
             </div>
           </AppShell.Section>
-          <AppShell.Section grow component={ScrollArea}>
+          <AppShell.Section grow component={ScrollArea} pr="xl">
             <OfferDescription />
           </AppShell.Section>
         </AppShell.Aside>
