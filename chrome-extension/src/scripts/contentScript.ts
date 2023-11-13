@@ -8,3 +8,12 @@ chrome.storage.local.get('jobOffers', ({ jobOffers }) => {
     }
   }
 })
+
+const registerButton = document.querySelector('a[id="register-button"]')
+
+// Add click listener to register button
+registerButton?.addEventListener('click', () => {
+  console.log('registerButton clicked')
+
+  chrome.runtime.sendMessage({ type: 'register', offerId: registerButton.getAttribute('data-offer-id') })
+})

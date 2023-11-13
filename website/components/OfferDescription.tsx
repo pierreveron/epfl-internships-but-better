@@ -3,6 +3,7 @@ import { useAtomValue } from "jotai";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import HeartIcon from "./HeartIcon";
 import { useLocalStorage } from "@mantine/hooks";
+import { Button } from "@mantine/core";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -69,6 +70,16 @@ export default function OfferDescription() {
         <span className="tw-font-medium">Number:</span>{" "}
         {asideOffer?.number ?? "Not specified"}
       </p>
+
+      <Button
+        data-offer-id={asideOffer?.id}
+        id="register-button"
+        component="a"
+        href="https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab300"
+        target="_blank"
+      >
+        Register
+      </Button>
 
       <div className="tw-mt-4">
         <h3 className="tw-text-xl tw-font-medium">Description</h3>
