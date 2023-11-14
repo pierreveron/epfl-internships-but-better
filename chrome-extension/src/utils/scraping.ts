@@ -58,11 +58,11 @@ function extractDataFromPortalCell(portalCell: HTMLElement, id: string): Formatt
   const rowData = zip(HEADERS, content).reduce((acc, curr) => ({ ...acc, ...curr }), {}) as OriginalPortalCellRowData
 
   let format: OfferFormat[] = []
-  if (rowData.format === 'Stage ou PDM' || rowData.format === 'master project or Internship') {
+  if (rowData.format === 'PDM ou Stage' || rowData.format === 'master project or Internship') {
     format = ['internship', 'project']
   } else if (rowData.format === 'Stage' || rowData.format === 'Internship') {
     format = ['internship']
-  } else if (rowData.format === 'PDM coordonné') {
+  } else if (rowData.format === 'PDM coordonné' || rowData.format === 'PDM' || rowData.format === 'master project') {
     format = ['project']
   }
 
