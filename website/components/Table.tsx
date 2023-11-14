@@ -178,12 +178,13 @@ export default function Table({ data }: { data: Offer[] }) {
     <DataTable
       withTableBorder
       highlightOnHover
+      highlightOnHoverColor="var(--mantine-color-red-1)"
       fetching={isFormatingLocations}
       loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
       records={records}
       rowBackgroundColor={({ number }) => {
         if (offer && offer.number === number) {
-          return "var(--mantine-datatable-highlight-on-hover-color)";
+          return "var(--mantine-color-red-2)";
         }
         return undefined;
       }}
