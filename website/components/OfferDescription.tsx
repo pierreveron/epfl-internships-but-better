@@ -87,6 +87,36 @@ export default function OfferDescription() {
           {asideOffer?.description ?? "Not specified"}
         </p>
       </div>
+
+      <div className="tw-mt-4">
+        <h3 className="tw-text-xl tw-font-medium">Required skills</h3>
+        <p className="tw-text-gray-900" style={{ wordBreak: "break-word" }}>
+          {asideOffer?.requiredSkills ?? "Not specified"}
+        </p>
+      </div>
+
+      <div className="tw-mt-4">
+        <h3 className="tw-text-xl tw-font-medium">Remarks</h3>
+        <p className="tw-text-gray-900" style={{ wordBreak: "break-word" }}>
+          {asideOffer?.remarks ?? "Not specified"}
+        </p>
+      </div>
+
+      <div className="tw-mt-4">
+        <h3 className="tw-text-xl tw-font-medium">Languages</h3>
+        <ul className="tw-list-disc tw-list-inside tw-text-gray-900">
+          {Object.entries(asideOffer?.languages ?? {})
+            .filter(([_, value]) => value != "")
+            .map(([language, level], index) => (
+              <li key={index}>
+                <span className="tw-font-medium">
+                  {language.charAt(0).toUpperCase() + language.slice(1)}:
+                </span>
+                <span className="tw-ml-1">{level}</span>
+              </li>
+            ))}
+        </ul>
+      </div>
     </div>
   );
 }
