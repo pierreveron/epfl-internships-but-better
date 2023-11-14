@@ -1,7 +1,6 @@
 import { SegmentedControl } from "@mantine/core";
 
 import { formatAtom } from "@/atoms";
-import { Format } from "@/types";
 import { formatToLabel } from "@/utils/format";
 import { useAtom } from "jotai";
 
@@ -23,7 +22,7 @@ export default function FormatsSegmentedControl() {
           ? "all"
           : formats.find((f) => f.selected)?.name
       }
-      onChange={(format: Format | "all") => {
+      onChange={(format: string) => {
         if (format === "all") {
           setFormats((formats) =>
             formats.map((f) => ({ ...f, selected: false }))

@@ -39,6 +39,8 @@ const sortBy = (data: Offer[], columnAccessor: string) => {
   return dataSorted;
 };
 
+type TableRecord = Offer & { favorite: boolean };
+
 export default function Table({ data }: { data: Offer[] }) {
   const isFormatingLocations = useAtomValue(formattingOffersAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
@@ -58,7 +60,9 @@ export default function Table({ data }: { data: Offer[] }) {
   });
 
   const [page, setPage] = useState(1);
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
+  const [sortStatus, setSortStatus] = useState<
+    DataTableSortStatus<TableRecord>
+  >({
     columnAccessor: "creationDate",
     direction: "desc",
   });
@@ -79,7 +83,7 @@ export default function Table({ data }: { data: Offer[] }) {
     return sortBy(data, sortStatus.columnAccessor);
   }, [sortStatus.columnAccessor, data]);
 
-  const [records, setRecords] = useState(
+  const [records, setRecords] = useState<TableRecord[]>(
     sortedData.slice(0, PAGE_SIZE).map((d) => {
       return {
         ...d,
@@ -170,7 +174,7 @@ export default function Table({ data }: { data: Offer[] }) {
 
   return (
     <DataTable
-      withBorder
+      withTableBorder
       highlightOnHover
       fetching={isFormatingLocations}
       loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
@@ -197,7 +201,12 @@ export default function Table({ data }: { data: Offer[] }) {
             />
           ),
         },
-        { accessor: "title", title: "Offer", width: "20%" },
+        {
+          accessor: "title",
+          title: "Offer",
+          width: "20%",
+          render: () => <div></div>,
+        },
         { accessor: "company", sortable: true, width: "15%" },
         {
           accessor: "location",
@@ -243,10 +252,10 @@ export default function Table({ data }: { data: Offer[] }) {
         },
         {
           accessor: "registered",
-          textAlignment: "center",
+          textAlign: "center",
           title: "Candidates",
         },
-        { accessor: "positions", textAlignment: "center", title: "Places" },
+        { accessor: "positions", textAlign: "center", title: "Places" },
         {
           accessor: "professor",
           render: ({ professor, format }) => {
