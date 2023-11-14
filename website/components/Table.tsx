@@ -249,7 +249,7 @@ export default function Table({ data }: { data: Offer[] }) {
 
                   return (
                     <li key={f}>
-                      <Text color={color} style={{ whiteSpace: "nowrap" }}>
+                      <Text c={color} style={{ whiteSpace: "nowrap" }}>
                         {formatToLabel(f)}
                       </Text>
                     </li>
