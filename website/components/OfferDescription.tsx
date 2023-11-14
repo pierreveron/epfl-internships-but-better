@@ -1,9 +1,8 @@
 import { asideOfferAtom } from "@/atoms";
-import { useAtomValue } from "jotai";
-import LocationDotIcon from "./icons/LocationDotIcon";
-import HeartIcon from "./HeartIcon";
-import { useLocalStorage } from "@mantine/hooks";
 import { Button } from "@mantine/core";
+import { useAtomValue } from "jotai";
+import HeartIcon from "./HeartIcon";
+import LocationDotIcon from "./icons/LocationDotIcon";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
