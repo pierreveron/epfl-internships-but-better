@@ -12,7 +12,7 @@ import {
 import { formatToLabel } from "@/utils/format";
 import { Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { Offer } from "../../types";
@@ -53,7 +53,7 @@ export default function Table({ data }: { data: Offer[] }) {
     showOnlyPositionsNotYetCompletedAtom
   );
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
-  const setAside = useSetAtom(asideAtom);
+  const [{ offer }, setAside] = useAtom(asideAtom);
 
   const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
     key: "favorite-internships",
@@ -181,6 +181,12 @@ export default function Table({ data }: { data: Offer[] }) {
       fetching={isFormatingLocations}
       loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
       records={records}
+      rowBackgroundColor={({ number }) => {
+        if (offer && offer.number === number) {
+          return "var(--mantine-datatable-highlight-on-hover-color)";
+        }
+        return undefined;
+      }}
       columns={[
         {
           accessor: "favorite",
