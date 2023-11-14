@@ -7,7 +7,7 @@ export default function LengthsCheckboxes() {
   const [lengths, setLengths] = useAtom(lengthAtom);
 
   return (
-    <Stack spacing="xs">
+    <Stack gap="xs">
       {lengths.map((value) => (
         <Checkbox
           label={value.name}

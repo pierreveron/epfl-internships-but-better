@@ -1,6 +1,6 @@
 export type RowData = {
   id: number;
-  name: string;
+  title: string;
   company: string;
   location: Location[];
   number: number;
@@ -23,6 +23,10 @@ export type SelectableCity = { name: string; selected: boolean };
 
 export type Format = "internship" | "project";
 
-export type SelectableFormat = { name: Format; selected: boolean };
+type Selectable = { selected: boolean };
 
-export type SelectableLength = { name: string; selected: boolean };
+export type SelectableFormat = { name: Format } & Selectable;
+
+export type SelectableLength = { name: string } & Selectable;
+
+export type SelectableCompany = { name: string } & Selectable;

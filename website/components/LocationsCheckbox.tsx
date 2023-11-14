@@ -59,7 +59,6 @@ export default function LocationCheckbox({ country }: { country: string }) {
           checked={allChecked}
           indeterminate={indeterminate}
           label={countryLabel}
-          transitionDuration={0}
           onChange={() => {
             setCities((cities) => {
               return cities.map((l) => {
@@ -69,13 +68,18 @@ export default function LocationCheckbox({ country }: { country: string }) {
           }}
         />
         {cities.length > 0 && (
-          <Group spacing="xs">
+          <Group gap="xs">
             <Text size="xs">
               {cities.filter((v) => v.selected).length}/{cities.length} cities
             </Text>
-            <ActionIcon onClick={() => setOpened((opened) => !opened)}>
+            <ActionIcon
+              onClick={() => setOpened((opened) => !opened)}
+              variant="subtle"
+              color="gray"
+            >
               <IconChevronDown
                 style={{
+                  // color: "red",
                   transitionDuration: TRANSITION_DURATION_IN_MS + "ms",
                   transform: opened ? "rotate(0.5turn)" : undefined,
                 }}
@@ -86,7 +90,7 @@ export default function LocationCheckbox({ country }: { country: string }) {
         )}
       </Group>
       <Collapse in={opened} transitionDuration={TRANSITION_DURATION_IN_MS}>
-        <Stack spacing="xs" ml="md" mt="xs">
+        <Stack gap="xs" ml="md" mt="xs">
           {items}
         </Stack>
       </Collapse>

@@ -249,13 +249,13 @@ const isoCountries = {
   ZW: "Zimbabwe",
 };
 
-function getCountryName(countryCode: string) {
-  if (isoCountries.hasOwnProperty(countryCode)) {
-    return isoCountries[countryCode as keyof typeof isoCountries];
-  } else {
-    return countryCode;
-  }
-}
+// function getCountryName(countryCode: string) {
+//   if (isoCountries.hasOwnProperty(countryCode)) {
+//     return isoCountries[countryCode as keyof typeof isoCountries];
+//   } else {
+//     return countryCode;
+//   }
+// }
 
 function getCountryCode(
   countryName: string

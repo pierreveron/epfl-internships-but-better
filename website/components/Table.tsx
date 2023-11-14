@@ -1,5 +1,7 @@
 import {
+  companyAtom,
   formatAtom,
+  formattingOffersAtom,
   lengthAtom,
   locationsAtom,
   minimumSalaryAtom,
@@ -7,20 +9,20 @@ import {
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
-import { RowData } from "@/types";
 import { formatToLabel } from "@/utils/format";
-import { Checkbox, Text } from "@mantine/core";
+import { Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { IconStar } from "@tabler/icons";
 import { useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
+import { Offer } from "../../types";
+import HeartIcon from "./HeartIcon";
 
 const PAGE_SIZE = 15;
 
 const NOT_SPECIFIED = "Not specified";
 
-const sortBy = (data: RowData[], columnAccessor: string) => {
+const sortBy = (data: Offer[], columnAccessor: string) => {
   let dataSorted = data;
   if (columnAccessor === "company") {
     dataSorted = data.sort((a, b) => {
@@ -48,25 +50,31 @@ const sortBy = (data: RowData[], columnAccessor: string) => {
   return dataSorted;
 };
 
-export default function Table({ data }: { data: RowData[] }) {
-  const minimumSalary = useAtomValue(minimumSalaryAtom);
+type TableRecord = Offer & { favorite: boolean };
+
+export default function Table({ data }: { data: Offer[] }) {
+  const isFormatingLocations = useAtomValue(formattingOffersAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const selectableFormats = useAtomValue(formatAtom);
   const selectableLengths = useAtomValue(lengthAtom);
   const selectableLocations = useAtomValue(locationsAtom);
+  const selectedCompany = useAtomValue(companyAtom);
   const showOnlyPositionsNotYetCompleted = useAtomValue(
     showOnlyPositionsNotYetCompletedAtom
   );
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
+  const minimumSalary = useAtomValue(minimumSalaryAtom);
 
   const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
     key: "favorite-internships",
     getInitialValueInEffect: false,
-    defaultValue: [] as number[],
+    defaultValue: [] as string[],
   });
 
   const [page, setPage] = useState(1);
-  const [sortStatus, setSortStatus] = useState<DataTableSortStatus>({
+  const [sortStatus, setSortStatus] = useState<
+    DataTableSortStatus<TableRecord>
+  >({
     columnAccessor: "creationDate",
     direction: "desc",
   });
@@ -78,6 +86,7 @@ export default function Table({ data }: { data: RowData[] }) {
     selectableLocations,
     selectableFormats,
     selectableLengths,
+    selectedCompany,
     showOnlyPositionsNotYetCompleted,
     showOnlyFavorites,
     minimumSalary,
@@ -87,7 +96,7 @@ export default function Table({ data }: { data: RowData[] }) {
     return sortBy(data, sortStatus.columnAccessor);
   }, [sortStatus.columnAccessor, data]);
 
-  const [records, setRecords] = useState(
+  const [records, setRecords] = useState<TableRecord[]>(
     sortedData.slice(0, PAGE_SIZE).map((d) => {
       return {
         ...d,
@@ -122,6 +131,10 @@ export default function Table({ data }: { data: RowData[] }) {
       });
     }
 
+    if (selectedCompany) {
+      data = data.filter((d) => d.company === selectedCompany);
+    }
+
     if (showOnlyFavorites) {
       data = data.filter((d) => favoriteInternships.includes(d.number));
     }
@@ -154,6 +167,7 @@ export default function Table({ data }: { data: RowData[] }) {
     selectableFormats,
     minimumSalary,
     selectableLengths,
+    selectedCompany,
   ]);
 
   useEffect(() => {
@@ -168,30 +182,31 @@ export default function Table({ data }: { data: RowData[] }) {
 
     d = d.slice(from, to);
     // add favorite property if present in favoriteInternships
-    d = d.map((d) => {
+    const records = d.map((d) => {
       return {
         ...d,
         favorite: favoriteInternships.includes(d.number),
       };
     });
 
-    setRecords(d);
+    setRecords(records);
   }, [page, filteredData, sortStatus.direction, favoriteInternships]);
 
   return (
     <DataTable
-      withBorder
+      withTableBorder
       highlightOnHover
+      fetching={isFormatingLocations}
+      loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
       records={records}
       columns={[
         {
           accessor: "favorite",
           render: ({ favorite, number }) => (
-            <Checkbox
-              icon={({ className }) => <IconStar className={className} />}
+            <HeartIcon
               checked={favorite}
-              onChange={(event) => {
-                let checked = event.currentTarget.checked;
+              onClick={() => {
+                let checked = !favorite;
                 setFavoriteInternships((favorites) => {
                   if (checked) {
                     if (!favorites.includes(number)) {
@@ -206,7 +221,12 @@ export default function Table({ data }: { data: RowData[] }) {
             />
           ),
         },
-        { accessor: "name", width: "20%" },
+        {
+          accessor: "title",
+          title: "Offer",
+          width: "20%",
+          render: () => <div></div>,
+        },
         { accessor: "company", sortable: true, width: "15%" },
         {
           accessor: "location",
@@ -252,10 +272,10 @@ export default function Table({ data }: { data: RowData[] }) {
         },
         {
           accessor: "registered",
-          textAlignment: "center",
+          textAlign: "center",
           title: "Candidates",
         },
-        { accessor: "positions", textAlignment: "center", title: "Places" },
+        { accessor: "positions", textAlign: "center", title: "Places" },
         {
           accessor: "professor",
           render: ({ professor, format }) => {
