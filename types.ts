@@ -33,7 +33,7 @@ export type Format = 'internship' | 'project'
 export type PageData = {
   length: string
   hiringTime: string
-  salary: string
+  salary: number | null
   benefits: string
   description: string
   requiredSkills: string
