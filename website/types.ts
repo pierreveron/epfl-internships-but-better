@@ -1,25 +1,6 @@
-export type RowData = {
-  id: number;
-  title: string;
-  company: string;
-  location: Location[];
-  number: number;
-  format: Format[];
-  registered: number;
-  positions: number;
-  professor: string;
-  length: string;
-  creationDate: string;
-};
-
-export type Location = {
-  city: string;
-  country: string;
-};
+import { Format } from "../types";
 
 export type SelectableCity = { name: string; selected: boolean };
-
-export type Format = "internship" | "project";
 
 type Selectable = { selected: boolean };
 
