@@ -27,79 +27,83 @@ export default function OfferDescription() {
         {asideOffer?.number}
       </p>
 
-      <h2 className="tw-text-2xl tw-font-bold">{asideOffer?.title}</h2>
-      <p className="tw-text-lg tw-font-medium tw-italic">
-        {asideOffer?.company}
-      </p>
-
-      <div
-        className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
-        style={{
-          gridTemplateColumns: "auto minmax(0, 1fr)",
-          gridTemplateRows: "auto",
-        }}
-      >
-        <LocationDotIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-        <p>Location</p>
-        <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
-          {asideOffer && asideOffer?.location.length > 0 ? (
-            asideOffer?.location.map((location, index) => (
-              <p
-                key={index}
-                className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md"
-              >
-                {location.city}
-                {location.country && `, ${location.country}`}
-              </p>
-            ))
-          ) : (
-            <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
-              Not specified
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div
-        className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
-        style={{
-          gridTemplateColumns: "auto minmax(0, 1fr)",
-          gridTemplateRows: "auto",
-        }}
-      >
-        <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-        <p>Type de poste</p>
-        <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
-          {asideOffer && asideOffer?.format.length > 0 ? (
-            asideOffer?.format.map((format, index) => (
-              <p
-                key={index}
-                className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md"
-              >
-                {formatToLabel(format)}
-              </p>
-            ))
-          ) : (
-            <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
-              Not specified
-            </p>
-          )}
-        </div>
-      </div>
-
-      <div
-        className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
-        style={{
-          gridTemplateColumns: "auto minmax(0, 1fr)",
-          gridTemplateRows: "auto",
-        }}
-      >
-        <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-        <p>Durée</p>
-
-        <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit">
-          {asideOffer?.length ?? "Not specified"}
+      <div className="tw-mb-4">
+        <h2 className="tw-text-2xl tw-font-bold">{asideOffer?.title}</h2>
+        <p className="tw-text-lg tw-font-medium tw-italic">
+          {asideOffer?.company}
         </p>
+      </div>
+
+      <div className="tw-mb-4">
+        <div
+          className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+          style={{
+            gridTemplateColumns: "auto minmax(0, 1fr)",
+            gridTemplateRows: "auto",
+          }}
+        >
+          <LocationDotIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+          <p>Location</p>
+          <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
+            {asideOffer && asideOffer?.location.length > 0 ? (
+              asideOffer?.location.map((location, index) => (
+                <p
+                  key={index}
+                  className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md"
+                >
+                  {location.city}
+                  {location.country && `, ${location.country}`}
+                </p>
+              ))
+            ) : (
+              <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                Not specified
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div
+          className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+          style={{
+            gridTemplateColumns: "auto minmax(0, 1fr)",
+            gridTemplateRows: "auto",
+          }}
+        >
+          <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+          <p>Type de poste</p>
+          <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
+            {asideOffer && asideOffer?.format.length > 0 ? (
+              asideOffer?.format.map((format, index) => (
+                <p
+                  key={index}
+                  className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md"
+                >
+                  {formatToLabel(format)}
+                </p>
+              ))
+            ) : (
+              <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                Not specified
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div
+          className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+          style={{
+            gridTemplateColumns: "auto minmax(0, 1fr)",
+            gridTemplateRows: "auto",
+          }}
+        >
+          <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+          <p>Durée</p>
+
+          <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit">
+            {asideOffer?.length ?? "Not specified"}
+          </p>
+        </div>
       </div>
 
       <div className="tw-flex tw-flex-row tw-gap-4 tw-items-center">
