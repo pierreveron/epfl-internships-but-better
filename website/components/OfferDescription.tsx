@@ -8,6 +8,8 @@ import EyeSlashIcon from "./icons/EyeSlashIcon";
 import BriefcaseIcon from "./icons/BriefcaseIcon";
 import { formatToLabel } from "@/utils/format";
 import ClockIcon from "./icons/ClockIcon";
+import { getFlagEmojiWithName } from "@/utils/countries";
+import LanguageIcon from "./icons/LanguageIcon";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -19,6 +21,19 @@ export default function OfferDescription() {
   // });
 
   // const isFavorite = favoriteInternships.includes(asideOffer?.number ?? "");
+
+  const countryName = (language: string) => {
+    switch (language) {
+      case "french":
+        return "France";
+      case "german":
+        return "Germany";
+      case "english":
+        return "United Kingdom";
+      default:
+        return "";
+    }
+  };
 
   return (
     <div className="tw-pb-8">
@@ -104,6 +119,42 @@ export default function OfferDescription() {
             {asideOffer?.length ?? "Not specified"}
           </p>
         </div>
+
+        <div
+          className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+          style={{
+            gridTemplateColumns: "auto minmax(0, 1fr)",
+            gridTemplateRows: "auto",
+          }}
+        >
+          <LanguageIcon className="tw-w-4 tw-text-gray-500" />
+          <p>Languages</p>
+          <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
+            {asideOffer &&
+            Object.entries(asideOffer?.languages ?? {}).length > 0 ? (
+              Object.entries(asideOffer?.languages ?? {})
+                .filter(([_, value]) => value != "")
+                .map(([language, level], index) => (
+                  <p
+                    key={index}
+                    className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-flex tw-flex-row tw-items-center tw-gap-2"
+                  >
+                    <span>
+                      {getFlagEmojiWithName(countryName(language)) ??
+                        `${
+                          language.charAt(0).toUpperCase() + language.slice(1)
+                        }:`}
+                    </span>
+                    <span> {level}</span>
+                  </p>
+                ))
+            ) : (
+              <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                Not specified
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="tw-flex tw-flex-row tw-gap-4 tw-items-center">
@@ -171,22 +222,6 @@ export default function OfferDescription() {
         >
           {asideOffer?.remarks ?? "Not specified"}
         </p>
-      </div>
-
-      <div className="tw-mt-4">
-        <h3 className="tw-text-xl tw-font-medium">Languages</h3>
-        <ul className="tw-list-disc tw-list-inside tw-text-gray-900">
-          {Object.entries(asideOffer?.languages ?? {})
-            .filter(([_, value]) => value != "")
-            .map(([language, level], index) => (
-              <li key={index}>
-                <span className="tw-font-medium">
-                  {language.charAt(0).toUpperCase() + language.slice(1)}:
-                </span>
-                <span className="tw-ml-1">{level}</span>
-              </li>
-            ))}
-        </ul>
       </div>
     </div>
   );
