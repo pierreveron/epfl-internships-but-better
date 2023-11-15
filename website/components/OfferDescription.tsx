@@ -82,21 +82,30 @@ export default function OfferDescription() {
 
       <div className="tw-mt-4">
         <h3 className="tw-text-xl tw-font-medium">Description</h3>
-        <p className="tw-text-gray-900" style={{ wordBreak: "break-word" }}>
+        <p
+          className="tw-text-gray-900 tw-whitespace-pre-line"
+          style={{ wordBreak: "break-word" }}
+        >
           {asideOffer?.description ?? "Not specified"}
         </p>
       </div>
 
       <div className="tw-mt-4">
         <h3 className="tw-text-xl tw-font-medium">Required skills</h3>
-        <p className="tw-text-gray-900" style={{ wordBreak: "break-word" }}>
+        <p
+          className="tw-text-gray-900 tw-whitespace-pre-line"
+          style={{ wordBreak: "break-word" }}
+        >
           {asideOffer?.requiredSkills ?? "Not specified"}
         </p>
       </div>
 
       <div className="tw-mt-4">
         <h3 className="tw-text-xl tw-font-medium">Remarks</h3>
-        <p className="tw-text-gray-900" style={{ wordBreak: "break-word" }}>
+        <p
+          className="tw-text-gray-900 tw-whitespace-pre-line"
+          style={{ wordBreak: "break-word" }}
+        >
           {asideOffer?.remarks ?? "Not specified"}
         </p>
       </div>
