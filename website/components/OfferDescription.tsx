@@ -134,7 +134,9 @@ export default function OfferDescription() {
           <p>Languages</p>
           <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
             {asideOffer &&
-            Object.entries(asideOffer?.languages ?? {}).length > 0 ? (
+            Object.entries(asideOffer?.languages ?? {}).filter(
+              ([_, value]) => value != ""
+            ).length > 0 ? (
               Object.entries(asideOffer?.languages ?? {})
                 .filter(([_, value]) => value != "")
                 .map(([language, level], index) => (
