@@ -67,7 +67,10 @@ export default function OfferDescription() {
                   className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md"
                 >
                   {location.city}
-                  {location.country && `, ${location.country}`}
+                  {location.country &&
+                    `, ${location.country} ${getFlagEmojiWithName(
+                      location.country
+                    )}`}
                 </p>
               ))
             ) : (
