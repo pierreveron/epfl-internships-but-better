@@ -4,6 +4,7 @@ import { useAtomValue } from "jotai";
 import HeartIcon from "./HeartIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import ArrowRightLongIcon from "./icons/ArrowRightLongIcon";
+import EyeSlashIcon from "./icons/EyeSlashIcon";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -84,6 +85,8 @@ export default function OfferDescription() {
           //   });
           // }}
         />
+
+        <EyeSlashIcon className="tw-w-6 tw-h-6 tw-text-gray-500" />
       </div>
 
       <div className="tw-mt-4">
