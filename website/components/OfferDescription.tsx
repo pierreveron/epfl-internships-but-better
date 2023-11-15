@@ -7,6 +7,7 @@ import ArrowRightLongIcon from "./icons/ArrowRightLongIcon";
 import EyeSlashIcon from "./icons/EyeSlashIcon";
 import BriefcaseIcon from "./icons/BriefcaseIcon";
 import { formatToLabel } from "@/utils/format";
+import ClockIcon from "./icons/ClockIcon";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -67,10 +68,23 @@ export default function OfferDescription() {
         </div>
       </div>
 
-      <p className="tw-text-gray-500">
-        <span className="tw-font-medium">Length:</span>{" "}
-        {asideOffer?.length ?? "Not specified"}
-      </p>
+      <div
+        className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+        style={{
+          gridTemplateColumns: "auto minmax(0, 1fr)",
+          gridTemplateRows: "auto",
+        }}
+      >
+        <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+        <p>Durée</p>
+        {asideOffer?.length ? (
+          <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit">
+            {asideOffer?.length}
+          </p>
+        ) : (
+          <p className="tw-text-gray-500 tw-italic">Not specified</p>
+        )}
+      </div>
 
       <div className="tw-flex tw-flex-row tw-gap-4 tw-items-center">
         <Button
