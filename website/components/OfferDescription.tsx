@@ -17,6 +17,11 @@ export default function OfferDescription() {
 
   return (
     <div className="tw-pb-8">
+      <p className="tw-text-gray-500 tw-text-sm">
+        {/* <span className="tw-font-medium">Offer number:</span>{" "} */}
+        {asideOffer?.number}
+      </p>
+
       <h2 className="tw-text-2xl tw-font-bold">{asideOffer?.title}</h2>
       <p className="tw-text-lg tw-font-medium tw-italic">
         {asideOffer?.company}
@@ -63,11 +68,6 @@ export default function OfferDescription() {
       <p className="tw-text-gray-500">
         <span className="tw-font-medium">Length:</span>{" "}
         {asideOffer?.length ?? "Not specified"}
-      </p>
-
-      <p className="tw-text-gray-500">
-        <span className="tw-font-medium">Number:</span>{" "}
-        {asideOffer?.number ?? "Not specified"}
       </p>
 
       <Button
