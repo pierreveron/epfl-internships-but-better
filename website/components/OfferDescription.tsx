@@ -32,14 +32,31 @@ export default function OfferDescription() {
         {asideOffer?.company}
       </p>
 
-      <div className="tw-flex tw-flex-row tw-gap-4">
+      <div
+        className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+        style={{
+          gridTemplateColumns: "auto minmax(0, 1fr)",
+          gridTemplateRows: "auto",
+        }}
+      >
         <LocationDotIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-        <div className="tw-flex tw-flex-col">
-          {asideOffer?.location?.map((location, index) => (
-            <p key={index} className="tw-text-gray-500">
-              - {location.city}, {location.country}
+        <p>Location</p>
+        <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
+          {asideOffer && asideOffer?.location.length > 0 ? (
+            asideOffer?.location.map((location, index) => (
+              <p
+                key={index}
+                className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md"
+              >
+                {location.city}
+                {location.country && `, ${location.country}`}
+              </p>
+            ))
+          ) : (
+            <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+              Not specified
             </p>
-          ))}
+          )}
         </div>
       </div>
 
