@@ -63,7 +63,9 @@ export default function OfferDescription() {
               </p>
             ))
           ) : (
-            <p className="tw-text-gray-500 tw-italic">Not specified</p>
+            <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+              Not specified
+            </p>
           )}
         </div>
       </div>
@@ -77,13 +79,10 @@ export default function OfferDescription() {
       >
         <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
         <p>Durée</p>
-        {asideOffer?.length ? (
-          <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit">
-            {asideOffer?.length}
-          </p>
-        ) : (
-          <p className="tw-text-gray-500 tw-italic">Not specified</p>
-        )}
+
+        <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit">
+          {asideOffer?.length ?? "Not specified"}
+        </p>
       </div>
 
       <div className="tw-flex tw-flex-row tw-gap-4 tw-items-center">
