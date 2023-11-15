@@ -3,6 +3,7 @@ import { Button } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import HeartIcon from "./HeartIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
+import ArrowRightLongIcon from "./icons/ArrowRightLongIcon";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -27,26 +28,6 @@ export default function OfferDescription() {
         {asideOffer?.company}
       </p>
 
-      <div>
-        <HeartIcon
-          checked={asideOffer?.favorite ?? false}
-          // onClick={() => {
-          //   let checked = !isFavorite;
-          //   let number = asideOffer?.number ?? "";
-          //   setFavoriteInternships((favorites) => {
-          //     if (checked) {
-          //       if (!favorites.includes(number)) {
-          //         return [...favorites, number];
-          //       }
-          //       return favorites;
-          //     } else {
-          //       return favorites.filter((f) => f !== number);
-          //     }
-          //   });
-          // }}
-        />
-      </div>
-
       <div className="tw-flex tw-flex-row tw-gap-4">
         <LocationDotIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
         <div className="tw-flex tw-flex-col">
@@ -70,15 +51,40 @@ export default function OfferDescription() {
         {asideOffer?.length ?? "Not specified"}
       </p>
 
-      <Button
-        data-offer-id={asideOffer?.id}
-        id="register-button"
-        component="a"
-        href="https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab300"
-        target="_blank"
-      >
-        Register
-      </Button>
+      <div className="tw-flex tw-flex-row tw-gap-4 tw-items-center">
+        <Button
+          data-offer-id={asideOffer?.id}
+          id="register-button"
+          component="a"
+          href="https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab300"
+          target="_blank"
+          w={200}
+          size="md"
+          rightSection={
+            <ArrowRightLongIcon className="tw-w-4 tw-h-4 tw-fill-white" />
+          }
+        >
+          Register
+        </Button>
+
+        <HeartIcon
+          checked={asideOffer?.favorite ?? false}
+          // onClick={() => {
+          //   let checked = !isFavorite;
+          //   let number = asideOffer?.number ?? "";
+          //   setFavoriteInternships((favorites) => {
+          //     if (checked) {
+          //       if (!favorites.includes(number)) {
+          //         return [...favorites, number];
+          //       }
+          //       return favorites;
+          //     } else {
+          //       return favorites.filter((f) => f !== number);
+          //     }
+          //   });
+          // }}
+        />
+      </div>
 
       <div className="tw-mt-4">
         <h3 className="tw-text-xl tw-font-medium">Description</h3>
