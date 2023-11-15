@@ -5,6 +5,8 @@ import HeartIcon from "./HeartIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import ArrowRightLongIcon from "./icons/ArrowRightLongIcon";
 import EyeSlashIcon from "./icons/EyeSlashIcon";
+import BriefcaseIcon from "./icons/BriefcaseIcon";
+import { formatToLabel } from "@/utils/format";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -40,12 +42,30 @@ export default function OfferDescription() {
         </div>
       </div>
 
-      <p className="tw-text-gray-500">
-        <span className="tw-font-medium">Format:</span>{" "}
-        {asideOffer && asideOffer?.format.length > 0
-          ? asideOffer.format.join(", ")
-          : "Not specified"}
-      </p>
+      <div
+        className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+        style={{
+          gridTemplateColumns: "auto minmax(0, 1fr)",
+          gridTemplateRows: "auto",
+        }}
+      >
+        <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+        <p>Type de poste</p>
+        <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
+          {asideOffer && asideOffer?.format.length > 0 ? (
+            asideOffer?.format.map((format, index) => (
+              <p
+                key={index}
+                className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md"
+              >
+                {formatToLabel(format)}
+              </p>
+            ))
+          ) : (
+            <p className="tw-text-gray-500 tw-italic">Not specified</p>
+          )}
+        </div>
+      </div>
 
       <p className="tw-text-gray-500">
         <span className="tw-font-medium">Length:</span>{" "}
