@@ -43,7 +43,7 @@ def clean_locations(locations: list[str]):
     Returns: A list of unique locations in a json format.
     """
     llm = OpenAI(
-        model_name="text-davinci-003",
+        model_name="gpt-3.5-turbo-instruct",
         openai_api_key=OPENAI_API_KEY,
         max_tokens=3000,
         request_timeout=60,
