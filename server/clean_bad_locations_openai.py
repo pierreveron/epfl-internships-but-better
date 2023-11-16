@@ -15,12 +15,12 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 
 # location_query = "Extract the city and the country from a location in a json format."
-location_query = """I have a list of locations but it is really badly designed.
+location_query = """I have a list of text describing locations.
 I want you to extract the city and the country from a location in a json format.
-I don't want a zipcode. Only city and country. Cities and countries should only be strings.
+I don't want a zipcode. Only the city and the country.
+The text should be the key and the value should be a list of locations. Cities and countries should only be strings. 
 Countries should not be acronyms: for example "USA" should be change to "United States".
-EPFL should be changed to "Lausanne".
-Infer the country if needed.
+EPFL is refering to "Lausanne".
 """
 
 parser = PydanticOutputParser(pydantic_object=LocationDict)
