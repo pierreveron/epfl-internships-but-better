@@ -211,7 +211,7 @@ export default function OfferDescription() {
           className="tw-text-gray-900 tw-whitespace-pre-line"
           style={{ wordBreak: "break-word" }}
         >
-          {asideOffer?.description ?? "Not specified"}
+          {asideOffer?.description ?? "⊘"}
         </p>
       </div>
 
@@ -221,7 +221,7 @@ export default function OfferDescription() {
           className="tw-text-gray-900 tw-whitespace-pre-line"
           style={{ wordBreak: "break-word" }}
         >
-          {asideOffer?.requiredSkills ?? "Not specified"}
+          {asideOffer?.requiredSkills ?? "⊘"}
         </p>
       </div>
 
@@ -231,7 +231,7 @@ export default function OfferDescription() {
           className="tw-text-gray-900 tw-whitespace-pre-line"
           style={{ wordBreak: "break-word" }}
         >
-          {asideOffer?.remarks ?? "Not specified"}
+          {asideOffer?.remarks != "" ? asideOffer?.remarks : "⊘"}
         </p>
       </div>
     </div>
