@@ -1,5 +1,5 @@
 import { asideOfferAtom } from "@/atoms";
-import { Button } from "@mantine/core";
+import { ActionIcon, Button } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import HeartIcon from "./HeartIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
@@ -195,8 +195,14 @@ export default function OfferDescription() {
           //   });
           // }}
         />
-
-        <EyeSlashIcon className="tw-w-6 tw-h-6 tw-text-gray-500" />
+        <ActionIcon
+          // onClick={() => setOpened((opened) => !opened)}
+          variant="subtle"
+          color="gray"
+          size="xl"
+        >
+          <EyeSlashIcon className="tw-w-6 tw-fill-gray-900" />
+        </ActionIcon>
       </div>
 
       <div className="tw-mt-4">
