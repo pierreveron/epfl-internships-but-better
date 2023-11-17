@@ -5,7 +5,7 @@ import {
   Format as OfferFormat,
   OfferWithLocationToBeFormatted,
   OriginalPortalCellRowData,
-} from './types'
+} from '../../../types'
 
 const HEADERS = [
   'title',

@@ -1,5 +1,5 @@
 import { parse, HTMLElement } from 'node-html-parser'
-import { PageData } from './types'
+import { PageData } from '../../../types'
 
 // const labels = [
 //   'STAGE_LABEL_FORMAT',
