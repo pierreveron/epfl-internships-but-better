@@ -7,6 +7,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
+from clean_salaries_openai import clean_salaries as clean_salairies_openai
 
 app = FastAPI()
 limiter = Limiter(key_func=get_remote_address)
@@ -33,3 +34,11 @@ async def clean_locations(request: Request, locations: Annotated[List[str], Body
     if len(locations) > 500:
         return {"error": "Too many locations"}
     return clean_locations_openai(locations)
+
+
+@app.post("/clean-salaries")
+@limiter.limit("3/day")
+async def clean_salaries(request: Request, salaries: Annotated[List[str], Body()]):
+    if len(salaries) > 700:
+        return {"error": "Too many salaries"}
+    return clean_salairies_openai(salaries)
