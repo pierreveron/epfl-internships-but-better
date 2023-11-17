@@ -15,12 +15,12 @@ import WelcomingModal from "@/components/WelcomingModal";
 import OfferDescription from "@/components/OfferDescription";
 import XMarkIcon from "@/components/icons/XMarkIcon";
 import { SelectableCity, SelectableLength } from "@/types";
-import { abortFormatting, formatLocations } from "@/utils/locations-formatting";
+import { abortFormatting, formatOffers } from "@/utils/offerFormatting";
 import { Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
-import { Offer, OfferWithLocationToBeFormatted } from "../../types";
+import { Offer, OfferToBeFormatted } from "../../types";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -55,8 +55,10 @@ export default function Home() {
     const {
       offers,
       lastUpdated,
-    }: { offers: OfferWithLocationToBeFormatted[]; lastUpdated: string } =
-      JSON.parse(data);
+    }: {
+      offers: OfferToBeFormatted[];
+      lastUpdated: string;
+    } = JSON.parse(data);
 
     setDataDate(new Date(lastUpdated).toLocaleDateString("fr-CH"));
 
@@ -69,7 +71,7 @@ export default function Home() {
 
     setIsFormattingLocations(true);
 
-    const formattedOffers = await formatLocations(offers);
+    const formattedOffers = await formatOffers(offers);
 
     window.onbeforeunload = null;
     window.onunload = null;
@@ -109,7 +111,7 @@ export default function Home() {
   const citiesByCountry = useMemo(() => {
     const citiesByCountry: Record<string, SelectableCity[]> = {};
     locations.flat().forEach((l) => {
-      if (citiesByCountry.hasOwnProperty(l.country)) {
+      if (l.country !== null && citiesByCountry.hasOwnProperty(l.country)) {
         if (
           citiesByCountry[l.country]?.map((c) => c.name).includes(l.city) ||
           l.city === null

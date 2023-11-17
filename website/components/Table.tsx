@@ -38,6 +38,11 @@ const sortBy = (data: Offer[], columnAccessor: string) => {
     });
   } else if (columnAccessor === "salary") {
     dataSorted = data.sort((a, b) => {
+      // Check if salary is a string
+      if (typeof a.salary === "string" || typeof b.salary === "string") {
+        return 0;
+      }
+
       if (a.salary === null) {
         return 1;
       }
@@ -123,7 +128,11 @@ export default function Table({ data }: { data: Offer[] }) {
 
     if (minimumSalary !== undefined) {
       data = data.filter((d) => {
-        return d.salary !== null && d.salary >= minimumSalary;
+        return (
+          d.salary !== null &&
+          typeof d.salary !== "string" &&
+          d.salary >= minimumSalary
+        );
       });
     }
 

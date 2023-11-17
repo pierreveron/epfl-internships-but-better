@@ -25,7 +25,7 @@ export type FormattedPortalCellRowData = {
 
 export type Location = {
   city: string;
-  country: string;
+  country: string | null;
 };
 
 export type Format = "internship" | "project";
@@ -46,16 +46,18 @@ export type PageData = {
   relatedMasters: string[];
 };
 
-export type OfferWithLocationToBeFormatted = Omit<Offer, "location"> & {
+// Omit location and salary from Offer
+export type OfferToBeFormatted = Omit<Offer, "location" | "salary"> & {
   location: string;
+  salary: string;
 };
 
 export type Offer = {
   id: string;
-
   title: string;
   company: string;
   location: Location[];
+  salary: string | number | null;
   //   sustainabilityLabel: string
   number: string;
   format: Format[];
@@ -63,4 +65,4 @@ export type Offer = {
   positions: number;
   professor: string | null;
   creationDate: string;
-} & PageData;
+} & Omit<PageData, "salary">;
