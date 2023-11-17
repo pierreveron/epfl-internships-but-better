@@ -46,7 +46,7 @@ export default function Home() {
   };
 
   const updateData = async () => {
-    const data = localStorage.getItem("offersWithLocationToBeFormatted");
+    const data = localStorage.getItem("offersToBeFormatted");
 
     if (!data) {
       return;
