@@ -1,4 +1,7 @@
+import os
 from typing import Annotated, List
+
+from dotenv import load_dotenv
 
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salairies_openai
@@ -8,6 +11,7 @@ from fastapi.security import APIKeyHeader
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
+import gspread
 
 app = FastAPI()
 limiter = Limiter(key_func=get_remote_address)
@@ -27,13 +31,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-api_keys = ["my_api_key"]
-
 api_key_header = APIKeyHeader(name="X-API-Key")
+
+load_dotenv()
+API_KEYS_GOOGLE_SHEET_KEY = os.getenv("API_KEYS_GOOGLE_SHEET_KEY")
+
+gc = gspread.service_account(
+    filename="service_account.json",
+    scopes=[
+        "https://www.googleapis.com/auth/spreadsheets",
+    ],
+)
+
+
+def get_apis_keys():
+    sheet = gc.open_by_key(API_KEYS_GOOGLE_SHEET_KEY).sheet1
+    api_keys = sheet.col_values(3)[1:]
+    return api_keys
 
 
 def get_api_key(api_key_header: str = Security(api_key_header)) -> str:
-    if api_key_header in api_keys:
+    if api_key_header in get_apis_keys():
         return api_key_header
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
