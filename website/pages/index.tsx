@@ -20,6 +20,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferToBeFormatted } from "../../types";
+import { useAsyncError } from "@/utils/error";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -43,6 +44,8 @@ export default function Home() {
       updateData();
     }
   };
+
+  const throwError = useAsyncError();
 
   const updateData = async () => {
     const data = localStorage.getItem("offersToBeFormatted");
@@ -70,7 +73,14 @@ export default function Home() {
 
     setIsFormattingOffers(true);
 
-    const formattedOffers = await formatOffers(offers);
+    let formattedOffers;
+    try {
+      formattedOffers = await formatOffers(offers);
+    } catch (error) {
+      throwError(error);
+      setIsFormattingOffers(false);
+      return;
+    }
 
     window.onbeforeunload = null;
     window.onunload = null;

@@ -49,7 +49,7 @@ function formatSalaries(salaries: string[]) {
     })
     .catch((error) => {
       console.error("Error:", error);
-      return null;
+      throw error;
     });
 }
 
@@ -73,6 +73,6 @@ function formatLocations(locations: string[]) {
     })
     .catch((error) => {
       console.error("Error:", error);
-      return null;
+      throw error;
     });
 }
