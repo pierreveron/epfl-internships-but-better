@@ -69,7 +69,7 @@ export default function Home() {
       abortFormatting();
     };
 
-    setIsFormattingLocations(true);
+    setIsFormattingOffers(true);
 
     const formattedOffers = await formatOffers(offers);
 
@@ -92,7 +92,7 @@ export default function Home() {
 
     setData(formattedOffers);
 
-    setIsFormattingLocations(false);
+    setIsFormattingOffers(false);
   };
 
   useEffect(() => {
@@ -139,7 +139,7 @@ export default function Home() {
   const setSelectableLengths = useSetAtom(lengthAtom);
   const setSelectableLocations = useSetAtom(locationsAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
-  const setIsFormattingLocations = useSetAtom(formattingOffersAtom);
+  const setIsFormattingOffers = useSetAtom(formattingOffersAtom);
   const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom);
 
   useEffect(() => {
