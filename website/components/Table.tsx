@@ -8,11 +8,12 @@ import {
   nbCitiesSelectedAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
+  asideAtom,
 } from "@/atoms";
 import { formatToLabel } from "@/utils/format";
 import { Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { Offer } from "../../types";
@@ -50,7 +51,7 @@ const sortBy = (data: Offer[], columnAccessor: string) => {
   return dataSorted;
 };
 
-type TableRecord = Offer & { favorite: boolean };
+export type TableRecord = Offer & { favorite: boolean };
 
 export default function Table({ data }: { data: Offer[] }) {
   const isFormatingLocations = useAtomValue(formattingOffersAtom);
@@ -64,6 +65,7 @@ export default function Table({ data }: { data: Offer[] }) {
   );
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
   const minimumSalary = useAtomValue(minimumSalaryAtom);
+  const [{ offer }, setAside] = useAtom(asideAtom);
 
   const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
     key: "favorite-internships",
@@ -196,16 +198,24 @@ export default function Table({ data }: { data: Offer[] }) {
     <DataTable
       withTableBorder
       highlightOnHover
+      highlightOnHoverColor="var(--mantine-color-red-1)"
       fetching={isFormatingLocations}
       loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
       records={records}
+      rowBackgroundColor={({ number }) => {
+        if (offer && offer.number === number) {
+          return "var(--mantine-color-red-2)";
+        }
+        return undefined;
+      }}
       columns={[
         {
           accessor: "favorite",
           render: ({ favorite, number }) => (
             <HeartIcon
               checked={favorite}
-              onClick={() => {
+              onClick={(event) => {
+                event.stopPropagation();
                 let checked = !favorite;
                 setFavoriteInternships((favorites) => {
                   if (checked) {
@@ -225,7 +235,6 @@ export default function Table({ data }: { data: Offer[] }) {
           accessor: "title",
           title: "Offer",
           width: "20%",
-          render: () => <div></div>,
         },
         { accessor: "company", sortable: true, width: "15%" },
         {
@@ -260,7 +269,7 @@ export default function Table({ data }: { data: Offer[] }) {
 
                   return (
                     <li key={f}>
-                      <Text color={color} style={{ whiteSpace: "nowrap" }}>
+                      <Text c={color} style={{ whiteSpace: "nowrap" }}>
                         {formatToLabel(f)}
                       </Text>
                     </li>
@@ -300,6 +309,12 @@ export default function Table({ data }: { data: Offer[] }) {
       recordsPerPage={PAGE_SIZE}
       page={page}
       onPageChange={(p) => setPage(p)}
+      onRowClick={({ record }) => {
+        setAside({
+          open: true,
+          offer: record,
+        });
+      }}
     />
   );
 }
