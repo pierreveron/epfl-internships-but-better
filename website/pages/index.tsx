@@ -4,7 +4,6 @@ import {
   formattingOffersAtom,
   lengthAtom,
   locationsAtom,
-  minimumSalaryAtom,
   nbCitiesSelectedAtom,
 } from "@/atoms";
 import ActionBar from "@/components/ActionBar";
@@ -134,7 +133,6 @@ export default function Home() {
     return citiesByCountry;
   }, [locations]);
 
-  const [minimumSalary, setMinimumSalary] = useAtom(minimumSalaryAtom);
   const setSelectableFormats = useSetAtom(formatAtom);
   const setSelectableLengths = useSetAtom(lengthAtom);
   const setSelectableLocations = useSetAtom(locationsAtom);
