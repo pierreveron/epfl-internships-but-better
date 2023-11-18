@@ -35,6 +35,7 @@ function formatSalaries(salaries: string[]) {
     signal: controller.signal,
     headers: {
       "Content-Type": "application/json",
+      "X-API-Key": localStorage.getItem("apiKey") || "",
     },
     body: JSON.stringify(salaries),
   })
@@ -59,6 +60,7 @@ function formatLocations(locations: string[]) {
     signal: controller.signal,
     headers: {
       "Content-Type": "application/json",
+      "X-API-Key": localStorage.getItem("apiKey") || "",
     },
     body: JSON.stringify(locations),
   })
