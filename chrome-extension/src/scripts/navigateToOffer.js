@@ -1,10 +1,26 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-async function navigateToOffer(offerId) {
+async function navigateToView(offerId) {
   // eslint-disable-next-line no-undef
   if (!prtl && !prtl.synchronize) {
-    return
+    return false
   }
 
+  await waitLoad()
+
+  // eslint-disable-next-line no-undef
+  prtl.synchronize('ww_i_stageview=' + offerId)
+  return true
+}
+
+async function navigateToRegister(offerId) {
+  if (await navigateToView(offerId)) {
+    // eslint-disable-next-line no-undef
+    prtl.synchronize('ww_i_stageinscr=' + offerId)
+    return true
+  }
+  return false
+}
+
+async function waitLoad() {
   var i = 0
 
   while (i < 10) {
@@ -14,13 +30,12 @@ async function navigateToOffer(offerId) {
     }
     i++
   }
-
-  // eslint-disable-next-line no-undef
-  prtl.synchronize('ww_i_stageview=' + offerId)
-  // eslint-disable-next-line no-undef
-  prtl.synchronize('ww_i_stageinscr=' + offerId)
 }
 
-const offerId = document.querySelector('script#navigateToOffer').textContent
-
-navigateToOffer(offerId)
+if (document.querySelector('script#navigateToRegister')) {
+  const offerId = document.querySelector('script#navigateToRegister').textContent
+  navigateToRegister(offerId)
+} else if (document.querySelector('script#navigateToView')) {
+  const offerId = document.querySelector('script#navigateToView').textContent
+  navigateToView(offerId)
+}

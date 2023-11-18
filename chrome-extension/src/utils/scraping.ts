@@ -3,7 +3,7 @@ import { extractData } from './pageData-helpers'
 import {
   FormattedPortalCellRowData,
   Format as OfferFormat,
-  OfferWithLocationToBeFormatted,
+  OfferToBeFormatted,
   OriginalPortalCellRowData,
 } from '../../../types'
 
@@ -24,7 +24,7 @@ const BASE_URL = 'https://isa.epfl.ch/imoniteur_ISAP/!PORTAL14S.portalCell?ww_k_
 
 const zip = (a: string[], b: string[]) => a.map((k, i) => ({ [k]: b[i] }))
 
-function allProgress(proms: Promise<OfferWithLocationToBeFormatted>[], progress_cb: (p: number) => void) {
+function allProgress(proms: Promise<OfferToBeFormatted>[], progress_cb: (p: number) => void) {
   let d = 0
   progress_cb(0)
   for (const p of proms) {
@@ -87,7 +87,7 @@ async function extractDataFromPage(id: string) {
   return extractData(data)
 }
 
-async function fetchAndExtract(portalCell: HTMLElement, id: string): Promise<OfferWithLocationToBeFormatted> {
+async function fetchAndExtract(portalCell: HTMLElement, id: string): Promise<OfferToBeFormatted> {
   const portalCellData = extractDataFromPortalCell(portalCell, id)
   const pageData = await extractDataFromPage(id)
 
@@ -96,7 +96,7 @@ async function fetchAndExtract(portalCell: HTMLElement, id: string): Promise<Off
 
 export async function scrapeJobs(
   callback: (offersCount: number, offersLoaded: number) => void,
-): Promise<OfferWithLocationToBeFormatted[]> {
+): Promise<OfferToBeFormatted[]> {
   const portalCell = await fetchPortalCell()
 
   const jobsIds = portalCell

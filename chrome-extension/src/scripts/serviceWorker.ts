@@ -1,7 +1,7 @@
 import { getCurrentTab } from '../utils/chrome-helpers'
 import { ISA_JOB_BOARD_URL, NEW_JOB_BOARD_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
-import { OfferWithLocationToBeFormatted } from '../../../types'
+import { OfferToBeFormatted } from '../../../types'
 
 async function pollTabUntilNot(tabId: number, status: string) {
   // eslint-disable-next-line no-constant-condition
@@ -23,7 +23,7 @@ async function pollTabUntilNot(tabId: number, status: string) {
   }
 }
 
-async function goToRegisterPage(offerId: string) {
+async function goToPage(type: string, offerId: string) {
   const tab = await getCurrentTab()
 
   if (!tab || !tab.id) {
@@ -32,11 +32,19 @@ async function goToRegisterPage(offerId: string) {
   }
 
   if (!(await pollTabUntilNot(tab.id, 'loading'))) {
-    console.error('An error occured while polling tab')
+    console.error('An error occurred while polling tab')
     return
   }
 
-  await chrome.tabs.sendMessage(tab.id, { type: 'register', offerId })
+  await chrome.tabs.sendMessage(tab.id, { type, offerId })
+}
+
+async function goToRegisterPage(offerId: string) {
+  await goToPage('register', offerId)
+}
+
+async function goToViewPage(offerId: string) {
+  await goToPage('view', offerId)
 }
 
 chrome.runtime.onMessage.addListener(async function (request) {
@@ -44,9 +52,13 @@ chrome.runtime.onMessage.addListener(async function (request) {
     goToRegisterPage(request.offerId)
   }
 
+  if (request.type == 'view') {
+    goToViewPage(request.offerId)
+  }
+
   if (request.message !== 'init') return
 
-  let jobOffers: OfferWithLocationToBeFormatted[] = []
+  let jobOffers: OfferToBeFormatted[] = []
 
   const tab = await getCurrentTab()
 

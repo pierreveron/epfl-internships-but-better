@@ -1,5 +1,5 @@
 import { asideOfferAtom } from "@/atoms";
-import { ActionIcon, Button } from "@mantine/core";
+import { ActionIcon, Anchor, Button } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import HeartIcon from "./HeartIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
@@ -203,6 +203,16 @@ export default function OfferDescription() {
         >
           <EyeSlashIcon className="tw-w-6 tw-fill-gray-900" />
         </ActionIcon>
+
+        <Anchor
+          data-offer-id={asideOffer?.id}
+          id="view-button"
+          href="https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab300"
+          target="_blank"
+          underline="never"
+        >
+          View original offer
+        </Anchor>
       </div>
 
       <div className="tw-mt-4">
