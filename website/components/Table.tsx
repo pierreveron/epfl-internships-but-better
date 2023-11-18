@@ -15,7 +15,7 @@ import { Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { useAtom, useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
 import { useHiddenOffers } from "@/utils/hooks";
@@ -80,6 +80,14 @@ export default function Table({ data }: { data: Offer[] }) {
   });
 
   const { hiddenOffers, isOfferHidden } = useHiddenOffers();
+
+  const viewport = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () =>
+    viewport.current!.scrollTo({
+      top: viewport.current!.scrollHeight,
+      behavior: "smooth",
+    });
 
   const [page, setPage] = useState(1);
   const [sortStatus, setSortStatus] = useState<
@@ -218,7 +226,12 @@ export default function Table({ data }: { data: Offer[] }) {
         const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1;
         console.log("newPage", newPage);
 
-        setPage(Math.floor(nextOfferIndex / PAGE_SIZE) + 1);
+        if (newPage !== page) {
+          setPage(newPage);
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
+        }
 
         return {
           open: true,
@@ -395,6 +408,7 @@ export default function Table({ data }: { data: Offer[] }) {
           offer: record,
         });
       }}
+      scrollViewportRef={viewport}
     />
   );
 }
