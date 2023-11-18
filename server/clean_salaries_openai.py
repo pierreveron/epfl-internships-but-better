@@ -115,8 +115,8 @@ def clean_salaries(salaries: list[str]):
 
         if data is None:
             raise Exception("No data was returned.")
-        if set(data.salaries.keys()) != set(input_list):
-            missing_keys = set(input_list) - set(data.salaries.keys())
+        missing_keys = set(input_list) - set(data.salaries.keys())
+        if len(missing_keys) > 0:
             print("Missing keys:", missing_keys)
             raise Exception("The keys in the input and final data do not match.")
 
