@@ -15,9 +15,10 @@ import { Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { useAtom, useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
+import { useHiddenOffers } from "@/utils/hooks";
 
 const PAGE_SIZE = 15;
 
@@ -77,6 +78,16 @@ export default function Table({ data }: { data: Offer[] }) {
     getInitialValueInEffect: false,
     defaultValue: [] as string[],
   });
+
+  const { hiddenOffers, isOfferHidden } = useHiddenOffers();
+
+  const viewport = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () =>
+    viewport.current!.scrollTo({
+      top: viewport.current!.scrollHeight,
+      behavior: "smooth",
+    });
 
   const [page, setPage] = useState(1);
   const [sortStatus, setSortStatus] = useState<
@@ -182,16 +193,79 @@ export default function Table({ data }: { data: Offer[] }) {
   ]);
 
   useEffect(() => {
-    const from = (page - 1) * PAGE_SIZE;
-    const to = from + PAGE_SIZE;
-
     let d = filteredData;
 
     if (sortStatus.direction === "desc") {
       d = d.slice().reverse();
     }
 
+    setAside((aside) => {
+      if (aside.open && aside.offer && isOfferHidden(aside.offer)) {
+        // Find the next offer after the current one
+        d = d.filter(
+          (offer) =>
+            offer.number === aside.offer!.number || !isOfferHidden(offer)
+        );
+
+        const hiddenOfferIndex = d.findIndex(
+          (o) => o.number === aside.offer!.number
+        );
+
+        console.log("hiddenOfferIndex", hiddenOfferIndex);
+
+        let nextOfferIndex;
+        if (hiddenOfferIndex === d.length - 1) {
+          nextOfferIndex = hiddenOfferIndex - 1;
+        } else {
+          nextOfferIndex = hiddenOfferIndex + 1;
+        }
+
+        if (nextOfferIndex < 0) {
+          return {
+            open: false,
+            offer: null,
+          };
+        }
+
+        console.log("nextOfferIndex", nextOfferIndex);
+        const nextOffer = d[nextOfferIndex];
+
+        const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1;
+        console.log("newPage", newPage);
+
+        if (newPage !== page) {
+          setPage(newPage);
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
+        }
+
+        return {
+          open: true,
+          offer: {
+            ...nextOffer,
+            favorite: favoriteInternships.includes(nextOffer.number),
+          },
+        };
+      }
+      return aside;
+    });
+  }, [hiddenOffers]);
+
+  useEffect(() => {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE;
+
+    let d = filteredData;
+
+    d = d.filter((offer) => !isOfferHidden(offer));
+
+    if (sortStatus.direction === "desc") {
+      d = d.slice().reverse();
+    }
+
     d = d.slice(from, to);
+
     // add favorite property if present in favoriteInternships
     const records = d.map((d) => {
       return {
@@ -201,7 +275,13 @@ export default function Table({ data }: { data: Offer[] }) {
     });
 
     setRecords(records);
-  }, [page, filteredData, sortStatus.direction, favoriteInternships]);
+  }, [
+    page,
+    filteredData,
+    sortStatus.direction,
+    favoriteInternships,
+    hiddenOffers,
+  ]);
 
   return (
     <DataTable
@@ -323,7 +403,9 @@ export default function Table({ data }: { data: Offer[] }) {
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
-      totalRecords={filteredData.length}
+      totalRecords={
+        filteredData.filter((offer) => !isOfferHidden(offer)).length
+      }
       recordsPerPage={PAGE_SIZE}
       page={page}
       onPageChange={(p) => setPage(p)}
@@ -333,6 +415,7 @@ export default function Table({ data }: { data: Offer[] }) {
           offer: record,
         });
       }}
+      scrollViewportRef={viewport}
     />
   );
 }
