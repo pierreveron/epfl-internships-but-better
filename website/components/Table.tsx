@@ -12,13 +12,12 @@ import {
 } from "@/atoms";
 import { formatToLabel } from "@/utils/format";
 import { Text } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
 import { useAtom, useAtomValue } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
-import { useHiddenOffers } from "@/utils/hooks";
+import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
 
 const PAGE_SIZE = 15;
 
@@ -73,11 +72,8 @@ export default function Table({ data }: { data: Offer[] }) {
   const minimumSalary = useAtomValue(minimumSalaryAtom);
   const [{ offer }, setAside] = useAtom(asideAtom);
 
-  const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
-    key: "favorite-internships",
-    getInitialValueInEffect: false,
-    defaultValue: [] as string[],
-  });
+  const { favoriteOffers, isOfferFavorite, toggleFavoriteOffer } =
+    useFavoriteOffers();
 
   const { hiddenOffers, isOfferHidden } = useHiddenOffers();
 
@@ -110,7 +106,7 @@ export default function Table({ data }: { data: Offer[] }) {
     sortedData.slice(0, PAGE_SIZE).map((d) => {
       return {
         ...d,
-        favorite: favoriteInternships.includes(d.number),
+        favorite: isOfferFavorite(d),
       };
     })
   );
@@ -150,7 +146,7 @@ export default function Table({ data }: { data: Offer[] }) {
     }
 
     if (showOnlyFavorites) {
-      data = data.filter((d) => favoriteInternships.includes(d.number));
+      data = data.filter((d) => isOfferFavorite(d));
     }
 
     if (nbCitiesSelected !== 0) {
@@ -216,7 +212,7 @@ export default function Table({ data }: { data: Offer[] }) {
           open: true,
           offer: {
             ...nextOffer,
-            favorite: favoriteInternships.includes(nextOffer.number),
+            favorite: isOfferFavorite(nextOffer),
           },
         };
       }
@@ -242,18 +238,12 @@ export default function Table({ data }: { data: Offer[] }) {
     const records = d.map((d) => {
       return {
         ...d,
-        favorite: favoriteInternships.includes(d.number),
+        favorite: isOfferFavorite(d),
       };
     });
 
     setRecords(records);
-  }, [
-    page,
-    filteredData,
-    sortStatus.direction,
-    favoriteInternships,
-    hiddenOffers,
-  ]);
+  }, [page, filteredData, sortStatus.direction, favoriteOffers, hiddenOffers]);
 
   return (
     <DataTable
@@ -272,22 +262,14 @@ export default function Table({ data }: { data: Offer[] }) {
       columns={[
         {
           accessor: "favorite",
-          render: ({ favorite, number }) => (
+          render: (record) => (
             <HeartIcon
-              checked={favorite}
+              checked={record.favorite}
               onClick={(event) => {
+                // Prevent the row click event to be triggered
                 event.stopPropagation();
-                let checked = !favorite;
-                setFavoriteInternships((favorites) => {
-                  if (checked) {
-                    if (!favorites.includes(number)) {
-                      return [...favorites, number];
-                    }
-                    return favorites;
-                  } else {
-                    return favorites.filter((f) => f !== number);
-                  }
-                });
+
+                toggleFavoriteOffer(record);
               }}
             />
           ),
