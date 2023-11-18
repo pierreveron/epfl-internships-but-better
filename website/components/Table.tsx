@@ -18,6 +18,7 @@ import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
+import { useHiddenOffers } from "@/utils/hooks";
 
 const PAGE_SIZE = 15;
 
@@ -77,6 +78,8 @@ export default function Table({ data }: { data: Offer[] }) {
     getInitialValueInEffect: false,
     defaultValue: [] as string[],
   });
+
+  const { hiddenOffers, isOfferHidden } = useHiddenOffers();
 
   const [page, setPage] = useState(1);
   const [sortStatus, setSortStatus] = useState<
@@ -182,16 +185,59 @@ export default function Table({ data }: { data: Offer[] }) {
   ]);
 
   useEffect(() => {
-    const from = (page - 1) * PAGE_SIZE;
-    const to = from + PAGE_SIZE;
-
     let d = filteredData;
 
     if (sortStatus.direction === "desc") {
       d = d.slice().reverse();
     }
 
+    setAside((aside) => {
+      if (aside.open && aside.offer && isOfferHidden(aside.offer)) {
+        // Find the next offer after the current one
+        d = d.filter(
+          (offer) =>
+            offer.number === aside.offer!.number || !isOfferHidden(offer)
+        );
+
+        const hiddenOfferIndex = d.findIndex(
+          (o) => o.number === aside.offer!.number
+        );
+
+        let nextOfferIndex;
+        if (hiddenOfferIndex === d.length - 1) {
+          nextOfferIndex = hiddenOfferIndex - 1;
+        } else {
+          nextOfferIndex = hiddenOfferIndex + 1;
+        }
+
+        const nextOffer = d[nextOfferIndex];
+
+        return {
+          open: true,
+          offer: {
+            ...nextOffer,
+            favorite: favoriteInternships.includes(nextOffer.number),
+          },
+        };
+      }
+      return aside;
+    });
+  }, [hiddenOffers]);
+
+  useEffect(() => {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE;
+
+    let d = filteredData;
+
+    d = d.filter((offer) => !isOfferHidden(offer));
+
+    if (sortStatus.direction === "desc") {
+      d = d.slice().reverse();
+    }
+
     d = d.slice(from, to);
+
     // add favorite property if present in favoriteInternships
     const records = d.map((d) => {
       return {
@@ -201,7 +247,13 @@ export default function Table({ data }: { data: Offer[] }) {
     });
 
     setRecords(records);
-  }, [page, filteredData, sortStatus.direction, favoriteInternships]);
+  }, [
+    page,
+    filteredData,
+    sortStatus.direction,
+    favoriteInternships,
+    hiddenOffers,
+  ]);
 
   return (
     <DataTable
