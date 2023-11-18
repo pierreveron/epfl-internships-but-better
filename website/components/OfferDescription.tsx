@@ -11,9 +11,12 @@ import EyeSlashIcon from "./icons/EyeSlashIcon";
 import LanguageIcon from "./icons/LanguageIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import { formatLengthLabel } from "./LengthsCheckboxes";
+import { useHiddenOffers } from "@/utils/hooks";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
+
+  const { toggleHiddenOffer } = useHiddenOffers();
 
   // const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
   //   key: "favorite-internships",
@@ -219,7 +222,11 @@ export default function OfferDescription() {
           // }}
         />
         <ActionIcon
-          // onClick={() => setOpened((opened) => !opened)}
+          onClick={() => {
+            if (asideOffer) {
+              toggleHiddenOffer(asideOffer);
+            }
+          }}
           variant="subtle"
           color="gray"
           size="xl"
