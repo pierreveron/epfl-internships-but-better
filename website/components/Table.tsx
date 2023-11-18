@@ -308,8 +308,17 @@ export default function Table({ data }: { data: Offer[] }) {
         {
           accessor: "salary",
           sortable: true,
-          render: ({ salary }) =>
-            salary === null ? "Unspecified" : `${salary} CHF`,
+          render: ({ salary }) => {
+            if (salary === null) {
+              return "Unspecified";
+            }
+
+            if (salary === 0) {
+              return "Unpaid";
+            }
+
+            return `${salary} CHF`;
+          },
         },
       ]}
       sortStatus={sortStatus}
