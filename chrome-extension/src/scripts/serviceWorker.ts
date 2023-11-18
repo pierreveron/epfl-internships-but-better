@@ -1,7 +1,7 @@
 import { getCurrentTab } from '../utils/chrome-helpers'
 import { ISA_JOB_BOARD_URL, NEW_JOB_BOARD_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
-import { OfferWithLocationToBeFormatted } from '../utils/types'
+import { OfferWithLocationToBeFormatted } from '../../../types'
 
 async function pollTabUntilNot(tabId: number, status: string) {
   // eslint-disable-next-line no-constant-condition

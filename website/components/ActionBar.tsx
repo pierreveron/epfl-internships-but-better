@@ -1,6 +1,7 @@
 import {
   lengthAtom,
   locationsAtom,
+  minimumSalaryAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
@@ -8,6 +9,7 @@ import {
   Button,
   Group,
   HoverCard,
+  NumberInput,
   Popover,
   Stack,
   Switch,
@@ -39,6 +41,7 @@ export default function ActionBar({
   const [showOnlyFavorites, setShowOnlyFavorite] = useAtom(
     showOnlyFavoritesAtom
   );
+  const [minimumSalary, setMinimumSalary] = useAtom(minimumSalaryAtom);
 
   return (
     <Group justify="space-between">
@@ -109,6 +112,20 @@ export default function ActionBar({
         </Popover>
 
         <CompanySelect companies={companies} />
+
+        <NumberInput
+          placeholder="Minimum salary"
+          value={minimumSalary}
+          onChange={(value) => {
+            if (typeof value === "string") {
+              setMinimumSalary(undefined);
+              return;
+            }
+            setMinimumSalary(value);
+          }}
+          step={500}
+          min={0}
+        />
       </Group>
 
       <Group>

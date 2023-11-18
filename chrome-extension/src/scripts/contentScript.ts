@@ -1,9 +1,9 @@
 chrome.storage.local.get('jobOffers', ({ jobOffers }) => {
   if (jobOffers) {
-    const lastUpdated = JSON.parse(localStorage.getItem('offersWithLocationToBeFormatted') || '{}').lastUpdated
+    const lastUpdated = JSON.parse(localStorage.getItem('offersToBeFormatted') || '{}').lastUpdated
 
     if (lastUpdated !== jobOffers.lastUpdated) {
-      localStorage.setItem('offersWithLocationToBeFormatted', JSON.stringify(jobOffers))
+      localStorage.setItem('offersToBeFormatted', JSON.stringify(jobOffers))
       window.dispatchEvent(new Event('jobOffersUpdated'))
     }
   }

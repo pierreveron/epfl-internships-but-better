@@ -11,6 +11,7 @@ export const lengthAtom = atom<SelectableLength[]>([]);
 export const companyAtom = atom<string | null>(null);
 export const showOnlyPositionsNotYetCompletedAtom = atom<boolean>(false);
 export const showOnlyFavoritesAtom = atom<boolean>(false);
+export const minimumSalaryAtom = atom<number | undefined>(undefined);
 export const isAsideOpenAtom = atom((get) => get(asideAtom).open);
 export const asideOfferAtom = atom((get) => get(asideAtom).offer);
 export const asideAtom = atom<{ open: boolean; offer: TableRecord | null }>({

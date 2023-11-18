@@ -4,6 +4,7 @@ import {
   formattingOffersAtom,
   lengthAtom,
   locationsAtom,
+  minimumSalaryAtom,
   nbCitiesSelectedAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
@@ -35,6 +36,21 @@ const sortBy = (data: Offer[], columnAccessor: string) => {
         new Date(b.creationDate.split(".").reverse().join("-")).getTime()
       );
     });
+  } else if (columnAccessor === "salary") {
+    dataSorted = data.sort((a, b) => {
+      // Check if salary is a string
+      if (typeof a.salary === "string" || typeof b.salary === "string") {
+        return 0;
+      }
+
+      if (a.salary === null) {
+        return 1;
+      }
+      if (b.salary === null) {
+        return -1;
+      }
+      return a.salary - b.salary;
+    });
   }
 
   return dataSorted;
@@ -43,7 +59,7 @@ const sortBy = (data: Offer[], columnAccessor: string) => {
 export type TableRecord = Offer & { favorite: boolean };
 
 export default function Table({ data }: { data: Offer[] }) {
-  const isFormatingLocations = useAtomValue(formattingOffersAtom);
+  const isFormatingOffers = useAtomValue(formattingOffersAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const selectableFormats = useAtomValue(formatAtom);
   const selectableLengths = useAtomValue(lengthAtom);
@@ -53,6 +69,7 @@ export default function Table({ data }: { data: Offer[] }) {
     showOnlyPositionsNotYetCompletedAtom
   );
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
+  const minimumSalary = useAtomValue(minimumSalaryAtom);
   const [{ offer }, setAside] = useAtom(asideAtom);
 
   const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
@@ -79,6 +96,7 @@ export default function Table({ data }: { data: Offer[] }) {
     selectedCompany,
     showOnlyPositionsNotYetCompleted,
     showOnlyFavorites,
+    minimumSalary,
   ]);
 
   const sortedData = useMemo(() => {
@@ -104,6 +122,16 @@ export default function Table({ data }: { data: Offer[] }) {
           d.format.filter((f) => {
             return selectableFormats.find((sf) => sf.name === f)?.selected;
           }).length > 0
+        );
+      });
+    }
+
+    if (minimumSalary !== undefined) {
+      data = data.filter((d) => {
+        return (
+          d.salary !== null &&
+          typeof d.salary !== "string" &&
+          d.salary >= minimumSalary
         );
       });
     }
@@ -148,6 +176,7 @@ export default function Table({ data }: { data: Offer[] }) {
     selectableLocations,
     nbCitiesSelected,
     selectableFormats,
+    minimumSalary,
     selectableLengths,
     selectedCompany,
   ]);
@@ -179,8 +208,8 @@ export default function Table({ data }: { data: Offer[] }) {
       withTableBorder
       highlightOnHover
       highlightOnHoverColor="var(--mantine-color-red-1)"
-      fetching={isFormatingLocations}
-      loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
+      fetching={isFormatingOffers}
+      loadingText="Processing the offers... (it should take less than 3 minutes)"
       records={records}
       rowBackgroundColor={({ number }) => {
         if (offer && offer.number === number) {
@@ -276,6 +305,21 @@ export default function Table({ data }: { data: Offer[] }) {
         },
         { accessor: "creationDate", sortable: true },
         { accessor: "length" },
+        {
+          accessor: "salary",
+          sortable: true,
+          render: ({ salary }) => {
+            if (salary === null) {
+              return "Unspecified";
+            }
+
+            if (salary === 0) {
+              return "Unpaid";
+            }
+
+            return `${salary} CHF`;
+          },
+        },
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
