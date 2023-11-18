@@ -11,20 +11,13 @@ import EyeSlashIcon from "./icons/EyeSlashIcon";
 import LanguageIcon from "./icons/LanguageIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import { formatLengthLabel } from "./LengthsCheckboxes";
-import { useHiddenOffers } from "@/utils/hooks";
+import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
 
   const { toggleHiddenOffer } = useHiddenOffers();
-
-  // const [favoriteInternships, setFavoriteInternships] = useLocalStorage({
-  //   key: "favorite-internships",
-  //   getInitialValueInEffect: true,
-  //   defaultValue: [] as string[],
-  // });
-
-  // const isFavorite = favoriteInternships.includes(asideOffer?.number ?? "");
+  const { isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers();
 
   const countryName = (language: string) => {
     switch (language) {
@@ -205,21 +198,12 @@ export default function OfferDescription() {
         </Button>
 
         <HeartIcon
-          checked={asideOffer?.favorite ?? false}
-          // onClick={() => {
-          //   let checked = !isFavorite;
-          //   let number = asideOffer?.number ?? "";
-          //   setFavoriteInternships((favorites) => {
-          //     if (checked) {
-          //       if (!favorites.includes(number)) {
-          //         return [...favorites, number];
-          //       }
-          //       return favorites;
-          //     } else {
-          //       return favorites.filter((f) => f !== number);
-          //     }
-          //   });
-          // }}
+          checked={asideOffer !== null && isOfferFavorite(asideOffer)}
+          onClick={() => {
+            if (asideOffer) {
+              toggleFavoriteOffer(asideOffer);
+            }
+          }}
         />
         <ActionIcon
           onClick={() => {
