@@ -62,56 +62,75 @@ def clean_salaries(salaries: list[str]):
     # Split the salaries into chunks of 50.
     chunks = [salaries[x : x + 50] for x in range(0, len(salaries), 50)]
 
-    total_data: SalariesDict = SalariesDict(salaries={})
     total_time = 0
     total_cost = 0
     total_tokens = 0
 
-    def predict(input_list: list[str]):
+    def predict(input_list: list[str], retrying: bool = False) -> SalariesDict:
         nonlocal total_cost, total_tokens, total_time
+
         _input = prompt.format_prompt(salaries=input_list)
         data: SalariesDict | None = None
-        with get_openai_callback() as cb:
-            for _ in range(0, 3):
-                data = None
-                # Time the request.
-                start = time.time()
-                print("Starting request...")
+
+        for _try in range(0, 3):
+            data = None
+
+            # Time the request.
+            start = time.time()
+            print("Starting request...")
+
+            with get_openai_callback() as cb:
                 output = llm.predict((_input.to_string()))
                 total_cost += cb.total_cost
                 total_tokens += cb.total_tokens
-                end = time.time()
-                print("Time taken:", round(end - start, 2))
-                total_time += end - start
-                try:
-                    data = parser.parse(output)
-                    missing_keys = set(chunk) - set(data.salaries.keys())
-                    if len(missing_keys) > 0:
-                        print("The keys in the input and output do not match.")
-                        print("Missing keys:", missing_keys)
+
+            end = time.time()
+            print("Time taken:", round(end - start, 2))
+            total_time += end - start
+
+            try:
+                data = parser.parse(output)
+                missing_keys = set(input_list) - set(data.salaries.keys())
+                if len(missing_keys) > 0:
+                    print("The keys in the input and output do not match.")
+                    print("Missing keys:", missing_keys)
+                    if retrying:
+                        raise Exception("Retry {} failed.".format(_try))
+                    else:
                         print("Retrying...")
-                        predict(list(missing_keys))
+                        data.salaries.update(
+                            predict(list(missing_keys), retrying=True).salaries
+                        )
+            except ValidationError as e:
+                data = None
+                print("A validation error occurred:", e)
+                continue
+            except Exception as e:
+                data = None
+                print("An exception occurred:", e)
+                continue
+            break
 
-                except ValidationError as e:
-                    data = None
-                    print("A validation error occurred:", e)
-                    continue
-                except Exception as e:
-                    data = None
-                    print("An exception occurred:", e)
-                    continue
-                break
+        print("Data:", data)
 
-            if data is None:
-                raise Exception("An error occurred. Please try again.")
+        if data is None:
+            raise Exception("No data was returned.")
+        if set(data.salaries.keys()) != set(input_list):
+            missing_keys = set(input_list) - set(data.salaries.keys())
+            print("Missing keys:", missing_keys)
+            raise Exception("The keys in the input and final data do not match.")
 
-            total_data.salaries.update(data.salaries)
+        return data
+
+    total_data: SalariesDict = SalariesDict(salaries={})
 
     try:
         # By 50 salaries, create a forloop
         for chunk in chunks:
-            predict(chunk)
+            data = predict(chunk)
+            total_data.salaries.update(data.salaries)
     except Exception as e:
+        print("Final exception")
         print("Total tokens used:", total_tokens)
         print(f"Total cost: $", round(total_cost, 2))
         print("An error occurred. Please try again.", e)
