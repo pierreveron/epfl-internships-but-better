@@ -220,6 +220,13 @@ export default function Table({ data }: { data: Offer[] }) {
           nextOfferIndex = hiddenOfferIndex + 1;
         }
 
+        if (nextOfferIndex < 0) {
+          return {
+            open: false,
+            offer: null,
+          };
+        }
+
         console.log("nextOfferIndex", nextOfferIndex);
         const nextOffer = d[nextOfferIndex];
 
