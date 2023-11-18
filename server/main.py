@@ -68,7 +68,8 @@ async def clean_locations(
 ):
     if len(locations) > 500:
         return {"error": "Too many locations"}
-    return clean_locations_openai(locations)
+    clean_locations = await clean_locations_openai(locations)
+    return clean_locations
 
 
 @app.post("/clean-salaries")
@@ -80,4 +81,5 @@ async def clean_salaries(
 ):
     if len(salaries) > 700:
         return {"error": "Too many salaries"}
-    return clean_salairies_openai(salaries)
+    clean_salaries = await clean_salairies_openai(salaries)
+    return clean_salaries

@@ -3,7 +3,7 @@ import time
 
 import orjson
 from dotenv import load_dotenv
-from langchain.llms import OpenAI
+from langchain.llms.openai import OpenAI
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
 from locations_types import LocationDict
@@ -35,7 +35,7 @@ prompt = PromptTemplate(
 )
 
 
-def clean_locations(locations: list[str]):
+async def clean_locations(locations: list[str]):
     """
     Clean a list of locations using OpenAI.
 
@@ -63,7 +63,7 @@ def clean_locations(locations: list[str]):
     total_cost = 0
     total_tokens = 0
 
-    def predict(input_list: list[str], retrying: bool = False) -> LocationDict:
+    async def predict(input_list: list[str], retrying: bool = False) -> LocationDict:
         nonlocal total_cost, total_tokens, total_time
 
         _input = prompt.format_prompt(locations=input_list)
@@ -78,7 +78,7 @@ def clean_locations(locations: list[str]):
             print("Starting request...")
 
             with get_openai_callback() as cb:
-                output = llm.predict((_input.to_string()))
+                output = await llm.apredict(_input.to_string())
                 total_cost += cb.total_cost
                 total_tokens += cb.total_tokens
 
@@ -125,7 +125,7 @@ def clean_locations(locations: list[str]):
     try:
         # By 50 locations, create a forloop
         for chunk in chunks:
-            data = predict(chunk)
+            data = await predict(chunk)
             total_data.locations.update(data.locations)
     except Exception as e:
         print("Final exception")
