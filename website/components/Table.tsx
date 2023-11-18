@@ -375,7 +375,9 @@ export default function Table({ data }: { data: Offer[] }) {
       ]}
       sortStatus={sortStatus}
       onSortStatusChange={setSortStatus}
-      totalRecords={filteredData.length}
+      totalRecords={
+        filteredData.filter((offer) => !isOfferHidden(offer)).length
+      }
       recordsPerPage={PAGE_SIZE}
       page={page}
       onPageChange={(p) => setPage(p)}
