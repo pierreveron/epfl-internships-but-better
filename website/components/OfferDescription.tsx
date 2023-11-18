@@ -1,15 +1,16 @@
 import { asideOfferAtom } from "@/atoms";
+import { getFlagEmojiWithName } from "@/utils/countries";
+import { formatToLabel } from "@/utils/format";
 import { ActionIcon, Anchor, Button } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import HeartIcon from "./HeartIcon";
-import LocationDotIcon from "./icons/LocationDotIcon";
 import ArrowRightLongIcon from "./icons/ArrowRightLongIcon";
-import EyeSlashIcon from "./icons/EyeSlashIcon";
 import BriefcaseIcon from "./icons/BriefcaseIcon";
-import { formatToLabel } from "@/utils/format";
 import ClockIcon from "./icons/ClockIcon";
-import { getFlagEmojiWithName } from "@/utils/countries";
+import EyeSlashIcon from "./icons/EyeSlashIcon";
 import LanguageIcon from "./icons/LanguageIcon";
+import LocationDotIcon from "./icons/LocationDotIcon";
+import { formatLengthLabel } from "./LengthsCheckboxes";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -32,6 +33,19 @@ export default function OfferDescription() {
         return "United Kingdom";
       default:
         return "";
+    }
+  };
+
+  const formatLanguageLevel = (label: string) => {
+    switch (label) {
+      case "Elémentaire" || "Basic":
+        return "Basic";
+      case "Intermédiaire" || "Intermediate":
+        return "Intermediate";
+      case "Avancé" || "Advanced":
+        return "Advanced";
+      default:
+        return undefined;
     }
   };
 
@@ -89,7 +103,7 @@ export default function OfferDescription() {
           }}
         >
           <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-          <p>Type de poste</p>
+          <p>Position type</p>
           <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
             {asideOffer && asideOffer?.format.length > 0 ? (
               asideOffer?.format.map((format, index) => (
@@ -116,10 +130,12 @@ export default function OfferDescription() {
           }}
         >
           <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-          <p>Durée</p>
+          <p>Length</p>
 
           <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit">
-            {asideOffer?.length ?? "Not specified"}
+            {asideOffer?.length
+              ? formatLengthLabel(asideOffer.length)
+              : "Not specified"}
           </p>
         </div>
 
@@ -134,23 +150,30 @@ export default function OfferDescription() {
           <p>Languages</p>
           <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
             {asideOffer &&
-            Object.entries(asideOffer?.languages ?? {}).filter(
-              ([_, value]) => value != ""
-            ).length > 0 ? (
+            Object.entries(asideOffer?.languages ?? {})
+              .map(([language, level]) => [
+                language,
+                formatLanguageLevel(level),
+              ])
+              .filter(([_, level]) => level !== undefined).length > 0 ? (
               Object.entries(asideOffer?.languages ?? {})
-                .filter(([_, value]) => value != "")
+                .map(([language, level]) => [
+                  language,
+                  formatLanguageLevel(level),
+                ])
+                .filter(([_, level]) => level !== undefined)
                 .map(([language, level], index) => (
                   <p
                     key={index}
                     className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-flex tw-flex-row tw-items-center tw-gap-2"
                   >
                     <span>
-                      {getFlagEmojiWithName(countryName(language)) ??
+                      {getFlagEmojiWithName(countryName(language!)) ??
                         `${
-                          language.charAt(0).toUpperCase() + language.slice(1)
+                          language!.charAt(0).toUpperCase() + language!.slice(1)
                         }:`}
                     </span>
-                    <span> {level}</span>
+                    <span>{level}</span>
                   </p>
                 ))
             ) : (

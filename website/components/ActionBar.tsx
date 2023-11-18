@@ -3,7 +3,6 @@ import {
   locationsAtom,
   minimumSalaryAtom,
   showOnlyFavoritesAtom,
-  showOnlyPositionsNotYetCompletedAtom,
 } from "@/atoms";
 import {
   Button,
@@ -34,10 +33,6 @@ export default function ActionBar({
 }) {
   const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom);
   const [selectableLengths, setSelectableLengths] = useAtom(lengthAtom);
-  const [
-    showOnlyPositionsNotYetCompleted,
-    setShowOnlyPositionsNotYetCompleted,
-  ] = useAtom(showOnlyPositionsNotYetCompletedAtom);
   const [showOnlyFavorites, setShowOnlyFavorite] = useAtom(
     showOnlyFavoritesAtom
   );
@@ -129,7 +124,7 @@ export default function ActionBar({
       </Group>
 
       <Group>
-        <Switch
+        {/* <Switch
           styles={{
             label: { maxWidth: 200 },
             body: { alignItems: "center" },
@@ -139,7 +134,7 @@ export default function ActionBar({
           onChange={(event) =>
             setShowOnlyPositionsNotYetCompleted(event.currentTarget.checked)
           }
-        />
+        /> */}
         <Switch
           label="Show only favorites"
           checked={showOnlyFavorites}
