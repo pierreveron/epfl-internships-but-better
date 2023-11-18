@@ -3,3 +3,5 @@
 .env
 
 service_account.json
+
+data/records/
