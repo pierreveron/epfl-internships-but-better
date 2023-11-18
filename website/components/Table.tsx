@@ -288,12 +288,12 @@ export default function Table({ data }: { data: Offer[] }) {
             );
           },
         },
-        {
-          accessor: "registered",
-          textAlign: "center",
-          title: "Candidates",
-        },
-        { accessor: "positions", textAlign: "center", title: "Places" },
+        // {
+        //   accessor: "registered",
+        //   textAlign: "center",
+        //   title: "Candidates",
+        // },
+        // { accessor: "positions", textAlign: "center", title: "Places" },
         {
           accessor: "professor",
           render: ({ professor, format }) => {
