@@ -203,6 +203,8 @@ export default function Table({ data }: { data: Offer[] }) {
           (o) => o.number === aside.offer!.number
         );
 
+        console.log("hiddenOfferIndex", hiddenOfferIndex);
+
         let nextOfferIndex;
         if (hiddenOfferIndex === d.length - 1) {
           nextOfferIndex = hiddenOfferIndex - 1;
@@ -210,7 +212,13 @@ export default function Table({ data }: { data: Offer[] }) {
           nextOfferIndex = hiddenOfferIndex + 1;
         }
 
+        console.log("nextOfferIndex", nextOfferIndex);
         const nextOffer = d[nextOfferIndex];
+
+        const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1;
+        console.log("newPage", newPage);
+
+        setPage(Math.floor(nextOfferIndex / PAGE_SIZE) + 1);
 
         return {
           open: true,
