@@ -117,7 +117,10 @@ export default function ActionBar({
           placeholder="Minimum salary"
           value={minimumSalary}
           onChange={(value) => {
-            if (typeof value === "string") return;
+            if (typeof value === "string") {
+              setMinimumSalary(undefined);
+              return;
+            }
             setMinimumSalary(value);
           }}
           step={500}
