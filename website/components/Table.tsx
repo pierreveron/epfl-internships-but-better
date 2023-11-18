@@ -209,7 +209,7 @@ export default function Table({ data }: { data: Offer[] }) {
       highlightOnHover
       highlightOnHoverColor="var(--mantine-color-red-1)"
       fetching={isFormatingOffers}
-      loadingText="Processing the locations of the offers... (it should take less than 3 minutes)"
+      loadingText="Processing the offers... (it should take less than 3 minutes)"
       records={records}
       rowBackgroundColor={({ number }) => {
         if (offer && offer.number === number) {
