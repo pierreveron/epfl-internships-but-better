@@ -39,9 +39,29 @@ async function goToRegisterPage(offerId: string) {
   await chrome.tabs.sendMessage(tab.id, { type: 'register', offerId })
 }
 
+async function goToViewPage(offerId: string) {
+  const tab = await getCurrentTab()
+
+  if (!tab || !tab.id) {
+    console.error('No tab found')
+    return
+  }
+
+  if (!(await pollTabUntilNot(tab.id, 'loading'))) {
+    console.error('An error occured while polling tab')
+    return
+  }
+
+  await chrome.tabs.sendMessage(tab.id, { type: 'view', offerId })
+}
+
 chrome.runtime.onMessage.addListener(async function (request) {
   if (request.type == 'register') {
     goToRegisterPage(request.offerId)
+  }
+
+  if (request.type == 'view') {
+    goToViewPage(request.offerId)
   }
 
   if (request.message !== 'init') return
