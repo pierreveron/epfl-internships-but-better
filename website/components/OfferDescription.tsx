@@ -197,14 +197,20 @@ export default function OfferDescription() {
           Register
         </Button>
 
-        <HeartIcon
-          checked={asideOffer !== null && isOfferFavorite(asideOffer)}
+        <ActionIcon
           onClick={() => {
             if (asideOffer) {
               toggleFavoriteOffer(asideOffer);
             }
           }}
-        />
+          variant="subtle"
+          color="red"
+          size="xl"
+        >
+          <HeartIcon
+            checked={asideOffer !== null && isOfferFavorite(asideOffer)}
+          />
+        </ActionIcon>
         <ActionIcon
           onClick={() => {
             if (asideOffer) {
