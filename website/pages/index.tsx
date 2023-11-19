@@ -15,7 +15,7 @@ import OfferDescription from "@/components/OfferDescription";
 import XMarkIcon from "@/components/icons/XMarkIcon";
 import { SelectableCity, SelectableLength } from "@/types";
 import { abortFormatting, formatOffers } from "@/utils/offerFormatting";
-import { Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
+import { ActionIcon, Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
@@ -203,12 +203,14 @@ export default function Home() {
         {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
         <AppShell.Aside {...(isAsideOpen && { pt: "xl", pl: "xl" })}>
           <AppShell.Section>
-            <div
-              className="tw-p-2 hover:tw-bg-gray-200 tw-rounded tw-flex tw-w-fit"
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size="lg"
               onClick={() => setAside({ open: false, offer: null })}
             >
-              <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-600" />
-            </div>
+              <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-900" />
+            </ActionIcon>
           </AppShell.Section>
           <AppShell.Section grow component={ScrollArea} pr="xl">
             <OfferDescription />
