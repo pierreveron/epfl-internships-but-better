@@ -2,6 +2,7 @@ import {
   asideAtom,
   formatAtom,
   formattingOffersAtom,
+  isAsideMaximizedAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
@@ -21,6 +22,9 @@ import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferToBeFormatted } from "../../types";
 import { useAsyncError } from "@/utils/error";
+import MaximizeIcon from "@/components/icons/MaximizeIcon";
+import MinimizeIcon from "@/components/icons/MinimizeIcon";
+import classNames from "classnames";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -149,6 +153,7 @@ export default function Home() {
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const setIsFormattingOffers = useSetAtom(formattingOffersAtom);
   const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom);
+  const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom);
 
   useEffect(() => {
     setSelectableFormats([
@@ -193,7 +198,7 @@ export default function Home() {
         aside={{
           width: {
             base: 500,
-            lg: isAsideOpen ? "40%" : 0,
+            lg: isAsideOpen ? (isAsideMaximized ? "100%" : "40%") : 0,
           },
           breakpoint: "md",
           collapsed: { mobile: !isAsideOpen, desktop: !isAsideOpen },
@@ -201,8 +206,12 @@ export default function Home() {
         padding="xl"
       >
         {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
-        <AppShell.Aside {...(isAsideOpen && { pt: "xl", pl: "xl" })}>
-          <AppShell.Section>
+        <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}>
+          <AppShell.Section
+            pt="xl"
+            w={isAsideMaximized ? "50%" : "100%"}
+            mx={isAsideMaximized ? "auto" : 0}
+          >
             <ActionIcon
               variant="subtle"
               color="gray"
@@ -211,9 +220,30 @@ export default function Home() {
             >
               <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-900" />
             </ActionIcon>
+
+            <ActionIcon
+              variant="subtle"
+              color="gray"
+              size="lg"
+              onClick={() => setIsAsideMaximized((maximized) => !maximized)}
+            >
+              {isAsideMaximized ? (
+                <MinimizeIcon className="tw-w-4 tw-fill-gray-900" />
+              ) : (
+                <MaximizeIcon className="tw-w-4 tw-fill-gray-900" />
+              )}
+            </ActionIcon>
           </AppShell.Section>
-          <AppShell.Section grow component={ScrollArea} pr="xl">
-            <OfferDescription />
+          <AppShell.Section
+            grow
+            component={ScrollArea}
+            pr={!isAsideMaximized ? "xl" : 0}
+          >
+            <div
+              className={classNames(isAsideMaximized && "tw-w-1/2 tw-mx-auto")}
+            >
+              <OfferDescription />
+            </div>
           </AppShell.Section>
         </AppShell.Aside>
         <AppShell.Main style={{ height: "100vh" }}>

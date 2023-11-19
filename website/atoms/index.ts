@@ -18,6 +18,7 @@ export const asideAtom = atom<{ open: boolean; offer: TableRecord | null }>({
   open: false,
   offer: null,
 });
+export const isAsideMaximizedAtom = atom<boolean>(false);
 
 export const nbCitiesSelectedAtom = atom((get) => {
   const locations = get(locationsAtom);
