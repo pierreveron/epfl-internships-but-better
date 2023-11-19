@@ -57,6 +57,23 @@ export default function OfferDescription() {
         <p className="tw-text-lg tw-font-medium tw-italic">
           {asideOffer?.company}
         </p>
+        <div className="tw-flex tw-flex-col">
+          {asideOffer?.companyInfo.website &&
+            asideOffer?.companyInfo.website
+              .split(";")
+              .map((t) => t.trim())
+              .map((website, index) => (
+                <a
+                  key={index}
+                  className="tw-text-blue-500 tw-text-sm tw-underline"
+                  href={website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {website}
+                </a>
+              ))}
+        </div>
       </div>
 
       <div className="tw-mb-4">
@@ -227,6 +244,16 @@ export default function OfferDescription() {
         >
           View original offer
         </Anchor>
+      </div>
+
+      <div className="tw-mt-4">
+        <h3 className="tw-text-xl tw-font-medium">Company address</h3>
+        <p
+          className="tw-text-gray-900 tw-whitespace-pre-line"
+          style={{ wordBreak: "break-word" }}
+        >
+          {asideOffer?.description ?? "⊘"}
+        </p>
       </div>
 
       <div className="tw-mt-4">
