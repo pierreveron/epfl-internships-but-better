@@ -202,7 +202,7 @@ export default function Home() {
       >
         {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
         <AppShell.Aside {...(isAsideOpen && { pt: "xl", pl: "xl" })}>
-          <AppShell.Section>
+          <AppShell.Section mb="sm">
             <div
               className="tw-p-2 hover:tw-bg-gray-200 tw-rounded tw-flex tw-w-fit"
               onClick={() => setAside({ open: false, offer: null })}
