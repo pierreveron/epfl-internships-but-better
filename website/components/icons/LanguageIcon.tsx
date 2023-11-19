@@ -1,4 +1,4 @@
-export default function ClockIcon({ className }: { className?: string }) {
+export default function LanguageIcon({ className }: { className?: string }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
