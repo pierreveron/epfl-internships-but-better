@@ -44,6 +44,10 @@ export type PageData = {
     german: string;
   };
   relatedMasters: string[];
+  file: {
+    detailId: string;
+    fileName: string;
+  } | null;
 };
 
 // Omit location and salary from Offer

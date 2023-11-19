@@ -64,6 +64,8 @@ export function extractData(xml: string): PageData {
 
   const relatedMasters = getRelatedMasters(parsed)
 
+  const file = getFile(parsed)
+
   return {
     length,
     hiringTime,
@@ -74,11 +76,25 @@ export function extractData(xml: string): PageData {
     remarks,
     languages,
     relatedMasters,
+    file,
+  }
+}
+
+function getFile(parsed: HTMLElement) {
+  const childNodes = parsed.querySelector(`detail[c_detailmodele="STAGE_LABEL_FICHIER"]`)!.nextElementSibling.childNodes
+  if (childNodes.length < 2) return null
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const detailId = childNodes[1].getAttribute('i_detailstage')!
+  const fileName = childNodes[1].text
+  return {
+    detailId,
+    fileName,
   }
 }
 
 function extractDataFromDetail(parsed: HTMLElement, model: string) {
-  return parsed.querySelector(`detail[c_detailmodele="${model}"]`)!.nextElementSibling.childNodes[1].text
+  return parsed.querySelector(`detail[c_detailmodele="${model}"]`)!.nextElementSibling.childNodes[1]?.text || ''
 }
 
 function getHiringTime(parsed: HTMLElement): string {
