@@ -18,6 +18,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
 import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
+import classNames from "classnames";
 
 const PAGE_SIZE = 15;
 
@@ -328,21 +329,24 @@ export default function Table({ data }: { data: Offer[] }) {
               (f) => f.selected
             );
             return (
-              <ul style={{ listStyle: "none" }}>
+              <ul className="tw-list-none tw-space-y-1">
                 {format.map((f) => {
-                  let color: string | undefined;
-                  if (
+                  const selected =
                     someFormatsSelected &&
-                    !selectableFormats.find((sf) => sf.name === f)?.selected
-                  ) {
-                    color = "dimmed";
-                  }
+                    !selectableFormats.find((sf) => sf.name === f)?.selected;
 
                   return (
                     <li key={f}>
-                      <Text c={color} style={{ whiteSpace: "nowrap" }}>
+                      <p
+                        className={classNames(
+                          "tw-text-sm tw-py-1 tw-px-2  tw-rounded-md tw-whitespace-nowrap tw-w-fit",
+                          !selected
+                            ? "tw-bg-gray-200 tw-text-gray-600"
+                            : "tw-bg-gray-50 tw-text-gray-300"
+                        )}
+                      >
                         {formatToLabel(f)}
-                      </Text>
+                      </p>
                     </li>
                   );
                 })}
