@@ -25,6 +25,8 @@ import { useAsyncError } from "@/utils/error";
 import MaximizeIcon from "@/components/icons/MaximizeIcon";
 import MinimizeIcon from "@/components/icons/MinimizeIcon";
 import classNames from "classnames";
+import BackwardStepIcon from "@/components/icons/BackwardStepIcon";
+import ForwardStepIcon from "@/components/icons/ForwardStepIcon";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -209,30 +211,44 @@ export default function Home() {
         <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}>
           <AppShell.Section
             pt="xl"
+            pr={!isAsideMaximized ? "xl" : 0}
             w={isAsideMaximized ? "50%" : "100%"}
             mx={isAsideMaximized ? "auto" : 0}
           >
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              size="lg"
-              onClick={() => setAside({ open: false, offer: null })}
-            >
-              <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-900" />
-            </ActionIcon>
+            <div className="tw-flex tw-flex-row tw-justify-between">
+              <div>
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  onClick={() => setAside({ open: false, offer: null })}
+                >
+                  <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-900" />
+                </ActionIcon>
 
-            <ActionIcon
-              variant="subtle"
-              color="gray"
-              size="lg"
-              onClick={() => setIsAsideMaximized((maximized) => !maximized)}
-            >
-              {isAsideMaximized ? (
-                <MinimizeIcon className="tw-w-4 tw-fill-gray-900" />
-              ) : (
-                <MaximizeIcon className="tw-w-4 tw-fill-gray-900" />
-              )}
-            </ActionIcon>
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  onClick={() => setIsAsideMaximized((maximized) => !maximized)}
+                >
+                  {isAsideMaximized ? (
+                    <MinimizeIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                  ) : (
+                    <MaximizeIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                  )}
+                </ActionIcon>
+              </div>
+              <div>
+                <ActionIcon variant="subtle" color="gray" size="lg">
+                  <BackwardStepIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                </ActionIcon>
+
+                <ActionIcon variant="subtle" color="gray" size="lg">
+                  <ForwardStepIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                </ActionIcon>
+              </div>
+            </div>
           </AppShell.Section>
           <AppShell.Section
             grow
