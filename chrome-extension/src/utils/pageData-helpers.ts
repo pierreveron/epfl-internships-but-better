@@ -64,6 +64,10 @@ export function extractData(xml: string): PageData {
 
   const relatedMasters = getRelatedMasters(parsed)
 
+  const companyInfo = getCompanyInfo(parsed)
+
+  const contactInfo = getContactInfo(parsed)
+
   return {
     length,
     hiringTime,
@@ -74,11 +78,47 @@ export function extractData(xml: string): PageData {
     remarks,
     languages,
     relatedMasters,
+    companyInfo,
+    contactInfo,
+  }
+}
+
+function getCompanyInfo(parsed: HTMLElement) {
+  const name = extractDataFromDetail(parsed, 'STAGE_LABEL_ENTRMERE')
+  const street = extractDataFromDetail(parsed, 'STAGE_LABEL_ADRESSE')
+  const location = extractDataFromDetail(parsed, 'STAGE_LABEL_LOC')
+  const country = parsed.querySelector(`detail[c_detailmodele="STCC_ENTRPAYS"]`)!.childNodes[1].text
+  const website = extractDataFromDetail(parsed, 'STAGE_LABEL_URL')
+
+  return {
+    name,
+    address: {
+      street,
+      city: location,
+      country,
+    },
+    website,
+  }
+}
+
+function getContactInfo(parsed: HTMLElement) {
+  const name = extractDataFromDetail(parsed, 'DET_STAGE_LAB_INFOSCONTACT')
+  const title = extractDataFromDetail(parsed, 'STAGE_LABEL_TITRE2')
+  const email = extractDataFromDetail(parsed, 'STAGE_LABEL_EMAIL')
+  const cellPhone = extractDataFromDetail(parsed, 'STAGE_LABEL_MOBILE2')
+  const professionalPhone = extractDataFromDetail(parsed, 'STAGE_LABEL_TELPROF2')
+
+  return {
+    name,
+    title,
+    email,
+    cellPhone,
+    professionalPhone,
   }
 }
 
 function extractDataFromDetail(parsed: HTMLElement, model: string) {
-  return parsed.querySelector(`detail[c_detailmodele="${model}"]`)!.nextElementSibling.childNodes[1].text
+  return parsed.querySelector(`detail[c_detailmodele="${model}"]`)!.nextElementSibling.childNodes[1]?.text ?? ''
 }
 
 function getHiringTime(parsed: HTMLElement): string {
