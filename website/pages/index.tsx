@@ -194,7 +194,7 @@ export default function Home() {
   const { width } = useViewportSize();
 
   useEffect(() => {
-    if (width < 992 && isAsideMaximized) {
+    if (width <= 992 && isAsideMaximized) {
       setIsAsideMaximized(false);
       return;
     }
@@ -252,21 +252,21 @@ export default function Home() {
                   color="gray"
                   size="lg"
                   onClick={() => setIsAsideMaximized((maximized) => !maximized)}
-                  disabled={width < 992}
+                  disabled={width <= 992}
                   className="disabled:tw-bg-transparent"
                 >
                   {isAsideMaximized ? (
                     <MinimizeIcon
                       className={classNames(
                         "tw-w-4 tw-h-4",
-                        width < 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
+                        width <= 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
                       )}
                     />
                   ) : (
                     <MaximizeIcon
                       className={classNames(
                         "tw-w-4 tw-h-4",
-                        width < 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
+                        width <= 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
                       )}
                     />
                   )}
