@@ -28,6 +28,7 @@ export const sortStatusAtom = atom<DataTableSortStatus<TableRecord>>({
   columnAccessor: "creationDate",
   direction: "desc",
 });
+export const pageAtom = atom<number>(1);
 
 export const nbCitiesSelectedAtom = atom((get) => {
   const locations = get(locationsAtom);

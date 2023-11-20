@@ -1,8 +1,14 @@
+import {
+  asideAtom,
+  filteredOffersAtom,
+  pageAtom,
+  sortStatusAtom,
+} from "@/atoms";
+import { PAGE_SIZE } from "@/components/Table";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
-import { Offer } from "../../types";
 import { useAtom, useAtomValue } from "jotai";
-import { asideAtom, filteredOffersAtom, sortStatusAtom } from "@/atoms";
 import { useMemo } from "react";
+import { Offer } from "../../types";
 
 export const useHiddenOffers = () => {
   const [hiddenOffers, setHiddenOffers] = useLocalStorage({
@@ -60,6 +66,8 @@ export const useAsideNavigation = () => {
   const { isOfferHidden } = useHiddenOffers();
   const sortStatus = useAtomValue(sortStatusAtom);
 
+  const [page, setPage] = useAtom(pageAtom);
+
   useHotkeys([
     ["ArrowRight", () => navigateToNextOffer()],
     ["ArrowLeft", () => navigateToPreviousOffer()],
@@ -113,8 +121,12 @@ export const useAsideNavigation = () => {
     );
 
     if (currentOfferIndex < finalOffers.length - 1) {
-      const nextOffer = finalOffers[currentOfferIndex + 1];
+      const nextOfferIndex = currentOfferIndex + 1;
+      const nextOffer = finalOffers[nextOfferIndex];
       setAside({ open: true, offer: nextOffer });
+
+      const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1;
+      setPage(newPage);
     }
   };
 
@@ -128,8 +140,12 @@ export const useAsideNavigation = () => {
     );
 
     if (currentOfferIndex > 0) {
-      const previousOffer = finalOffers[currentOfferIndex - 1];
+      const previousOfferIndex = currentOfferIndex - 1;
+      const previousOffer = finalOffers[previousOfferIndex];
       setAside({ open: true, offer: previousOffer });
+
+      const newPage = Math.floor(previousOfferIndex / PAGE_SIZE) + 1;
+      setPage(newPage);
     }
   };
 

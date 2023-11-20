@@ -8,12 +8,14 @@ import {
   locationsAtom,
   minimumSalaryAtom,
   nbCitiesSelectedAtom,
+  pageAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
   sortStatusAtom,
 } from "@/atoms";
 import { formatToLabel } from "@/utils/format";
 import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
+import { usePrevious } from "@mantine/hooks";
 import classNames from "classnames";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DataTable } from "mantine-datatable";
@@ -88,8 +90,30 @@ export default function Table({ data }: { data: Offer[] }) {
       behavior: "smooth",
     });
 
-  const [page, setPage] = useState(1);
+  const scrollToTop = () =>
+    viewport.current!.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+  const [page, setPage] = useAtom(pageAtom);
   const [sortStatus, setSortStatus] = useAtom(sortStatusAtom);
+
+  const previousPage = usePrevious(page);
+
+  useEffect(() => {
+    if (previousPage === undefined) return;
+    if (previousPage < page) {
+      setTimeout(() => {
+        scrollToTop();
+      }, 100);
+    }
+    if (previousPage > page) {
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+    }
+  }, [page]);
 
   useEffect(() => {
     setPage(1);
@@ -228,13 +252,7 @@ export default function Table({ data }: { data: Offer[] }) {
 
         const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1;
         console.log("newPage", newPage);
-
-        if (newPage !== page) {
-          setPage(newPage);
-          setTimeout(() => {
-            scrollToBottom();
-          }, 100);
-        }
+        setPage(newPage);
 
         return {
           open: true,
