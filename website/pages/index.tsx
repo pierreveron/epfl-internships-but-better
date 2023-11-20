@@ -217,8 +217,12 @@ export default function Home() {
       <AppShell
         aside={{
           width: {
-            md: isAsideMaximized ? "100%" : 500,
-            lg: isAsideOpen ? (isAsideMaximized ? "100%" : "40%") : 0,
+            md: isAsideMaximized ? "100%" : 550,
+            lg: isAsideOpen
+              ? isAsideMaximized
+                ? "100%"
+                : "max(40%, 550px)"
+              : 0,
           },
           breakpoint: "md",
           collapsed: { mobile: !isAsideOpen, desktop: !isAsideOpen },
