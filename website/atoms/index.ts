@@ -1,6 +1,7 @@
 import { TableRecord } from "@/components/Table";
 import { SelectableCity, SelectableFormat, SelectableLength } from "@/types";
 import { atom } from "jotai";
+import { Offer } from "../../types";
 
 export const formattingOffersAtom = atom<boolean>(false);
 
@@ -19,6 +20,8 @@ export const asideAtom = atom<{ open: boolean; offer: TableRecord | null }>({
   offer: null,
 });
 export const isAsideMaximizedAtom = atom<boolean>(false);
+
+export const filteredOffersAtom = atom<Offer[]>([]);
 
 export const nbCitiesSelectedAtom = atom((get) => {
   const locations = get(locationsAtom);

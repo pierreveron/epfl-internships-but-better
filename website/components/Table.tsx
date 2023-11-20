@@ -9,10 +9,11 @@ import {
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
   asideAtom,
+  filteredOffersAtom,
 } from "@/atoms";
 import { formatToLabel } from "@/utils/format";
 import { Text } from "@mantine/core";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer } from "../../types";
@@ -72,6 +73,7 @@ export default function Table({ data }: { data: Offer[] }) {
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
   const minimumSalary = useAtomValue(minimumSalaryAtom);
   const [{ offer }, setAside] = useAtom(asideAtom);
+  const setFilteredOffers = useSetAtom(filteredOffersAtom);
 
   const { favoriteOffers, isOfferFavorite, toggleFavoriteOffer } =
     useFavoriteOffers();
@@ -175,6 +177,8 @@ export default function Table({ data }: { data: Offer[] }) {
     if (showOnlyPositionsNotYetCompleted) {
       data = data.filter((d) => d.registered < d.positions);
     }
+
+    setFilteredOffers(data);
 
     return data;
   }, [

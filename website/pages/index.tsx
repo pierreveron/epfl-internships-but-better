@@ -6,6 +6,8 @@ import {
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
+  filteredOffersAtom,
+  asideOfferAtom,
 } from "@/atoms";
 import ActionBar from "@/components/ActionBar";
 import Footer from "@/components/Footer";
@@ -27,6 +29,7 @@ import MinimizeIcon from "@/components/icons/MinimizeIcon";
 import classNames from "classnames";
 import BackwardStepIcon from "@/components/icons/BackwardStepIcon";
 import ForwardStepIcon from "@/components/icons/ForwardStepIcon";
+import { useHiddenOffers } from "@/utils/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -156,6 +159,7 @@ export default function Home() {
   const setIsFormattingOffers = useSetAtom(formattingOffersAtom);
   const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom);
   const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom);
+  const filteredOffers = useAtomValue(filteredOffersAtom);
 
   useEffect(() => {
     setSelectableFormats([
@@ -181,6 +185,31 @@ export default function Home() {
   useEffect(() => {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry, setSelectableLocations]);
+
+  const { isOfferHidden } = useHiddenOffers();
+  const asideOffer = useAtomValue(asideOfferAtom);
+
+  const test = (d: Offer[], currentOffer: Offer | null): number => {
+    console.log("test", d, currentOffer);
+    // if (sortStatus.direction === "desc") {
+    d = d.slice().reverse();
+    // }
+
+    if (currentOffer === null) {
+      return 0;
+    }
+
+    d = d.filter((offer) => !isOfferHidden(offer));
+    console.log("d", d.length);
+
+    const currentOfferIndex = d.findIndex(
+      (o) => o.number === currentOffer.number
+    );
+
+    console.log("currentOfferIndex", currentOfferIndex);
+
+    return currentOfferIndex;
+  };
 
   return (
     <>
@@ -240,12 +269,46 @@ export default function Home() {
                 </ActionIcon>
               </div>
               <div>
-                <ActionIcon variant="subtle" color="gray" size="lg">
-                  <BackwardStepIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  disabled={test(filteredOffers, asideOffer!) <= 0}
+                  className="disabled:tw-bg-transparent"
+                >
+                  <BackwardStepIcon
+                    className={classNames(
+                      "tw-w-4 tw-h-4",
+                      test(filteredOffers, asideOffer!) <= 0
+                        ? "tw-fill-gray-300"
+                        : "tw-fill-gray-900"
+                    )}
+                  />
                 </ActionIcon>
 
-                <ActionIcon variant="subtle" color="gray" size="lg">
-                  <ForwardStepIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  disabled={
+                    test(filteredOffers, asideOffer) >=
+                    filteredOffers.filter((offer) => !isOfferHidden(offer))
+                      .length -
+                      1
+                  }
+                  className="disabled:tw-bg-transparent"
+                >
+                  <ForwardStepIcon
+                    className={classNames(
+                      "tw-w-4 tw-h-4 ",
+                      test(filteredOffers, asideOffer) >=
+                        filteredOffers.filter((offer) => !isOfferHidden(offer))
+                          .length -
+                          1
+                        ? "tw-fill-gray-300"
+                        : "tw-fill-gray-900"
+                    )}
+                  />
                 </ActionIcon>
               </div>
             </div>
