@@ -1,5 +1,7 @@
 import {
+  asideAtom,
   companyAtom,
+  filteredOffersAtom,
   formatAtom,
   formattingOffersAtom,
   lengthAtom,
@@ -8,19 +10,16 @@ import {
   nbCitiesSelectedAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
-  asideAtom,
-  filteredOffersAtom,
   sortStatusAtom,
 } from "@/atoms";
 import { formatToLabel } from "@/utils/format";
-import { Text } from "@mantine/core";
+import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
+import classNames from "classnames";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
-import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
-import classNames from "classnames";
 
 const PAGE_SIZE = 15;
 
