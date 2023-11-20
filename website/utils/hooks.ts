@@ -42,6 +42,17 @@ export const useFavoriteOffers = () => {
     defaultValue: [] as string[],
   });
 
+  const { offer } = useAtomValue(asideAtom);
+
+  useHotkeys([
+    [
+      "mod+S",
+      () => {
+        if (offer) toggleFavoriteOffer(offer);
+      },
+    ],
+  ]);
+
   const toggleFavoriteOffer = (offer: Offer) => {
     const id = offer.number;
     setFavoriteOffers((ids) => {
