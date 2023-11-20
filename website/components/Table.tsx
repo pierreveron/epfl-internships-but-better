@@ -13,7 +13,7 @@ import {
   showOnlyPositionsNotYetCompletedAtom,
   sortStatusAtom,
 } from "@/atoms";
-import { formatToLabel } from "@/utils/format";
+import { formatSalary, formatToLabel } from "@/utils/format";
 import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
 import { usePrevious } from "@mantine/hooks";
 import classNames from "classnames";
@@ -391,17 +391,7 @@ export default function Table({ data }: { data: Offer[] }) {
         {
           accessor: "salary",
           sortable: true,
-          render: ({ salary }) => {
-            if (salary === null) {
-              return "Unspecified";
-            }
-
-            if (salary === 0) {
-              return "Unpaid";
-            }
-
-            return `${salary} CHF`;
-          },
+          render: ({ salary }) => formatSalary(salary),
         },
       ]}
       sortStatus={sortStatus}
