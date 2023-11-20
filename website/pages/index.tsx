@@ -229,7 +229,10 @@ export default function Home() {
                   variant="subtle"
                   color="gray"
                   size="lg"
-                  onClick={() => setAside({ open: false, offer: null })}
+                  onClick={() => {
+                    setAside({ open: false, offer: null });
+                    setIsAsideMaximized(false);
+                  }}
                 >
                   <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-900" />
                 </ActionIcon>
