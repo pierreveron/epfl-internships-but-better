@@ -60,6 +60,10 @@ export type PageData = {
     cellPhone: string;
     professionalPhone: string;
   };
+  file: {
+    detailId: string;
+    fileName: string;
+  } | null;
 };
 
 // Omit location and salary from Offer

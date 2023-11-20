@@ -8,3 +8,15 @@ export function formatToLabel(format: Format) {
       return "Master Project";
   }
 }
+
+export function formatSalary(salary: string | number | null) {
+  if (salary === null) {
+    return "Unspecified";
+  }
+
+  if (salary === 0) {
+    return "Unpaid";
+  }
+
+  return `${salary} CHF`;
+}

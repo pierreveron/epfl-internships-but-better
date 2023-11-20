@@ -1,6 +1,6 @@
 import { asideOfferAtom } from "@/atoms";
 import { getFlagEmojiWithName } from "@/utils/countries";
-import { formatToLabel } from "@/utils/format";
+import { formatSalary, formatToLabel } from "@/utils/format";
 import { ActionIcon, Anchor, Button } from "@mantine/core";
 import { useAtomValue } from "jotai";
 import HeartIcon from "./HeartIcon";
@@ -12,6 +12,7 @@ import LanguageIcon from "./icons/LanguageIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import { formatLengthLabel } from "./LengthsCheckboxes";
 import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
+import MoneyBillIcon from "./icons/MoneyBillIcon";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -159,6 +160,21 @@ export default function OfferDescription() {
             gridTemplateRows: "auto",
           }}
         >
+          <MoneyBillIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+          <p>Salary</p>
+
+          <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit">
+            {formatSalary(asideOffer?.salary ?? null)}
+          </p>
+        </div>
+
+        <div
+          className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+          style={{
+            gridTemplateColumns: "auto minmax(0, 1fr)",
+            gridTemplateRows: "auto",
+          }}
+        >
           <LanguageIcon className="tw-w-4 tw-text-gray-500" />
           <p>Languages</p>
           <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
@@ -214,14 +230,20 @@ export default function OfferDescription() {
           Register
         </Button>
 
-        <HeartIcon
-          checked={asideOffer !== null && isOfferFavorite(asideOffer)}
+        <ActionIcon
           onClick={() => {
             if (asideOffer) {
               toggleFavoriteOffer(asideOffer);
             }
           }}
-        />
+          variant="subtle"
+          color="red"
+          size="xl"
+        >
+          <HeartIcon
+            checked={asideOffer !== null && isOfferFavorite(asideOffer)}
+          />
+        </ActionIcon>
         <ActionIcon
           onClick={() => {
             if (asideOffer) {
@@ -284,6 +306,25 @@ export default function OfferDescription() {
         >
           {asideOffer?.remarks != "" ? asideOffer?.remarks : "⊘"}
         </p>
+      </div>
+
+      <div className="tw-mt-4">
+        <h3 className="tw-text-xl tw-font-medium">File</h3>
+        {asideOffer && asideOffer.file !== null ? (
+          <Anchor
+            href={`https://isa.epfl.ch/imoniteur_ISAP/docs/!PORTAL14S.action/${encodeURI(
+              asideOffer?.file.fileName
+            )}?ww_k_cell=2742535167&ww_x_action=FILE&ww_i_detailstage=${
+              asideOffer?.file.detailId
+            }&ww_x_filename=${encodeURIComponent(asideOffer?.file.fileName)}`}
+            target="_blank"
+            underline="never"
+          >
+            See the file
+          </Anchor>
+        ) : (
+          <p className="tw-text-gray-900 tw-whitespace-pre-line">⊘</p>
+        )}
       </div>
     </div>
   );
