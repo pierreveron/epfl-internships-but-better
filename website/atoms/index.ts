@@ -15,7 +15,7 @@ export const showOnlyFavoritesAtom = atom<boolean>(false);
 export const minimumSalaryAtom = atom<number | undefined>(undefined);
 export const isAsideOpenAtom = atom((get) => get(asideAtom).open);
 export const asideOfferAtom = atom((get) => get(asideAtom).offer);
-export const asideAtom = atom<{ open: boolean; offer: TableRecord | null }>({
+export const asideAtom = atom<{ open: boolean; offer: Offer | null }>({
   open: false,
   offer: null,
 });

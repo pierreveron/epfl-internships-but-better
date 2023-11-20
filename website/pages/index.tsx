@@ -211,6 +211,52 @@ export default function Home() {
     return currentOfferIndex;
   };
 
+  const getNextOffer = (
+    d: Offer[],
+    currentOffer: Offer | null
+  ): Offer | null => {
+    if (currentOffer === null) {
+      return null;
+    }
+
+    const currentOfferIndex = test(d, currentOffer);
+
+    console.log("currentOfferIndex", currentOfferIndex);
+
+    d = d.slice().reverse();
+
+    d = d.filter((offer) => !isOfferHidden(offer));
+
+    if (currentOfferIndex === d.length - 1) {
+      return null;
+    }
+
+    return d[currentOfferIndex + 1];
+  };
+
+  const getPreviousOffer = (
+    d: Offer[],
+    currentOffer: Offer | null
+  ): Offer | null => {
+    if (currentOffer === null) {
+      return null;
+    }
+
+    const currentOfferIndex = test(d, currentOffer);
+
+    console.log("currentOfferIndex", currentOfferIndex);
+
+    d = d.slice().reverse();
+
+    d = d.filter((offer) => !isOfferHidden(offer));
+
+    if (currentOfferIndex === 0) {
+      return null;
+    }
+
+    return d[currentOfferIndex - 1];
+  };
+
   return (
     <>
       <Head>
@@ -275,6 +321,17 @@ export default function Home() {
                   size="lg"
                   disabled={test(filteredOffers, asideOffer!) <= 0}
                   className="disabled:tw-bg-transparent"
+                  onClick={() => {
+                    const previousOffer = getPreviousOffer(
+                      filteredOffers,
+                      asideOffer
+                    );
+                    if (previousOffer !== null) {
+                      setAside({ open: true, offer: previousOffer });
+                    } else {
+                      setAside({ open: false, offer: null });
+                    }
+                  }}
                 >
                   <BackwardStepIcon
                     className={classNames(
@@ -297,6 +354,14 @@ export default function Home() {
                       1
                   }
                   className="disabled:tw-bg-transparent"
+                  onClick={() => {
+                    const nextOffer = getNextOffer(filteredOffers, asideOffer);
+                    if (nextOffer !== null) {
+                      setAside({ open: true, offer: nextOffer });
+                    } else {
+                      setAside({ open: false, offer: null });
+                    }
+                  }}
                 >
                   <ForwardStepIcon
                     className={classNames(
