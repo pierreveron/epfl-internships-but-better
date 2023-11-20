@@ -23,7 +23,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
 
-const PAGE_SIZE = 15;
+export const PAGE_SIZE = 15;
 
 const NOT_SPECIFIED = "Not specified";
 
