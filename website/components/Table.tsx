@@ -329,10 +329,11 @@ export default function Table({ data }: { data: Offer[] }) {
         {
           accessor: "location",
           render: ({ location }) => (
-            <ul style={{ listStyle: "none" }}>
-              {location.map((loc) => (
-                <li key={`${loc.city}_${loc.country}`}>
-                  {loc.city}, {loc.country ?? NOT_SPECIFIED}
+            <ul className="tw-list-none tw-space-y-1">
+              {location.map((loc, index) => (
+                <li key={index}>
+                  {loc.city}
+                  {loc.country && `, ${loc.country}`}
                 </li>
               ))}
             </ul>
