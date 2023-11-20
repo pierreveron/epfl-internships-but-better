@@ -28,6 +28,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferToBeFormatted } from "../../types";
+import { useViewportSize } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -190,6 +191,15 @@ export default function Home() {
     navigateToPreviousOffer,
   } = useAsideNavigation();
 
+  const { width } = useViewportSize();
+
+  useEffect(() => {
+    if (width < 992 && isAsideMaximized) {
+      setIsAsideMaximized(false);
+      return;
+    }
+  }, [width]);
+
   return (
     <>
       <Head>
@@ -242,11 +252,23 @@ export default function Home() {
                   color="gray"
                   size="lg"
                   onClick={() => setIsAsideMaximized((maximized) => !maximized)}
+                  disabled={width < 992}
+                  className="disabled:tw-bg-transparent"
                 >
                   {isAsideMaximized ? (
-                    <MinimizeIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                    <MinimizeIcon
+                      className={classNames(
+                        "tw-w-4 tw-h-4",
+                        width < 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
+                      )}
+                    />
                   ) : (
-                    <MaximizeIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                    <MaximizeIcon
+                      className={classNames(
+                        "tw-w-4 tw-h-4",
+                        width < 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
+                      )}
+                    />
                   )}
                 </ActionIcon>
               </div>
