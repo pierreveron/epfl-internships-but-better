@@ -1,6 +1,5 @@
 import {
   asideAtom,
-  filteredOffersAtom,
   formatAtom,
   formattingOffersAtom,
   isAsideMaximizedAtom,
@@ -158,7 +157,6 @@ export default function Home() {
   const setIsFormattingOffers = useSetAtom(formattingOffersAtom);
   const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom);
   const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom);
-  const filteredOffers = useAtomValue(filteredOffersAtom);
 
   useEffect(() => {
     setSelectableFormats([
