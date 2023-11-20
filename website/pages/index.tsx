@@ -28,7 +28,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferToBeFormatted } from "../../types";
-import { useViewportSize } from "@mantine/hooks";
+import { useHotkeys, useViewportSize } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -158,6 +158,22 @@ export default function Home() {
   const setIsFormattingOffers = useSetAtom(formattingOffersAtom);
   const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom);
   const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom);
+
+  useHotkeys([
+    [
+      "Enter",
+      () => {
+        if (isAsideOpen) setIsAsideMaximized((v) => !v);
+      },
+    ],
+    [
+      "Escape",
+      () => {
+        setAside({ open: false, offer: null });
+        setIsAsideMaximized(false);
+      },
+    ],
+  ]);
 
   useEffect(() => {
     setSelectableFormats([
