@@ -30,6 +30,7 @@ import classNames from "classnames";
 import BackwardStepIcon from "@/components/icons/BackwardStepIcon";
 import ForwardStepIcon from "@/components/icons/ForwardStepIcon";
 import { useHiddenOffers } from "@/utils/hooks";
+import { useHotkeys } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -257,6 +258,25 @@ export default function Home() {
     return d[currentOfferIndex - 1];
   };
 
+  const goToNextOffer = () => {
+    const nextOffer = getNextOffer(filteredOffers, asideOffer);
+    if (nextOffer !== null) {
+      setAside({ open: true, offer: nextOffer });
+    }
+  };
+
+  const goToPreviousOffer = () => {
+    const previousOffer = getPreviousOffer(filteredOffers, asideOffer);
+    if (previousOffer !== null) {
+      setAside({ open: true, offer: previousOffer });
+    }
+  };
+
+  useHotkeys([
+    ["ArrowRight", () => goToNextOffer()],
+    ["ArrowLeft", () => goToPreviousOffer()],
+  ]);
+
   return (
     <>
       <Head>
@@ -321,17 +341,7 @@ export default function Home() {
                   size="lg"
                   disabled={test(filteredOffers, asideOffer!) <= 0}
                   className="disabled:tw-bg-transparent"
-                  onClick={() => {
-                    const previousOffer = getPreviousOffer(
-                      filteredOffers,
-                      asideOffer
-                    );
-                    if (previousOffer !== null) {
-                      setAside({ open: true, offer: previousOffer });
-                    } else {
-                      setAside({ open: false, offer: null });
-                    }
-                  }}
+                  onClick={goToPreviousOffer}
                 >
                   <BackwardStepIcon
                     className={classNames(
@@ -354,14 +364,7 @@ export default function Home() {
                       1
                   }
                   className="disabled:tw-bg-transparent"
-                  onClick={() => {
-                    const nextOffer = getNextOffer(filteredOffers, asideOffer);
-                    if (nextOffer !== null) {
-                      setAside({ open: true, offer: nextOffer });
-                    } else {
-                      setAside({ open: false, offer: null });
-                    }
-                  }}
+                  onClick={goToNextOffer}
                 >
                   <ForwardStepIcon
                     className={classNames(
