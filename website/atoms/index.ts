@@ -2,6 +2,7 @@ import { TableRecord } from "@/components/Table";
 import { SelectableCity, SelectableFormat, SelectableLength } from "@/types";
 import { atom } from "jotai";
 import { Offer } from "../../types";
+import { DataTableSortStatus } from "mantine-datatable";
 
 export const formattingOffersAtom = atom<boolean>(false);
 
@@ -22,6 +23,11 @@ export const asideAtom = atom<{ open: boolean; offer: Offer | null }>({
 export const isAsideMaximizedAtom = atom<boolean>(false);
 
 export const filteredOffersAtom = atom<Offer[]>([]);
+
+export const sortStatusAtom = atom<DataTableSortStatus<TableRecord>>({
+  columnAccessor: "creationDate",
+  direction: "desc",
+});
 
 export const nbCitiesSelectedAtom = atom((get) => {
   const locations = get(locationsAtom);

@@ -10,6 +10,7 @@ import {
   showOnlyPositionsNotYetCompletedAtom,
   asideAtom,
   filteredOffersAtom,
+  sortStatusAtom,
 } from "@/atoms";
 import { formatToLabel } from "@/utils/format";
 import { Text } from "@mantine/core";
@@ -89,12 +90,7 @@ export default function Table({ data }: { data: Offer[] }) {
     });
 
   const [page, setPage] = useState(1);
-  const [sortStatus, setSortStatus] = useState<
-    DataTableSortStatus<TableRecord>
-  >({
-    columnAccessor: "creationDate",
-    direction: "desc",
-  });
+  const [sortStatus, setSortStatus] = useAtom(sortStatusAtom);
 
   useEffect(() => {
     setPage(1);
