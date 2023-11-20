@@ -1,13 +1,12 @@
 import {
   asideAtom,
+  filteredOffersAtom,
   formatAtom,
   formattingOffersAtom,
   isAsideMaximizedAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
-  filteredOffersAtom,
-  asideOfferAtom,
 } from "@/atoms";
 import ActionBar from "@/components/ActionBar";
 import Footer from "@/components/Footer";
@@ -15,22 +14,21 @@ import Table from "@/components/Table";
 import WelcomingModal from "@/components/WelcomingModal";
 
 import OfferDescription from "@/components/OfferDescription";
+import BackwardStepIcon from "@/components/icons/BackwardStepIcon";
+import ForwardStepIcon from "@/components/icons/ForwardStepIcon";
+import MaximizeIcon from "@/components/icons/MaximizeIcon";
+import MinimizeIcon from "@/components/icons/MinimizeIcon";
 import XMarkIcon from "@/components/icons/XMarkIcon";
 import { SelectableCity, SelectableLength } from "@/types";
+import { useAsyncError } from "@/utils/error";
+import { useAsideNavigation } from "@/utils/hooks";
 import { abortFormatting, formatOffers } from "@/utils/offerFormatting";
 import { ActionIcon, Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
+import classNames from "classnames";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferToBeFormatted } from "../../types";
-import { useAsyncError } from "@/utils/error";
-import MaximizeIcon from "@/components/icons/MaximizeIcon";
-import MinimizeIcon from "@/components/icons/MinimizeIcon";
-import classNames from "classnames";
-import BackwardStepIcon from "@/components/icons/BackwardStepIcon";
-import ForwardStepIcon from "@/components/icons/ForwardStepIcon";
-import { useHiddenOffers } from "@/utils/hooks";
-import { useHotkeys } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -187,95 +185,12 @@ export default function Home() {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry, setSelectableLocations]);
 
-  const { isOfferHidden } = useHiddenOffers();
-  const asideOffer = useAtomValue(asideOfferAtom);
-
-  const test = (d: Offer[], currentOffer: Offer | null): number => {
-    console.log("test", d, currentOffer);
-    // if (sortStatus.direction === "desc") {
-    d = d.slice().reverse();
-    // }
-
-    if (currentOffer === null) {
-      return 0;
-    }
-
-    d = d.filter((offer) => !isOfferHidden(offer));
-    console.log("d", d.length);
-
-    const currentOfferIndex = d.findIndex(
-      (o) => o.number === currentOffer.number
-    );
-
-    console.log("currentOfferIndex", currentOfferIndex);
-
-    return currentOfferIndex;
-  };
-
-  const getNextOffer = (
-    d: Offer[],
-    currentOffer: Offer | null
-  ): Offer | null => {
-    if (currentOffer === null) {
-      return null;
-    }
-
-    const currentOfferIndex = test(d, currentOffer);
-
-    console.log("currentOfferIndex", currentOfferIndex);
-
-    d = d.slice().reverse();
-
-    d = d.filter((offer) => !isOfferHidden(offer));
-
-    if (currentOfferIndex === d.length - 1) {
-      return null;
-    }
-
-    return d[currentOfferIndex + 1];
-  };
-
-  const getPreviousOffer = (
-    d: Offer[],
-    currentOffer: Offer | null
-  ): Offer | null => {
-    if (currentOffer === null) {
-      return null;
-    }
-
-    const currentOfferIndex = test(d, currentOffer);
-
-    console.log("currentOfferIndex", currentOfferIndex);
-
-    d = d.slice().reverse();
-
-    d = d.filter((offer) => !isOfferHidden(offer));
-
-    if (currentOfferIndex === 0) {
-      return null;
-    }
-
-    return d[currentOfferIndex - 1];
-  };
-
-  const goToNextOffer = () => {
-    const nextOffer = getNextOffer(filteredOffers, asideOffer);
-    if (nextOffer !== null) {
-      setAside({ open: true, offer: nextOffer });
-    }
-  };
-
-  const goToPreviousOffer = () => {
-    const previousOffer = getPreviousOffer(filteredOffers, asideOffer);
-    if (previousOffer !== null) {
-      setAside({ open: true, offer: previousOffer });
-    }
-  };
-
-  useHotkeys([
-    ["ArrowRight", () => goToNextOffer()],
-    ["ArrowLeft", () => goToPreviousOffer()],
-  ]);
+  const {
+    canNavigateToNextOffer,
+    canNavigateToPreviousOffer,
+    navigateToNextOffer,
+    navigateToPreviousOffer,
+  } = useAsideNavigation();
 
   return (
     <>
@@ -339,14 +254,14 @@ export default function Home() {
                   variant="subtle"
                   color="gray"
                   size="lg"
-                  disabled={test(filteredOffers, asideOffer!) <= 0}
+                  disabled={!canNavigateToPreviousOffer()}
                   className="disabled:tw-bg-transparent"
-                  onClick={goToPreviousOffer}
+                  onClick={navigateToPreviousOffer}
                 >
                   <BackwardStepIcon
                     className={classNames(
                       "tw-w-4 tw-h-4",
-                      test(filteredOffers, asideOffer!) <= 0
+                      !canNavigateToPreviousOffer()
                         ? "tw-fill-gray-300"
                         : "tw-fill-gray-900"
                     )}
@@ -357,22 +272,14 @@ export default function Home() {
                   variant="subtle"
                   color="gray"
                   size="lg"
-                  disabled={
-                    test(filteredOffers, asideOffer) >=
-                    filteredOffers.filter((offer) => !isOfferHidden(offer))
-                      .length -
-                      1
-                  }
+                  disabled={!canNavigateToNextOffer()}
                   className="disabled:tw-bg-transparent"
-                  onClick={goToNextOffer}
+                  onClick={navigateToNextOffer}
                 >
                   <ForwardStepIcon
                     className={classNames(
                       "tw-w-4 tw-h-4 ",
-                      test(filteredOffers, asideOffer) >=
-                        filteredOffers.filter((offer) => !isOfferHidden(offer))
-                          .length -
-                          1
+                      !canNavigateToNextOffer()
                         ? "tw-fill-gray-300"
                         : "tw-fill-gray-900"
                     )}
