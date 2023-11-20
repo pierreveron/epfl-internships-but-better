@@ -264,6 +264,25 @@ export default function OfferDescription() {
           {asideOffer?.remarks != "" ? asideOffer?.remarks : "⊘"}
         </p>
       </div>
+
+      <div className="tw-mt-4">
+        <h3 className="tw-text-xl tw-font-medium">File</h3>
+        {asideOffer && asideOffer.file !== null ? (
+          <Anchor
+            href={`https://isa.epfl.ch/imoniteur_ISAP/docs/!PORTAL14S.action/${encodeURI(
+              asideOffer?.file.fileName
+            )}?ww_k_cell=2742535167&ww_x_action=FILE&ww_i_detailstage=${
+              asideOffer?.file.detailId
+            }&ww_x_filename=${encodeURIComponent(asideOffer?.file.fileName)}`}
+            target="_blank"
+            underline="never"
+          >
+            See the file
+          </Anchor>
+        ) : (
+          <p className="tw-text-gray-900 tw-whitespace-pre-line">⊘</p>
+        )}
+      </div>
     </div>
   );
 }
