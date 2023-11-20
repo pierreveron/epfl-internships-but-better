@@ -2,6 +2,7 @@ import {
   asideAtom,
   formatAtom,
   formattingOffersAtom,
+  isAsideMaximizedAtom,
   lengthAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
@@ -12,15 +13,22 @@ import Table from "@/components/Table";
 import WelcomingModal from "@/components/WelcomingModal";
 
 import OfferDescription from "@/components/OfferDescription";
+import BackwardStepIcon from "@/components/icons/BackwardStepIcon";
+import ForwardStepIcon from "@/components/icons/ForwardStepIcon";
+import MaximizeIcon from "@/components/icons/MaximizeIcon";
+import MinimizeIcon from "@/components/icons/MinimizeIcon";
 import XMarkIcon from "@/components/icons/XMarkIcon";
 import { SelectableCity, SelectableLength } from "@/types";
+import { useAsyncError } from "@/utils/error";
+import { useAsideNavigation } from "@/utils/hooks";
 import { abortFormatting, formatOffers } from "@/utils/offerFormatting";
-import { Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
+import { ActionIcon, Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
+import classNames from "classnames";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useState } from "react";
 import { Offer, OfferToBeFormatted } from "../../types";
-import { useAsyncError } from "@/utils/error";
+import { useViewportSize } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -149,6 +157,7 @@ export default function Home() {
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const setIsFormattingOffers = useSetAtom(formattingOffersAtom);
   const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom);
+  const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom);
 
   useEffect(() => {
     setSelectableFormats([
@@ -175,6 +184,22 @@ export default function Home() {
     setSelectableLocations(citiesByCountry);
   }, [citiesByCountry, setSelectableLocations]);
 
+  const {
+    canNavigateToNextOffer,
+    canNavigateToPreviousOffer,
+    navigateToNextOffer,
+    navigateToPreviousOffer,
+  } = useAsideNavigation();
+
+  const { width } = useViewportSize();
+
+  useEffect(() => {
+    if (width <= 992 && isAsideMaximized) {
+      setIsAsideMaximized(false);
+      return;
+    }
+  }, [width]);
+
   return (
     <>
       <Head>
@@ -192,8 +217,12 @@ export default function Home() {
       <AppShell
         aside={{
           width: {
-            base: 500,
-            lg: isAsideOpen ? "40%" : 0,
+            md: isAsideMaximized ? "100%" : 550,
+            lg: isAsideOpen
+              ? isAsideMaximized
+                ? "100%"
+                : "max(40%, 550px)"
+              : 0,
           },
           breakpoint: "md",
           collapsed: { mobile: !isAsideOpen, desktop: !isAsideOpen },
@@ -201,17 +230,103 @@ export default function Home() {
         padding="xl"
       >
         {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
-        <AppShell.Aside {...(isAsideOpen && { pt: "xl", pl: "xl" })}>
-          <AppShell.Section>
-            <div
-              className="tw-p-2 hover:tw-bg-gray-200 tw-rounded tw-flex tw-w-fit"
-              onClick={() => setAside({ open: false, offer: null })}
-            >
-              <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-600" />
+        <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}>
+          <AppShell.Section
+            pt="xl"
+            pr={!isAsideMaximized ? "xl" : 0}
+            w={isAsideMaximized ? "min(50%, 896px)" : "100%"}
+            mx={isAsideMaximized ? "auto" : 0}
+          >
+            <div className="tw-flex tw-flex-row tw-justify-between">
+              <div>
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  onClick={() => {
+                    setAside({ open: false, offer: null });
+                    setIsAsideMaximized(false);
+                  }}
+                >
+                  <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-900" />
+                </ActionIcon>
+
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  onClick={() => setIsAsideMaximized((maximized) => !maximized)}
+                  disabled={width <= 992}
+                  className="disabled:tw-bg-transparent"
+                >
+                  {isAsideMaximized ? (
+                    <MinimizeIcon
+                      className={classNames(
+                        "tw-w-4 tw-h-4",
+                        width <= 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
+                      )}
+                    />
+                  ) : (
+                    <MaximizeIcon
+                      className={classNames(
+                        "tw-w-4 tw-h-4",
+                        width <= 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
+                      )}
+                    />
+                  )}
+                </ActionIcon>
+              </div>
+              <div>
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  disabled={!canNavigateToPreviousOffer()}
+                  className="disabled:tw-bg-transparent"
+                  onClick={navigateToPreviousOffer}
+                >
+                  <BackwardStepIcon
+                    className={classNames(
+                      "tw-w-4 tw-h-4",
+                      !canNavigateToPreviousOffer()
+                        ? "tw-fill-gray-300"
+                        : "tw-fill-gray-900"
+                    )}
+                  />
+                </ActionIcon>
+
+                <ActionIcon
+                  variant="subtle"
+                  color="gray"
+                  size="lg"
+                  disabled={!canNavigateToNextOffer()}
+                  className="disabled:tw-bg-transparent"
+                  onClick={navigateToNextOffer}
+                >
+                  <ForwardStepIcon
+                    className={classNames(
+                      "tw-w-4 tw-h-4 ",
+                      !canNavigateToNextOffer()
+                        ? "tw-fill-gray-300"
+                        : "tw-fill-gray-900"
+                    )}
+                  />
+                </ActionIcon>
+              </div>
             </div>
           </AppShell.Section>
-          <AppShell.Section grow component={ScrollArea} pr="xl">
-            <OfferDescription />
+          <AppShell.Section
+            grow
+            component={ScrollArea}
+            pr={!isAsideMaximized ? "xl" : 0}
+          >
+            <div
+              className={classNames(
+                isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
+              )}
+            >
+              <OfferDescription />
+            </div>
           </AppShell.Section>
         </AppShell.Aside>
         <AppShell.Main style={{ height: "100vh" }}>

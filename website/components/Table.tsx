@@ -1,26 +1,29 @@
 import {
+  asideAtom,
   companyAtom,
+  filteredOffersAtom,
   formatAtom,
   formattingOffersAtom,
   lengthAtom,
   locationsAtom,
   minimumSalaryAtom,
   nbCitiesSelectedAtom,
+  pageAtom,
   showOnlyFavoritesAtom,
   showOnlyPositionsNotYetCompletedAtom,
-  asideAtom,
+  sortStatusAtom,
 } from "@/atoms";
 import { formatToLabel } from "@/utils/format";
-import { Text } from "@mantine/core";
-import { useAtom, useAtomValue } from "jotai";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
+import { usePrevious } from "@mantine/hooks";
+import classNames from "classnames";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
-import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
-import classNames from "classnames";
 
-const PAGE_SIZE = 15;
+export const PAGE_SIZE = 15;
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -72,6 +75,7 @@ export default function Table({ data }: { data: Offer[] }) {
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom);
   const minimumSalary = useAtomValue(minimumSalaryAtom);
   const [{ offer }, setAside] = useAtom(asideAtom);
+  const setFilteredOffers = useSetAtom(filteredOffersAtom);
 
   const { favoriteOffers, isOfferFavorite, toggleFavoriteOffer } =
     useFavoriteOffers();
@@ -86,13 +90,30 @@ export default function Table({ data }: { data: Offer[] }) {
       behavior: "smooth",
     });
 
-  const [page, setPage] = useState(1);
-  const [sortStatus, setSortStatus] = useState<
-    DataTableSortStatus<TableRecord>
-  >({
-    columnAccessor: "creationDate",
-    direction: "desc",
-  });
+  const scrollToTop = () =>
+    viewport.current!.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+  const [page, setPage] = useAtom(pageAtom);
+  const [sortStatus, setSortStatus] = useAtom(sortStatusAtom);
+
+  const previousPage = usePrevious(page);
+
+  useEffect(() => {
+    if (previousPage === undefined) return;
+    if (previousPage < page) {
+      setTimeout(() => {
+        scrollToTop();
+      }, 100);
+    }
+    if (previousPage > page) {
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+    }
+  }, [page]);
 
   useEffect(() => {
     setPage(1);
@@ -176,6 +197,8 @@ export default function Table({ data }: { data: Offer[] }) {
       data = data.filter((d) => d.registered < d.positions);
     }
 
+    setFilteredOffers(data);
+
     return data;
   }, [
     sortedData,
@@ -229,13 +252,7 @@ export default function Table({ data }: { data: Offer[] }) {
 
         const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1;
         console.log("newPage", newPage);
-
-        if (newPage !== page) {
-          setPage(newPage);
-          setTimeout(() => {
-            scrollToBottom();
-          }, 100);
-        }
+        setPage(newPage);
 
         return {
           open: true,
