@@ -230,7 +230,7 @@ export default function Home() {
           <AppShell.Section
             pt="xl"
             pr={!isAsideMaximized ? "xl" : 0}
-            w={isAsideMaximized ? "50%" : "100%"}
+            w={isAsideMaximized ? "min(50%, 896px)" : "100%"}
             mx={isAsideMaximized ? "auto" : 0}
           >
             <div className="tw-flex tw-flex-row tw-justify-between">
@@ -317,7 +317,9 @@ export default function Home() {
             pr={!isAsideMaximized ? "xl" : 0}
           >
             <div
-              className={classNames(isAsideMaximized && "tw-w-1/2 tw-mx-auto")}
+              className={classNames(
+                isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
+              )}
             >
               <OfferDescription />
             </div>
