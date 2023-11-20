@@ -6,7 +6,7 @@ import {
 } from "@/atoms";
 import { PAGE_SIZE } from "@/components/Table";
 import { useHotkeys, useLocalStorage } from "@mantine/hooks";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { useMemo } from "react";
 import { Offer } from "../../types";
 
@@ -66,7 +66,7 @@ export const useAsideNavigation = () => {
   const { isOfferHidden } = useHiddenOffers();
   const sortStatus = useAtomValue(sortStatusAtom);
 
-  const [page, setPage] = useAtom(pageAtom);
+  const setPage = useSetAtom(pageAtom);
 
   useHotkeys([
     ["ArrowRight", () => navigateToNextOffer()],
