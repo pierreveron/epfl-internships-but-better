@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 import "@mantine/core/styles.css";
 import "mantine-datatable/styles.css";
 
+import UnlockIcon from "@/components/icons/UnlockIcon";
 import { API_URL } from "@/utils/constants";
 import {
   Anchor,
@@ -13,12 +14,11 @@ import {
   createTheme,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useInputState, useLocalStorage } from "@mantine/hooks";
+import { useLocalStorage } from "@mantine/hooks";
 import { Analytics } from "@vercel/analytics/react";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import UnlockIcon from "@/components/icons/UnlockIcon";
 
 export default function App({ Component, pageProps }: AppProps) {
   /**
@@ -116,10 +116,26 @@ export default function App({ Component, pageProps }: AppProps) {
             }}
           >
             <div className="tw-mx-auto tw-my-auto tw-w-fit tw-h-full tw-flex tw-flex-col tw-justify-center tw-gap-4">
-              <h1 className="tw-text-5xl tw-text-center tw-font-semibold tw-text-gray-900">
-                <span className="tw-text-[#fa5252]">EPFL</span> internships but{" "}
-                <span className="shine">better</span>
-              </h1>
+              <div className="sm:tw-w-min tw-space-y-2">
+                <h1 className="tw-text-5xl tw-text-center tw-font-semibold tw-text-gray-900 sm:tw-whitespace-nowrap">
+                  <span className="tw-text-[#fa5252]">EPFL</span> internships
+                  but <span className="shine">better</span>
+                </h1>
+
+                <p className="tw-text-gray-900 tw-text-base">
+                  In order to use this website, you need to have a secret key.
+                  If you don't have one, please contact{" "}
+                  <Anchor
+                    href="https://www.linkedin.com/in/pierre-veron/"
+                    target="_blank"
+                    underline="never"
+                  >
+                    Pierre Véron
+                  </Anchor>
+                  .
+                </p>
+              </div>
+
               <form
                 onSubmit={form.onSubmit(({ key }) => {
                   setIsFetching(true);
