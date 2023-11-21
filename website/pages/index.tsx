@@ -10,7 +10,6 @@ import {
 import ActionBar from "@/components/ActionBar";
 import Footer from "@/components/Footer";
 import Table from "@/components/Table";
-import WelcomingModal from "@/components/WelcomingModal";
 
 import OfferDescription from "@/components/OfferDescription";
 import BackwardStepIcon from "@/components/icons/BackwardStepIcon";
@@ -227,8 +226,6 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <WelcomingModal />
 
       <AppShell
         aside={{
