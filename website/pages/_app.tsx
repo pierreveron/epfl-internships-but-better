@@ -4,12 +4,12 @@ import "mantine-datatable/styles.css";
 
 import { API_URL } from "@/utils/constants";
 import { Anchor, MantineProvider, createTheme } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import { Analytics } from "@vercel/analytics/react";
 import type { AppProps } from "next/app";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useLocalStorage } from "@mantine/hooks";
 
 export default function App({ Component, pageProps }: AppProps) {
   /**
