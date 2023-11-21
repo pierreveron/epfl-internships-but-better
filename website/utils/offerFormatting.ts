@@ -1,6 +1,5 @@
 import { Location, Offer, OfferToBeFormatted } from "../../types";
-
-const API_URL = "https://epfl-internships-but-better-api.onrender.com";
+import { API_URL } from "./constants";
 
 const controller = new AbortController();
 
