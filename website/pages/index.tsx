@@ -248,6 +248,7 @@ export default function Home() {
         {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
         <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}>
           <AppShell.Section
+            mb="sm"
             pt="xl"
             pr={!isAsideMaximized ? "xl" : 0}
             w={isAsideMaximized ? "min(50%, 896px)" : "100%"}

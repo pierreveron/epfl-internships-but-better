@@ -44,6 +44,22 @@ export type PageData = {
     german: string;
   };
   relatedMasters: string[];
+  companyInfo: {
+    name: string;
+    address: {
+      street: string;
+      city: string;
+      country: string;
+    };
+    website: string;
+  };
+  contactInfo: {
+    name: string;
+    title: string;
+    email: string;
+    cellPhone: string;
+    professionalPhone: string;
+  };
   file: {
     detailId: string;
     fileName: string;

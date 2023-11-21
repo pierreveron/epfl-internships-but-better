@@ -58,6 +58,23 @@ export default function OfferDescription() {
         <p className="tw-text-lg tw-font-medium tw-italic">
           {asideOffer?.company}
         </p>
+        <div className="tw-flex tw-flex-col">
+          {asideOffer?.companyInfo.website &&
+            asideOffer?.companyInfo.website
+              .split(";")
+              .map((t) => t.trim())
+              .map((website, index) => (
+                <a
+                  key={index}
+                  className="tw-text-blue-500 tw-text-sm tw-underline"
+                  href={website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {website}
+                </a>
+              ))}
+        </div>
       </div>
 
       <div className="tw-mb-4">
