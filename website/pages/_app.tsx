@@ -188,6 +188,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 })}
               >
                 <TextInput
+                  data-autofocus
                   label="Secret key"
                   placeholder="Enter your secret key"
                   {...form.getInputProps("key")}
