@@ -63,7 +63,6 @@ def get_api_key(api_key_header: str = Security(api_key_header)) -> str:
 # If valid, return the api key
 # If not valid, return an error
 @app.get("/")
-@limiter.limit("5/day")
 def verify_api_key(
     request: Request,
     api_key: str = Security(get_api_key),
