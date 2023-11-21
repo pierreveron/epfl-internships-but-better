@@ -116,9 +116,9 @@ export default function App({ Component, pageProps }: AppProps) {
             }}
           >
             <div className="tw-mx-auto tw-my-auto tw-w-fit tw-h-full tw-flex tw-flex-col tw-justify-center tw-gap-4">
-              <h1 className="tw-text-5xl tw-text-center tw-font-semibold">
-                <span className="tw-text-[red]">EPFL</span> internships but
-                better
+              <h1 className="tw-text-5xl tw-text-center tw-font-semibold tw-text-gray-900">
+                <span className="tw-text-[#fa5252]">EPFL</span> internships but{" "}
+                <span className="shine">better</span>
               </h1>
               <form
                 onSubmit={form.onSubmit(({ key }) => {
