@@ -133,7 +133,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <div className="tw-space-y-1">
                   <p className="tw-text-gray-900 tw-text-base">
                     In order to use this it, you need to have a secret key. If
-                    you don't have one, please contact{" "}
+                    you don&apos;t have one, please contact{" "}
                     <Anchor
                       href="https://www.linkedin.com/in/pierre-veron/"
                       target="_blank"
