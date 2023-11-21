@@ -132,7 +132,24 @@ export default function App({ Component, pageProps }: AppProps) {
                   >
                     Pierre Véron
                   </Anchor>
-                  .
+                  . Otherwise, please enter it below.
+                </p>
+
+                <p className="tw-text-gray-900 tw-text-base">
+                  Also, take note that the data is{" "}
+                  <span className="tw-font-semibold">
+                    not updated in real time
+                  </span>
+                  : you need to use the extension every time you want to update
+                  the data.
+                </p>
+
+                <p className="tw-text-gray-900 tw-text-base">
+                  Finally,{" "}
+                  <span className="tw-font-semibold">save this website</span> to
+                  your favorites and{" "}
+                  <span className="shine tw-font-bold">good luck</span> in your
+                  search!
                 </p>
               </div>
 
