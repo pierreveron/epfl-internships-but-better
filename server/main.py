@@ -59,6 +59,18 @@ def get_api_key(api_key_header: str = Security(api_key_header)) -> str:
     )
 
 
+# Check if api key is valid
+# If valid, return the api key
+# If not valid, return an error
+@app.get("/")
+@limiter.limit("5/day")
+def verify_api_key(
+    request: Request,
+    api_key: str = Security(get_api_key),
+):
+    return {"apiKey": api_key}
+
+
 @app.post("/clean-locations")
 @limiter.limit("3/day")
 async def clean_locations(

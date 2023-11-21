@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@mantine/core": "^7.2.1",
+    "@mantine/form": "^7.2.2",
     "@mantine/hooks": "^7.2.1",
     "@tabler/icons": "^1.115.0",
     "@types/node": "18.14.0",
