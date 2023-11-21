@@ -4,11 +4,12 @@ import "mantine-datatable/styles.css";
 
 import { API_URL } from "@/utils/constants";
 import { Anchor, MantineProvider, createTheme } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
+import { useIsomorphicEffect, useLocalStorage } from "@mantine/hooks";
 import { Analytics } from "@vercel/analytics/react";
 import type { AppProps } from "next/app";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { isChrome } from "react-device-detect";
 import { ErrorBoundary } from "react-error-boundary";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -44,6 +45,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (pathname === "/not-supported") return;
+
     if (apiKey === "") {
       router.push("/welcome");
     }
@@ -62,6 +65,18 @@ export default function App({ Component, pageProps }: AppProps) {
       }
     });
   }, [apiKey]);
+
+  useIsomorphicEffect(() => {
+    const width = window.innerWidth;
+
+    if (pathname === "/not-supported" && isChrome && width >= 640) {
+      router.push("/");
+    }
+
+    if (!isChrome || width < 640) {
+      router.push("/not-supported");
+    }
+  }, []);
 
   return (
     <>
