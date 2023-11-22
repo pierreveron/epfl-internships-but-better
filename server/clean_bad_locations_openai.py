@@ -1,3 +1,4 @@
+import asyncio
 import os
 import time
 
@@ -63,15 +64,13 @@ async def clean_locations(locations: list[str]):
     total_cost = 0
     total_tokens = 0
 
-    async def predict(input_list: list[str]) -> LocationDict:
+    async def async_predict(input_list: list[str]):
         nonlocal total_cost, total_tokens, total_time
 
         _input = prompt.format_prompt(locations=input_list)
         data: LocationDict | None = None
 
         for _ in range(0, 5):
-            data = None
-
             # Time the request.
             s = time.perf_counter()
             print("Starting request...")
@@ -82,32 +81,33 @@ async def clean_locations(locations: list[str]):
                 total_tokens += cb.total_tokens
 
             elapsed = time.perf_counter() - s
-            print(f"Time taken {elapsed:0.2f} seconds.")
-            total_time += elapsed
+            print(f"Request took {elapsed:0.2f} seconds.")
 
             try:
                 data = parser.parse(output)
             except ValidationError as e:
-                data = None
                 print("A validation error occurred:", e)
                 continue
             except Exception as e:
-                data = None
                 print("An exception occurred:", e)
                 continue
             break
-
-        if data is None:
-            raise Exception("No data was returned.")
 
         return data
 
     total_data: LocationDict = LocationDict(locations={})
 
     try:
-        # By 50 locations, create a forloop
-        for chunk in chunks:
-            data = await predict(chunk)
+        s = time.perf_counter()
+        tasks = [async_predict(chunk) for chunk in chunks]
+        data_list = await asyncio.gather(*tasks)
+        elapsed = time.perf_counter() - s
+        print(f"Total time taken {elapsed:0.2f} seconds.")
+        print("List:", data_list)
+        # Data can be None if there was an error.
+        for data in data_list:
+            if data is None:
+                continue
             total_data.locations.update(data.locations)
     except Exception as e:
         print("Final exception")
@@ -118,9 +118,7 @@ async def clean_locations(locations: list[str]):
 
     missing_keys = set(locations) - set(total_data.locations.keys())
     if len(missing_keys) > 0:
-        print("Final exception of missing keys")
         print("Missing keys:", missing_keys)
-        raise Exception("The keys in the input and final data do not match.")
 
     print("Total tokens used:", total_tokens)
     print(f"Total cost: $", round(total_cost, 2))
