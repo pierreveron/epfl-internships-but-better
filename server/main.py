@@ -1,4 +1,5 @@
 import os
+import time
 from typing import Annotated, List
 
 from dotenv import load_dotenv
@@ -43,9 +44,16 @@ gc = gspread.service_account(
     ],
 )
 
+sheet = gc.open_by_key(API_KEYS_GOOGLE_SHEET_KEY).sheet1
+last_sheet_update = time.time()
+
 
 def get_apis_keys():
-    sheet = gc.open_by_key(API_KEYS_GOOGLE_SHEET_KEY).sheet1
+    global last_sheet_update
+    if time.time() - last_sheet_update > 60:
+        print("Updating API Keys")
+        sheet = gc.open_by_key(API_KEYS_GOOGLE_SHEET_KEY).sheet1
+        last_sheet_update = time.time()
     api_keys = sheet.col_values(3)[1:]
     return api_keys
 
