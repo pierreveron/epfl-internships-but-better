@@ -45,16 +45,17 @@ gc = gspread.service_account(
 )
 
 sheet = gc.open_by_key(API_KEYS_GOOGLE_SHEET_KEY).sheet1
-last_sheet_update = time.time()
+api_keys = sheet.col_values(3)[1:]
+last_keys_update = time.time()
 
 
 def get_apis_keys():
-    global last_sheet_update, sheet
-    if time.time() - last_sheet_update > 60:
+    global last_keys_update, sheet, api_keys
+    if time.time() - last_keys_update > 60:
         print("Updating API Keys")
-        sheet = gc.open_by_key(API_KEYS_GOOGLE_SHEET_KEY).sheet1
-        last_sheet_update = time.time()
-    api_keys = sheet.col_values(3)[1:]
+        api_keys = sheet.col_values(3)[1:]
+        last_keys_update = time.time()
+
     return api_keys
 
 
