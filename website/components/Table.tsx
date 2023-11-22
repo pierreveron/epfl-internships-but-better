@@ -301,7 +301,7 @@ export default function Table({ data }: { data: Offer[] }) {
       fetching={isFormatingOffers || isLoadingOffers}
       loadingText={
         isFormatingOffers
-          ? "Processing the offers... (it should take less than 3 minutes)"
+          ? "Processing the offers... (it should take less than 2 minutes)"
           : "Loading the offers..."
       }
       records={records}
