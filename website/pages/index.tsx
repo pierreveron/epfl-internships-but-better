@@ -31,7 +31,7 @@ import { useHotkeys, useViewportSize } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
-export default function Home() {
+export default function Home({ isReady }: { isReady: boolean }) {
   const [data, setData] = useState<Offer[]>([]);
   const [dataDate, setDataDate] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
@@ -118,9 +118,9 @@ export default function Home() {
         updateData();
       });
 
-      loadOffers();
+      if (isReady) loadOffers();
     }
-  }, []);
+  }, [isReady]);
 
   const locations = useMemo(() => data.map((d) => d.location), [data]);
 
