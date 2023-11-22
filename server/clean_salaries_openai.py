@@ -1,3 +1,4 @@
+import asyncio
 import os
 import time
 
@@ -59,86 +60,78 @@ async def clean_salaries(salaries: list[str]):
     salaries = list(set(salaries))
     print("Number of unique salaries:", len(salaries))
 
-    # Split the salaries into chunks of 50.
-    chunks = [salaries[x : x + 50] for x in range(0, len(salaries), 50)]
-
-    total_time = 0
     total_cost = 0
     total_tokens = 0
 
-    async def predict(input_list: list[str], retrying: bool = False) -> SalariesDict:
-        nonlocal total_cost, total_tokens, total_time
+    async def async_predict(input_list: list[str]):
+        nonlocal total_cost, total_tokens
 
         _input = prompt.format_prompt(salaries=input_list)
         data: SalariesDict | None = None
 
-        for _try in range(0, 3):
-            data = None
-
+        for _ in range(0, 5):
             # Time the request.
-            start = time.time()
+            s = time.perf_counter()
             print("Starting request...")
 
             with get_openai_callback() as cb:
-                output = await llm.apredict((_input.to_string()))
+                output = await llm.apredict(_input.to_string())
                 total_cost += cb.total_cost
                 total_tokens += cb.total_tokens
 
-            end = time.time()
-            print("Time taken:", round(end - start, 2))
-            total_time += end - start
+            elapsed = time.perf_counter() - s
+            print(
+                f"Request with {len(input_list)} elements took {elapsed:0.2f} seconds."
+            )
 
             try:
                 data = parser.parse(output)
-                missing_keys = set(input_list) - set(data.salaries.keys())
-                if len(missing_keys) > 0:
-                    print("The keys in the input and output do not match.")
-                    print("Missing keys:", missing_keys)
-                    if retrying:
-                        raise Exception("Retry {} failed.".format(_try))
-                    else:
-                        print("Retrying...")
-                        data.salaries.update(
-                            predict(list(missing_keys), retrying=True).salaries
-                        )
             except ValidationError as e:
-                data = None
                 print("A validation error occurred:", e)
                 continue
             except Exception as e:
-                data = None
                 print("An exception occurred:", e)
                 continue
             break
-
-        print("Data:", data)
-
-        if data is None:
-            raise Exception("No data was returned.")
-        missing_keys = set(input_list) - set(data.salaries.keys())
-        if len(missing_keys) > 0:
-            print("Missing keys:", missing_keys)
-            raise Exception("The keys in the input and final data do not match.")
 
         return data
 
     total_data: SalariesDict = SalariesDict(salaries={})
 
-    try:
-        # By 50 salaries, create a forloop
-        for chunk in chunks:
-            data = await predict(chunk)
-            total_data.salaries.update(data.salaries)
-    except Exception as e:
-        print("Final exception")
-        print("Total tokens used:", total_tokens)
-        print(f"Total cost: $", round(total_cost, 2))
-        print("An error occurred. Please try again.", e)
-        raise e
+    s = time.perf_counter()
+    while True:
+        missing_keys = list(set(salaries) - set(total_data.salaries.keys()))
+        if len(missing_keys) == 0:
+            break
 
-    print("Total tokens used:", total_tokens)
+        # Split the salaries into chunks.
+        chunk_size = 50
+        chunks = [
+            missing_keys[x : x + chunk_size]
+            for x in range(0, len(missing_keys), chunk_size)
+        ]
+        try:
+            tasks = [async_predict(chunk) for chunk in chunks]
+            data_list = await asyncio.gather(*tasks)
+
+            # Data can be None if there was an error.
+            for data in data_list:
+                if data is None:
+                    continue
+                total_data.salaries.update(data.salaries)
+
+        except Exception as e:
+            elapsed = time.perf_counter() - s
+            print("Total tokens:", total_tokens)
+            print(f"Total cost: $", round(total_cost, 2))
+            print(f"Total time: {elapsed:0.2f} seconds.")
+            print("An error occurred. Please try again.", e)
+            raise e
+
+    elapsed = time.perf_counter() - s
+    print("Total tokens:", total_tokens)
     print(f"Total cost: $", round(total_cost, 2))
-    print("Total time taken:", round(total_time, 2))
+    print(f"Total time: {elapsed:0.2f} seconds.")
 
     # Send the unique salaries formatted as a json.
     return orjson.loads(total_data.json())
