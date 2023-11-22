@@ -4,6 +4,7 @@ import {
   formattingOffersAtom,
   isAsideMaximizedAtom,
   lengthAtom,
+  loadingOffersAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
 } from "@/atoms";
@@ -50,6 +51,8 @@ export default function Home({ isReady }: { isReady: boolean }) {
     } else {
       updateData();
     }
+
+    setIsLoadingOffers(false);
   };
 
   const throwError = useAsyncError();
@@ -155,6 +158,7 @@ export default function Home({ isReady }: { isReady: boolean }) {
   const setSelectableLocations = useSetAtom(locationsAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const setIsFormattingOffers = useSetAtom(formattingOffersAtom);
+  const setIsLoadingOffers = useSetAtom(loadingOffersAtom);
   const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom);
   const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom);
 

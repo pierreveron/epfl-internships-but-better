@@ -5,6 +5,7 @@ import { Offer } from "../../types";
 import { DataTableSortStatus } from "mantine-datatable";
 
 export const formattingOffersAtom = atom<boolean>(false);
+export const loadingOffersAtom = atom<boolean>(true);
 
 export const locationsAtom = atom<Record<string, SelectableCity[]>>({});
 

@@ -5,6 +5,7 @@ import {
   formatAtom,
   formattingOffersAtom,
   lengthAtom,
+  loadingOffersAtom,
   locationsAtom,
   minimumSalaryAtom,
   nbCitiesSelectedAtom,
@@ -64,6 +65,7 @@ export type TableRecord = Offer & { favorite: boolean };
 
 export default function Table({ data }: { data: Offer[] }) {
   const isFormatingOffers = useAtomValue(formattingOffersAtom);
+  const isLoadingOffers = useAtomValue(loadingOffersAtom);
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom);
   const selectableFormats = useAtomValue(formatAtom);
   const selectableLengths = useAtomValue(lengthAtom);
@@ -296,8 +298,12 @@ export default function Table({ data }: { data: Offer[] }) {
       withTableBorder
       highlightOnHover
       highlightOnHoverColor="var(--mantine-color-red-1)"
-      fetching={isFormatingOffers}
-      loadingText="Processing the offers... (it should take less than 3 minutes)"
+      fetching={isFormatingOffers || isLoadingOffers}
+      loadingText={
+        isLoadingOffers
+          ? "Loading the offers..."
+          : "Processing the offers... (it should take less than 3 minutes)"
+      }
       records={records}
       rowBackgroundColor={({ number }) => {
         if (offer && offer.number === number) {
