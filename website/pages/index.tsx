@@ -89,6 +89,8 @@ export default function Home({ isReady }: { isReady: boolean }) {
     } catch (error) {
       throwError(error);
       setIsFormattingOffers(false);
+      window.onbeforeunload = null;
+      window.onunload = null;
       return;
     }
 
