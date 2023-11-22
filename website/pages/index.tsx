@@ -118,12 +118,14 @@ export default function Home({ isReady }: { isReady: boolean }) {
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.localStorage) {
-      window.addEventListener("jobOffersUpdated", () => {
-        console.log("jobOffersUpdated");
-        updateData();
-      });
+      if (isReady) {
+        window.addEventListener("jobOffersUpdated", () => {
+          console.log("jobOffersUpdated");
+          updateData();
+        });
 
-      if (isReady) loadOffers();
+        loadOffers();
+      }
     }
   }, [isReady]);
 
