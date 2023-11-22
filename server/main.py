@@ -4,7 +4,7 @@ from typing import Annotated, List
 from dotenv import load_dotenv
 
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
-from clean_salaries_openai import clean_salaries as clean_salairies_openai
+from clean_salaries_openai import clean_salaries as clean_salaries_openai
 from fastapi import Body, FastAPI, HTTPException, Request, Security, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
@@ -92,5 +92,5 @@ async def clean_salaries(
 ):
     if len(salaries) > 700:
         return {"error": "Too many salaries"}
-    clean_salaries = await clean_salairies_openai(salaries)
+    clean_salaries = await clean_salaries_openai(salaries)
     return clean_salaries
