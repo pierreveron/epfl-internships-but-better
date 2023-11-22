@@ -28,6 +28,18 @@ export default function NotSupportedPage() {
         </Anchor>{" "}
         installed and activated.
       </p>
+
+      <p className="tw-text-gray-900 tw-text-base">
+        Please contact{" "}
+        <Anchor
+          href="https://www.linkedin.com/in/pierre-veron/"
+          target="_blank"
+          underline="never"
+        >
+          Pierre Véron
+        </Anchor>{" "}
+        if you have any questions.
+      </p>
     </div>
   );
 }

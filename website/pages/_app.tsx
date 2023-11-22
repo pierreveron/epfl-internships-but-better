@@ -110,7 +110,6 @@ export default function App({ Component, pageProps }: AppProps) {
           if (reply && reply.version) {
             // Version is a string like "0.0.0.1"
             // Check if the version is greater than the required version
-            debugger;
             if (reply.version < extensionRequiredVersion) {
               console.log("Extension version outdated");
               router.push("/not-supported");
