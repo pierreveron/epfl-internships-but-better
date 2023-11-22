@@ -4,11 +4,12 @@ import "mantine-datatable/styles.css";
 
 import { API_URL } from "@/utils/constants";
 import { Anchor, MantineProvider, createTheme } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
+import { useIsomorphicEffect, useLocalStorage } from "@mantine/hooks";
 import { Analytics } from "@vercel/analytics/react";
 import type { AppProps } from "next/app";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { isChrome } from "react-device-detect";
 import { ErrorBoundary } from "react-error-boundary";
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -25,6 +26,17 @@ export default function App({ Component, pageProps }: AppProps) {
       },
     };
   })(console);
+
+  const extensionId = process.env.NEXT_PUBLIC_EXTENSION_ID;
+  const extensionRequiredVersion = process.env.NEXT_PUBLIC_EXTENSION_VERSION;
+
+  if (!extensionId) {
+    throw new Error("Extension id not defined");
+  }
+
+  if (!extensionRequiredVersion) {
+    throw new Error("Extension version not defined");
+  }
 
   const theme = createTheme({
     /** Put your mantine theme override here */
@@ -44,6 +56,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (pathname === "/not-supported") return;
+
     if (apiKey === "") {
       router.push("/welcome");
     }
@@ -62,6 +76,56 @@ export default function App({ Component, pageProps }: AppProps) {
       }
     });
   }, [apiKey]);
+
+  useIsomorphicEffect(() => {
+    const width = window.innerWidth;
+
+    // If the user is on a mobile device, redirect him to the not supported page
+    if (width < 640) {
+      console.log("Not supported on mobile");
+      router.push("/not-supported");
+      return;
+    }
+
+    // If the user is not on chrome, redirect him to the not supported page
+    if (!isChrome) {
+      console.log("Not supported on this browser");
+      router.push("/not-supported");
+      return;
+    }
+
+    // If the extension is not installed, redirect him to the not supported page
+    if (!chrome.runtime) {
+      console.log("Extension not installed");
+      router.push("/not-supported");
+      return;
+    }
+
+    try {
+      // If the extension version is outdated, redirect him to the not supported page
+      chrome.runtime.sendMessage(
+        extensionId,
+        { message: "version" },
+        function (reply) {
+          if (reply && reply.version) {
+            // Version is a string like "0.0.0.1"
+            // Check if the version is greater than the required version
+            debugger;
+            if (reply.version < extensionRequiredVersion) {
+              console.log("Extension version outdated");
+              router.push("/not-supported");
+            } else {
+              router.push("/");
+            }
+          } else {
+            router.push("/not-supported");
+          }
+        }
+      );
+    } catch (error) {
+      router.push("/not-supported");
+    }
+  }, []);
 
   return (
     <>

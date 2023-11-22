@@ -47,6 +47,12 @@ async function goToViewPage(offerId: string) {
   await goToPage('view', offerId)
 }
 
+chrome.runtime.onMessageExternal.addListener(function (request, _, sendResponse) {
+  if (request.message === 'version') {
+    sendResponse({ version: chrome.runtime.getManifest().version })
+  }
+})
+
 chrome.runtime.onMessage.addListener(async function (request) {
   if (request.type == 'register') {
     goToRegisterPage(request.offerId)
