@@ -130,7 +130,9 @@ export default function App({ Component, pageProps }: AppProps) {
         if (pathname === "/welcome") {
           router.push("/");
         }
-        incrementCheckCounter();
+        if (checkCounter === 1) {
+          incrementCheckCounter();
+        }
       } else if (res.status === 401 || res.status === 403) {
         router.push("/welcome");
       }
