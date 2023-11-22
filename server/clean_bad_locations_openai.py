@@ -74,7 +74,7 @@ async def clean_locations(locations: list[str]):
             data = None
 
             # Time the request.
-            start = time.time()
+            s = time.perf_counter()
             print("Starting request...")
 
             with get_openai_callback() as cb:
@@ -82,10 +82,9 @@ async def clean_locations(locations: list[str]):
                 total_cost += cb.total_cost
                 total_tokens += cb.total_tokens
 
-            end = time.time()
-            print("Time taken:", round(end - start, 2))
-            total_time += end - start
-
+            elapsed = time.perf_counter() - s
+            print(f"Time taken {elapsed:0.2f} seconds.")
+            total_time += elapsed
             try:
                 data = parser.parse(output)
                 missing_keys = set(input_list) - set(data.locations.keys())
