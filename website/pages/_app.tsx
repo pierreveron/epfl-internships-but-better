@@ -131,8 +131,8 @@ export default function App({ Component, pageProps }: AppProps) {
           router.push("/");
         }
         incrementCheckCounter();
-      } else {
-        if (pathname !== "/welcome") router.push("/welcome");
+      } else if (res.status === 401 || res.status === 403) {
+        router.push("/welcome");
       }
     });
   }, [apiKey, checkCounter, pathname]);
