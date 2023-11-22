@@ -63,14 +63,13 @@ async def clean_locations(locations: list[str]):
     total_cost = 0
     total_tokens = 0
 
-    async def predict(input_list: list[str], retrying: bool = False) -> LocationDict:
+    async def predict(input_list: list[str]) -> LocationDict:
         nonlocal total_cost, total_tokens, total_time
 
         _input = prompt.format_prompt(locations=input_list)
         data: LocationDict | None = None
-        tries = 5 if retrying else 3
 
-        for _try in range(0, tries):
+        for _ in range(0, 5):
             data = None
 
             # Time the request.
@@ -85,19 +84,9 @@ async def clean_locations(locations: list[str]):
             elapsed = time.perf_counter() - s
             print(f"Time taken {elapsed:0.2f} seconds.")
             total_time += elapsed
+
             try:
                 data = parser.parse(output)
-                missing_keys = set(input_list) - set(data.locations.keys())
-                if len(missing_keys) > 0:
-                    print("The keys in the input and output do not match.")
-                    print("Missing keys:", missing_keys)
-                    if retrying:
-                        raise Exception("Retry {} failed.".format(_try))
-                    else:
-                        print("Retrying...")
-                        data.locations.update(
-                            predict(list(missing_keys), retrying=True).locations
-                        )
             except ValidationError as e:
                 data = None
                 print("A validation error occurred:", e)
@@ -108,14 +97,8 @@ async def clean_locations(locations: list[str]):
                 continue
             break
 
-        print("Data:", data)
-
         if data is None:
             raise Exception("No data was returned.")
-        missing_keys = set(input_list) - set(data.locations.keys())
-        if len(missing_keys) > 0:
-            print("Missing keys:", missing_keys)
-            raise Exception("The keys in the input and final data do not match.")
 
         return data
 
