@@ -129,13 +129,13 @@ export default function App({ Component, pageProps }: AppProps) {
         // Redirect to / if the user is on /welcome
         if (pathname === "/welcome") {
           router.push("/");
-          incrementCheckCounter();
         }
+        incrementCheckCounter();
       } else {
         if (pathname !== "/welcome") router.push("/welcome");
       }
     });
-  }, [apiKey, checkCounter]);
+  }, [apiKey, checkCounter, pathname]);
 
   return (
     <>
