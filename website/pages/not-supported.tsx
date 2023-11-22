@@ -2,7 +2,7 @@ import { Anchor } from "@mantine/core";
 
 export default function NotSupportedPage() {
   return (
-    <div className="tw-h-screen tw-w-screen tw-p-8 sm:tw-px-0 sm:tw-w-min tw-mx-auto tw-flex tw-flex-col tw-justify-center tw-space-y-4">
+    <div className="tw-h-screen tw-w-screen tw-p-8 sm:tw-px-0 sm:tw-w-min tw-mx-auto tw-flex tw-flex-col tw-justify-center tw-gap-4">
       <div className="tw-space-y-1">
         <h1 className="tw-text-5xl tw-font-semibold tw-text-gray-900 tw-text-left sm:tw-whitespace-nowrap">
           <span className="tw-text-[#fa5252]">EPFL</span> internships but{" "}
