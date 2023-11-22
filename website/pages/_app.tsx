@@ -46,37 +46,6 @@ export default function App({ Component, pageProps }: AppProps) {
   // Then redefine the old console
   console = newConsole;
 
-  const [apiKey, _] = useLocalStorage({
-    key: "apiKey",
-    defaultValue: "",
-    getInitialValueInEffect: false,
-  });
-
-  const router = useRouter();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    if (pathname === "/not-supported") return;
-
-    if (apiKey === "") {
-      router.push("/welcome");
-    }
-
-    fetch(API_URL, {
-      method: "GET",
-      headers: {
-        "X-API-Key": apiKey,
-      },
-    }).then((res) => {
-      if (res.ok) {
-        // Redirect to / if the user is on /welcome
-        if (pathname === "/welcome") router.push("/");
-      } else {
-        if (pathname !== "/welcome") router.push("/welcome");
-      }
-    });
-  }, [apiKey]);
-
   useIsomorphicEffect(() => {
     const width = window.innerWidth;
 
@@ -125,6 +94,37 @@ export default function App({ Component, pageProps }: AppProps) {
       router.push("/not-supported");
     }
   }, []);
+
+  const [apiKey, _] = useLocalStorage({
+    key: "apiKey",
+    defaultValue: "",
+    getInitialValueInEffect: false,
+  });
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname === "/not-supported") return;
+
+    if (apiKey === "") {
+      router.push("/welcome");
+    }
+
+    fetch(API_URL, {
+      method: "GET",
+      headers: {
+        "X-API-Key": apiKey,
+      },
+    }).then((res) => {
+      if (res.ok) {
+        // Redirect to / if the user is on /welcome
+        if (pathname === "/welcome") router.push("/");
+      } else {
+        if (pathname !== "/welcome") router.push("/welcome");
+      }
+    });
+  }, [apiKey]);
 
   return (
     <>
