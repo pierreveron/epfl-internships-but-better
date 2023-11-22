@@ -58,6 +58,8 @@ export default function Home({ isReady }: { isReady: boolean }) {
   const throwError = useAsyncError();
 
   const updateData = async () => {
+    setIsFormattingOffers(true);
+
     const data = localStorage.getItem("offersToBeFormatted");
 
     if (!data) {
@@ -80,8 +82,6 @@ export default function Home({ isReady }: { isReady: boolean }) {
     window.onunload = function () {
       abortFormatting();
     };
-
-    setIsFormattingOffers(true);
 
     let formattedOffers;
     try {

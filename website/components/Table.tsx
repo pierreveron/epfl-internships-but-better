@@ -300,9 +300,9 @@ export default function Table({ data }: { data: Offer[] }) {
       highlightOnHoverColor="var(--mantine-color-red-1)"
       fetching={isFormatingOffers || isLoadingOffers}
       loadingText={
-        isLoadingOffers
-          ? "Loading the offers..."
-          : "Processing the offers... (it should take less than 3 minutes)"
+        isFormatingOffers
+          ? "Processing the offers... (it should take less than 3 minutes)"
+          : "Loading the offers..."
       }
       records={records}
       rowBackgroundColor={({ number }) => {
