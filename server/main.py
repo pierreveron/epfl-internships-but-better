@@ -71,7 +71,7 @@ def verify_api_key(
 
 
 @app.post("/clean-locations")
-@limiter.limit("3/day")
+@limiter.limit("10/day")
 async def clean_locations(
     request: Request,
     locations: Annotated[List[str], Body()],
@@ -84,7 +84,7 @@ async def clean_locations(
 
 
 @app.post("/clean-salaries")
-@limiter.limit("3/day")
+@limiter.limit("10/day")
 async def clean_salaries(
     request: Request,
     salaries: Annotated[List[str], Body()],
