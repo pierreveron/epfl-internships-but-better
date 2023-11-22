@@ -49,7 +49,7 @@ last_sheet_update = time.time()
 
 
 def get_apis_keys():
-    global last_sheet_update
+    global last_sheet_update, sheet
     if time.time() - last_sheet_update > 60:
         print("Updating API Keys")
         sheet = gc.open_by_key(API_KEYS_GOOGLE_SHEET_KEY).sheet1
