@@ -57,15 +57,11 @@ async def clean_locations(locations: list[str]):
     locations = list(set(locations))
     print("Number of unique locations:", len(locations))
 
-    # Split the locations into chunks of 50.
-    chunks = [locations[x : x + 50] for x in range(0, len(locations), 50)]
-
-    total_time = 0
     total_cost = 0
     total_tokens = 0
 
     async def async_predict(input_list: list[str]):
-        nonlocal total_cost, total_tokens, total_time
+        nonlocal total_cost, total_tokens
 
         _input = prompt.format_prompt(locations=input_list)
         data: LocationDict | None = None
@@ -81,7 +77,9 @@ async def clean_locations(locations: list[str]):
                 total_tokens += cb.total_tokens
 
             elapsed = time.perf_counter() - s
-            print(f"Request took {elapsed:0.2f} seconds.")
+            print(
+                f"Request with {len(input_list)} elements took {elapsed:0.2f} seconds."
+            )
 
             try:
                 data = parser.parse(output)
@@ -97,32 +95,36 @@ async def clean_locations(locations: list[str]):
 
     total_data: LocationDict = LocationDict(locations={})
 
-    try:
-        s = time.perf_counter()
-        tasks = [async_predict(chunk) for chunk in chunks]
-        data_list = await asyncio.gather(*tasks)
-        elapsed = time.perf_counter() - s
-        print(f"Total time taken {elapsed:0.2f} seconds.")
-        print("List:", data_list)
-        # Data can be None if there was an error.
-        for data in data_list:
-            if data is None:
-                continue
-            total_data.locations.update(data.locations)
-    except Exception as e:
-        print("Final exception")
-        print("Total tokens used:", total_tokens)
-        print(f"Total cost: $", round(total_cost, 2))
-        print("An error occurred. Please try again.", e)
-        raise e
+    s = time.perf_counter()
+    while True:
+        missing_keys = list(set(locations) - set(total_data.locations.keys()))
+        if len(missing_keys) == 0:
+            break
 
-    missing_keys = set(locations) - set(total_data.locations.keys())
-    if len(missing_keys) > 0:
-        print("Missing keys:", missing_keys)
+        # Split the locations into chunks of 40.
+        chunks = [missing_keys[x : x + 40] for x in range(0, len(missing_keys), 40)]
+        try:
+            tasks = [async_predict(chunk) for chunk in chunks]
+            data_list = await asyncio.gather(*tasks)
 
-    print("Total tokens used:", total_tokens)
+            # Data can be None if there was an error.
+            for data in data_list:
+                if data is None:
+                    continue
+                total_data.locations.update(data.locations)
+
+        except Exception as e:
+            elapsed = time.perf_counter() - s
+            print("Total tokens:", total_tokens)
+            print(f"Total cost: $", round(total_cost, 2))
+            print(f"Total time: {elapsed:0.2f} seconds.")
+            print("An error occurred. Please try again.", e)
+            raise e
+
+    elapsed = time.perf_counter() - s
+    print("Total tokens:", total_tokens)
     print(f"Total cost: $", round(total_cost, 2))
-    print("Total time taken:", round(total_time, 2))
+    print(f"Total time: {elapsed:0.2f} seconds.")
 
     # Send the unique locations formatted as a json.
     return orjson.loads(total_data.json())
