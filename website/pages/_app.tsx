@@ -89,10 +89,8 @@ export default function App({ Component, pageProps }: AppProps) {
               console.log("Extension version outdated");
               router.push("/not-supported");
             } else {
-              if (pathname !== "/not-supported") {
-                router.push("/");
-                incrementCheckCounter();
-              }
+              router.push("/");
+              incrementCheckCounter();
             }
           } else {
             router.push("/not-supported");
