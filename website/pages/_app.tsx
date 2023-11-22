@@ -4,7 +4,11 @@ import "mantine-datatable/styles.css";
 
 import { API_URL } from "@/utils/constants";
 import { Anchor, MantineProvider, createTheme } from "@mantine/core";
-import { useIsomorphicEffect, useLocalStorage } from "@mantine/hooks";
+import {
+  useCounter,
+  useIsomorphicEffect,
+  useLocalStorage,
+} from "@mantine/hooks";
 import { Analytics } from "@vercel/analytics/react";
 import type { AppProps } from "next/app";
 import { usePathname, useRouter } from "next/navigation";
@@ -46,6 +50,8 @@ export default function App({ Component, pageProps }: AppProps) {
   // Then redefine the old console
   console = newConsole;
 
+  const [checkCounter, { increment: incrementCheckCounter }] = useCounter(0);
+
   useIsomorphicEffect(() => {
     const width = window.innerWidth;
 
@@ -83,7 +89,10 @@ export default function App({ Component, pageProps }: AppProps) {
               console.log("Extension version outdated");
               router.push("/not-supported");
             } else {
-              router.push("/");
+              if (pathname !== "/not-supported") {
+                router.push("/");
+                incrementCheckCounter();
+              }
             }
           } else {
             router.push("/not-supported");
@@ -105,6 +114,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
 
   useEffect(() => {
+    if (checkCounter != 1) return;
     if (pathname === "/not-supported") return;
 
     if (apiKey === "") {
@@ -119,12 +129,15 @@ export default function App({ Component, pageProps }: AppProps) {
     }).then((res) => {
       if (res.ok) {
         // Redirect to / if the user is on /welcome
-        if (pathname === "/welcome") router.push("/");
+        if (pathname === "/welcome") {
+          router.push("/");
+          incrementCheckCounter();
+        }
       } else {
         if (pathname !== "/welcome") router.push("/welcome");
       }
     });
-  }, [apiKey]);
+  }, [apiKey, checkCounter]);
 
   return (
     <>
@@ -153,7 +166,7 @@ export default function App({ Component, pageProps }: AppProps) {
             </div>
           }
         >
-          <Component {...pageProps} />
+          <Component {...pageProps} isReady={checkCounter >= 2} />
         </ErrorBoundary>
       </MantineProvider>
       <Analytics />
