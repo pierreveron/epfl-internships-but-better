@@ -101,8 +101,12 @@ async def clean_locations(locations: list[str]):
         if len(missing_keys) == 0:
             break
 
-        # Split the locations into chunks of 40.
-        chunks = [missing_keys[x : x + 40] for x in range(0, len(missing_keys), 40)]
+        # Split the locations into chunks.
+        chunk_size = 50
+        chunks = [
+            missing_keys[x : x + chunk_size]
+            for x in range(0, len(missing_keys), chunk_size)
+        ]
         try:
             tasks = [async_predict(chunk) for chunk in chunks]
             data_list = await asyncio.gather(*tasks)
