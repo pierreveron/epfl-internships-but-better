@@ -112,7 +112,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (checkCounter != 1) return;
+    if (checkCounter === 0) return;
     if (pathname === "/not-supported") return;
 
     if (apiKey === "") {
