@@ -244,7 +244,7 @@ export default function OfferDescription() {
             checked={asideOffer !== null && isOfferFavorite(asideOffer)}
           />
         </ActionIcon>
-        <ActionIcon
+        {/* <ActionIcon
           onClick={() => {
             if (asideOffer) {
               toggleHiddenOffer(asideOffer);
@@ -255,7 +255,7 @@ export default function OfferDescription() {
           size="xl"
         >
           <EyeSlashIcon className="tw-w-6 tw-fill-gray-900" />
-        </ActionIcon>
+        </ActionIcon> */}
 
         <Anchor
           data-offer-id={asideOffer?.id}
