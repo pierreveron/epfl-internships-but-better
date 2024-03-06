@@ -9,6 +9,7 @@ from langchain.llms.openai import OpenAI
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
 from pydantic import ValidationError
+from langchain.callbacks import PromptLayerCallbackHandler
 
 from salaries_types import SalariesDict
 
@@ -52,6 +53,7 @@ async def clean_salaries(salaries: list[str]):
         openai_api_key=OPENAI_API_KEY,
         max_tokens=3000,
         request_timeout=60,
+        callbacks=[PromptLayerCallbackHandler()],
     )
     # print(llm)
 

@@ -10,6 +10,7 @@ from langchain.prompts import PromptTemplate
 from locations_types import LocationDict
 from pydantic import ValidationError
 from langchain.callbacks import get_openai_callback
+from langchain.callbacks import PromptLayerCallbackHandler
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -49,6 +50,7 @@ async def clean_locations(locations: list[str]):
         openai_api_key=OPENAI_API_KEY,
         max_tokens=3000,
         request_timeout=60,
+        callbacks=[PromptLayerCallbackHandler()],
     )
     # print(llm)
 
