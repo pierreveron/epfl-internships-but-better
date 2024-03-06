@@ -7,17 +7,17 @@ import HeartIcon from "./HeartIcon";
 import ArrowRightLongIcon from "./icons/ArrowRightLongIcon";
 import BriefcaseIcon from "./icons/BriefcaseIcon";
 import ClockIcon from "./icons/ClockIcon";
-import EyeSlashIcon from "./icons/EyeSlashIcon";
+// import EyeSlashIcon from "./icons/EyeSlashIcon";
 import LanguageIcon from "./icons/LanguageIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import { formatLengthLabel } from "./LengthsCheckboxes";
-import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
+import { useFavoriteOffers /*useHiddenOffers*/ } from "@/utils/hooks";
 import MoneyBillIcon from "./icons/MoneyBillIcon";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
 
-  const { toggleHiddenOffer } = useHiddenOffers();
+  // const { toggleHiddenOffer } = useHiddenOffers();
   const { isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers();
 
   const countryName = (language: string) => {
