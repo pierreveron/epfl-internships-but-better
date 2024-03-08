@@ -113,8 +113,11 @@ export default function ActionBar({
           value={minimumSalary}
           onChange={(value) => {
             if (typeof value === "string") {
-              setMinimumSalary(undefined);
-              return;
+              value = parseInt(value);
+              if (isNaN(value)) {
+                setMinimumSalary(undefined);
+                return;
+              }
             }
             setMinimumSalary(value);
           }}
