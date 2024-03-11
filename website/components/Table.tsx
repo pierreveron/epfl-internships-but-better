@@ -23,6 +23,9 @@ import { DataTable } from "mantine-datatable";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
+import LocationDotIcon from "./icons/LocationDotIcon";
+import { getFlagEmojiWithName } from "@/utils/countries";
+import MoneyBillIcon from "./icons/MoneyBillIcon";
 
 export const PAGE_SIZE = 15;
 
@@ -292,6 +295,54 @@ export default function Table({ data }: { data: Offer[] }) {
 
     setRecords(records);
   }, [page, filteredData, sortStatus.direction, favoriteOffers, hiddenOffers]);
+
+  return (
+    <div className="tw-overflow-y-auto tw-h-full tw-p-4">
+      {records.map((record) => {
+        return (
+          <div
+            className="tw-pb-8 tw-border tw-border-solid tw-border-gray-100 tw-rounded"
+            key={record.number}
+          >
+            <p className="tw-text-gray-500 tw-text-sm">{record.number}</p>
+            <div className="tw-mb-4">
+              <h3 className="tw-text-xl tw-font-bold">{record.title}</h3>
+              <p className="tw-text-base tw-font-medium tw-italic">
+                {record.company}
+              </p>
+            </div>
+
+            <div className="tw-flex tw-flex-row tw-gap-2">
+              {record.location.length > 0 ? (
+                record.location.map((location, index) => (
+                  <p
+                    key={index}
+                    className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-flex tw-flex-row tw-items-center tw-gap-x-2"
+                  >
+                    <LocationDotIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+                    {location.city}
+                    {location.country &&
+                      `, ${location.country} ${getFlagEmojiWithName(
+                        location.country
+                      )}`}
+                  </p>
+                ))
+              ) : (
+                <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                  Not specified
+                </p>
+              )}
+            </div>
+
+            <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+              <MoneyBillIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+              {formatSalary(record.salary ?? null)}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
 
   return (
     <DataTable
