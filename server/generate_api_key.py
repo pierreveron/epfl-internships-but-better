@@ -23,4 +23,8 @@ if __name__ == "__main__":
 
     sheet.append_row([first_name, last_name, api_key])
 
-    print("API key generated successfully for {} {}!".format(first_name, last_name))
+    print(
+        "API key {} generated successfully for {} {}!".format(
+            api_key, first_name, last_name
+        )
+    )
