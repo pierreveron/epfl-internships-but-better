@@ -26,6 +26,8 @@ import HeartIcon from "./HeartIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import { getFlagEmojiWithName } from "@/utils/countries";
 import MoneyBillIcon from "./icons/MoneyBillIcon";
+import ClockIcon from "./icons/ClockIcon";
+import { formatLengthLabel } from "./LengthsCheckboxes";
 
 export const PAGE_SIZE = 15;
 
@@ -334,10 +336,19 @@ export default function Table({ data }: { data: Offer[] }) {
               )}
             </div>
 
+            <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+              <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+              {record.length
+                ? formatLengthLabel(record.length)
+                : "Not specified"}
+            </p>
+
             <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
               <MoneyBillIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
               {formatSalary(record.salary ?? null)}
             </p>
+
+            <p className="tw-text-gray-300">{record.creationDate}</p>
           </div>
         );
       })}
