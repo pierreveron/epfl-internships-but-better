@@ -297,11 +297,11 @@ export default function Table({ data }: { data: Offer[] }) {
   }, [page, filteredData, sortStatus.direction, favoriteOffers, hiddenOffers]);
 
   return (
-    <div className="tw-overflow-y-auto tw-h-full tw-p-4">
+    <div className="tw-overflow-y-auto tw-h-full tw-space-y-4">
       {records.map((record) => {
         return (
           <div
-            className="tw-pb-8 tw-border tw-border-solid tw-border-gray-100 tw-rounded"
+            className="tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded"
             key={record.number}
           >
             <p className="tw-text-gray-500 tw-text-sm">{record.number}</p>
