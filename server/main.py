@@ -86,6 +86,7 @@ async def clean_locations(
     locations: Annotated[List[str], Body()],
     api_key: str = Security(get_api_key),
 ):
+    print(f"{api_key} requested to clean {len(locations)} locations")
     if len(locations) > 500:
         return {"error": "Too many locations"}
     clean_locations = await clean_locations_openai(locations)
@@ -99,6 +100,7 @@ async def clean_salaries(
     salaries: Annotated[List[str], Body()],
     api_key: str = Security(get_api_key),
 ):
+    print(f"{api_key} requested to clean {len(salaries)} locations")
     if len(salaries) > 700:
         return {"error": "Too many salaries"}
     clean_salaries = await clean_salaries_openai(salaries)
