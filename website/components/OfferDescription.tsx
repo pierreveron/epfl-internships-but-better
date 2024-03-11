@@ -67,7 +67,9 @@ export default function OfferDescription() {
                 <a
                   key={index}
                   className="tw-text-blue-500 tw-text-sm tw-underline"
-                  href={website}
+                  href={
+                    website.startsWith("http") ? website : `http://${website}`
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                 >
