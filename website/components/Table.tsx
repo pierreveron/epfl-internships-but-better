@@ -358,6 +358,24 @@ export default function Table({ data }: { data: Offer[] }) {
           </div>
         );
       })}
+      <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center">
+        {[...Array(Math.ceil(filteredData.length / 15))].map((_, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              setPage(index + 1);
+            }}
+            className={classNames(
+              "tw-rounded-full tw-border-none tw-h-8 tw-w-8",
+              index + 1 === page
+                ? "tw-bg-red-500 tw-text-white"
+                : "tw-bg-transparent tw-text-gray-900 hover:tw-bg-gray-100"
+            )}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </div>
   );
 
