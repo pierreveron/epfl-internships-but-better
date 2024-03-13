@@ -303,8 +303,14 @@ export default function Table({ data }: { data: Offer[] }) {
       {records.map((record) => {
         return (
           <div
-            className="tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded"
+            className="tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded tw-cursor-pointer"
             key={record.number}
+            onClick={() => {
+              setAside({
+                open: true,
+                offer: record,
+              });
+            }}
           >
             <p className="tw-text-gray-500 tw-text-sm">{record.number}</p>
             <div className="tw-mb-4">
