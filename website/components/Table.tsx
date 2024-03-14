@@ -299,11 +299,11 @@ export default function Table({ data }: { data: Offer[] }) {
   }, [page, filteredData, sortStatus.direction, favoriteOffers, hiddenOffers]);
 
   return (
-    <div className="tw-overflow-y-auto tw-h-full tw-space-y-4">
+    <div className="tw-space-y-4 tw-mx-8">
       {records.map((record) => {
         return (
           <div
-            className="tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded tw-cursor-pointer"
+            className="tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded-md tw-cursor-pointer hover:tw-border-gray-300 tw-transition"
             key={record.number}
             onClick={() => {
               setAside({
