@@ -264,18 +264,6 @@ export default function Home({ isReady }: { isReady: boolean }) {
                   variant="subtle"
                   color="gray"
                   size="lg"
-                  onClick={() => {
-                    setAside({ open: false, offer: null });
-                    setIsAsideMaximized(false);
-                  }}
-                >
-                  <XMarkIcon className="tw-w-5 tw-h-5 tw-fill-gray-900" />
-                </ActionIcon>
-
-                <ActionIcon
-                  variant="subtle"
-                  color="gray"
-                  size="lg"
                   onClick={() => setIsAsideMaximized((maximized) => !maximized)}
                   disabled={width <= 992}
                   className="disabled:tw-bg-transparent"
