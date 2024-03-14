@@ -313,7 +313,10 @@ export default function Table({ data }: { data: Offer[] }) {
       {records.map((record) => {
         return (
           <div
-            className="tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded-md tw-cursor-pointer hover:tw-border-gray-300 tw-transition"
+            className={classNames(
+              "tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded-md tw-cursor-pointer hover:tw-border-gray-300 tw-transition",
+              offer && offer.number === record.number && "tw-border-gray-300"
+            )}
             key={record.number}
             onClick={() => {
               setAside({
