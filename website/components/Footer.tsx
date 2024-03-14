@@ -3,7 +3,7 @@ import { Anchor, Group, Image, Text } from "@mantine/core";
 export default function Footer() {
   return (
     <Group gap="xl">
-      <Image width={50} height={50} src="../favicon.ico" alt="website logo" />
+      {/* <Image width={50} height={50} src="../favicon.ico" alt="website logo" /> */}
       <Text c="dimmed">
         This website is not affiliated to EPFL. It is a personal project from{" "}
         <Anchor
