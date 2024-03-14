@@ -235,7 +235,7 @@ export default function Home({ isReady }: { isReady: boolean }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <AppShell
+      {/* <AppShell
         aside={{
           width: {
             md: isAsideMaximized ? "100%" : 550,
@@ -248,87 +248,90 @@ export default function Home({ isReady }: { isReady: boolean }) {
           breakpoint: "md",
           collapsed: { mobile: !isAsideOpen, desktop: !isAsideOpen },
         }}
-      >
+      > */}
+      <div className="tw-flex tw-flex-row-reverse tw-h-screen">
         {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
-        <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}>
-          <AppShell.Section
+        {/* <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}> */}
+        <div className="tw-flex-1 tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-px-8 tw-py-8">
+          {/* <AppShell.Section
             mb="sm"
             pt="xl"
             pr={!isAsideMaximized ? "xl" : 0}
             w={isAsideMaximized ? "min(50%, 896px)" : "100%"}
             mx={isAsideMaximized ? "auto" : 0}
-          >
-            <div className="tw-flex tw-flex-row tw-justify-between">
-              <div>
-                <ActionIcon
-                  variant="subtle"
-                  color="gray"
-                  size="lg"
-                  onClick={() => setIsAsideMaximized((maximized) => !maximized)}
-                  disabled={width <= 992}
-                  className="disabled:tw-bg-transparent"
-                >
-                  {isAsideMaximized ? (
-                    <MinimizeIcon
-                      className={classNames(
-                        "tw-w-4 tw-h-4",
-                        width <= 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
-                      )}
-                    />
-                  ) : (
-                    <MaximizeIcon
-                      className={classNames(
-                        "tw-w-4 tw-h-4",
-                        width <= 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
-                      )}
-                    />
-                  )}
-                </ActionIcon>
-              </div>
-              <div>
-                <ActionIcon
-                  variant="subtle"
-                  color="gray"
-                  size="lg"
-                  disabled={!canNavigateToPreviousOffer()}
-                  className="disabled:tw-bg-transparent"
-                  onClick={navigateToPreviousOffer}
-                >
-                  <BackwardStepIcon
+          > */}
+          <div className="tw-flex tw-flex-row tw-justify-between">
+            <div>
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                size="lg"
+                onClick={() => setIsAsideMaximized((maximized) => !maximized)}
+                disabled={width <= 992}
+                className="disabled:tw-bg-transparent"
+              >
+                {isAsideMaximized ? (
+                  <MinimizeIcon
                     className={classNames(
                       "tw-w-4 tw-h-4",
-                      !canNavigateToPreviousOffer()
-                        ? "tw-fill-gray-300"
-                        : "tw-fill-gray-900"
+                      width <= 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
                     )}
                   />
-                </ActionIcon>
-
-                <ActionIcon
-                  variant="subtle"
-                  color="gray"
-                  size="lg"
-                  disabled={!canNavigateToNextOffer()}
-                  className="disabled:tw-bg-transparent"
-                  onClick={navigateToNextOffer}
-                >
-                  <ForwardStepIcon
+                ) : (
+                  <MaximizeIcon
                     className={classNames(
-                      "tw-w-4 tw-h-4 ",
-                      !canNavigateToNextOffer()
-                        ? "tw-fill-gray-300"
-                        : "tw-fill-gray-900"
+                      "tw-w-4 tw-h-4",
+                      width <= 992 ? "tw-fill-gray-200" : "tw-fill-gray-900"
                     )}
                   />
-                </ActionIcon>
-              </div>
+                )}
+              </ActionIcon>
             </div>
-          </AppShell.Section>
-          <AppShell.Section
+            <div>
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                size="lg"
+                disabled={!canNavigateToPreviousOffer()}
+                className="disabled:tw-bg-transparent"
+                onClick={navigateToPreviousOffer}
+              >
+                <BackwardStepIcon
+                  className={classNames(
+                    "tw-w-4 tw-h-4",
+                    !canNavigateToPreviousOffer()
+                      ? "tw-fill-gray-300"
+                      : "tw-fill-gray-900"
+                  )}
+                />
+              </ActionIcon>
+
+              <ActionIcon
+                variant="subtle"
+                color="gray"
+                size="lg"
+                disabled={!canNavigateToNextOffer()}
+                className="disabled:tw-bg-transparent"
+                onClick={navigateToNextOffer}
+              >
+                <ForwardStepIcon
+                  className={classNames(
+                    "tw-w-4 tw-h-4 ",
+                    !canNavigateToNextOffer()
+                      ? "tw-fill-gray-300"
+                      : "tw-fill-gray-900"
+                  )}
+                />
+              </ActionIcon>
+            </div>
+          </div>
+          {/* </AppShell.Section> */}
+          {/* <AppShell.Section
             grow
             component={ScrollArea}
             pr={!isAsideMaximized ? "xl" : 0}
-          >
+          > */}
+          <div>
             <div
               className={classNames(
                 isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
@@ -336,9 +339,12 @@ export default function Home({ isReady }: { isReady: boolean }) {
             >
               <OfferDescription />
             </div>
-          </AppShell.Section>
-        </AppShell.Aside>
-        <AppShell.Main style={{ height: "100vh" }}>
+          </div>
+          {/* </AppShell.Section> */}
+        </div>
+        {/* </AppShell.Aside> */}
+        {/* <AppShell.Main style={{ height: "100vh" }}> */}
+        <main className="tw-h-screen tw-flex-1">
           <Stack style={{ height: "100%" }}>
             <div className="tw-p-8 tw-pb-4">
               <ActionBar
@@ -378,8 +384,10 @@ export default function Home({ isReady }: { isReady: boolean }) {
               <Footer />
             </div>
           </Stack>
-        </AppShell.Main>
-      </AppShell>
+        </main>
+        {/* </AppShell.Main> */}
+      </div>
+      {/* </AppShell> */}
     </>
   );
 }
