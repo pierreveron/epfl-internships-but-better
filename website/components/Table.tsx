@@ -14,20 +14,19 @@ import {
   showOnlyPositionsNotYetCompletedAtom,
   sortStatusAtom,
 } from "@/atoms";
+import { getFlagEmojiWithName } from "@/utils/countries";
 import { formatSalary, formatToLabel } from "@/utils/format";
 import { useFavoriteOffers, useHiddenOffers } from "@/utils/hooks";
-import { usePrevious } from "@mantine/hooks";
 import classNames from "classnames";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { DataTable } from "mantine-datatable";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Offer } from "../../types";
 import HeartIcon from "./HeartIcon";
-import LocationDotIcon from "./icons/LocationDotIcon";
-import { getFlagEmojiWithName } from "@/utils/countries";
-import MoneyBillIcon from "./icons/MoneyBillIcon";
-import ClockIcon from "./icons/ClockIcon";
 import { formatLengthLabel } from "./LengthsCheckboxes";
+import ClockIcon from "./icons/ClockIcon";
+import LocationDotIcon from "./icons/LocationDotIcon";
+import MoneyBillIcon from "./icons/MoneyBillIcon";
 
 export const PAGE_SIZE = 15;
 
@@ -89,38 +88,8 @@ export default function Table({ data }: { data: Offer[] }) {
 
   const { hiddenOffers, isOfferHidden } = useHiddenOffers();
 
-  const viewport = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () =>
-    viewport.current!.scrollTo({
-      top: viewport.current!.scrollHeight,
-      behavior: "smooth",
-    });
-
-  const scrollToTop = () =>
-    viewport.current!.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-
   const [page, setPage] = useAtom(pageAtom);
   const [sortStatus, setSortStatus] = useAtom(sortStatusAtom);
-
-  const previousPage = usePrevious(page);
-
-  useEffect(() => {
-    if (previousPage === undefined) return;
-    if (previousPage < page) {
-      setTimeout(() => {
-        scrollToTop();
-      }, 100);
-    }
-    if (previousPage > page) {
-      setTimeout(() => {
-        scrollToBottom();
-      }, 100);
-    }
-  }, [page]);
 
   useEffect(() => {
     setPage(1);
@@ -514,7 +483,7 @@ export default function Table({ data }: { data: Offer[] }) {
           offer: record,
         });
       }}
-      scrollViewportRef={viewport}
+      // scrollViewportRef={viewport}
     />
   );
 }

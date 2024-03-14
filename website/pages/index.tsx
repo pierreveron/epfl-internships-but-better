@@ -7,6 +7,7 @@ import {
   loadingOffersAtom,
   locationsAtom,
   nbCitiesSelectedAtom,
+  pageAtom,
 } from "@/atoms";
 import ActionBar from "@/components/ActionBar";
 import Footer from "@/components/Footer";
@@ -26,9 +27,9 @@ import { ActionIcon, Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
 import classNames from "classnames";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer, OfferToBeFormatted } from "../../types";
-import { useHotkeys, useViewportSize } from "@mantine/hooks";
+import { useHotkeys, usePrevious, useViewportSize } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
@@ -223,6 +224,38 @@ export default function Home({ isReady }: { isReady: boolean }) {
     }
   }, [width]);
 
+  const page = useAtomValue(pageAtom);
+
+  const viewport = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () =>
+    viewport.current!.scrollTo({
+      top: viewport.current!.scrollHeight,
+      behavior: "smooth",
+    });
+
+  const scrollToTop = () =>
+    viewport.current!.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+  const previousPage = usePrevious(page);
+
+  useEffect(() => {
+    if (previousPage === undefined) return;
+    if (previousPage < page) {
+      setTimeout(() => {
+        scrollToTop();
+      }, 100);
+    }
+    if (previousPage > page) {
+      setTimeout(() => {
+        scrollToBottom();
+      }, 100);
+    }
+  }, [page]);
+
   return (
     <>
       <Head>
@@ -252,7 +285,12 @@ export default function Home({ isReady }: { isReady: boolean }) {
       <div className="tw-flex tw-flex-row-reverse tw-h-screen">
         {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
         {/* <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}> */}
-        <div className="tw-flex-1 tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-px-8 tw-py-8">
+        <div
+          className={classNames(
+            "tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-px-8 tw-py-8",
+            isAsideMaximized && "tw-w-full tw-max-w-4xl tw-mx-auto"
+          )}
+        >
           {/* <AppShell.Section
             mb="sm"
             pt="xl"
@@ -354,7 +392,7 @@ export default function Home({ isReady }: { isReady: boolean }) {
               />
             </div>
 
-            <div className="tw-overflow-y-auto tw-h-full">
+            <div className="tw-overflow-y-auto tw-h-full" ref={viewport}>
               {isError ? (
                 <div className="tw-h-full tw-flex tw-flex-col tw-justify-center tw-items-center">
                   <h3 className="tw-text-2xl tw-text-[#868e96] tw-font-semibold">
