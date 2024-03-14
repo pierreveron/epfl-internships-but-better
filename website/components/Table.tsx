@@ -274,6 +274,16 @@ export default function Table({ data }: { data: Offer[] }) {
   }, [hiddenOffers]);
 
   useEffect(() => {
+    if (records.length === 0) {
+      return;
+    }
+    setAside({
+      open: true,
+      offer: records[0],
+    });
+  }, [records]);
+
+  useEffect(() => {
     const from = (page - 1) * PAGE_SIZE;
     const to = from + PAGE_SIZE;
 
