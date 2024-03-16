@@ -353,16 +353,16 @@ export default function Table({ data }: { data: Offer[] }) {
             </div>
 
             <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4">
-              <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-                <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+              <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                <ClockIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
                 {record.length
                   ? formatLengthLabel(record.length)
                   : "Not specified"}
               </p>
 
               {record.salary && (
-                <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-                  <MoneyBillIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+                <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <MoneyBillIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
                   {formatSalary(record.salary)}
                 </p>
               )}
