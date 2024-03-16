@@ -295,7 +295,6 @@ export default function Table({ data }: { data: Offer[] }) {
               });
             }}
           >
-            <p className="tw-text-gray-500 tw-text-sm">{record.number}</p>
             <div className="tw-mb-4">
               <h3 className="tw-text-xl tw-font-bold">{record.title}</h3>
               <p className="tw-text-base tw-font-medium tw-italic">
