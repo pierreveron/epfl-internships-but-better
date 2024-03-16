@@ -369,20 +369,22 @@ export default function Home({ isReady }: { isReady: boolean }) {
             component={ScrollArea}
             pr={!isAsideMaximized ? "xl" : 0}
           > */}
-          <div>
-            <div
-              className={classNames(
-                isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
-              )}
-            >
-              <OfferDescription />
-            </div>
+          <div
+            className={classNames(
+              "tw-h-full tw-overflow-y-auto",
+              isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
+            )}
+          >
+            <OfferDescription />
           </div>
+
           {/* </AppShell.Section> */}
         </div>
         {/* </AppShell.Aside> */}
         {/* <AppShell.Main style={{ height: "100vh" }}> */}
-        <main className="tw-h-screen tw-flex-1">
+        <main
+          className={classNames("tw-h-screen", isAsideMaximized && "tw-w-0")}
+        >
           <Stack style={{ height: "100%" }}>
             <div className="tw-p-8 tw-pb-4">
               <ActionBar
