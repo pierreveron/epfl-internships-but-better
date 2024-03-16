@@ -286,8 +286,8 @@ export default function Home({ isReady }: { isReady: boolean }) {
         {/* <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}> */}
         <div
           className={classNames(
-            "tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-px-8 tw-py-8",
-            isAsideMaximized && "tw-w-full tw-max-w-4xl tw-mx-auto"
+            "tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-py-8",
+            isAsideMaximized && "tw-w-full"
           )}
         >
           {/* <AppShell.Section
@@ -297,7 +297,12 @@ export default function Home({ isReady }: { isReady: boolean }) {
             w={isAsideMaximized ? "min(50%, 896px)" : "100%"}
             mx={isAsideMaximized ? "auto" : 0}
           > */}
-          <div className="tw-flex tw-flex-row tw-justify-between">
+          <div
+            className={classNames(
+              "tw-flex tw-flex-row tw-justify-between tw-px-8",
+              isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
+            )}
+          >
             <div>
               <ActionIcon
                 variant="subtle"
@@ -368,13 +373,15 @@ export default function Home({ isReady }: { isReady: boolean }) {
             component={ScrollArea}
             pr={!isAsideMaximized ? "xl" : 0}
           > */}
-          <div
-            className={classNames(
-              "tw-h-full tw-overflow-y-auto",
-              isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
-            )}
-          >
-            <OfferDescription />
+          <div className="tw-h-full tw-overflow-y-auto">
+            <div
+              className={classNames(
+                "tw-px-8",
+                isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
+              )}
+            >
+              <OfferDescription />
+            </div>
           </div>
 
           {/* </AppShell.Section> */}
@@ -382,7 +389,7 @@ export default function Home({ isReady }: { isReady: boolean }) {
         {/* </AppShell.Aside> */}
         {/* <AppShell.Main style={{ height: "100vh" }}> */}
         <main
-          className={classNames("tw-h-screen", isAsideMaximized && "tw-w-0")}
+          className={classNames("tw-h-screen", isAsideMaximized && "tw-hidden")}
         >
           <Stack style={{ height: "100%" }}>
             <div className="tw-p-8 tw-pb-4">
