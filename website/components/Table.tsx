@@ -27,6 +27,7 @@ import { formatLengthLabel } from "./LengthsCheckboxes";
 import ClockIcon from "./icons/ClockIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import MoneyBillIcon from "./icons/MoneyBillIcon";
+import BriefcaseIcon from "./icons/BriefcaseIcon";
 
 export const PAGE_SIZE = 15;
 
@@ -302,40 +303,68 @@ export default function Table({ data }: { data: Offer[] }) {
               </p>
             </div>
 
+            <div className="tw-flex tw-flex-row tw-items-center tw-gap-2">
+              <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+              <p className="tw-text-gray-600 tw-text-sm">
+                {record.format.length > 0 ? (
+                  record.format.map((format, index) => (
+                    <span
+                      key={format}
+                      className={classNames(
+                        index != 0 && "before:tw-content-['_·_']"
+                      )}
+                    >
+                      {formatToLabel(format)}
+                    </span>
+                  ))
+                ) : (
+                  <p className="tw-text-gray-600 tw-text-sm">Not specified</p>
+                )}
+              </p>
+            </div>
+
             <div className="tw-flex tw-flex-row tw-gap-2">
-              {record.location.length > 0 ? (
-                record.location.map((location, index) => (
-                  <p
-                    key={index}
-                    className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-flex tw-flex-row tw-items-center tw-gap-x-2"
-                  >
-                    <LocationDotIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-                    {location.city}
-                    {location.country &&
-                      `, ${location.country} ${getFlagEmojiWithName(
-                        location.country
-                      )}`}
+              <LocationDotIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+              <p className="tw-flex tw-flex-row tw-gap-2">
+                {record.location.length > 0 ? (
+                  record.location.map((location, index) => (
+                    <p
+                      key={index}
+                      className={classNames(
+                        "tw-text-gray-600 tw-text-sm tw-flex tw-flex-row tw-items-center tw-gap-x-2",
+                        index != 0 && "before:tw-content-['_·_']"
+                      )}
+                    >
+                      {location.city}
+                      {location.country &&
+                        `, ${location.country} ${getFlagEmojiWithName(
+                          location.country
+                        )}`}
+                    </p>
+                  ))
+                ) : (
+                  <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                    Not specified
                   </p>
-                ))
-              ) : (
-                <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
-                  Not specified
+                )}
+              </p>
+            </div>
+
+            <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4">
+              <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+                {record.length
+                  ? formatLengthLabel(record.length)
+                  : "Not specified"}
+              </p>
+
+              {record.salary && (
+                <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <MoneyBillIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+                  {formatSalary(record.salary)}
                 </p>
               )}
             </div>
-
-            <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-              <ClockIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-              {record.length
-                ? formatLengthLabel(record.length)
-                : "Not specified"}
-            </p>
-
-            <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-              <MoneyBillIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-              {formatSalary(record.salary ?? null)}
-            </p>
-
             <p className="tw-text-gray-300">{record.creationDate}</p>
           </div>
         );
