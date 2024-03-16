@@ -28,6 +28,7 @@ import ClockIcon from "./icons/ClockIcon";
 import LocationDotIcon from "./icons/LocationDotIcon";
 import MoneyBillIcon from "./icons/MoneyBillIcon";
 import BriefcaseIcon from "./icons/BriefcaseIcon";
+import CalendarIcon from "./icons/CalendarIcon";
 
 export const PAGE_SIZE = 15;
 
@@ -278,6 +279,8 @@ export default function Table({ data }: { data: Offer[] }) {
     setRecords(records);
   }, [page, filteredData, sortStatus.direction, favoriteOffers, hiddenOffers]);
 
+  const date = new Date();
+
   return (
     <div className="tw-space-y-4 tw-mx-8">
       {records.map((record) => {
@@ -364,7 +367,31 @@ export default function Table({ data }: { data: Offer[] }) {
                 </p>
               )}
             </div>
-            <p className="tw-text-gray-300">{record.creationDate}</p>
+
+            <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4 tw-items-center">
+              <CalendarIcon className="tw-w-4 tw-h-4 tw-fill-gray-600" />
+
+              <p className="tw-text-gray-600 tw-text-sm">
+                {(() => {
+                  const [day, month, year] = record.creationDate.split(".");
+                  const recordDate = new Date(+year, +month - 1, +day);
+                  const diff = date.getTime() - recordDate.getTime();
+                  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                  if (days === 0) {
+                    return "Today";
+                  }
+                  if (days === 1) {
+                    return "Yesterday";
+                  }
+
+                  if (days < 7) {
+                    return `${days} days ago`;
+                  }
+
+                  return recordDate.toLocaleDateString("fr-FR");
+                })()}
+              </p>
+            </div>
           </div>
         );
       })}
