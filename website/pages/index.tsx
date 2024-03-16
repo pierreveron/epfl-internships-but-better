@@ -177,7 +177,6 @@ export default function Home({ isReady }: { isReady: boolean }) {
     [
       "Escape",
       () => {
-        setAside({ open: false, offer: null });
         setIsAsideMaximized(false);
       },
     ],
