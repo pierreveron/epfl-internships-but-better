@@ -86,7 +86,7 @@ export default function OfferDescription() {
         <div className="tw-flex tw-flex-row tw-gap-2">
           <LocationDotIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
           <p className="tw-flex tw-flex-row tw-gap-2">
-            {asideOffer && asideOffer.location.length > 0 ? (
+            {asideOffer.location.length > 0 ? (
               asideOffer.location.map((location, index) => (
                 <p
                   key={index}
