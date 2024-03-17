@@ -29,6 +29,7 @@ import LocationDotIcon from "./icons/LocationDotIcon";
 import MoneyBillIcon from "./icons/MoneyBillIcon";
 import BriefcaseIcon from "./icons/BriefcaseIcon";
 import CalendarIcon from "./icons/CalendarIcon";
+import { ActionIcon } from "@mantine/core";
 
 export const PAGE_SIZE = 15;
 
@@ -252,7 +253,7 @@ export default function Table({ data }: { data: Offer[] }) {
       open: true,
       offer: records[0],
     });
-  }, [records]);
+  }, []);
 
   useEffect(() => {
     const from = (page - 1) * PAGE_SIZE;
@@ -368,29 +369,43 @@ export default function Table({ data }: { data: Offer[] }) {
               )}
             </div>
 
-            <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4 tw-items-center">
-              <CalendarIcon className="tw-w-4 tw-h-4 tw-fill-gray-600" />
+            <div className="tw-flex tw-flex-row tw-justify-between tw-items-center">
+              <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4 tw-items-center">
+                <CalendarIcon className="tw-w-4 tw-h-4 tw-fill-gray-600" />
 
-              <p className="tw-text-gray-600 tw-text-sm">
-                {(() => {
-                  const [day, month, year] = record.creationDate.split(".");
-                  const recordDate = new Date(+year, +month - 1, +day);
-                  const diff = date.getTime() - recordDate.getTime();
-                  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                  if (days === 0) {
-                    return "Today";
-                  }
-                  if (days === 1) {
-                    return "Yesterday";
-                  }
+                <p className="tw-text-gray-600 tw-text-sm">
+                  {(() => {
+                    const [day, month, year] = record.creationDate.split(".");
+                    const recordDate = new Date(+year, +month - 1, +day);
+                    const diff = date.getTime() - recordDate.getTime();
+                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                    if (days === 0) {
+                      return "Today";
+                    }
+                    if (days === 1) {
+                      return "Yesterday";
+                    }
 
-                  if (days < 7) {
-                    return `${days} days ago`;
-                  }
+                    if (days < 7) {
+                      return `${days} days ago`;
+                    }
 
-                  return recordDate.toLocaleDateString("fr-FR");
-                })()}
-              </p>
+                    return recordDate.toLocaleDateString("fr-FR");
+                  })()}
+                </p>
+              </div>
+
+              <ActionIcon
+                onClick={(event) => {
+                  event.stopPropagation();
+                  toggleFavoriteOffer(record);
+                }}
+                variant="subtle"
+                color="red"
+                size="xl"
+              >
+                <HeartIcon checked={record.favorite} />
+              </ActionIcon>
             </div>
           </div>
         );
