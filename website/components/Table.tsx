@@ -413,9 +413,9 @@ export default function Table({ data }: { data: Offer[] }) {
                   }}
                   variant="subtle"
                   color="red"
-                  size="xl"
+                  size="lg"
                 >
-                  <HeartIcon checked={record.favorite} />
+                  <HeartIcon checked={record.favorite} className="tw-h-5" />
                 </ActionIcon>
               </div>
             </div>

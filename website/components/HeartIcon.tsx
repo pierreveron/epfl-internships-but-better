@@ -3,16 +3,19 @@ import { MouseEventHandler } from "react";
 export default function HeartIcon({
   checked,
   onClick,
+  className,
 }: {
   checked?: boolean;
   onClick?: MouseEventHandler<SVGSVGElement>;
+  className?: string;
 }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="1em"
       viewBox="0 0 512 512"
-      style={{ fill: "#fa5252", height: "1.4em" }}
+      style={{ fill: "#fa5252" }}
+      className={className}
       onClick={onClick}
     >
       {checked ? (

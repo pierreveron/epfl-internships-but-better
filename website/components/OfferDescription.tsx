@@ -244,6 +244,7 @@ export default function OfferDescription() {
         >
           <HeartIcon
             checked={asideOffer !== null && isOfferFavorite(asideOffer)}
+            className="tw-h-[1.4rem]"
           />
         </ActionIcon>
         {/* <ActionIcon
