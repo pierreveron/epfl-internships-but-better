@@ -13,6 +13,7 @@ import LocationDotIcon from "./icons/LocationDotIcon";
 import { formatLengthLabel } from "./LengthsCheckboxes";
 import { useFavoriteOffers /*useHiddenOffers*/ } from "@/utils/hooks";
 import MoneyBillIcon from "./icons/MoneyBillIcon";
+import classNames from "classnames";
 
 export default function OfferDescription() {
   const asideOffer = useAtomValue(asideOfferAtom);
@@ -80,7 +81,33 @@ export default function OfferDescription() {
       </div>
 
       <div className="tw-mb-4">
-        <div
+        <div className="tw-flex tw-flex-row tw-gap-2">
+          <LocationDotIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+          <p className="tw-flex tw-flex-row tw-gap-2">
+            {asideOffer && asideOffer.location.length > 0 ? (
+              asideOffer.location.map((location, index) => (
+                <p
+                  key={index}
+                  className={classNames(
+                    "tw-text-gray-600 tw-text-sm tw-flex tw-flex-row tw-items-center tw-gap-x-2",
+                    index != 0 && "before:tw-content-['_·_']"
+                  )}
+                >
+                  {location.city}
+                  {location.country &&
+                    `, ${location.country} ${getFlagEmojiWithName(
+                      location.country
+                    )}`}
+                </p>
+              ))
+            ) : (
+              <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                Not specified
+              </p>
+            )}
+          </p>
+        </div>
+        {/* <div
           className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
           style={{
             gridTemplateColumns: "auto minmax(0, 1fr)",
@@ -109,7 +136,7 @@ export default function OfferDescription() {
               </p>
             )}
           </div>
-        </div>
+        </div> */}
 
         <div
           className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
