@@ -283,150 +283,162 @@ export default function Table({ data }: { data: Offer[] }) {
   const date = new Date();
 
   return (
-    <div className="tw-space-y-4 tw-mx-8">
-      {records.map((record) => {
-        return (
-          <div
-            className={classNames(
-              "tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded-md tw-cursor-pointer hover:tw-border-gray-300 tw-transition",
-              offer && offer.number === record.number && "tw-border-gray-300"
-            )}
-            key={record.number}
-            onClick={() => {
-              setAside({
-                open: true,
-                offer: record,
-              });
-            }}
-          >
-            <div className="tw-mb-4">
-              <h3 className="tw-text-xl tw-font-bold">{record.title}</h3>
-              <p className="tw-text-base tw-font-medium tw-italic">
-                {record.company}
-              </p>
-            </div>
-
-            <div className="tw-flex tw-flex-row tw-items-center tw-gap-2">
-              <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-              <p className="tw-text-gray-600 tw-text-sm">
-                {record.format.length > 0 ? (
-                  record.format.map((format, index) => (
-                    <span
-                      key={format}
-                      className={classNames(
-                        index != 0 && "before:tw-content-['_·_']"
-                      )}
-                    >
-                      {formatToLabel(format)}
-                    </span>
-                  ))
-                ) : (
-                  <p className="tw-text-gray-600 tw-text-sm">Not specified</p>
-                )}
-              </p>
-            </div>
-
-            <div className="tw-flex tw-flex-row tw-gap-2">
-              <LocationDotIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
-              <p className="tw-flex tw-flex-row tw-gap-2">
-                {record.location.length > 0 ? (
-                  record.location.map((location, index) => (
-                    <p
-                      key={index}
-                      className={classNames(
-                        "tw-text-gray-600 tw-text-sm tw-flex tw-flex-row tw-items-center tw-gap-x-2",
-                        index != 0 && "before:tw-content-['_·_']"
-                      )}
-                    >
-                      {location.city}
-                      {location.country &&
-                        `, ${location.country} ${getFlagEmojiWithName(
-                          location.country
-                        )}`}
-                    </p>
-                  ))
-                ) : (
-                  <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
-                    Not specified
-                  </p>
-                )}
-              </p>
-            </div>
-
-            <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4">
-              <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-                <ClockIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
-                {record.length
-                  ? formatLengthLabel(record.length)
-                  : "Not specified"}
-              </p>
-
-              {record.salary && (
-                <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-                  <MoneyBillIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
-                  {formatSalary(record.salary)}
-                </p>
+    <div className="tw-mx-8">
+      <p className="tw-mb-6">
+        {filteredData.length === 0 && "No offers correspond to your criteria"}
+        {filteredData.length === 1 && "1 offer corresponds to your criteria"}
+        {filteredData.length > 1 && (
+          <>
+            <span className="tw-font-bold">{filteredData.length}</span> offers
+            correspond to your criteria
+          </>
+        )}
+      </p>
+      <div className="tw-space-y-4">
+        {records.map((record) => {
+          return (
+            <div
+              className={classNames(
+                "tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded-md tw-cursor-pointer hover:tw-border-gray-300 tw-transition",
+                offer && offer.number === record.number && "tw-border-gray-300"
               )}
-            </div>
-
-            <div className="tw-flex tw-flex-row tw-justify-between tw-items-center">
-              <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4 tw-items-center">
-                <CalendarIcon className="tw-w-4 tw-h-4 tw-fill-gray-600" />
-
-                <p className="tw-text-gray-600 tw-text-sm">
-                  {(() => {
-                    const [day, month, year] = record.creationDate.split(".");
-                    const recordDate = new Date(+year, +month - 1, +day);
-                    const diff = date.getTime() - recordDate.getTime();
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    if (days === 0) {
-                      return "Today";
-                    }
-                    if (days === 1) {
-                      return "Yesterday";
-                    }
-
-                    if (days < 7) {
-                      return `${days} days ago`;
-                    }
-
-                    return recordDate.toLocaleDateString("fr-FR");
-                  })()}
+              key={record.number}
+              onClick={() => {
+                setAside({
+                  open: true,
+                  offer: record,
+                });
+              }}
+            >
+              <div className="tw-mb-4">
+                <h3 className="tw-text-xl tw-font-bold">{record.title}</h3>
+                <p className="tw-text-base tw-font-medium tw-italic">
+                  {record.company}
                 </p>
               </div>
 
-              <ActionIcon
-                onClick={(event) => {
-                  event.stopPropagation();
-                  toggleFavoriteOffer(record);
-                }}
-                variant="subtle"
-                color="red"
-                size="xl"
-              >
-                <HeartIcon checked={record.favorite} />
-              </ActionIcon>
+              <div className="tw-flex tw-flex-row tw-items-center tw-gap-2">
+                <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+                <p className="tw-text-gray-600 tw-text-sm">
+                  {record.format.length > 0 ? (
+                    record.format.map((format, index) => (
+                      <span
+                        key={format}
+                        className={classNames(
+                          index != 0 && "before:tw-content-['_·_']"
+                        )}
+                      >
+                        {formatToLabel(format)}
+                      </span>
+                    ))
+                  ) : (
+                    <p className="tw-text-gray-600 tw-text-sm">Not specified</p>
+                  )}
+                </p>
+              </div>
+
+              <div className="tw-flex tw-flex-row tw-gap-2">
+                <LocationDotIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                <p className="tw-flex tw-flex-row tw-gap-2">
+                  {record.location.length > 0 ? (
+                    record.location.map((location, index) => (
+                      <p
+                        key={index}
+                        className={classNames(
+                          "tw-text-gray-600 tw-text-sm tw-flex tw-flex-row tw-items-center tw-gap-x-2",
+                          index != 0 && "before:tw-content-['_·_']"
+                        )}
+                      >
+                        {location.city}
+                        {location.country &&
+                          `, ${location.country} ${getFlagEmojiWithName(
+                            location.country
+                          )}`}
+                      </p>
+                    ))
+                  ) : (
+                    <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                      Not specified
+                    </p>
+                  )}
+                </p>
+              </div>
+
+              <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4">
+                <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                  <ClockIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
+                  {record.length
+                    ? formatLengthLabel(record.length)
+                    : "Not specified"}
+                </p>
+
+                {record.salary && (
+                  <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                    <MoneyBillIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
+                    {formatSalary(record.salary)}
+                  </p>
+                )}
+              </div>
+
+              <div className="tw-flex tw-flex-row tw-justify-between tw-items-center">
+                <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4 tw-items-center">
+                  <CalendarIcon className="tw-w-4 tw-h-4 tw-fill-gray-600" />
+
+                  <p className="tw-text-gray-600 tw-text-sm">
+                    {(() => {
+                      const [day, month, year] = record.creationDate.split(".");
+                      const recordDate = new Date(+year, +month - 1, +day);
+                      const diff = date.getTime() - recordDate.getTime();
+                      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                      if (days === 0) {
+                        return "Today";
+                      }
+                      if (days === 1) {
+                        return "Yesterday";
+                      }
+
+                      if (days < 7) {
+                        return `${days} days ago`;
+                      }
+
+                      return recordDate.toLocaleDateString("fr-FR");
+                    })()}
+                  </p>
+                </div>
+
+                <ActionIcon
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    toggleFavoriteOffer(record);
+                  }}
+                  variant="subtle"
+                  color="red"
+                  size="xl"
+                >
+                  <HeartIcon checked={record.favorite} />
+                </ActionIcon>
+              </div>
             </div>
-          </div>
-        );
-      })}
-      <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center">
-        {[...Array(Math.ceil(filteredData.length / 15))].map((_, index) => (
-          <button
-            key={index}
-            onClick={() => {
-              setPage(index + 1);
-            }}
-            className={classNames(
-              "tw-rounded-full tw-border-none tw-h-8 tw-w-8",
-              index + 1 === page
-                ? "tw-bg-red-500 tw-text-white"
-                : "tw-bg-transparent tw-text-gray-900 hover:tw-bg-gray-100"
-            )}
-          >
-            {index + 1}
-          </button>
-        ))}
+          );
+        })}
+        <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center">
+          {[...Array(Math.ceil(filteredData.length / 15))].map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setPage(index + 1);
+              }}
+              className={classNames(
+                "tw-rounded-full tw-border-none tw-h-8 tw-w-8",
+                index + 1 === page
+                  ? "tw-bg-red-500 tw-text-white"
+                  : "tw-bg-transparent tw-text-gray-900 hover:tw-bg-gray-100"
+              )}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
