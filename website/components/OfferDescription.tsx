@@ -47,6 +47,8 @@ export default function OfferDescription() {
     }
   };
 
+  if (!asideOffer) return <div></div>;
+
   return (
     <div className="tw-pb-8">
       <p className="tw-text-gray-500 tw-text-sm">
@@ -138,7 +140,27 @@ export default function OfferDescription() {
           </div>
         </div> */}
 
-        <div
+        <div className="tw-flex tw-flex-row tw-items-center tw-gap-2">
+          <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+          <p className="tw-text-gray-600 tw-text-sm">
+            {asideOffer.format.length > 0 ? (
+              asideOffer.format.map((format, index) => (
+                <span
+                  key={format}
+                  className={classNames(
+                    index != 0 && "before:tw-content-['_·_']"
+                  )}
+                >
+                  {formatToLabel(format)}
+                </span>
+              ))
+            ) : (
+              <p className="tw-text-gray-600 tw-text-sm">Not specified</p>
+            )}
+          </p>
+        </div>
+
+        {/* <div
           className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
           style={{
             gridTemplateColumns: "auto minmax(0, 1fr)",
@@ -163,7 +185,7 @@ export default function OfferDescription() {
               </p>
             )}
           </div>
-        </div>
+        </div> */}
 
         <div
           className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
