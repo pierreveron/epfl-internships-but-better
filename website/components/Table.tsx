@@ -422,7 +422,7 @@ export default function Table({ data }: { data: Offer[] }) {
             </div>
           );
         })}
-        <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center">
+        <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-flex-wrap">
           {[...Array(Math.ceil(filteredData.length / 15))].map((_, index) => (
             <button
               key={index}

@@ -280,12 +280,12 @@ export default function Home({ isReady }: { isReady: boolean }) {
           collapsed: { mobile: !isAsideOpen, desktop: !isAsideOpen },
         }}
       > */}
-      <div className="tw-flex tw-flex-row-reverse tw-h-screen">
+      <div className="tw-flex tw-flex-row-reverse tw-h-screen tw-max-w-6xl tw-mx-auto">
         {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
         {/* <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}> */}
         <div
           className={classNames(
-            "tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-py-8",
+            "tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-py-8 tw-basis-1/2",
             isAsideMaximized && "tw-w-full"
           )}
         >
@@ -382,14 +382,13 @@ export default function Home({ isReady }: { isReady: boolean }) {
               <OfferDescription />
             </div>
           </div>
-
           {/* </AppShell.Section> */}
         </div>
         {/* </AppShell.Aside> */}
         {/* <AppShell.Main style={{ height: "100vh" }}> */}
         <main
           className={classNames(
-            "tw-h-full tw-flex tw-flex-col",
+            "tw-h-full tw-flex tw-flex-col tw-basis-1/2 ",
             isAsideMaximized && "tw-hidden"
           )}
         >
