@@ -391,7 +391,8 @@ export default function Home({ isReady }: { isReady: boolean }) {
         <main
           className={classNames("tw-h-screen", isAsideMaximized && "tw-hidden")}
         >
-          <Stack style={{ height: "100%" }}>
+          {/* <Stack style={{ height: "100%" }}> */}
+          <div className="tw-h-full">
             <div className="tw-p-8 tw-pb-4">
               <ActionBar
                 nbCitiesSelected={nbCitiesSelected}
@@ -429,7 +430,8 @@ export default function Home({ isReady }: { isReady: boolean }) {
 
               <Footer />
             </div>
-          </Stack>
+          </div>
+          {/* </Stack> */}
         </main>
         {/* </AppShell.Main> */}
       </div>
