@@ -18,18 +18,17 @@ import BackwardStepIcon from "@/components/icons/BackwardStepIcon";
 import ForwardStepIcon from "@/components/icons/ForwardStepIcon";
 import MaximizeIcon from "@/components/icons/MaximizeIcon";
 import MinimizeIcon from "@/components/icons/MinimizeIcon";
-import XMarkIcon from "@/components/icons/XMarkIcon";
 import { SelectableCity, SelectableLength } from "@/types";
 import { useAsyncError } from "@/utils/error";
 import { useAsideNavigation } from "@/utils/hooks";
 import { abortFormatting, formatOffers } from "@/utils/offerFormatting";
-import { ActionIcon, Anchor, AppShell, ScrollArea, Stack } from "@mantine/core";
+import { ActionIcon, Anchor } from "@mantine/core";
+import { useHotkeys, usePrevious, useViewportSize } from "@mantine/hooks";
 import classNames from "classnames";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Head from "next/head";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Offer, OfferToBeFormatted } from "../../types";
-import { useHotkeys, usePrevious, useViewportSize } from "@mantine/hooks";
 
 const NOT_SPECIFIED = "Not specified";
 
