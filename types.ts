@@ -51,7 +51,7 @@ export type PageData = {
       city: string;
       country: string;
     };
-    website: string;
+    website: string | undefined;
   };
   contactInfo: {
     name: string;
