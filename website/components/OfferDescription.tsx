@@ -166,6 +166,22 @@ export default function OfferDescription() {
           </p>
         </div>
 
+        <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4">
+          <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+            <ClockIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
+            {asideOffer.length
+              ? formatLengthLabel(asideOffer.length)
+              : "Not specified"}
+          </p>
+
+          {asideOffer.salary && (
+            <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+              <MoneyBillIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
+              {formatSalary(asideOffer.salary)}
+            </p>
+          )}
+        </div>
+
         {/* <div
           className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
           style={{
@@ -193,7 +209,7 @@ export default function OfferDescription() {
           </div>
         </div> */}
 
-        <div
+        {/* <div
           className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
           style={{
             gridTemplateColumns: "auto minmax(0, 1fr)",
@@ -208,9 +224,9 @@ export default function OfferDescription() {
               ? formatLengthLabel(asideOffer.length)
               : "Not specified"}
           </p>
-        </div>
+        </div> */}
 
-        <div
+        {/* <div
           className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
           style={{
             gridTemplateColumns: "auto minmax(0, 1fr)",
@@ -223,52 +239,7 @@ export default function OfferDescription() {
           <p className="tw-col-start-2 tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-w-fit">
             {formatSalary(asideOffer?.salary ?? null)}
           </p>
-        </div>
-
-        <div
-          className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
-          style={{
-            gridTemplateColumns: "auto minmax(0, 1fr)",
-            gridTemplateRows: "auto",
-          }}
-        >
-          <LanguageIcon className="tw-w-4 tw-text-gray-500" />
-          <p>Languages</p>
-          <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
-            {asideOffer &&
-            Object.entries(asideOffer?.languages ?? {})
-              .map(([language, level]) => [
-                language,
-                formatLanguageLevel(level),
-              ])
-              .filter(([_, level]) => level !== undefined).length > 0 ? (
-              Object.entries(asideOffer?.languages ?? {})
-                .map(([language, level]) => [
-                  language,
-                  formatLanguageLevel(level),
-                ])
-                .filter(([_, level]) => level !== undefined)
-                .map(([language, level], index) => (
-                  <p
-                    key={index}
-                    className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-flex tw-flex-row tw-items-center tw-gap-2"
-                  >
-                    <span>
-                      {getFlagEmojiWithName(countryName(language!)) ??
-                        `${
-                          language!.charAt(0).toUpperCase() + language!.slice(1)
-                        }:`}
-                    </span>
-                    <span>{level}</span>
-                  </p>
-                ))
-            ) : (
-              <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
-                Not specified
-              </p>
-            )}
-          </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="tw-flex tw-flex-row tw-gap-4 tw-items-center">
@@ -326,53 +297,100 @@ export default function OfferDescription() {
         </Anchor>
       </div>
 
-      <div className="tw-mt-4">
-        <h3 className="tw-text-xl tw-font-medium">Description</h3>
-        <p
-          className="tw-text-gray-900 tw-whitespace-pre-line"
-          style={{ wordBreak: "break-word" }}
-        >
-          {asideOffer?.description ?? "⊘"}
-        </p>
-      </div>
-
-      <div className="tw-mt-4">
-        <h3 className="tw-text-xl tw-font-medium">Required skills</h3>
-        <p
-          className="tw-text-gray-900 tw-whitespace-pre-line"
-          style={{ wordBreak: "break-word" }}
-        >
-          {asideOffer?.requiredSkills ?? "⊘"}
-        </p>
-      </div>
-
-      <div className="tw-mt-4">
-        <h3 className="tw-text-xl tw-font-medium">Remarks</h3>
-        <p
-          className="tw-text-gray-900 tw-whitespace-pre-line"
-          style={{ wordBreak: "break-word" }}
-        >
-          {asideOffer?.remarks != "" ? asideOffer?.remarks : "⊘"}
-        </p>
-      </div>
-
-      <div className="tw-mt-4">
-        <h3 className="tw-text-xl tw-font-medium">File</h3>
-        {asideOffer && asideOffer.file !== null ? (
-          <Anchor
-            href={`https://isa.epfl.ch/imoniteur_ISAP/docs/!PORTAL14S.action/${encodeURI(
-              asideOffer?.file.fileName
-            )}?ww_k_cell=2742535167&ww_x_action=FILE&ww_i_detailstage=${
-              asideOffer?.file.detailId
-            }&ww_x_filename=${encodeURIComponent(asideOffer?.file.fileName)}`}
-            target="_blank"
-            underline="never"
+      <div className="tw-space-y-4 tw-mt-4">
+        <div>
+          <h3 className="tw-text-xl tw-font-medium">Description</h3>
+          <p
+            className="tw-text-gray-900 tw-whitespace-pre-line"
+            style={{ wordBreak: "break-word" }}
           >
-            See the file
-          </Anchor>
-        ) : (
-          <p className="tw-text-gray-900 tw-whitespace-pre-line">⊘</p>
-        )}
+            {asideOffer?.description ?? "⊘"}
+          </p>
+        </div>
+
+        <div className="tw-mt-4">
+          <h3 className="tw-text-xl tw-font-medium">Required skills</h3>
+          <p
+            className="tw-text-gray-900 tw-whitespace-pre-line"
+            style={{ wordBreak: "break-word" }}
+          >
+            {asideOffer?.requiredSkills ?? "⊘"}
+          </p>
+        </div>
+
+        <div
+          className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
+          style={{
+            gridTemplateColumns: "auto minmax(0, 1fr)",
+            gridTemplateRows: "auto",
+          }}
+        >
+          <LanguageIcon className="tw-w-4 tw-text-gray-500" />
+          <p>Languages</p>
+          <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
+            {asideOffer &&
+            Object.entries(asideOffer?.languages ?? {})
+              .map(([language, level]) => [
+                language,
+                formatLanguageLevel(level),
+              ])
+              .filter(([_, level]) => level !== undefined).length > 0 ? (
+              Object.entries(asideOffer?.languages ?? {})
+                .map(([language, level]) => [
+                  language,
+                  formatLanguageLevel(level),
+                ])
+                .filter(([_, level]) => level !== undefined)
+                .map(([language, level], index) => (
+                  <p
+                    key={index}
+                    className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-flex tw-flex-row tw-items-center tw-gap-2"
+                  >
+                    <span>
+                      {getFlagEmojiWithName(countryName(language!)) ??
+                        `${
+                          language!.charAt(0).toUpperCase() + language!.slice(1)
+                        }:`}
+                    </span>
+                    <span>{level}</span>
+                  </p>
+                ))
+            ) : (
+              <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                Not specified
+              </p>
+            )}
+          </div>
+        </div>
+
+        <div className="tw-mt-4">
+          <h3 className="tw-text-xl tw-font-medium">Remarks</h3>
+          <p
+            className="tw-text-gray-900 tw-whitespace-pre-line"
+            style={{ wordBreak: "break-word" }}
+          >
+            {asideOffer?.remarks != "" ? asideOffer?.remarks : "⊘"}
+          </p>
+        </div>
+
+        <div className="tw-mt-4">
+          <h3 className="tw-text-xl tw-font-medium">File</h3>
+          {asideOffer && asideOffer.file !== null ? (
+            <Anchor
+              href={`https://isa.epfl.ch/imoniteur_ISAP/docs/!PORTAL14S.action/${encodeURI(
+                asideOffer?.file.fileName
+              )}?ww_k_cell=2742535167&ww_x_action=FILE&ww_i_detailstage=${
+                asideOffer?.file.detailId
+              }&ww_x_filename=${encodeURIComponent(asideOffer?.file.fileName)}`}
+              target="_blank"
+              underline="never"
+            >
+              See the file
+            </Anchor>
+          ) : (
+            <p className="tw-text-gray-900 tw-whitespace-pre-line">⊘</p>
+          )}
+        </div>
       </div>
     </div>
   );
