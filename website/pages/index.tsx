@@ -388,7 +388,7 @@ export default function Home({ isReady }: { isReady: boolean }) {
         {/* <AppShell.Main style={{ height: "100vh" }}> */}
         <main
           className={classNames(
-            "tw-h-full tw-flex tw-flex-col tw-basis-1/2 ",
+            "tw-h-full tw-flex tw-flex-col tw-basis-1/2",
             isAsideMaximized && "tw-hidden"
           )}
         >
