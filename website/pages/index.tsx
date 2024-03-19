@@ -285,8 +285,10 @@ export default function Home({ isReady }: { isReady: boolean }) {
         {/* <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: "xl" })}> */}
         <div
           className={classNames(
-            "tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-py-8 tw-basis-1/2",
-            isAsideMaximized && "tw-w-full"
+            "tw-py-8",
+            isAsideMaximized
+              ? "tw-w-full"
+              : "tw-border-solid tw-border-0 tw-border-l tw-border-gray-300 tw-basis-1/2"
           )}
         >
           {/* <AppShell.Section
@@ -299,7 +301,7 @@ export default function Home({ isReady }: { isReady: boolean }) {
           <div
             className={classNames(
               "tw-flex tw-flex-row tw-justify-between tw-px-8",
-              isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
+              isAsideMaximized && "tw-max-w-4xl tw-mx-auto"
             )}
           >
             <div>
@@ -376,7 +378,7 @@ export default function Home({ isReady }: { isReady: boolean }) {
             <div
               className={classNames(
                 "tw-px-8",
-                isAsideMaximized && "tw-w-1/2 tw-max-w-4xl tw-mx-auto"
+                isAsideMaximized && "tw-max-w-4xl tw-mx-auto"
               )}
             >
               <OfferDescription />
