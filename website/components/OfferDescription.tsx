@@ -308,7 +308,7 @@ export default function OfferDescription() {
           </p>
         </div>
 
-        <div className="tw-mt-4">
+        <div>
           <h3 className="tw-text-xl tw-font-medium">Required skills</h3>
           <p
             className="tw-text-gray-900 tw-whitespace-pre-line"
@@ -318,15 +318,8 @@ export default function OfferDescription() {
           </p>
         </div>
 
-        <div
-          className="tw-grid tw-grid-cols-2 tw-grid-rows-2 tw-items-center tw-gap-2"
-          style={{
-            gridTemplateColumns: "auto minmax(0, 1fr)",
-            gridTemplateRows: "auto",
-          }}
-        >
-          <LanguageIcon className="tw-w-4 tw-text-gray-500" />
-          <p>Languages</p>
+        <div>
+          <h3 className="tw-text-xl tw-font-medium tw-mb-2">Language</h3>
           <div className="tw-col-start-2 tw-flex tw-flex-row tw-gap-2">
             {asideOffer &&
             Object.entries(asideOffer?.languages ?? {})
@@ -344,7 +337,7 @@ export default function OfferDescription() {
                 .map(([language, level], index) => (
                   <p
                     key={index}
-                    className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md tw-flex tw-flex-row tw-items-center tw-gap-2"
+                    className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2"
                   >
                     <span>
                       {getFlagEmojiWithName(countryName(language!)) ??
@@ -363,7 +356,7 @@ export default function OfferDescription() {
           </div>
         </div>
 
-        <div className="tw-mt-4">
+        <div>
           <h3 className="tw-text-xl tw-font-medium">Remarks</h3>
           <p
             className="tw-text-gray-900 tw-whitespace-pre-line"
@@ -373,7 +366,7 @@ export default function OfferDescription() {
           </p>
         </div>
 
-        <div className="tw-mt-4">
+        <div>
           <h3 className="tw-text-xl tw-font-medium">File</h3>
           {asideOffer && asideOffer.file !== null ? (
             <Anchor
