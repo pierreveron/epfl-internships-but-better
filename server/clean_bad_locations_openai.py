@@ -4,13 +4,12 @@ import time
 
 import orjson
 from dotenv import load_dotenv
+from langchain.callbacks import PromptLayerCallbackHandler, get_openai_callback
 from langchain.llms.openai import OpenAI
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
 from locations_types import LocationDict
 from pydantic import ValidationError
-from langchain.callbacks import get_openai_callback
-from langchain.callbacks import PromptLayerCallbackHandler
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -46,7 +45,7 @@ async def clean_locations(locations: list[str]):
     Returns: A list of unique locations in a json format.
     """
     llm = OpenAI(
-        model_name="gpt-3.5-turbo-instruct",
+        model_name="gpt-4o-mini",
         openai_api_key=OPENAI_API_KEY,
         max_tokens=3000,
         request_timeout=60,
