@@ -2,17 +2,17 @@ import os
 import time
 from typing import Annotated, List
 
+import gspread
 from dotenv import load_dotenv
-
-from clean_bad_locations_openai import clean_locations as clean_locations_openai
-from clean_salaries_openai import clean_salaries as clean_salaries_openai
 from fastapi import Body, FastAPI, HTTPException, Request, Security, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import APIKeyHeader
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
-import gspread
+
+from clean_bad_locations_openai import clean_locations as clean_locations_openai
+from clean_salaries_openai import clean_salaries as clean_salaries_openai
 
 app = FastAPI()
 limiter = Limiter(key_func=get_remote_address)

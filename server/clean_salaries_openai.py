@@ -9,6 +9,7 @@ from langchain.llms.openai import OpenAI
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
 from pydantic import ValidationError
+
 from salaries_types import SalariesDict
 
 load_dotenv()

@@ -2,8 +2,8 @@ import os
 import secrets
 
 import gspread
-from dotenv import load_dotenv
 import pyperclip
+from dotenv import load_dotenv
 
 load_dotenv()
 API_KEYS_GOOGLE_SHEET_KEY = os.getenv("API_KEYS_GOOGLE_SHEET_KEY")

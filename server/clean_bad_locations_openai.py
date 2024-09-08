@@ -8,8 +8,9 @@ from langchain.callbacks import PromptLayerCallbackHandler, get_openai_callback
 from langchain.llms.openai import OpenAI
 from langchain.output_parsers import PydanticOutputParser
 from langchain.prompts import PromptTemplate
-from locations_types import LocationDict
 from pydantic import ValidationError
+
+from locations_types import LocationDict
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
