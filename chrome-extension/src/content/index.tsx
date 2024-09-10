@@ -29,10 +29,17 @@ function injectReactApp() {
       const root = document.createElement('div')
       root.id = 'extension-content-root'
 
+      // Create a shadow root
+      const shadowRoot = root.attachShadow({ mode: 'closed' })
+
+      // Create a container for your React app inside the shadow root
+      const reactContainer = document.createElement('div')
+      shadowRoot.appendChild(reactContainer)
+
       // Replace the target element with our root element
       targetElement.parentNode?.replaceChild(root, targetElement)
 
-      ReactDOM.createRoot(root).render(
+      ReactDOM.createRoot(reactContainer).render(
         <React.StrictMode>
           <App />
         </React.StrictMode>,
