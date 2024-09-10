@@ -17,6 +17,10 @@
     {
       "js": ["src/scripts/isaContentScript.ts"],
       "matches": ["https://isa.epfl.ch/*"]
+    },
+    {
+      "js": ["src/content/index.tsx"],
+      "matches": ["https://isa.epfl.ch/*"]
     }
   ],
   "externally_connectable": {
