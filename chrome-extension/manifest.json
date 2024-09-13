@@ -5,7 +5,7 @@
   "description": "An extension to export jobs offers from EPFL IS-Academia platform to a more user-friendly website.",
   "icons": { "48": "icon48.png", "128": "icon128.png", "500": "icon.png" },
   "action": { "default_popup": "index.html" },
-  "permissions": ["storage"],
+  "permissions": ["storage", "activeTab"],
   "background": {
     "service_worker": "src/scripts/serviceWorker.ts"
   },
@@ -29,6 +29,10 @@
   "web_accessible_resources": [
     {
       "resources": ["src/scripts/navigateToOffer.js"],
+      "matches": ["https://isa.epfl.ch/*"]
+    },
+    {
+      "resources": ["src/content/App.tsx"],
       "matches": ["https://isa.epfl.ch/*"]
     }
   ],

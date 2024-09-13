@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import styles from '../styles/index.css?inline'
 import loadingDots from '../styles/loading-dots.css?inline'
 import mantineStyles from '@mantine/core/styles.css?inline'
 import mantineDatatableStyles from 'mantine-datatable/styles.css?inline'
 import Table from './components/Table'
 import { MantineProvider, createTheme } from '@mantine/core'
-import { useState, useMemo } from 'react'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useHotkeys, useViewportSize } from '@mantine/hooks'
 import {
@@ -25,6 +24,7 @@ import { useAsyncError } from './utils/error'
 import { abortFormatting, formatOffers } from './utils/offerFormatting'
 import { Offer, OfferToBeFormatted } from '../../../types'
 import { SelectableCity, SelectableLength } from './types'
+import { scrapeJobs } from '../utils/scraping'
 
 const NOT_SPECIFIED = 'Not specified'
 
@@ -44,6 +44,7 @@ export default function App() {
   const [dataDate, setDataDate] = useState<string>('')
   // @ts-ignore
   const [isError, setIsError] = useState<boolean>(false)
+  const [isScrapingOffers, setIsScrapingOffers] = useState(false)
 
   const loadOffers = async () => {
     const data = localStorage.getItem('jobOffers')
@@ -73,6 +74,8 @@ export default function App() {
       return
     }
 
+    console.log('offersToBeFormatted saved in local storage', data)
+
     const {
       offers,
       lastUpdated,
@@ -80,6 +83,8 @@ export default function App() {
       offers: OfferToBeFormatted[]
       lastUpdated: string
     } = JSON.parse(data)
+
+    console.log('offersToBeFormatted', offers)
 
     setDataDate(new Date(lastUpdated).toLocaleDateString('fr-CH'))
 
@@ -123,16 +128,45 @@ export default function App() {
     setIsFormattingOffers(false)
   }
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      window.addEventListener('jobOffersUpdated', () => {
-        console.log('jobOffersUpdated')
-        updateData()
+  const scrapeAndStoreOffers = async () => {
+    setIsScrapingOffers(true)
+    try {
+      const jobOffers = await scrapeJobs((offersCount, offersLoaded) => {
+        // You can use this callback to update UI if needed
+        console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
       })
 
-      loadOffers()
+      localStorage.setItem(
+        'offersToBeFormatted',
+        JSON.stringify({
+          offers: jobOffers,
+          lastUpdated: Date.now(),
+        }),
+      )
+
+      console.log('jobOffers saved in local storage', jobOffers)
+
+      updateData()
+    } catch (error) {
+      console.error('Error scraping offers:', error)
+      setIsError(true)
+    } finally {
+      setIsScrapingOffers(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const storedOffers = localStorage.getItem('jobOffers')
+      const offersToBeFormatted = localStorage.getItem('offersToBeFormatted')
+      if (storedOffers) {
+        loadOffers()
+      } else if (offersToBeFormatted) {
+        updateData()
+      } else {
+        scrapeAndStoreOffers()
+      }
+    }
   }, [])
 
   const locations = useMemo(() => data.map((d) => d.location), [data])
@@ -228,8 +262,7 @@ export default function App() {
   return (
     <div ref={containerRef}>
       <MantineProvider theme={theme}>
-        {/* <h1 className="tw-text-3xl tw-font-bold tw-underline">Hello ISA EPFL!</h1> */}
-        <Table data={data} />
+        {isScrapingOffers ? <div>Scraping offers... Please wait.</div> : <Table data={data} />}
       </MantineProvider>
     </div>
   )

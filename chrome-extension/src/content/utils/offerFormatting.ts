@@ -24,52 +24,67 @@ export function formatOffers(offers: OfferToBeFormatted[]): Promise<Offer[]> {
   })
 }
 
-function formatSalaries(salaries: string[]) {
-  return fetch(`${API_URL}/clean-salaries`, {
-    method: 'POST',
-    signal: controller.signal,
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-Key': JSON.parse(localStorage.getItem('apiKey') || ''),
-    },
-    body: JSON.stringify(salaries),
+function getApiKey(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get(['apiKey'], (result) => {
+      if (result.apiKey) {
+        resolve(result.apiKey)
+      } else {
+        reject(new Error('API key not found'))
+      }
+    })
   })
-    .then((response) => {
-      if (response.ok) return response.json()
-
-      throw new Error('Network response was not ok.')
-    })
-    .then((data: { salaries: { [key: string]: string } }) => {
-      console.log('Formatted!:', data)
-      return data.salaries
-    })
-    .catch((error) => {
-      console.error('Error:', error)
-      throw error
-    })
 }
 
-function formatLocations(locations: string[]) {
-  return fetch(`${API_URL}/clean-locations`, {
-    method: 'POST',
-    signal: controller.signal,
-    headers: {
-      'Content-Type': 'application/json',
-      'X-API-Key': JSON.parse(localStorage.getItem('apiKey') || ''),
-    },
-    body: JSON.stringify(locations),
-  })
-    .then((response) => {
-      if (response.ok) return response.json()
+async function formatSalaries(salaries: string[]) {
+  try {
+    const apiKey = await getApiKey()
+    const response = await fetch(`${API_URL}/clean-salaries`, {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey,
+      },
+      body: JSON.stringify(salaries),
+    })
 
+    if (!response.ok) {
       throw new Error('Network response was not ok.')
+    }
+
+    const data: { salaries: { [key: string]: string } } = await response.json()
+    console.log('Formatted salaries:', data)
+    return data.salaries
+  } catch (error) {
+    console.error('Error formatting salaries:', error)
+    throw error
+  }
+}
+
+async function formatLocations(locations: string[]) {
+  try {
+    const apiKey = await getApiKey()
+    console.log('API key:', apiKey)
+    const response = await fetch(`${API_URL}/clean-locations`, {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey,
+      },
+      body: JSON.stringify(locations),
     })
-    .then((data: { locations: { [key: string]: Location[] } }) => {
-      console.log('Formatted!:', data)
-      return data.locations
-    })
-    .catch((error) => {
-      console.error('Error:', error)
-      throw error
-    })
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok.')
+    }
+
+    const data: { locations: { [key: string]: Location[] } } = await response.json()
+    console.log('Formatted locations:', data)
+    return data.locations
+  } catch (error) {
+    console.error('Error formatting locations:', error)
+    throw error
+  }
 }
