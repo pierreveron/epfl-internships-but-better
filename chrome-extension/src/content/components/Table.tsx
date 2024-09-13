@@ -14,22 +14,23 @@ import {
   showOnlyPositionsNotYetCompletedAtom,
   sortStatusAtom,
 } from '../atoms'
-import { getFlagEmojiWithName } from '../utils/countries'
+// import { getFlagEmojiWithName } from '../utils/countries'
 import { formatSalary, formatToLabel } from '../utils/format'
 import { useFavoriteOffers, useHiddenOffers } from '../utils/hooks'
 import classNames from 'classnames'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { DataTable } from 'mantine-datatable'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
+import { usePrevious } from '@mantine/hooks'
 import { Offer } from '../../../../types'
 import HeartIcon from './HeartIcon'
-import { formatLengthLabel } from './LengthsCheckboxes'
-import ClockIcon from './icons/ClockIcon'
-import LocationDotIcon from './icons/LocationDotIcon'
-import MoneyBillIcon from './icons/MoneyBillIcon'
-import BriefcaseIcon from './icons/BriefcaseIcon'
-import CalendarIcon from './icons/CalendarIcon'
-import { ActionIcon } from '@mantine/core'
+// import { formatLengthLabel } from './LengthsCheckboxes'
+// import ClockIcon from './icons/ClockIcon'
+// import LocationDotIcon from './icons/LocationDotIcon'
+// import MoneyBillIcon from './icons/MoneyBillIcon'
+// import BriefcaseIcon from './icons/BriefcaseIcon'
+// import CalendarIcon from './icons/CalendarIcon'
+// import { ActionIcon } from '@mantine/core'
 
 export const PAGE_SIZE = 15
 
@@ -88,8 +89,38 @@ export default function Table({ data }: { data: Offer[] }) {
 
   const { hiddenOffers, isOfferHidden } = useHiddenOffers()
 
+  const viewport = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () =>
+    viewport.current!.scrollTo({
+      top: viewport.current!.scrollHeight,
+      behavior: 'smooth',
+    })
+
+  const scrollToTop = () =>
+    viewport.current!.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+
   const [page, setPage] = useAtom(pageAtom)
   const [sortStatus, setSortStatus] = useAtom(sortStatusAtom)
+
+  const previousPage = usePrevious(page)
+
+  useEffect(() => {
+    if (previousPage === undefined) return
+    if (previousPage < page) {
+      setTimeout(() => {
+        scrollToTop()
+      }, 100)
+    }
+    if (previousPage > page) {
+      setTimeout(() => {
+        scrollToBottom()
+      }, 100)
+    }
+  }, [page])
 
   useEffect(() => {
     setPage(1)
@@ -230,17 +261,6 @@ export default function Table({ data }: { data: Offer[] }) {
   }, [hiddenOffers])
 
   useEffect(() => {
-    if (records.length === 0) {
-      return
-    }
-    if (!offer)
-      setAside({
-        open: true,
-        offer: records[0],
-      })
-  }, [records])
-
-  useEffect(() => {
     const from = (page - 1) * PAGE_SIZE
     const to = from + PAGE_SIZE
 
@@ -264,156 +284,6 @@ export default function Table({ data }: { data: Offer[] }) {
 
     setRecords(records)
   }, [page, filteredData, sortStatus.direction, favoriteOffers, hiddenOffers])
-
-  const date = new Date()
-
-  return (
-    <div className="tw-mx-8">
-      <p className="tw-mb-6">
-        {filteredData.length === 0 && 'No offers correspond to your criteria'}
-        {filteredData.length === 1 && '1 offer corresponds to your criteria'}
-        {filteredData.length > 1 && (
-          <>
-            <span className="tw-font-bold">{filteredData.length}</span> offers correspond to your criteria
-          </>
-        )}
-      </p>
-      <div className="tw-space-y-4">
-        {records.map((record) => {
-          return (
-            <div
-              className={classNames(
-                'tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded-md tw-cursor-pointer hover:tw-border-gray-300 tw-transition',
-                offer && offer.number === record.number && 'tw-border-gray-300',
-              )}
-              key={record.number}
-              onClick={() => {
-                setAside({
-                  open: true,
-                  offer: record,
-                })
-              }}
-            >
-              <div className="tw-mb-4">
-                <h3 className="tw-text-xl tw-font-bold">{record.title}</h3>
-                <p className="tw-text-base tw-font-medium tw-italic">{record.company}</p>
-              </div>
-
-              <div className="tw-flex tw-flex-row tw-items-center tw-gap-2">
-                <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-                <p className="tw-text-gray-600 tw-text-sm">
-                  {record.format.length > 0 ? (
-                    record.format.map((format, index) => (
-                      <span key={format} className={classNames(index != 0 && "before:tw-content-['_·_']")}>
-                        {formatToLabel(format)}
-                      </span>
-                    ))
-                  ) : (
-                    <p className="tw-text-gray-600 tw-text-sm">Not specified</p>
-                  )}
-                </p>
-              </div>
-
-              <div className="tw-flex tw-flex-row tw-gap-2">
-                <LocationDotIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
-                <p className="tw-flex tw-flex-row tw-gap-2">
-                  {record.location.length > 0 ? (
-                    record.location.map((location, index) => (
-                      <p
-                        key={index}
-                        className={classNames(
-                          'tw-text-gray-600 tw-text-sm tw-flex tw-flex-row tw-items-center tw-gap-x-2',
-                          index != 0 && "before:tw-content-['_·_']",
-                        )}
-                      >
-                        {location.city}
-                        {location.country && `, ${location.country} ${getFlagEmojiWithName(location.country)}`}
-                      </p>
-                    ))
-                  ) : (
-                    <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
-                      Not specified
-                    </p>
-                  )}
-                </p>
-              </div>
-
-              <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4">
-                <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-                  <ClockIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
-                  {record.length ? formatLengthLabel(record.length) : 'Not specified'}
-                </p>
-
-                {record.salary && (
-                  <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-                    <MoneyBillIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
-                    {formatSalary(record.salary)}
-                  </p>
-                )}
-              </div>
-
-              <div className="tw-flex tw-flex-row tw-justify-between tw-items-center">
-                <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4 tw-items-center">
-                  <CalendarIcon className="tw-w-4 tw-h-4 tw-fill-gray-600" />
-
-                  <p className="tw-text-gray-600 tw-text-sm">
-                    {(() => {
-                      const [day, month, year] = record.creationDate.split('.')
-                      const recordDate = new Date(+year, +month - 1, +day)
-                      const diff = date.getTime() - recordDate.getTime()
-                      const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-                      if (days === 0) {
-                        return 'Today'
-                      }
-                      if (days === 1) {
-                        return 'Yesterday'
-                      }
-
-                      if (days < 7) {
-                        return `${days} days ago`
-                      }
-
-                      return recordDate.toLocaleDateString('fr-FR')
-                    })()}
-                  </p>
-                </div>
-
-                <ActionIcon
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    toggleFavoriteOffer(record)
-                  }}
-                  variant="subtle"
-                  color="red"
-                  size="lg"
-                >
-                  <HeartIcon checked={record.favorite} className="tw-h-5" />
-                </ActionIcon>
-              </div>
-            </div>
-          )
-        })}
-        <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-flex-wrap">
-          {[...Array(Math.ceil(filteredData.length / 15))].map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setPage(index + 1)
-              }}
-              className={classNames(
-                'tw-rounded-full tw-border-none tw-h-8 tw-w-8',
-                index + 1 === page
-                  ? 'tw-bg-red-500 tw-text-white'
-                  : 'tw-bg-transparent tw-text-gray-900 hover:tw-bg-gray-100',
-              )}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
 
   return (
     <DataTable
@@ -527,7 +397,7 @@ export default function Table({ data }: { data: Offer[] }) {
           offer: record,
         })
       }}
-      // scrollViewportRef={viewport}
+      scrollViewportRef={viewport}
     />
   )
 }
