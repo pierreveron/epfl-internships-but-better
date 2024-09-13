@@ -1,6 +1,6 @@
 import { lengthAtom, locationsAtom, minimumSalaryAtom, showOnlyFavoritesAtom } from '../atoms'
 import { Button, Group, HoverCard, NumberInput, Popover, Stack, Switch, Text, ThemeIcon } from '@mantine/core'
-import { IconChevronDown, IconInfoCircle } from '@tabler/icons'
+import { IconChevronDown, IconInfoCircle } from '@tabler/icons-react'
 import { useAtom } from 'jotai'
 import CompanySelect from './CompanySelect'
 import FormatsSegmentedControl from './FormatsSegmentedControl'
