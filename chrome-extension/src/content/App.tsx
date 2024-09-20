@@ -33,6 +33,7 @@ import MaximizeIcon from './components/icons/MaximizeIcon'
 import MinimizeIcon from './components/icons/MinimizeIcon'
 import XMarkIcon from './components/icons/XMarkIcon'
 import classNames from 'classnames'
+import List from './components/List'
 
 const NOT_SPECIFIED = 'Not specified'
 
@@ -273,7 +274,7 @@ export default function App() {
       getRootElement={() => containerRef.current!}
       cssVariablesSelector="#extension-main-container"
     >
-      <div ref={containerRef} id="extension-main-container" className="tw-bg-white tw-text-sm tw-font-sans">
+      <div ref={containerRef} id="extension-main-container" className="tw-bg-white tw-text-sm tw-font-sans tw-h-full">
         <AppShell
           aside={{
             width: {
@@ -389,7 +390,8 @@ export default function App() {
                   </p>
                 </div>
               ) : (
-                <Table data={data} />
+                // <Table data={data} />
+                <List data={data} />
               )}
             </Stack>
           </AppShell.Main>

@@ -28,6 +28,8 @@ function injectReactApp() {
     if (targetElement) {
       const root = document.createElement('div')
       root.id = 'extension-content-root'
+      root.style.height = '550px'
+      root.style.overflow = 'hidden'
 
       // Create a shadow root
       const shadowRoot = root.attachShadow({ mode: 'closed' })

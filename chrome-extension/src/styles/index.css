@@ -30,3 +30,15 @@
 .mantine-ScrollArea-viewport {
   overscroll-behavior: none;
 }
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .tw-no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .tw-no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
