@@ -3,6 +3,7 @@ import { SelectableCity, SelectableFormat, SelectableLength } from '../types'
 import { atom } from 'jotai'
 import { Offer } from '../../../../types'
 import { DataTableSortStatus } from 'mantine-datatable'
+import { atomWithStorage } from 'jotai/utils'
 
 export const formattingOffersAtom = atom<boolean>(false)
 export const loadingOffersAtom = atom<boolean>(true)
@@ -40,4 +41,4 @@ export const nbCitiesSelectedAtom = atom((get) => {
   }, 0)
 })
 
-export const displayModeAtom = atom<'list' | 'table'>('list')
+export const displayModeAtom = atomWithStorage<'list' | 'table'>('displayMode', 'list')
