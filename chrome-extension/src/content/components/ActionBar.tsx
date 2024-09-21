@@ -6,6 +6,7 @@ import CompanySelect from './CompanySelect'
 import FormatsSegmentedControl from './FormatsSegmentedControl'
 import LengthsCheckboxes from './LengthsCheckboxes'
 import LocationsCheckbox from './LocationsCheckbox'
+import DisplayModeSegmentedControl from './DisplayModeSegmentedControl'
 
 export default function ActionBar({
   nbCitiesSelected,
@@ -24,6 +25,7 @@ export default function ActionBar({
   return (
     <Group justify="space-between">
       <Group>
+        <DisplayModeSegmentedControl />
         <FormatsSegmentedControl />
 
         <Popover position="bottom-start" shadow="md">
