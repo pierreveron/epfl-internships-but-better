@@ -119,7 +119,7 @@ function AppContent() {
       padding="xl"
       style={{ height: '100%' }}
     >
-      <div className="tw-px-8 tw-py-8">
+      <div className="tw-px-4 tw-py-4">
         <ActionBar nbCitiesSelected={nbCitiesSelected} companies={companies} dataDate={dataDate} />
       </div>
       {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
@@ -206,7 +206,7 @@ function AppContent() {
             </AppShell.Section>
           </AppShell.Aside> */}
       {/* <AppShell.Main style={{ height: '100vh', width: '100%' }}> */}
-      <main className="tw-flex tw-flex-row tw-justify-between tw-w-full tw-px-8 tw-gap-x-8 tw-h-full">
+      <main className="tw-flex tw-flex-row tw-justify-between tw-w-full tw-px-4 tw-gap-x-8 tw-h-full">
         <Stack style={{ height: '100%', width: '100%' }}>
           {/* <Table data={data} /> */}
           <List data={data} />
