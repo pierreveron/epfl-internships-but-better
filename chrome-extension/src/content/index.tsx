@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import '../styles/index.css'
 import '../styles/loading-dots.css'
+import ErrorBoundary from './components/ErrorBoundary'
 
 function checkForElement(): Promise<HTMLElement | null> {
   return new Promise((resolve) => {
@@ -42,27 +43,36 @@ function injectReactApp() {
       // Create a shadow root
       const shadowRoot = root.attachShadow({ mode: 'closed' })
 
-      // Store the original element
-      const originalElement = targetElement.cloneNode(true)
+      // Hide the target element
+      targetElement.style.display = 'none'
 
-      // Replace the target element with our root element
-      targetElement.parentNode?.replaceChild(root, targetElement)
+      // Insert our root element after the target element
+      targetElement.parentNode?.insertBefore(root, targetElement.nextSibling)
 
       try {
         ReactDOM.createRoot(shadowRoot).render(
           <React.StrictMode>
-            <App />
+            <ErrorBoundary handleError={(error) => handleError(error, targetElement)}>
+              <App />
+            </ErrorBoundary>
           </React.StrictMode>,
         )
       } catch (error) {
-        console.error('Error rendering React app:', error)
-        // Restore the original element
-        root.parentNode?.replaceChild(originalElement, root)
-        // Show an alert with the error message
-        showErrorAlert()
+        handleError(error as Error, targetElement)
       }
     }
   })
+}
+
+function handleError(error: Error, targetElement: HTMLElement) {
+  console.error('Error rendering React app:', error)
+  // Show the original element
+  targetElement.style.display = ''
+  // Remove our injected root element
+  const root = document.getElementById('extension-content-root')
+  root?.remove()
+  // Show an alert with the error message
+  showErrorAlert()
 }
 
 function showErrorAlert() {

@@ -135,7 +135,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } else if (offersToBeFormatted) {
         updateData()
       } else {
-        scrapeAndStoreOffers()
+        scrapeAndStoreOffers().catch((error) => {
+          console.error('Error scraping offers:', error)
+          throw new Error('Error scraping offers')
+        })
       }
     }
   }, [])
