@@ -30,8 +30,6 @@ function updateHeight(targetElement: HTMLElement, root: HTMLElement) {
 // Function to inject our React app
 function injectReactApp() {
   checkForElement().then((targetElement) => {
-    console.log('injectReactApp', targetElement)
-    console.log('injectReactApp', document.querySelector('.blocinfobody'))
     if (targetElement) {
       const root = document.createElement('div')
       root.id = 'extension-content-root'
@@ -44,18 +42,35 @@ function injectReactApp() {
       // Create a shadow root
       const shadowRoot = root.attachShadow({ mode: 'closed' })
 
+      // Store the original element
+      const originalElement = targetElement.cloneNode(true)
+
       // Replace the target element with our root element
       targetElement.parentNode?.replaceChild(root, targetElement)
 
-      ReactDOM.createRoot(shadowRoot).render(
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>,
-      )
+      try {
+        ReactDOM.createRoot(shadowRoot).render(
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>,
+        )
+      } catch (error) {
+        console.error('Error rendering React app:', error)
+        // Restore the original element
+        root.parentNode?.replaceChild(originalElement, root)
+        // Show an alert with the error message
+        showErrorAlert()
+      }
     }
   })
 }
 
-console.log('injectReactApp2')
+function showErrorAlert() {
+  const errorMessage = `Oups... 🙇‍♂️
+Something went wrong while loading the data.
+Please try again (we never know 🤷‍♂️) & contact Pierre Véron on Linkedin (https://www.linkedin.com/in/pierre-veron/) or by email (pierre.veron@epfl.ch).`
+
+  alert(errorMessage)
+}
 
 injectReactApp()
