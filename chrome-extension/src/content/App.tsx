@@ -286,6 +286,9 @@ export default function App() {
           }}
           padding="xl"
         >
+          <div className="tw-px-8 tw-pt-8">
+            <ActionBar nbCitiesSelected={nbCitiesSelected} companies={companies} dataDate={dataDate} />
+          </div>
           {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
           <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: 'xl' })}>
             <AppShell.Section
@@ -371,8 +374,6 @@ export default function App() {
           </AppShell.Aside>
           <AppShell.Main style={{ height: '100vh' }}>
             <Stack style={{ height: '100%' }}>
-              <ActionBar nbCitiesSelected={nbCitiesSelected} companies={companies} dataDate={dataDate} />
-
               {isError ? (
                 <div className="tw-h-full tw-flex tw-flex-col tw-justify-center tw-items-center">
                   <h3 className="tw-text-2xl tw-text-[#868e96] tw-font-semibold">
