@@ -23,9 +23,9 @@ export const useHiddenOffers = () => {
     })
   }
 
-  const isOfferHidden = (offer: Offer) => {
-    return hiddenOffers.includes(offer.number)
-  }
+  const isOfferHidden = useMemo(() => {
+    return (offer: Offer) => hiddenOffers.includes(offer.number)
+  }, [hiddenOffers])
 
   return { hiddenOffers, toggleHiddenOffer, isOfferHidden }
 }
@@ -59,9 +59,9 @@ export const useFavoriteOffers = () => {
     })
   }
 
-  const isOfferFavorite = (offer: Offer) => {
-    return favoriteOffers.includes(offer.number)
-  }
+  const isOfferFavorite = useMemo(() => {
+    return (offer: Offer) => favoriteOffers.includes(offer.number)
+  }, [favoriteOffers])
 
   return { favoriteOffers, toggleFavoriteOffer, isOfferFavorite }
 }
