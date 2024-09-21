@@ -39,3 +39,5 @@ export const nbCitiesSelectedAtom = atom((get) => {
     return acc + (selectedCities?.length || 0)
   }, 0)
 })
+
+export const displayModeAtom = atom<'list' | 'table'>('list')
