@@ -10,7 +10,10 @@ export const loadingOffersAtom = atom<boolean>(true)
 
 export const locationsAtom = atom<Record<string, SelectableCity[]>>({})
 
-export const formatAtom = atom<SelectableFormat[]>([])
+export const formatAtom = atom<SelectableFormat[]>([
+  { name: 'internship', selected: false },
+  { name: 'project', selected: false },
+])
 export const lengthAtom = atom<SelectableLength[]>([])
 export const companyAtom = atom<string | null>(null)
 export const showOnlyPositionsNotYetCompletedAtom = atom<boolean>(false)

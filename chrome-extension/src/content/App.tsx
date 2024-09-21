@@ -37,7 +37,6 @@ const NOT_SPECIFIED = 'Not specified'
 function AppContent() {
   const { data, dataDate, companies } = useData()
 
-  const setSelectableFormats = useSetAtom(formatAtom)
   const setSelectableLengths = useSetAtom(lengthAtom)
   const setSelectableLocations = useSetAtom(locationsAtom)
   // @ts-ignore
@@ -60,13 +59,6 @@ function AppContent() {
       },
     ],
   ])
-
-  useEffect(() => {
-    setSelectableFormats([
-      { name: 'internship', selected: false },
-      { name: 'project', selected: false },
-    ])
-  }, [setSelectableFormats])
 
   useEffect(() => {
     setSelectableLengths(
