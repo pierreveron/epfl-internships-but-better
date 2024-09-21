@@ -285,6 +285,7 @@ export default function App() {
             collapsed: { mobile: !isAsideOpen, desktop: !isAsideOpen },
           }}
           padding="xl"
+          style={{ height: '100%' }}
         >
           <div className="tw-px-8 tw-pt-8">
             <ActionBar nbCitiesSelected={nbCitiesSelected} companies={companies} dataDate={dataDate} />
@@ -371,8 +372,8 @@ export default function App() {
                 <OfferDescription />
               </div>
             </AppShell.Section>
-          </AppShell.Aside>
-          <AppShell.Main style={{ height: '100vh' }}>
+          {/* <AppShell.Main style={{ height: '100vh', width: '100%' }}> */}
+          <main className="tw-flex tw-flex-row tw-justify-between tw-w-full tw-px-8 tw-gap-x-8 tw-h-full">
             <Stack style={{ height: '100%' }}>
               {isError ? (
                 <div className="tw-h-full tw-flex tw-flex-col tw-justify-center tw-items-center">
@@ -395,7 +396,9 @@ export default function App() {
                 <List data={data} />
               )}
             </Stack>
-          </AppShell.Main>
+            <OfferDescription />
+          </main>
+          {/* </AppShell.Main> */}
         </AppShell>
         {isScrapingOffers ? <div>Scraping offers... Please wait.</div> : <Table data={data} />}
       </div>
