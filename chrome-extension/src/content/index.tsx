@@ -20,6 +20,13 @@ function checkForElement(): Promise<HTMLElement | null> {
   })
 }
 
+function updateHeight(targetElement: HTMLElement, root: HTMLElement) {
+  const windowHeight = window.innerHeight
+  const targetRect = targetElement.getBoundingClientRect()
+  const availableHeight = windowHeight - targetRect.top
+  root.style.height = `${availableHeight}px`
+}
+
 // Function to inject our React app
 function injectReactApp() {
   checkForElement().then((targetElement) => {
@@ -28,7 +35,10 @@ function injectReactApp() {
     if (targetElement) {
       const root = document.createElement('div')
       root.id = 'extension-content-root'
-      root.style.height = '550px'
+
+      updateHeight(targetElement, root)
+      window.addEventListener('resize', () => updateHeight(targetElement, root))
+
       root.style.overflow = 'hidden'
 
       // Create a shadow root
