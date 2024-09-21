@@ -122,7 +122,7 @@ export default function ActionBar({
         />
       </Group>
 
-      <Group gap="xs">
+      {/* <Group gap="xs">
         <Text c="dimmed">Last data update: {dataDate}</Text>
         <HoverCard width={280} shadow="md">
           <HoverCard.Target>
@@ -134,7 +134,7 @@ export default function ActionBar({
             <Text size="sm">Data could not be up-to-date as it has to be changed manually.</Text>
           </HoverCard.Dropdown>
         </HoverCard>
-      </Group>
+      </Group> */}
     </Group>
   )
 }
