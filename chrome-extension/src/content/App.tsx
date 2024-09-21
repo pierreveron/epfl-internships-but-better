@@ -117,7 +117,7 @@ function AppContent() {
         collapsed: { mobile: false, desktop: false },
       }}
       padding="xl"
-      style={{ height: '100%' }}
+      style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
       <div className="tw-px-4 tw-py-4">
         <ActionBar nbCitiesSelected={nbCitiesSelected} companies={companies} dataDate={dataDate} />
@@ -206,11 +206,9 @@ function AppContent() {
             </AppShell.Section>
           </AppShell.Aside> */}
       {/* <AppShell.Main style={{ height: '100vh', width: '100%' }}> */}
-      <main className="tw-flex tw-flex-row tw-justify-between tw-w-full tw-px-4 tw-gap-x-8 tw-h-full">
-        <Stack style={{ height: '100%', width: '100%' }}>
-          {/* <Table data={data} /> */}
-          <List data={data} />
-        </Stack>
+      <main className="tw-flex tw-flex-row tw-gap-x-8 tw-justify-between tw-px-4 tw-w-full tw-flex-1 tw-overflow-hidden">
+        {/* <Table data={data} /> */}
+        <List data={data} />
         <OfferDescription />
       </main>
     </AppShell>
@@ -239,7 +237,11 @@ export default function App() {
       cssVariablesSelector="#extension-main-container"
     >
       <DataProvider>
-        <div ref={containerRef} id="extension-main-container" className="tw-bg-white tw-text-sm tw-font-sans tw-h-full">
+        <div
+          ref={containerRef}
+          id="extension-main-container"
+          className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
+        >
           <AppContent />
         </div>
       </DataProvider>

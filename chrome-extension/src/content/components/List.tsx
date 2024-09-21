@@ -261,7 +261,7 @@ export default function List({ data }: { data: Offer[] }) {
   const date = new Date()
 
   return (
-    <div className="tw-h-full">
+    <div className="tw-flex tw-flex-col tw-h-full">
       <p className="tw-mb-6">
         {filteredData.length === 0 && 'No offers correspond to your criteria'}
         {filteredData.length === 1 && '1 offer corresponds to your criteria'}
@@ -271,7 +271,7 @@ export default function List({ data }: { data: Offer[] }) {
           </>
         )}
       </p>
-      <div className="tw-space-y-4 tw-h-full tw-overflow-y-auto tw-no-scrollbar">
+      <div className="tw-flex-1 tw-space-y-4 tw-overflow-y-auto tw-no-scrollbar tw-pb-4">
         {records.map((record) => {
           const isCollapsed = collapsedOffers.has(record.number)
 
