@@ -19,7 +19,7 @@ import { formatSalary, formatToLabel } from '../utils/format'
 import { useFavoriteOffers, useHiddenOffers } from '../utils/hooks'
 import classNames from 'classnames'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Offer } from '../../../../types'
 import HeartIcon from './HeartIcon'
 import { formatLengthLabel } from './LengthsCheckboxes'
@@ -28,6 +28,8 @@ import LocationDotIcon from './icons/LocationDotIcon'
 import MoneyBillIcon from './icons/MoneyBillIcon'
 import BriefcaseIcon from './icons/BriefcaseIcon'
 import CalendarIcon from './icons/CalendarIcon'
+import CloseIcon from './icons/CloseIcon'
+import ReplayIcon from './icons/ReplayIcon'
 import { ActionIcon } from '@mantine/core'
 
 export const PAGE_SIZE = 15
@@ -69,7 +71,7 @@ const NOT_SPECIFIED = 'Not specified'
 
 export type TableRecord = Offer & { favorite: boolean }
 
-export default function Table({ data }: { data: Offer[] }) {
+export default function List({ data }: { data: Offer[] }) {
   // const isFormatingOffers = useAtomValue(formattingOffersAtom)
   // const isLoadingOffers = useAtomValue(loadingOffersAtom)
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom)
@@ -83,17 +85,37 @@ export default function Table({ data }: { data: Offer[] }) {
   const [{ offer }, setAside] = useAtom(asideAtom)
   const setFilteredOffers = useSetAtom(filteredOffersAtom)
 
-  const { favoriteOffers, isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers()
-
-  const { hiddenOffers, isOfferHidden } = useHiddenOffers()
+  const { isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers()
+  const { isOfferHidden, toggleHiddenOffer } = useHiddenOffers()
 
   const [page, setPage] = useAtom(pageAtom)
   // const [sortStatus, setSortStatus] = useAtom(sortStatusAtom)
 
+  const [collapsedOffers, setCollapsedOffers] = useState<Set<string>>(new Set())
+
+  const handleCollapseOffer = useCallback(
+    (record: TableRecord) => {
+      setCollapsedOffers((prev) => new Set(prev).add(record.number))
+      toggleHiddenOffer(record)
+    },
+    [toggleHiddenOffer],
+  )
+
+  const handleReplayOffer = useCallback(
+    (record: TableRecord) => {
+      setCollapsedOffers((prev) => {
+        const newSet = new Set(prev)
+        newSet.delete(record.number)
+        return newSet
+      })
+      toggleHiddenOffer(record)
+    },
+    [toggleHiddenOffer],
+  )
+
   useEffect(() => {
     setPage(1)
   }, [
-    // sortStatus,
     selectableLocations,
     selectableFormats,
     selectableLengths,
@@ -101,6 +123,7 @@ export default function Table({ data }: { data: Offer[] }) {
     showOnlyPositionsNotYetCompleted,
     showOnlyFavorites,
     minimumSalary,
+    setPage,
   ])
 
   const sortedData = useMemo(() => {
@@ -174,106 +197,66 @@ export default function Table({ data }: { data: Offer[] }) {
     return data
   }, [
     sortedData,
-    showOnlyFavorites,
-    showOnlyPositionsNotYetCompleted,
-    selectableLocations,
-    nbCitiesSelected,
     selectableFormats,
     minimumSalary,
     selectableLengths,
     selectedCompany,
+    showOnlyFavorites,
+    nbCitiesSelected,
+    showOnlyPositionsNotYetCompleted,
+    setFilteredOffers,
+    isOfferFavorite,
+    selectableLocations,
   ])
 
   useEffect(() => {
-    let d = filteredData
-
-    // if (sortStatus.direction === 'desc') {
-    //   d = d.slice().reverse()
-    // }
+    const d = filteredData
+    // .filter((offer) => !isOfferHidden(offer))
 
     setAside((aside) => {
       if (aside.open && aside.offer && isOfferHidden(aside.offer)) {
-        // Find the next offer after the current one
-        d = d.filter((offer) => offer.number === aside.offer!.number || !isOfferHidden(offer))
-
         const hiddenOfferIndex = d.findIndex((o) => o.number === aside.offer!.number)
-
-        console.log('hiddenOfferIndex', hiddenOfferIndex)
-
-        let nextOfferIndex
-        if (hiddenOfferIndex === d.length - 1) {
-          nextOfferIndex = hiddenOfferIndex - 1
-        } else {
-          nextOfferIndex = hiddenOfferIndex + 1
-        }
+        const nextOfferIndex = hiddenOfferIndex === d.length - 1 ? hiddenOfferIndex - 1 : hiddenOfferIndex + 1
 
         if (nextOfferIndex < 0) {
-          return {
-            open: false,
-            offer: null,
-          }
+          return { open: false, offer: null }
         }
 
-        console.log('nextOfferIndex', nextOfferIndex)
         const nextOffer = d[nextOfferIndex]
-
         const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1
-        console.log('newPage', newPage)
         setPage(newPage)
 
         return {
           open: true,
-          offer: {
-            ...nextOffer,
-            favorite: isOfferFavorite(nextOffer),
-          },
+          offer: { ...nextOffer, favorite: isOfferFavorite(nextOffer) },
         }
       }
       return aside
     })
-  }, [hiddenOffers])
-
-  useEffect(() => {
-    if (records.length === 0) {
-      return
-    }
-    if (!offer)
-      setAside({
-        open: true,
-        offer: records[0],
-      })
-  }, [records])
+  }, [filteredData, isOfferHidden, isOfferFavorite, setAside, setPage])
 
   useEffect(() => {
     const from = (page - 1) * PAGE_SIZE
     const to = from + PAGE_SIZE
 
-    let d = filteredData
+    const visibleOffers = filteredData
+    // .filter((offer) => !isOfferHidden(offer))
+    const paginatedOffers = visibleOffers.slice(from, to)
 
-    d = d.filter((offer) => !isOfferHidden(offer))
-
-    // if (sortStatus.direction === 'desc') {
-    //   d = d.slice().reverse()
-    // }
-
-    d = d.slice(from, to)
-
-    // add favorite property if present in favoriteInternships
-    const records = d.map((d) => {
-      return {
-        ...d,
-        favorite: isOfferFavorite(d),
-      }
-    })
+    const records = paginatedOffers.map((d) => ({
+      ...d,
+      favorite: isOfferFavorite(d),
+    }))
 
     setRecords(records)
-  }, [
-    page,
-    filteredData,
-    //  sortStatus.direction,
-    favoriteOffers,
-    hiddenOffers,
-  ])
+
+    if (records.length > 0 && !offer) {
+      setAside({
+        open: true,
+        offer: records[0],
+      })
+    }
+  }, [page, filteredData, isOfferFavorite, offer, setAside])
 
   const date = new Date()
 
@@ -290,116 +273,157 @@ export default function Table({ data }: { data: Offer[] }) {
       </p>
       <div className="tw-space-y-4 tw-h-full tw-overflow-y-auto tw-no-scrollbar">
         {records.map((record) => {
+          const isCollapsed = collapsedOffers.has(record.number)
+
           return (
             <div
               className={classNames(
-                'tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded-md tw-cursor-pointer hover:tw-border-gray-300 tw-transition',
+                'tw-p-4 tw-border tw-border-solid tw-border-gray-100 tw-rounded-md tw-cursor-pointer hover:tw-border-gray-300 tw-transition tw-relative',
                 offer && offer.number === record.number && 'tw-border-gray-300',
+                isCollapsed && 'tw-opacity-50',
               )}
               key={record.number}
               onClick={() => {
-                setAside({
-                  open: true,
-                  offer: record,
-                })
+                if (!isCollapsed) {
+                  setAside({
+                    open: true,
+                    offer: record,
+                  })
+                }
               }}
             >
-              <div className="tw-mb-4">
-                <h3 className="tw-text-xl tw-font-bold">{record.title}</h3>
-                <p className="tw-text-base tw-font-medium tw-italic">{record.company}</p>
-              </div>
+              <div className="tw-flex tw-flex-row tw-justify-between tw-items-start tw-gap-x-4">
+                <div className="tw-mb-4">
+                  <h3 className="tw-text-xl tw-font-bold">{record.title}</h3>
+                  <p className="tw-text-base tw-font-medium tw-italic">{record.company}</p>
+                </div>
 
-              <div className="tw-flex tw-flex-row tw-items-center tw-gap-2">
-                <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
-                <p className="tw-text-gray-600 tw-text-sm">
-                  {record.format.length > 0 ? (
-                    record.format.map((format, index) => (
-                      <span key={format} className={classNames(index != 0 && "before:tw-content-['_·_']")}>
-                        {formatToLabel(format)}
-                      </span>
-                    ))
-                  ) : (
-                    <p className="tw-text-gray-600 tw-text-sm">Not specified</p>
-                  )}
-                </p>
-              </div>
-
-              <div className="tw-flex tw-flex-row tw-gap-2">
-                <LocationDotIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
-                <p className="tw-flex tw-flex-row tw-gap-2">
-                  {record.location.length > 0 ? (
-                    record.location.map((location, index) => (
-                      <p
-                        key={index}
-                        className={classNames(
-                          'tw-text-gray-600 tw-text-sm tw-flex tw-flex-row tw-items-center tw-gap-x-2',
-                          index != 0 && "before:tw-content-['_·_']",
-                        )}
-                      >
-                        {location.city}
-                        {location.country && `, ${location.country} ${getFlagEmojiWithName(location.country)}`}
-                      </p>
-                    ))
-                  ) : (
-                    <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
-                      Not specified
-                    </p>
-                  )}
-                </p>
-              </div>
-
-              <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4">
-                <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-                  <ClockIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
-                  {record.length ? formatLengthLabel(record.length) : 'Not specified'}
-                </p>
-
-                {record.salary && (
-                  <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
-                    <MoneyBillIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
-                    {formatSalary(record.salary)}
-                  </p>
+                {isCollapsed ? (
+                  <ActionIcon
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      handleReplayOffer(record)
+                    }}
+                    variant="subtle"
+                    color="blue"
+                    size="sm"
+                    className="tw-absolute tw-top-2 tw-right-2"
+                  >
+                    <ReplayIcon className="tw-h-6 tw-w-6" />
+                  </ActionIcon>
+                ) : (
+                  <ActionIcon
+                    onClick={(event) => {
+                      event.stopPropagation()
+                      handleCollapseOffer(record)
+                    }}
+                    variant="subtle"
+                    color="gray"
+                    size="sm"
+                    className="tw-absolute tw-top-2 tw-right-2"
+                  >
+                    <CloseIcon className="tw-h-6 tw-w-6" />
+                  </ActionIcon>
                 )}
               </div>
 
-              <div className="tw-flex tw-flex-row tw-justify-between tw-items-center">
-                <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4 tw-items-center">
-                  <CalendarIcon className="tw-w-4 tw-h-4 tw-fill-gray-600" />
+              {isCollapsed ? (
+                <p className="tw-text-sm tw-text-gray-500">You won't see this offer again</p>
+              ) : (
+                <>
+                  <div className="tw-flex tw-flex-row tw-items-center tw-gap-2">
+                    <BriefcaseIcon className="tw-w-4 tw-h-4 tw-text-gray-500" />
+                    <p className="tw-text-gray-600 tw-text-sm">
+                      {record.format.length > 0 ? (
+                        record.format.map((format, index) => (
+                          <span key={format} className={classNames(index != 0 && "before:tw-content-['_·_']")}>
+                            {formatToLabel(format)}
+                          </span>
+                        ))
+                      ) : (
+                        <p className="tw-text-gray-600 tw-text-sm">Not specified</p>
+                      )}
+                    </p>
+                  </div>
 
-                  <p className="tw-text-gray-600 tw-text-sm">
-                    {(() => {
-                      const [day, month, year] = record.creationDate.split('.')
-                      const recordDate = new Date(+year, +month - 1, +day)
-                      const diff = date.getTime() - recordDate.getTime()
-                      const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-                      if (days === 0) {
-                        return 'Today'
-                      }
-                      if (days === 1) {
-                        return 'Yesterday'
-                      }
+                  <div className="tw-flex tw-flex-row tw-gap-2">
+                    <LocationDotIcon className="tw-w-4 tw-h-4 tw-fill-gray-900" />
+                    <p className="tw-flex tw-flex-row tw-gap-2">
+                      {record.location.length > 0 ? (
+                        record.location.map((location, index) => (
+                          <p
+                            key={index}
+                            className={classNames(
+                              'tw-text-gray-600 tw-text-sm tw-flex tw-flex-row tw-items-center tw-gap-x-2',
+                              index != 0 && "before:tw-content-['_·_']",
+                            )}
+                          >
+                            {location.city}
+                            {location.country && `, ${location.country} ${getFlagEmojiWithName(location.country)}`}
+                          </p>
+                        ))
+                      ) : (
+                        <p className="tw-text-gray-600 tw-text-sm tw-py-2 tw-px-3 tw-bg-gray-200 tw-rounded-md">
+                          Not specified
+                        </p>
+                      )}
+                    </p>
+                  </div>
 
-                      if (days < 7) {
-                        return `${days} days ago`
-                      }
+                  <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4">
+                    <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                      <ClockIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
+                      {record.length ? formatLengthLabel(record.length) : 'Not specified'}
+                    </p>
 
-                      return recordDate.toLocaleDateString('fr-FR')
-                    })()}
-                  </p>
-                </div>
+                    {record.salary && (
+                      <p className="tw-text-neutral-700 tw-text-sm tw-py-1 tw-px-2 tw-bg-neutral-200 tw-rounded tw-w-fit tw-flex tw-flex-row tw-items-center tw-gap-x-2">
+                        <MoneyBillIcon className="tw-w-4 tw-h-4 tw-fill-neutral-700" />
+                        {formatSalary(record.salary)}
+                      </p>
+                    )}
+                  </div>
 
-                <ActionIcon
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    toggleFavoriteOffer(record)
-                  }}
-                  variant="subtle"
-                  color="red"
-                  size="lg"
-                >
-                  <HeartIcon checked={record.favorite} className="tw-h-5" />
-                </ActionIcon>
-              </div>
+                  <div className="tw-flex tw-flex-row tw-justify-between tw-items-center">
+                    <div className="tw-flex tw-flex-row tw-gap-2 tw-mt-4 tw-items-center">
+                      <CalendarIcon className="tw-w-4 tw-h-4 tw-fill-gray-600" />
+
+                      <p className="tw-text-gray-600 tw-text-sm">
+                        {(() => {
+                          const [day, month, year] = record.creationDate.split('.')
+                          const recordDate = new Date(+year, +month - 1, +day)
+                          const diff = date.getTime() - recordDate.getTime()
+                          const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+                          if (days === 0) {
+                            return 'Today'
+                          }
+                          if (days === 1) {
+                            return 'Yesterday'
+                          }
+
+                          if (days < 7) {
+                            return `${days} days ago`
+                          }
+
+                          return recordDate.toLocaleDateString('fr-FR')
+                        })()}
+                      </p>
+                    </div>
+
+                    <ActionIcon
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        toggleFavoriteOffer(record)
+                      }}
+                      variant="subtle"
+                      color="red"
+                      size="lg"
+                    >
+                      <HeartIcon checked={record.favorite} className="tw-h-5" />
+                    </ActionIcon>
+                  </div>
+                </>
+              )}
             </div>
           )
         })}
