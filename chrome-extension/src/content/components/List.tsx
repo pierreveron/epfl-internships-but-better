@@ -20,43 +20,12 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Offer } from '../../../../types'
 import Card from '../components/Card'
+import SortDropdown from './SortDropdown'
+import { sortStatusAtom } from '../atoms'
 
 export const PAGE_SIZE = 15
 
 const NOT_SPECIFIED = 'Not specified'
-
-// const sortBy = (data: Offer[], columnAccessor: string) => {
-//   let dataSorted = data
-//   if (columnAccessor === 'company') {
-//     dataSorted = data.sort((a, b) => {
-//       return a.company.localeCompare(b.company)
-//     })
-//   } else if (columnAccessor === 'creationDate') {
-//     dataSorted = data.sort((a, b) => {
-//       return (
-//         new Date(a.creationDate.split('.').reverse().join('-')).getTime() -
-//         new Date(b.creationDate.split('.').reverse().join('-')).getTime()
-//       )
-//     })
-//   } else if (columnAccessor === 'salary') {
-//     dataSorted = data.sort((a, b) => {
-//       // Check if salary is a string
-//       if (typeof a.salary === 'string' || typeof b.salary === 'string') {
-//         return 0
-//       }
-
-//       if (a.salary === null) {
-//         return 1
-//       }
-//       if (b.salary === null) {
-//         return -1
-//       }
-//       return a.salary - b.salary
-//     })
-//   }
-
-//   return dataSorted
-// }
 
 export type TableRecord = Offer & { favorite: boolean }
 
@@ -115,13 +84,11 @@ export default function List({ data }: { data: Offer[] }) {
     setPage,
   ])
 
+  const [sortStatus] = useAtom(sortStatusAtom)
+
   const sortedData = useMemo(() => {
-    // return sortBy(data, sortStatus.columnAccessor)
-    return data
-  }, [
-    // sortStatus.columnAccessor,
-    data,
-  ])
+    return sortBy(data, sortStatus.columnAccessor)
+  }, [sortStatus.columnAccessor, data])
 
   const [records, setRecords] = useState<TableRecord[]>(
     sortedData.slice(0, PAGE_SIZE).map((d) => {
@@ -248,15 +215,18 @@ export default function List({ data }: { data: Offer[] }) {
 
   return (
     <div className="tw-flex tw-flex-col tw-h-full">
-      <p className="tw-mb-6">
-        {filteredData.length === 0 && 'No offers correspond to your criteria'}
-        {filteredData.length === 1 && '1 offer corresponds to your criteria'}
-        {filteredData.length > 1 && (
-          <>
-            <span className="tw-font-bold">{filteredData.length}</span> offers correspond to your criteria
-          </>
-        )}
-      </p>
+      <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
+        <p>
+          {filteredData.length === 0 && 'No offers correspond to your criteria'}
+          {filteredData.length === 1 && '1 offer corresponds to your criteria'}
+          {filteredData.length > 1 && (
+            <>
+              <span className="tw-font-bold">{filteredData.length}</span> offers correspond to your criteria
+            </>
+          )}
+        </p>
+        <SortDropdown />
+      </div>
       <div className="tw-flex-1 tw-space-y-4 tw-overflow-y-auto tw-no-scrollbar tw-pb-4">
         {records.map((record) => (
           <Card
@@ -291,4 +261,30 @@ export default function List({ data }: { data: Offer[] }) {
       </div>
     </div>
   )
+}
+
+const sortBy = (data: Offer[], sortCriteria: string): Offer[] => {
+  if (!sortCriteria) return data
+
+  const dataSorted = [...data]
+  if (sortCriteria === 'company') {
+    dataSorted.sort((a, b) => a.company.localeCompare(b.company))
+  } else if (sortCriteria === 'creationDate') {
+    dataSorted.sort((a, b) => {
+      return (
+        new Date(b.creationDate.split('.').reverse().join('-')).getTime() -
+        new Date(a.creationDate.split('.').reverse().join('-')).getTime()
+      )
+    })
+  } else if (sortCriteria === 'salary') {
+    dataSorted.sort((a, b) => {
+      if (typeof a.salary === 'string' || typeof b.salary === 'string') {
+        return 0
+      }
+      if (a.salary === null) return 1
+      if (b.salary === null) return -1
+      return b.salary - a.salary
+    })
+  }
+  return dataSorted
 }
