@@ -292,6 +292,9 @@ const sortBy = (data: Offer[], sortCriteria: string, direction: 'asc' | 'desc'):
         return multiplier * (a.salary - b.salary)
       })
       break
+    case 'registered':
+      dataSorted.sort((a, b) => multiplier * (a.registered - b.registered))
+      break
     default:
       // If no valid sort criteria is provided, return the original data
       return data

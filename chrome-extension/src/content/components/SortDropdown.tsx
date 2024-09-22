@@ -10,6 +10,8 @@ const sortOptions = [
   { value: 'company-desc', label: 'Company (Z-A)' },
   { value: 'salary-desc', label: 'Salary (high to low)' },
   { value: 'salary-asc', label: 'Salary (low to high)' },
+  { value: 'registered-desc', label: 'Number of candidates (high to low)' },
+  { value: 'registered-asc', label: 'Number of candidates (low to high)' },
 ]
 
 export default function SortDropdown() {
