@@ -1,27 +1,34 @@
 import { useAtom } from 'jotai'
 import { sortStatusAtom } from '../atoms'
+import { Select } from '@mantine/core'
+import { IconArrowsSort } from '@tabler/icons-react'
 
 const sortOptions = [
-  { value: 'creationDate', label: 'Creation Date' },
-  { value: 'company', label: 'Company' },
-  { value: 'salary', label: 'Salary' },
+  { value: 'creationDate-desc', label: 'Creation date (newest first)' },
+  { value: 'creationDate-asc', label: 'Creation date (oldest first)' },
+  { value: 'company-desc', label: 'Company (A-Z)' },
+  { value: 'company-asc', label: 'Company (Z-A)' },
+  { value: 'salary-desc', label: 'Salary (high to low)' },
+  { value: 'salary-asc', label: 'Salary (low to high)' },
 ]
 
 export default function SortDropdown() {
   const [sortStatus, setSortStatus] = useAtom(sortStatusAtom)
 
+  const handleChange = (value: string | null) => {
+    if (value) {
+      const [columnAccessor, direction] = value.split('-')
+      setSortStatus({ columnAccessor, direction: direction as 'asc' | 'desc' })
+    }
+  }
+
   return (
-    <select
-      value={sortStatus.columnAccessor}
-      onChange={(e) => setSortStatus({ columnAccessor: e.target.value, direction: 'asc' })}
-      className="tw-p-2 tw-border tw-rounded"
-    >
-      <option value="">Sort by</option>
-      {sortOptions.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
+    <Select
+      value={sortStatus.columnAccessor ? `${sortStatus.columnAccessor}-${sortStatus.direction}` : null}
+      onChange={handleChange}
+      placeholder="Sort by: salary (from high to low)"
+      data={sortOptions}
+      leftSection={<IconArrowsSort />}
+    />
   )
 }
