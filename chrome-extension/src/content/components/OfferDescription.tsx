@@ -1,4 +1,4 @@
-import { asideOfferAtom } from '../atoms'
+import { asideAtom } from '../atoms'
 import { getFlagEmojiWithName } from '../utils/countries'
 import { formatSalary, formatToLabel } from '../utils/format'
 import { ActionIcon, Anchor, Button } from '@mantine/core'
@@ -27,7 +27,7 @@ const getFirstValidWebsite = (websites: string): string => {
 }
 
 export default function OfferDescription() {
-  const asideOffer = useAtomValue(asideOfferAtom)
+  const { offer: asideOffer } = useAtomValue(asideAtom)
 
   // const { toggleHiddenOffer } = useHiddenOffers();
   const { isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers()
