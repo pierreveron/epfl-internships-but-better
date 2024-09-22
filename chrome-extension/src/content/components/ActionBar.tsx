@@ -1,7 +1,7 @@
-import { lengthAtom, locationsAtom, minimumSalaryAtom, showOnlyFavoritesAtom } from '../atoms'
-import { Button, Group, HoverCard, NumberInput, Popover, Stack, Switch, Text, ThemeIcon } from '@mantine/core'
-import { IconChevronDown, IconInfoCircle } from '@tabler/icons-react'
-import { useAtom } from 'jotai'
+import { asideAtom, lengthAtom, locationsAtom, minimumSalaryAtom, showOnlyFavoritesAtom } from '../atoms'
+import { Button, Group, NumberInput, Popover, Stack, Switch } from '@mantine/core'
+import { IconChevronDown } from '@tabler/icons-react'
+import { useAtom, useSetAtom } from 'jotai'
 import CompanySelect from './CompanySelect'
 import FormatsSegmentedControl from './FormatsSegmentedControl'
 import LengthsCheckboxes from './LengthsCheckboxes'
@@ -21,6 +21,7 @@ export default function ActionBar({
   const [selectableLengths, setSelectableLengths] = useAtom(lengthAtom)
   const [showOnlyFavorites, setShowOnlyFavorite] = useAtom(showOnlyFavoritesAtom)
   const [minimumSalary, setMinimumSalary] = useAtom(minimumSalaryAtom)
+  const setAsideOffer = useSetAtom(asideAtom)
 
   return (
     <Group justify="space-between">
@@ -118,7 +119,10 @@ export default function ActionBar({
         <Switch
           label="Show only favorites"
           checked={showOnlyFavorites}
-          onChange={(event) => setShowOnlyFavorite(event.currentTarget.checked)}
+          onChange={(event) => {
+            setShowOnlyFavorite(event.currentTarget.checked)
+            setAsideOffer({ open: false, offer: null })
+          }}
         />
       </Group>
 

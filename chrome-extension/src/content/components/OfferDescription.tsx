@@ -58,7 +58,13 @@ export default function OfferDescription() {
     }
   }
 
-  if (!asideOffer) return <div></div>
+  if (!asideOffer) {
+    return (
+      <div className="tw-flex tw-items-center tw-justify-center tw-h-full tw-w-full">
+        <p className="tw-text-xl tw-text-gray-500">No offer selected</p>
+      </div>
+    )
+  }
 
   return (
     <div className="tw-pb-8 tw-h-full tw-w-full tw-overflow-y-auto tw-no-scrollbar">
