@@ -228,6 +228,18 @@ export default function App() {
 
   const theme = createTheme({
     primaryColor: 'red',
+    components: {
+      Select: {
+        defaultProps: {
+          comboboxProps: { withinPortal: false },
+        },
+      },
+      Popover: {
+        defaultProps: {
+          withinPortal: false,
+        },
+      },
+    },
   })
 
   return (
