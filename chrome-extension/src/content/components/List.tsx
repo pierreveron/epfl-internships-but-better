@@ -84,11 +84,11 @@ export default function List({ data }: { data: Offer[] }) {
     setPage,
   ])
 
-  const [sortStatus] = useAtom(sortStatusAtom)
+  const sortStatus = useAtomValue(sortStatusAtom)
 
   const sortedData = useMemo(() => {
-    return sortBy(data, sortStatus.columnAccessor)
-  }, [sortStatus.columnAccessor, data])
+    return sortBy(data, sortStatus.columnAccessor, sortStatus.direction)
+  }, [sortStatus, data])
 
   const [records, setRecords] = useState<TableRecord[]>(
     sortedData.slice(0, PAGE_SIZE).map((d) => {
@@ -263,28 +263,39 @@ export default function List({ data }: { data: Offer[] }) {
   )
 }
 
-const sortBy = (data: Offer[], sortCriteria: string): Offer[] => {
+const sortBy = (data: Offer[], sortCriteria: string, direction: 'asc' | 'desc'): Offer[] => {
   if (!sortCriteria) return data
 
   const dataSorted = [...data]
-  if (sortCriteria === 'company') {
-    dataSorted.sort((a, b) => a.company.localeCompare(b.company))
-  } else if (sortCriteria === 'creationDate') {
-    dataSorted.sort((a, b) => {
-      return (
-        new Date(b.creationDate.split('.').reverse().join('-')).getTime() -
-        new Date(a.creationDate.split('.').reverse().join('-')).getTime()
-      )
-    })
-  } else if (sortCriteria === 'salary') {
-    dataSorted.sort((a, b) => {
-      if (typeof a.salary === 'string' || typeof b.salary === 'string') {
-        return 0
-      }
-      if (a.salary === null) return 1
-      if (b.salary === null) return -1
-      return b.salary - a.salary
-    })
+  const multiplier = direction === 'asc' ? 1 : -1
+
+  switch (sortCriteria) {
+    case 'company':
+      dataSorted.sort((a, b) => multiplier * a.company.localeCompare(b.company))
+      break
+    case 'creationDate':
+      dataSorted.sort((a, b) => {
+        return (
+          multiplier *
+          (new Date(a.creationDate.split('.').reverse().join('-')).getTime() -
+            new Date(b.creationDate.split('.').reverse().join('-')).getTime())
+        )
+      })
+      break
+    case 'salary':
+      dataSorted.sort((a, b) => {
+        if (typeof a.salary === 'string' || typeof b.salary === 'string') {
+          return 0
+        }
+        if (a.salary === null) return direction === 'asc' ? -1 : 1
+        if (b.salary === null) return direction === 'asc' ? 1 : -1
+        return multiplier * (a.salary - b.salary)
+      })
+      break
+    default:
+      // If no valid sort criteria is provided, return the original data
+      return data
   }
+
   return dataSorted
 }

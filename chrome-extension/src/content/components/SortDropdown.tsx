@@ -6,8 +6,8 @@ import { IconArrowsSort } from '@tabler/icons-react'
 const sortOptions = [
   { value: 'creationDate-desc', label: 'Creation date (newest first)' },
   { value: 'creationDate-asc', label: 'Creation date (oldest first)' },
-  { value: 'company-desc', label: 'Company (A-Z)' },
-  { value: 'company-asc', label: 'Company (Z-A)' },
+  { value: 'company-asc', label: 'Company (A-Z)' },
+  { value: 'company-desc', label: 'Company (Z-A)' },
   { value: 'salary-desc', label: 'Salary (high to low)' },
   { value: 'salary-asc', label: 'Salary (low to high)' },
 ]
