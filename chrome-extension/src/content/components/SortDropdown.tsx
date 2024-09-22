@@ -26,7 +26,6 @@ export default function SortDropdown() {
     <Select
       value={sortStatus.columnAccessor ? `${sortStatus.columnAccessor}-${sortStatus.direction}` : null}
       onChange={handleChange}
-      placeholder="Sort by: salary (from high to low)"
       data={sortOptions}
       leftSection={<IconArrowsSort />}
     />

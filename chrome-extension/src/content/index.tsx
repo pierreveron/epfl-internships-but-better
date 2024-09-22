@@ -41,7 +41,9 @@ function injectReactApp() {
       root.style.overflow = 'hidden'
 
       // Create a shadow root
-      const shadowRoot = root.attachShadow({ mode: 'closed' })
+      // Create a shadow root with 'open' mode
+      // This allows external scripts to access the shadow DOM like Mantine
+      const shadowRoot = root.attachShadow({ mode: 'open' })
 
       // Hide the target element
       targetElement.style.display = 'none'
