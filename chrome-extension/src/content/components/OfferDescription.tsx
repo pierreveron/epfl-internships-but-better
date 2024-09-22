@@ -49,7 +49,7 @@ export default function OfferDescription() {
   if (!asideOffer) return <div></div>
 
   return (
-    <div className="tw-pb-8 tw-h-full tw-w-full tw-overflow-y-auto">
+    <div className="tw-pb-8 tw-h-full tw-w-full tw-overflow-y-auto tw-no-scrollbar">
       <p className="tw-text-gray-500 tw-text-sm">
         {/* <span className="tw-font-medium">Offer number:</span>{" "} */}
         {asideOffer.number}
