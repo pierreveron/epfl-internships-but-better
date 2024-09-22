@@ -3,6 +3,7 @@ import { Offer, OfferToBeFormatted, Location } from '../../../types'
 import { scrapeJobs } from '../utils/scraping'
 import { formatOffers, abortFormatting } from './utils/offerFormatting'
 import { SelectableCity } from './types'
+import { useHiddenOffers } from './utils/hooks'
 
 interface DataContextType {
   data: Offer[]
@@ -23,6 +24,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [dataDate, setDataDate] = useState<string>('')
   const [isFormattingOffers, setIsFormattingOffers] = useState<boolean>(false)
   const [isLoadingOffers, setIsLoadingOffers] = useState<boolean>(true)
+  const { isOfferHidden } = useHiddenOffers()
 
   const loadOffers = async () => {
     const storedData = localStorage.getItem('jobOffers')
@@ -32,7 +34,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     if (storedData) {
       const { offers, lastUpdated }: { offers: Offer[]; lastUpdated: string } = JSON.parse(storedData)
 
-      setData(offers)
+      setData(offers.filter((d) => !isOfferHidden(d)))
       setDataDate(new Date(lastUpdated).toLocaleDateString('fr-CH'))
     } else {
       await updateData()

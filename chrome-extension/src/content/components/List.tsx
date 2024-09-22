@@ -117,11 +117,10 @@ export default function List({ data }: { data: Offer[] }) {
 
   const sortedData = useMemo(() => {
     // return sortBy(data, sortStatus.columnAccessor)
-    return data.filter((d) => !isOfferHidden(d))
+    return data
   }, [
     // sortStatus.columnAccessor,
     data,
-    isOfferHidden,
   ])
 
   const [records, setRecords] = useState<TableRecord[]>(
