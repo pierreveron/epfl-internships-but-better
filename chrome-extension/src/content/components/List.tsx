@@ -214,7 +214,7 @@ export default function List({ data }: { data: Offer[] }) {
   }, [page, filteredData, isOfferFavorite, offer, setAside])
 
   return (
-    <div className="tw-flex tw-flex-col tw-h-full">
+    <div className="tw-w-4/5 tw-flex tw-flex-col tw-h-full">
       <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
         <p>
           {filteredData.length === 0 && 'No offers correspond to your criteria'}
