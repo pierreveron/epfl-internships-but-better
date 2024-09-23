@@ -65,7 +65,7 @@ export default function OfferDescription() {
   }
 
   return (
-    <div className="tw-pl-4 tw-pt-4 tw-pb-8 tw-h-full tw-w-full tw-overflow-y-auto tw-no-scrollbar">
+    <div className="tw-px-4 tw-py-4 tw-h-full tw-w-full tw-overflow-y-auto">
       <p className="tw-text-gray-500 tw-text-sm">{offer.number}</p>
 
       <div className="tw-mb-4">

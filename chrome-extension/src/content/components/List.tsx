@@ -28,7 +28,7 @@ export default function List() {
   return (
     <div
       ref={listRef}
-      className="tw-pt-4 tw-w-4/5 tw-flex tw-flex-col tw-h-full tw-overflow-y-auto tw-no-scrollbar tw-pr-4 tw-border-r tw-border-gray-200"
+      className="tw-pt-4 tw-w-4/5 tw-flex tw-flex-col tw-h-full tw-overflow-y-auto tw-px-4 tw-border-r tw-border-gray-200"
     >
       <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
         <p>
