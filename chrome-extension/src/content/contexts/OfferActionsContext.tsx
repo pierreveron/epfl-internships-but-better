@@ -8,6 +8,7 @@ interface OfferActionsContextType {
   handleSelectOffer: (record: Offer) => void
   handleReplayOffer: (record: Offer) => void
   handleCollapseOffer: (record: Offer) => void
+  toggleCollapseOffer: (record: Offer) => void
 }
 
 export const OfferActionsContext = createContext<OfferActionsContextType | undefined>(undefined)
@@ -44,11 +45,24 @@ export const OfferActionsProvider: React.FC<{ children: React.ReactNode }> = ({ 
     [toggleHiddenOffer],
   )
 
+  const toggleCollapseOffer = useCallback(
+    (record: Offer) => {
+      setCollapsedOffers((prev) => {
+        const newSet = new Set(prev)
+        newSet.has(record.number) ? newSet.delete(record.number) : newSet.add(record.number)
+        return newSet
+      })
+      toggleHiddenOffer(record)
+    },
+    [toggleHiddenOffer],
+  )
+
   const value = {
     collapsedOffers,
     handleSelectOffer,
     handleReplayOffer,
     handleCollapseOffer,
+    toggleCollapseOffer,
   }
 
   return <OfferActionsContext.Provider value={value}>{children}</OfferActionsContext.Provider>

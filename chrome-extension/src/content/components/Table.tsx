@@ -9,6 +9,9 @@ import { useAside } from '../hooks/useAside'
 import { FilterContext } from '../contexts/FilterContext'
 import { usePagination } from '../hooks/usePagination'
 import { useSort } from '../hooks/useSort'
+import { useOfferActions } from '../hooks/useOfferActions'
+import CloseIcon from './icons/CloseIcon'
+import ReplayIcon from './icons/ReplayIcon'
 
 export default function Table() {
   const { selectableFormats } = useContext(FilterContext)!
@@ -18,6 +21,7 @@ export default function Table() {
   const { records, page, pageSize, setPage } = usePagination()
   const { sortStatus, setSortStatus, sortedData } = useSort()
   const previousPage = usePrevious(page)
+  const { collapsedOffers, toggleCollapseOffer } = useOfferActions()
 
   const viewport = useRef<HTMLDivElement>(null)
 
@@ -58,6 +62,7 @@ export default function Table() {
         }
         return undefined
       }}
+      rowClassName={({ number }) => (collapsedOffers.has(number) ? 'tw-line-through tw-opacity-50' : '')}
       columns={[
         {
           accessor: 'favorite',
@@ -140,6 +145,26 @@ export default function Table() {
           accessor: 'salary',
           sortable: true,
           render: ({ salary }) => formatSalary(salary),
+        },
+        {
+          accessor: 'collapse',
+          title: 'Hide',
+          textAlign: 'center',
+          render: (record) => (
+            <button
+              onClick={(event) => {
+                event.stopPropagation()
+                toggleCollapseOffer(record)
+              }}
+              className="tw-p-1 tw-rounded hover:tw-bg-gray-100"
+            >
+              {collapsedOffers.has(record.number) ? (
+                <ReplayIcon className="tw-w-4 tw-h-4" />
+              ) : (
+                <CloseIcon className="tw-w-4 tw-h-4" />
+              )}
+            </button>
+          ),
         },
       ]}
       sortStatus={sortStatus}
