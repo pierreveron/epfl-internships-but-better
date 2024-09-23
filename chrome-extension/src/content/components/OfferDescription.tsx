@@ -58,14 +58,14 @@ export default function OfferDescription() {
 
   if (!offer) {
     return (
-      <div className="tw-flex tw-items-center tw-justify-center tw-h-full tw-w-full">
+      <div className="tw-pl-4 tw-flex tw-items-center tw-justify-center tw-h-full tw-w-full">
         <p className="tw-text-xl tw-text-gray-500">No offer selected</p>
       </div>
     )
   }
 
   return (
-    <div className="tw-pb-8 tw-h-full tw-w-full tw-overflow-y-auto tw-no-scrollbar">
+    <div className="tw-pl-4 tw-pt-4 tw-pb-8 tw-h-full tw-w-full tw-overflow-y-auto tw-no-scrollbar">
       <p className="tw-text-gray-500 tw-text-sm">{offer.number}</p>
 
       <div className="tw-mb-4">

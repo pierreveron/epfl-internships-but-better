@@ -26,7 +26,10 @@ export default function List() {
   }, [page])
 
   return (
-    <div className="tw-w-4/5 tw-flex tw-flex-col tw-h-full">
+    <div
+      ref={listRef}
+      className="tw-pt-4 tw-w-4/5 tw-flex tw-flex-col tw-h-full tw-overflow-y-auto tw-no-scrollbar tw-pr-4 tw-border-r tw-border-gray-200"
+    >
       <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
         <p>
           {filteredOffers.length === 0 && 'No offers correspond to your criteria'}
@@ -39,7 +42,7 @@ export default function List() {
         </p>
         <SortDropdown />
       </div>
-      <div ref={listRef} className="tw-flex-1 tw-space-y-4 tw-overflow-y-auto tw-no-scrollbar tw-pb-4">
+      <div className="tw-space-y-4 tw-pb-4">
         {records.map((record) => (
           <Card
             key={record.number}

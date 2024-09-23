@@ -204,10 +204,9 @@ function AppContent() {
             </AppShell.Section>
           </AppShell.Aside> */}
       {/* <AppShell.Main style={{ height: '100vh', width: '100%' }}> */}
-      <main className="tw-flex tw-flex-row tw-gap-x-4 tw-justify-between tw-px-4 tw-w-full tw-flex-1 tw-overflow-hidden tw-border-t tw-border-gray-200 tw-pt-2">
+      <main className="tw-flex tw-flex-row tw-justify-between tw-px-4 tw-w-full tw-flex-1 tw-overflow-hidden tw-border-t tw-border-gray-200">
         {/* <Table data={data} /> */}
         <List />
-        <div className="tw-w-0.5 -tw-mt-2 tw-h-full tw-bg-gray-200"></div>
         <OfferDescription />
       </main>
     </AppShell>
