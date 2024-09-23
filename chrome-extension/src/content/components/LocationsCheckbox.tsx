@@ -1,19 +1,25 @@
 import { ActionIcon, Checkbox, Collapse, Flex, Group, Stack, Text } from '@mantine/core'
 
-import { useMemo, useState } from 'react'
+import { useContext, useState } from 'react'
 
-import { locationsAtom } from '../atoms'
 import { getFlagEmojiWithName } from '../utils/countries'
 import { IconChevronDown } from '@tabler/icons-react'
-import { focusAtom } from 'jotai-optics'
-import { useAtom } from 'jotai'
+import { FilterContext } from '../contexts/FilterContext'
+import { SelectableCity } from '../types'
 
 const TRANSITION_DURATION_IN_MS = 300
 
 export default function LocationCheckbox({ country }: { country: string }) {
-  const citiesAtom = useMemo(() => focusAtom(locationsAtom, (optic) => optic.prop(country)), [country])
+  const { selectableLocations, setSelectableLocations } = useContext(FilterContext)!
 
-  const [cities, setCities] = useAtom(citiesAtom)
+  const cities = selectableLocations[country]
+
+  const setCities = (updater: (cities: SelectableCity[]) => SelectableCity[]) => {
+    setSelectableLocations((locations) => ({
+      ...locations,
+      [country]: updater(locations[country]),
+    }))
+  }
 
   const allChecked = cities.every((value) => value.selected)
   const indeterminate = cities.some((value) => value.selected) && !allChecked
@@ -50,9 +56,10 @@ export default function LocationCheckbox({ country }: { country: string }) {
           label={countryLabel}
           onChange={() => {
             setCities((cities) => {
-              return cities.map((l) => {
-                return { ...l, selected: !allChecked }
-              })
+              return cities.map((l) => ({
+                ...l,
+                selected: !allChecked,
+              }))
             })
           }}
         />

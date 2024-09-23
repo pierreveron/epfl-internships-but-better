@@ -1,27 +1,29 @@
-import { lengthAtom, locationsAtom, minimumSalaryAtom, showOnlyFavoritesAtom } from '../atoms'
+import { useContext } from 'react'
 import { Button, Group, NumberInput, Popover, Stack, Switch } from '@mantine/core'
 import { IconChevronDown } from '@tabler/icons-react'
-import { useAtom } from 'jotai'
 import CompanySelect from './CompanySelect'
 import FormatsSegmentedControl from './FormatsSegmentedControl'
 import LengthsCheckboxes from './LengthsCheckboxes'
 import LocationsCheckbox from './LocationsCheckbox'
 import DisplayModeSegmentedControl from './DisplayModeSegmentedControl'
 import { useAside } from '../hooks/useAside'
+import { FilterContext } from '../contexts/FilterContext'
+import { useData } from '../../utils/useData'
 
-export default function ActionBar({
-  nbCitiesSelected,
-  companies,
-}: // dataDate,
-{
-  nbCitiesSelected: number
-  companies: string[]
-  dataDate: string
-}) {
-  const [selectableLocations, setSelectableLocations] = useAtom(locationsAtom)
-  const [selectableLengths, setSelectableLengths] = useAtom(lengthAtom)
-  const [showOnlyFavorites, setShowOnlyFavorite] = useAtom(showOnlyFavoritesAtom)
-  const [minimumSalary, setMinimumSalary] = useAtom(minimumSalaryAtom)
+export default function ActionBar() {
+  const { companies } = useData()
+
+  const {
+    selectableLocations,
+    setSelectableLocations,
+    selectableLengths,
+    setSelectableLengths,
+    showOnlyFavorites,
+    setShowOnlyFavorites,
+    minimumSalary,
+    setMinimumSalary,
+    nbCitiesSelected,
+  } = useContext(FilterContext)!
 
   const { setOpen } = useAside()
 
@@ -44,12 +46,14 @@ export default function ActionBar({
                 disabled={nbCitiesSelected === 0}
                 onClick={() =>
                   setSelectableLocations((locations) => {
-                    Object.keys(locations).forEach((country) => {
-                      locations[country].forEach((city) => {
-                        city.selected = false
-                      })
+                    const updatedLocations = { ...locations }
+                    Object.keys(updatedLocations).forEach((country) => {
+                      updatedLocations[country] = updatedLocations[country].map((city) => ({
+                        ...city,
+                        selected: false,
+                      }))
                     })
-                    return { ...locations }
+                    return updatedLocations
                   })
                 }
               >
@@ -73,11 +77,7 @@ export default function ActionBar({
               <Button
                 variant="subtle"
                 disabled={selectableLengths.filter((v) => v.selected).length === 0}
-                onClick={() =>
-                  setSelectableLengths((lengths) => {
-                    return lengths.map((f) => ({ ...f, selected: false }))
-                  })
-                }
+                onClick={() => setSelectableLengths((lengths) => lengths.map((f) => ({ ...f, selected: false })))}
               >
                 Reset
               </Button>
@@ -122,7 +122,7 @@ export default function ActionBar({
           label="Show only favorites"
           checked={showOnlyFavorites}
           onChange={(event) => {
-            setShowOnlyFavorite(event.currentTarget.checked)
+            setShowOnlyFavorites(event.currentTarget.checked)
             setOpen(false)
           }}
         />

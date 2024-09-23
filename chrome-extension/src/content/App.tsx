@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useRef, useMemo } from 'react'
+import { useEffect, useRef } from 'react'
 import styles from '../styles/index.css?inline'
 import loadingDots from '../styles/loading-dots.css?inline'
 import mantineStyles from '@mantine/core/styles.css?inline'
 import mantineDatatableStyles from 'mantine-datatable/styles.css?inline'
 import { MantineProvider, createTheme, AppShell } from '@mantine/core'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useHotkeys, useViewportSize } from '@mantine/hooks'
-import { isAsideMaximizedAtom, lengthAtom, locationsAtom, nbCitiesSelectedAtom } from './atoms'
+import { useAtom } from 'jotai'
+import { useViewportSize } from '@mantine/hooks'
+import { isAsideMaximizedAtom } from './atoms'
 // import { useAsideNavigation } from './utils/hooks'
-import { SelectableCity, SelectableLength } from './types'
 import ActionBar from './components/ActionBar'
 // import Table from './components/Table'
 import OfferDescription from './components/OfferDescription'
@@ -22,7 +21,6 @@ import OfferDescription from './components/OfferDescription'
 // import classNames from 'classnames'
 import List from './components/List'
 import { DataProvider } from './DataProvider'
-import { useData } from '../utils/useData'
 import { AsideProvider } from './contexts/AsideContext'
 import { OfferActionsProvider } from './contexts/OfferActionsContext'
 import { useAside } from './hooks/useAside'
@@ -30,69 +28,9 @@ import { FilterProvider } from './contexts/FilterContext'
 import { SortProvider } from './contexts/SortContext'
 import { PaginationProvider } from './contexts/PaginationContext'
 
-const NOT_SPECIFIED = 'Not specified'
-
 function AppContent() {
-  const { data, dataDate, companies } = useData()
-
-  const setSelectableLengths = useSetAtom(lengthAtom)
-  const setSelectableLocations = useSetAtom(locationsAtom)
-  // @ts-ignore
-  const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom)
-  const { open: isAsideOpen, setOpen: setAsideOpen } = useAside()
+  const { offer: asideOffer } = useAside()
   const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom)
-
-  useHotkeys([
-    [
-      'Enter',
-      () => {
-        if (isAsideOpen) setIsAsideMaximized((v) => !v)
-      },
-    ],
-    [
-      'Escape',
-      () => {
-        setAsideOpen(false)
-        setIsAsideMaximized(false)
-      },
-    ],
-  ])
-
-  useEffect(() => {
-    setSelectableLengths(
-      Array.from(new Set(data.flatMap((d) => d.length))).map((length) => {
-        return { name: length, selected: false }
-      }) as SelectableLength[],
-    )
-  }, [data, setSelectableLengths])
-
-  const citiesByCountry = useMemo(() => {
-    const citiesByCountry: Record<string, SelectableCity[]> = {}
-    data
-      .flatMap((d) => d.location)
-      .forEach((l) => {
-        if (l.country !== null && l.country in citiesByCountry) {
-          if (citiesByCountry[l.country]?.map((c) => c.name).includes(l.city) || l.city === null) {
-            return
-          }
-          citiesByCountry[l.country]?.push({ name: l.city, selected: false })
-        } else {
-          citiesByCountry[l.country ?? NOT_SPECIFIED] = [{ name: l.city, selected: false }]
-        }
-      })
-
-    Object.keys(citiesByCountry).forEach((country) => {
-      citiesByCountry[country] = citiesByCountry[country].sort((a, b) => a.name.localeCompare(b.name))
-    })
-    return citiesByCountry
-  }, [data])
-
-  useEffect(() => {
-    setSelectableLocations(citiesByCountry)
-  }, [citiesByCountry, setSelectableLocations])
-
-  // const { canNavigateToNextOffer, canNavigateToPreviousOffer, navigateToNextOffer, navigateToPreviousOffer } =
-  //   useAsideNavigation()
 
   const { width } = useViewportSize()
 
@@ -109,7 +47,7 @@ function AppContent() {
       aside={{
         width: {
           md: isAsideMaximized ? '100%' : 550,
-          lg: isAsideOpen ? (isAsideMaximized ? '100%' : 'max(40%, 550px)') : 0,
+          lg: asideOffer !== null ? (isAsideMaximized ? '100%' : 'max(40%, 550px)') : 0,
         },
         breakpoint: 'md',
         collapsed: { mobile: false, desktop: false },
@@ -118,7 +56,7 @@ function AppContent() {
       style={{ height: '100%', display: 'flex', flexDirection: 'column' }}
     >
       <div className="tw-px-4 tw-py-4">
-        <ActionBar nbCitiesSelected={nbCitiesSelected} companies={companies} dataDate={dataDate} />
+        <ActionBar />
       </div>
       {/* Used the hack below to remove the padding when aside is closed and size is 0, otherwise the aside was still visible */}
       {/* <AppShell.Aside {...(isAsideOpen && !isAsideMaximized && { pl: 'xl' })}>

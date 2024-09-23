@@ -1,10 +1,12 @@
-import { filteredOffersAtom, pageAtom, sortStatusAtom } from '../atoms'
+import { sortStatusAtom } from '../atoms'
 import { PAGE_SIZE } from '../components/Table'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
-import { useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { Offer } from '../../../../types'
 import { useAside } from '../hooks/useAside'
+import { useFilter } from '../hooks/useFilter'
+import { usePagination } from '../hooks/usePagination'
 
 export const useHiddenOffers = () => {
   const [hiddenOffers, setHiddenOffers] = useLocalStorage({
@@ -68,12 +70,12 @@ export const useFavoriteOffers = () => {
 }
 
 export const useAsideNavigation = () => {
-  const { offer, setOffer: setAside, setOpen: setAsideOpen } = useAside()
-  const filteredOffers = useAtomValue(filteredOffersAtom)
+  const { offer, setOffer: setAside } = useAside()
+  const { filteredData: filteredOffers } = useFilter()
   const { isOfferHidden } = useHiddenOffers()
   const sortStatus = useAtomValue(sortStatusAtom)
 
-  const setPage = useSetAtom(pageAtom)
+  const { setPage } = usePagination()
 
   useHotkeys([
     ['ArrowRight', () => navigateToNextOffer()],
@@ -122,7 +124,6 @@ export const useAsideNavigation = () => {
     if (currentOfferIndex < finalOffers.length - 1) {
       const nextOfferIndex = currentOfferIndex + 1
       const nextOffer = finalOffers[nextOfferIndex]
-      setAsideOpen(true)
       setAside(nextOffer)
 
       const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1
@@ -140,7 +141,6 @@ export const useAsideNavigation = () => {
     if (currentOfferIndex > 0) {
       const previousOfferIndex = currentOfferIndex - 1
       const previousOffer = finalOffers[previousOfferIndex]
-      setAsideOpen(true)
       setAside(previousOffer)
 
       const newPage = Math.floor(previousOfferIndex / PAGE_SIZE) + 1

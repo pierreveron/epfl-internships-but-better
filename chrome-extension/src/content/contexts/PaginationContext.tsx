@@ -1,21 +1,9 @@
-import { useAtomValue } from 'jotai'
-import React, { createContext, useEffect, useMemo, useState } from 'react'
-import {
-  companyAtom,
-  formatAtom,
-  // formattingOffersAtom,
-  // loadingOffersAtom,
-  locationsAtom,
-  minimumSalaryAtom,
-  showOnlyFavoritesAtom,
-  lengthAtom,
-  showOnlyPositionsNotYetCompletedAtom,
-  // sortStatusAtom,
-} from '../atoms'
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { useFavoriteOffers } from '../utils/hooks'
 import { Offer } from '../../../../types'
 import { useSort } from '../hooks/useSort'
 import { useAside } from '../hooks/useAside'
+import { FilterContext } from './FilterContext'
 
 type Record = Offer & {
   favorite: boolean
@@ -35,18 +23,20 @@ export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const pageSize = 15
   const { isOfferFavorite } = useFavoriteOffers()
   const { sortedData } = useSort()
-  const { offer, setOffer, setOpen } = useAside()
+  const { setOffer } = useAside()
 
   //   const { selectableLocations, selectableFormats, selectableLengths, selectedCompany, showOnlyPositionsNotYetCompleted, showOnlyFavorites, minimumSalary } = useFilter()
   // const isFormatingOffers = useAtomValue(formattingOffersAtom)
   // const isLoadingOffers = useAtomValue(loadingOffersAtom)
-  const selectableFormats = useAtomValue(formatAtom)
-  const selectableLengths = useAtomValue(lengthAtom)
-  const selectableLocations = useAtomValue(locationsAtom)
-  const selectedCompany = useAtomValue(companyAtom)
-  const showOnlyPositionsNotYetCompleted = useAtomValue(showOnlyPositionsNotYetCompletedAtom)
-  const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom)
-  const minimumSalary = useAtomValue(minimumSalaryAtom)
+
+  const {
+    selectableFormats,
+    selectableLengths,
+    selectableLocations,
+    selectedCompany,
+    showOnlyFavorites,
+    minimumSalary,
+  } = useContext(FilterContext)!
 
   useEffect(() => {
     setPage(1)
@@ -55,7 +45,6 @@ export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     selectableFormats,
     selectableLengths,
     selectedCompany,
-    showOnlyPositionsNotYetCompleted,
     showOnlyFavorites,
     minimumSalary,
     setPage,
@@ -76,9 +65,12 @@ export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     if (records.length > 0) {
       console.log('opening first offer')
       setOffer(records[0])
-      setOpen(true)
     }
-  }, [offer, records, setOffer, setOpen])
+
+    if (records.length === 0) {
+      setOffer(null)
+    }
+  }, [records, setOffer])
 
   return (
     <PaginationContext.Provider value={{ records, page, setPage, pageSize }}>{children}</PaginationContext.Provider>

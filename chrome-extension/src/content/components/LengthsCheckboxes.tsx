@@ -1,7 +1,6 @@
 import { Checkbox, Stack } from '@mantine/core'
-
-import { lengthAtom } from '../atoms'
-import { useAtom } from 'jotai'
+import { useContext } from 'react'
+import { FilterContext } from '../contexts/FilterContext'
 
 export function formatLengthLabel(label: string) {
   switch (label) {
@@ -17,11 +16,11 @@ export function formatLengthLabel(label: string) {
 }
 
 export default function LengthsCheckboxes() {
-  const [lengths, setLengths] = useAtom(lengthAtom)
+  const { selectableLengths, setSelectableLengths } = useContext(FilterContext)!
 
   return (
     <Stack gap="xs">
-      {lengths
+      {selectableLengths
         .sort((a, b) => a.name.localeCompare(b.name))
         .map((value) => (
           <Checkbox
@@ -29,7 +28,7 @@ export default function LengthsCheckboxes() {
             key={value.name}
             checked={value.selected}
             onChange={(event) => {
-              setLengths((formats) => {
+              setSelectableLengths((formats) => {
                 return formats.map((l) => {
                   if (l.name === value.name) {
                     return { ...l, selected: event.currentTarget.checked }

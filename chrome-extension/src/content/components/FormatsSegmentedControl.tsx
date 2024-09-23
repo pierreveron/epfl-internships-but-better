@@ -1,15 +1,15 @@
 import { SegmentedControl } from '@mantine/core'
 
-import { formatAtom } from '../atoms'
 import { formatToLabel } from '../utils/format'
-import { useAtom } from 'jotai'
+import { useContext } from 'react'
+import { FilterContext } from '../contexts/FilterContext'
 
 export default function FormatsSegmentedControl() {
-  const [formats, setFormats] = useAtom(formatAtom)
+  const { selectableFormats, setSelectableFormats } = useContext(FilterContext)!
 
   const data = [
     { label: 'All', value: 'all' },
-    ...formats.map((f) => ({
+    ...selectableFormats.map((f) => ({
       label: formatToLabel(f.name),
       value: f.name,
     })),
@@ -17,12 +17,12 @@ export default function FormatsSegmentedControl() {
 
   return (
     <SegmentedControl
-      value={formats.every((f) => !f.selected) ? 'all' : formats.find((f) => f.selected)?.name}
+      value={selectableFormats.every((f) => !f.selected) ? 'all' : selectableFormats.find((f) => f.selected)?.name}
       onChange={(format: string) => {
         if (format === 'all') {
-          setFormats((formats) => formats.map((f) => ({ ...f, selected: false })))
+          setSelectableFormats((formats) => formats.map((f) => ({ ...f, selected: false })))
         } else {
-          setFormats((formats) =>
+          setSelectableFormats((formats) =>
             formats.map((f) => {
               if (format === f.name) {
                 return { ...f, selected: true }

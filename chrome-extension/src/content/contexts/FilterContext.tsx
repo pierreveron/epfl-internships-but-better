@@ -1,110 +1,127 @@
-import React, { createContext, useMemo } from 'react'
-import { useAtomValue, useSetAtom } from 'jotai'
-import {
-  companyAtom,
-  filteredOffersAtom,
-  formatAtom,
-  lengthAtom,
-  locationsAtom,
-  minimumSalaryAtom,
-  nbCitiesSelectedAtom,
-  showOnlyFavoritesAtom,
-  showOnlyPositionsNotYetCompletedAtom,
-} from '../atoms'
+import React, { createContext, useState, useMemo, useEffect } from 'react'
 import { Offer } from '../../../../types'
 import { useFavoriteOffers } from '../utils/hooks'
 import { useData } from '../../utils/useData'
+import { SelectableCity, SelectableFormat, SelectableLength } from '../types'
 
 const NOT_SPECIFIED = 'Not specified'
 
 interface FilterContextProps {
   filteredData: Offer[]
+  selectableLocations: Record<string, SelectableCity[]>
+  setSelectableLocations: React.Dispatch<React.SetStateAction<Record<string, SelectableCity[]>>>
+  selectableFormats: SelectableFormat[]
+  setSelectableFormats: React.Dispatch<React.SetStateAction<SelectableFormat[]>>
+  selectableLengths: SelectableLength[]
+  setSelectableLengths: React.Dispatch<React.SetStateAction<SelectableLength[]>>
+  selectedCompany: string | null
+  setSelectedCompany: React.Dispatch<React.SetStateAction<string | null>>
+  showOnlyFavorites: boolean
+  setShowOnlyFavorites: React.Dispatch<React.SetStateAction<boolean>>
+  minimumSalary: number | undefined
+  setMinimumSalary: React.Dispatch<React.SetStateAction<number | undefined>>
+  nbCitiesSelected: number
 }
 
 export const FilterContext = createContext<FilterContextProps | undefined>(undefined)
 
 export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { data } = useData()
-  const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom)
-  const selectableFormats = useAtomValue(formatAtom)
-  const selectableLengths = useAtomValue(lengthAtom)
-  const selectableLocations = useAtomValue(locationsAtom)
-  const selectedCompany = useAtomValue(companyAtom)
-  const showOnlyPositionsNotYetCompleted = useAtomValue(showOnlyPositionsNotYetCompletedAtom)
-  const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom)
-  const minimumSalary = useAtomValue(minimumSalaryAtom)
-  const setFilteredOffers = useSetAtom(filteredOffersAtom)
-  //   const sortStatus = useAtomValue(sortStatusAtom)
+  const { data, citiesByCountry } = useData()
+  const [selectableLocations, setSelectableLocations] = useState<Record<string, SelectableCity[]>>({})
+  const [selectableFormats, setSelectableFormats] = useState<SelectableFormat[]>([
+    { name: 'internship', selected: false },
+    { name: 'project', selected: false },
+  ])
+  const [selectableLengths, setSelectableLengths] = useState<SelectableLength[]>([])
+  const [selectedCompany, setSelectedCompany] = useState<string | null>(null)
+  const [showOnlyFavorites, setShowOnlyFavorites] = useState(false)
+  const [minimumSalary, setMinimumSalary] = useState<number | undefined>(undefined)
+
   const { isOfferFavorite } = useFavoriteOffers()
 
-  const sortedData = useMemo(() => {
-    return data
-    // return sortBy(data, sortStatus.columnAccessor, sortStatus.direction)
-  }, [data])
+  const nbCitiesSelected = useMemo(() => {
+    return Object.values(selectableLocations).reduce((acc, cities) => {
+      return acc + cities.filter((city) => city.selected).length
+    }, 0)
+  }, [selectableLocations])
 
   const filteredData = useMemo(() => {
-    let data = sortedData
+    let filteredOffers = data
 
+    // Apply filters
     if (selectableFormats.some((f) => f.selected)) {
-      data = data.filter((d) => {
-        return (
-          d.format.filter((f) => {
-            return selectableFormats.find((sf) => sf.name === f)?.selected
-          }).length > 0
-        )
-      })
+      filteredOffers = filteredOffers.filter((d) =>
+        d.format.some((f) => selectableFormats.find((sf) => sf.name === f)?.selected),
+      )
     }
 
     if (minimumSalary !== undefined) {
-      data = data.filter((d) => {
-        return d.salary !== null && typeof d.salary !== 'string' && d.salary >= minimumSalary
-      })
+      filteredOffers = filteredOffers.filter(
+        (d) => d.salary !== null && typeof d.salary !== 'string' && d.salary >= minimumSalary,
+      )
     }
 
-    if (selectableLengths.some((f: { selected: boolean }) => f.selected)) {
-      data = data.filter((d) => {
-        return selectableLengths.find((sf: { name: string; selected: boolean }) => sf.name === d.length)?.selected
-      })
+    if (selectableLengths.some((f) => f.selected)) {
+      filteredOffers = filteredOffers.filter((d) => selectableLengths.find((sf) => sf.name === d.length)?.selected)
     }
 
     if (selectedCompany) {
-      data = data.filter((d) => d.company === selectedCompany)
+      filteredOffers = filteredOffers.filter((d) => d.company === selectedCompany)
     }
 
     if (showOnlyFavorites) {
-      data = data.filter((d) => isOfferFavorite(d))
+      filteredOffers = filteredOffers.filter((d) => isOfferFavorite(d))
     }
 
     if (nbCitiesSelected !== 0) {
-      data = data.filter((d) => {
-        return (
-          d.location.filter((l) => {
-            return selectableLocations[l.country ?? NOT_SPECIFIED]?.find((c) => c.name === l.city)?.selected || false
-          }).length > 0
-        )
-      })
+      filteredOffers = filteredOffers.filter((d) =>
+        d.location.some(
+          (l) => selectableLocations[l.country ?? NOT_SPECIFIED]?.find((c) => c.name === l.city)?.selected,
+        ),
+      )
     }
 
-    if (showOnlyPositionsNotYetCompleted) {
-      data = data.filter((d) => d.registered < d.positions)
-    }
-
-    setFilteredOffers(data)
-
-    return data
+    return filteredOffers
   }, [
-    sortedData,
+    data,
     selectableFormats,
     minimumSalary,
     selectableLengths,
     selectedCompany,
     showOnlyFavorites,
     nbCitiesSelected,
-    showOnlyPositionsNotYetCompleted,
-    setFilteredOffers,
     isOfferFavorite,
     selectableLocations,
   ])
 
-  return <FilterContext.Provider value={{ filteredData }}>{children}</FilterContext.Provider>
+  useEffect(() => {
+    setSelectableLengths(
+      Array.from(new Set(data.flatMap((d) => d.length))).map((length) => {
+        return { name: length, selected: false }
+      }) as SelectableLength[],
+    )
+  }, [data, setSelectableLengths])
+
+  useEffect(() => {
+    setSelectableLocations(citiesByCountry)
+  }, [citiesByCountry, setSelectableLocations])
+
+  const contextValue = {
+    filteredData,
+    selectableLocations,
+    setSelectableLocations,
+    selectableFormats,
+    setSelectableFormats,
+    selectableLengths,
+    setSelectableLengths,
+    selectedCompany,
+    setSelectedCompany,
+    showOnlyFavorites,
+    setShowOnlyFavorites,
+    minimumSalary,
+    setMinimumSalary,
+    nbCitiesSelected,
+  }
+
+  return <FilterContext.Provider value={contextValue}>{children}</FilterContext.Provider>
 }

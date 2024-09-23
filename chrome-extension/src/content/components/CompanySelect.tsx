@@ -1,13 +1,12 @@
-import { companyAtom } from '../atoms'
 import { Select } from '@mantine/core'
-import { useAtom } from 'jotai'
+import { useContext } from 'react'
+import { FilterContext } from '../contexts/FilterContext'
 
 export default function CompanySelect({ companies }: { companies: string[] }) {
-  const [selectedCompany, setSelectedCompany] = useAtom(companyAtom)
+  const { selectedCompany, setSelectedCompany } = useContext(FilterContext)!
 
   return (
     <Select
-      //   label="Company"
       placeholder="Select a company"
       searchable
       clearable
