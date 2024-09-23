@@ -6,9 +6,9 @@ import loadingDots from '../styles/loading-dots.css?inline'
 import mantineStyles from '@mantine/core/styles.css?inline'
 import mantineDatatableStyles from 'mantine-datatable/styles.css?inline'
 import { MantineProvider, createTheme, AppShell } from '@mantine/core'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useViewportSize } from '@mantine/hooks'
-import { isAsideMaximizedAtom } from './atoms'
+import { displayModeAtom, isAsideMaximizedAtom } from './atoms'
 // import { useAsideNavigation } from './utils/hooks'
 import ActionBar from './components/ActionBar'
 // import Table from './components/Table'
@@ -27,10 +27,12 @@ import { useAside } from './hooks/useAside'
 import { FilterProvider } from './contexts/FilterContext'
 import { SortProvider } from './contexts/SortContext'
 import { PaginationProvider } from './contexts/PaginationContext'
+import Table from './components/Table'
 
 function AppContent() {
   const { offer: asideOffer } = useAside()
   const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom)
+  const displayMode = useAtomValue(displayModeAtom)
 
   const { width } = useViewportSize()
 
@@ -143,8 +145,7 @@ function AppContent() {
           </AppShell.Aside> */}
       {/* <AppShell.Main style={{ height: '100vh', width: '100%' }}> */}
       <main className="tw-flex tw-flex-row tw-justify-between tw-w-full tw-flex-1 tw-overflow-hidden tw-border-t tw-border-gray-200">
-        {/* <Table data={data} /> */}
-        <List />
+        {displayMode === 'table' ? <Table /> : <List />}
         <OfferDescription />
       </main>
     </AppShell>

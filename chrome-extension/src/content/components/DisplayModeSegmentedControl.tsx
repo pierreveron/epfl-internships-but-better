@@ -14,7 +14,7 @@ export default function DisplayModeSegmentedControl() {
   return (
     <SegmentedControl
       value={displayMode}
-      onChange={(value: string) => setDisplayMode(value as 'list' | 'table')}
+      onChange={(value) => setDisplayMode(value as 'list' | 'table')}
       data={data.map((item) => ({
         value: item.value,
         label: (
