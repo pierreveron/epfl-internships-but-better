@@ -1,18 +1,19 @@
-import { asideAtom, lengthAtom, locationsAtom, minimumSalaryAtom, showOnlyFavoritesAtom } from '../atoms'
+import { lengthAtom, locationsAtom, minimumSalaryAtom, showOnlyFavoritesAtom } from '../atoms'
 import { Button, Group, NumberInput, Popover, Stack, Switch } from '@mantine/core'
 import { IconChevronDown } from '@tabler/icons-react'
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import CompanySelect from './CompanySelect'
 import FormatsSegmentedControl from './FormatsSegmentedControl'
 import LengthsCheckboxes from './LengthsCheckboxes'
 import LocationsCheckbox from './LocationsCheckbox'
 import DisplayModeSegmentedControl from './DisplayModeSegmentedControl'
+import { useAside } from '../hooks/useAside'
 
 export default function ActionBar({
   nbCitiesSelected,
   companies,
-  dataDate,
-}: {
+}: // dataDate,
+{
   nbCitiesSelected: number
   companies: string[]
   dataDate: string
@@ -21,7 +22,8 @@ export default function ActionBar({
   const [selectableLengths, setSelectableLengths] = useAtom(lengthAtom)
   const [showOnlyFavorites, setShowOnlyFavorite] = useAtom(showOnlyFavoritesAtom)
   const [minimumSalary, setMinimumSalary] = useAtom(minimumSalaryAtom)
-  const setAsideOffer = useSetAtom(asideAtom)
+
+  const { setOpen } = useAside()
 
   return (
     <Group justify="space-between">
@@ -121,7 +123,7 @@ export default function ActionBar({
           checked={showOnlyFavorites}
           onChange={(event) => {
             setShowOnlyFavorite(event.currentTarget.checked)
-            setAsideOffer({ open: false, offer: null })
+            setOpen(false)
           }}
         />
       </Group>

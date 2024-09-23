@@ -1,9 +1,10 @@
-import { asideAtom, filteredOffersAtom, pageAtom, sortStatusAtom } from '../atoms'
+import { filteredOffersAtom, pageAtom, sortStatusAtom } from '../atoms'
 import { PAGE_SIZE } from '../components/Table'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { useMemo } from 'react'
 import { Offer } from '../../../../types'
+import { useAside } from '../hooks/useAside'
 
 export const useHiddenOffers = () => {
   const [hiddenOffers, setHiddenOffers] = useLocalStorage({
@@ -37,7 +38,7 @@ export const useFavoriteOffers = () => {
     defaultValue: [] as string[],
   })
 
-  const { offer } = useAtomValue(asideAtom)
+  const { offer } = useAside()
 
   useHotkeys([
     [
@@ -67,7 +68,7 @@ export const useFavoriteOffers = () => {
 }
 
 export const useAsideNavigation = () => {
-  const [{ offer }, setAside] = useAtom(asideAtom)
+  const { offer, setOffer: setAside, setOpen: setAsideOpen } = useAside()
   const filteredOffers = useAtomValue(filteredOffersAtom)
   const { isOfferHidden } = useHiddenOffers()
   const sortStatus = useAtomValue(sortStatusAtom)
@@ -121,7 +122,8 @@ export const useAsideNavigation = () => {
     if (currentOfferIndex < finalOffers.length - 1) {
       const nextOfferIndex = currentOfferIndex + 1
       const nextOffer = finalOffers[nextOfferIndex]
-      setAside({ open: true, offer: nextOffer })
+      setAsideOpen(true)
+      setAside(nextOffer)
 
       const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1
       setPage(newPage)
@@ -138,7 +140,8 @@ export const useAsideNavigation = () => {
     if (currentOfferIndex > 0) {
       const previousOfferIndex = currentOfferIndex - 1
       const previousOffer = finalOffers[previousOfferIndex]
-      setAside({ open: true, offer: previousOffer })
+      setAsideOpen(true)
+      setAside(previousOffer)
 
       const newPage = Math.floor(previousOfferIndex / PAGE_SIZE) + 1
       setPage(newPage)

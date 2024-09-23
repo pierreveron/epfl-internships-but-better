@@ -5,18 +5,10 @@ import styles from '../styles/index.css?inline'
 import loadingDots from '../styles/loading-dots.css?inline'
 import mantineStyles from '@mantine/core/styles.css?inline'
 import mantineDatatableStyles from 'mantine-datatable/styles.css?inline'
-import {
-  MantineProvider,
-  createTheme,
-  //ActionIcon,
-  Anchor,
-  AppShell,
-  // ScrollArea,
-  Stack,
-} from '@mantine/core'
+import { MantineProvider, createTheme, AppShell } from '@mantine/core'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useHotkeys, useViewportSize } from '@mantine/hooks'
-import { asideAtom, formatAtom, isAsideMaximizedAtom, lengthAtom, locationsAtom, nbCitiesSelectedAtom } from './atoms'
+import { formatAtom, isAsideMaximizedAtom, lengthAtom, locationsAtom, nbCitiesSelectedAtom } from './atoms'
 // import { useAsideNavigation } from './utils/hooks'
 import { SelectableCity, SelectableLength } from './types'
 import ActionBar from './components/ActionBar'
@@ -31,6 +23,9 @@ import OfferDescription from './components/OfferDescription'
 import List from './components/List'
 import { DataProvider } from './DataProvider'
 import { useData } from '../utils/useData'
+import { AsideProvider } from './contexts/AsideContext'
+import { OfferActionsProvider } from './contexts/OfferActionsContext'
+import { useAside } from './hooks/useAside'
 
 const NOT_SPECIFIED = 'Not specified'
 
@@ -41,7 +36,7 @@ function AppContent() {
   const setSelectableLocations = useSetAtom(locationsAtom)
   // @ts-ignore
   const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom)
-  const [{ open: isAsideOpen }, setAside] = useAtom(asideAtom)
+  const { open: isAsideOpen, setOpen: setAsideOpen } = useAside()
   const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom)
 
   useHotkeys([
@@ -54,7 +49,7 @@ function AppContent() {
     [
       'Escape',
       () => {
-        setAside({ open: false, offer: null })
+        setAsideOpen(false)
         setIsAsideMaximized(false)
       },
     ],
@@ -249,13 +244,17 @@ export default function App() {
       cssVariablesSelector="#extension-main-container"
     >
       <DataProvider>
-        <div
-          ref={containerRef}
-          id="extension-main-container"
-          className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
-        >
-          <AppContent />
-        </div>
+        <AsideProvider>
+          <OfferActionsProvider>
+            <div
+              ref={containerRef}
+              id="extension-main-container"
+              className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
+            >
+              <AppContent />
+            </div>
+          </OfferActionsProvider>
+        </AsideProvider>
       </DataProvider>
     </MantineProvider>
   )

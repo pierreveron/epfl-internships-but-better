@@ -1,5 +1,4 @@
 import {
-  asideAtom,
   companyAtom,
   filteredOffersAtom,
   formatAtom,
@@ -24,6 +23,7 @@ import { useEffect, useMemo, useState, useRef } from 'react'
 import { usePrevious } from '@mantine/hooks'
 import { Offer } from '../../../../types'
 import HeartIcon from './HeartIcon'
+import { useAside } from '../hooks/useAside'
 // import { formatLengthLabel } from './LengthsCheckboxes'
 // import ClockIcon from './icons/ClockIcon'
 // import LocationDotIcon from './icons/LocationDotIcon'
@@ -82,7 +82,7 @@ export default function Table({ data }: { data: Offer[] }) {
   const showOnlyPositionsNotYetCompleted = useAtomValue(showOnlyPositionsNotYetCompletedAtom)
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom)
   const minimumSalary = useAtomValue(minimumSalaryAtom)
-  const [{ offer }, setAside] = useAtom(asideAtom)
+  const { offer, setOffer: setAside, setOpen: setAsideOpen } = useAside()
   const setFilteredOffers = useSetAtom(filteredOffersAtom)
 
   const { favoriteOffers, isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers()
@@ -392,10 +392,8 @@ export default function Table({ data }: { data: Offer[] }) {
       page={page}
       onPageChange={(p) => setPage(p)}
       onRowClick={({ record }) => {
-        setAside({
-          open: true,
-          offer: record,
-        })
+        setAsideOpen(true)
+        setAside(record)
       }}
       scrollViewportRef={viewport}
     />

@@ -1,5 +1,4 @@
 import {
-  asideAtom,
   companyAtom,
   filteredOffersAtom,
   formatAtom,
@@ -17,11 +16,13 @@ import {
 import { useFavoriteOffers, useHiddenOffers } from '../utils/hooks'
 import classNames from 'classnames'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Offer } from '../../../../types'
 import Card from '../components/Card'
 import SortDropdown from './SortDropdown'
 import { sortStatusAtom } from '../atoms'
+import { useAside } from '../hooks/useAside'
+import { useOfferActions } from '../hooks/useOfferActions'
 
 export const PAGE_SIZE = 15
 
@@ -40,36 +41,16 @@ export default function List({ data }: { data: Offer[] }) {
   const showOnlyPositionsNotYetCompleted = useAtomValue(showOnlyPositionsNotYetCompletedAtom)
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom)
   const minimumSalary = useAtomValue(minimumSalaryAtom)
-  const [{ offer }, setAside] = useAtom(asideAtom)
   const setFilteredOffers = useSetAtom(filteredOffersAtom)
 
   const { isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers()
-  const { isOfferHidden, toggleHiddenOffer } = useHiddenOffers()
+  const { isOfferHidden } = useHiddenOffers()
 
   const [page, setPage] = useAtom(pageAtom)
   // const [sortStatus, setSortStatus] = useAtom(sortStatusAtom)
 
-  const [collapsedOffers, setCollapsedOffers] = useState<Set<string>>(new Set())
-
-  const handleCollapseOffer = useCallback(
-    (record: TableRecord) => {
-      setCollapsedOffers((prev) => new Set(prev).add(record.number))
-      toggleHiddenOffer(record)
-    },
-    [toggleHiddenOffer],
-  )
-
-  const handleReplayOffer = useCallback(
-    (record: TableRecord) => {
-      setCollapsedOffers((prev) => {
-        const newSet = new Set(prev)
-        newSet.delete(record.number)
-        return newSet
-      })
-      toggleHiddenOffer(record)
-    },
-    [toggleHiddenOffer],
-  )
+  const { offer, setOpen, setOffer } = useAside()
+  const { collapsedOffers, handleSelectOffer, handleReplayOffer, handleCollapseOffer } = useOfferActions()
 
   useEffect(() => {
     setPage(1)
@@ -168,27 +149,36 @@ export default function List({ data }: { data: Offer[] }) {
     const d = filteredData
     // .filter((offer) => !isOfferHidden(offer))
 
-    setAside((aside) => {
-      if (aside.open && aside.offer && isOfferHidden(aside.offer)) {
-        const hiddenOfferIndex = d.findIndex((o) => o.number === aside.offer!.number)
+    setOpen((open) => {
+      if (open && offer && isOfferHidden(offer)) {
+        const hiddenOfferIndex = d.findIndex((o) => o.number === offer!.number)
         const nextOfferIndex = hiddenOfferIndex === d.length - 1 ? hiddenOfferIndex - 1 : hiddenOfferIndex + 1
 
         if (nextOfferIndex < 0) {
-          return { open: false, offer: null }
+          return false
+        }
+      }
+      return open
+    })
+
+    setOffer((offer) => {
+      if (offer && isOfferHidden(offer)) {
+        const hiddenOfferIndex = d.findIndex((o) => o.number === offer!.number)
+        const nextOfferIndex = hiddenOfferIndex === d.length - 1 ? hiddenOfferIndex - 1 : hiddenOfferIndex + 1
+
+        if (nextOfferIndex < 0) {
+          return null
         }
 
         const nextOffer = d[nextOfferIndex]
         const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1
         setPage(newPage)
 
-        return {
-          open: true,
-          offer: { ...nextOffer, favorite: isOfferFavorite(nextOffer) },
-        }
+        return { ...nextOffer }
       }
-      return aside
+      return offer
     })
-  }, [filteredData, isOfferHidden, isOfferFavorite, setAside, setPage])
+  }, [filteredData, isOfferHidden, isOfferFavorite, setOpen, setOffer, setPage, offer])
 
   useEffect(() => {
     const from = (page - 1) * PAGE_SIZE
@@ -206,12 +196,11 @@ export default function List({ data }: { data: Offer[] }) {
     setRecords(records)
 
     if (records.length > 0 && !offer) {
-      setAside({
-        open: true,
-        offer: records[0],
-      })
+      console.log('opening first offer')
+      setOffer(records[0])
+      setOpen(true)
     }
-  }, [page, filteredData, isOfferFavorite, offer, setAside])
+  }, [page, filteredData, isOfferFavorite, offer, setOffer, setOpen])
 
   return (
     <div className="tw-w-4/5 tw-flex tw-flex-col tw-h-full">
@@ -234,10 +223,10 @@ export default function List({ data }: { data: Offer[] }) {
             record={record}
             isSelected={offer?.number === record.number}
             isCollapsed={collapsedOffers.has(record.number)}
-            onSelect={() => setAside({ open: true, offer: record })}
-            onReplay={handleReplayOffer}
-            onCollapse={handleCollapseOffer}
-            onToggleFavorite={toggleFavoriteOffer}
+            onSelect={() => handleSelectOffer(record)}
+            onReplay={() => handleReplayOffer(record)}
+            onCollapse={() => handleCollapseOffer(record)}
+            onToggleFavorite={() => toggleFavoriteOffer(record)}
           />
         ))}
         <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-flex-wrap">
