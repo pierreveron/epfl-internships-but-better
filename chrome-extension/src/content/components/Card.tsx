@@ -13,6 +13,8 @@ import CloseIcon from './icons/CloseIcon'
 import ReplayIcon from './icons/ReplayIcon'
 import { ActionIcon } from '@mantine/core'
 import { Record } from '../contexts/PaginationContext'
+import { useFavoriteOffers } from '../utils/hooks'
+
 interface CardProps {
   record: Record
   isSelected: boolean
@@ -32,6 +34,7 @@ export default function Card({
   onCollapse,
   onToggleFavorite,
 }: CardProps) {
+  const { isOfferFavorite } = useFavoriteOffers()
   return (
     <div
       className={classNames(
@@ -173,7 +176,7 @@ export default function Card({
               color="red"
               size="lg"
             >
-              <HeartIcon checked={record.favorite} className="tw-h-5" />
+              <HeartIcon checked={isOfferFavorite(record)} className="tw-h-5" />
             </ActionIcon>
           </div>
         </>

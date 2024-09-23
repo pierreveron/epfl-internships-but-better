@@ -1,8 +1,6 @@
 import { createContext, useState } from 'react'
 import { Offer } from '../../../../types'
 
-// type OfferWithFavorite = Offer & { favorite: boolean }
-
 interface AsideContextType {
   offer: Offer | null
   setOffer: React.Dispatch<React.SetStateAction<Offer | null>>

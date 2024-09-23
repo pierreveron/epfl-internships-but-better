@@ -1,13 +1,10 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { useFavoriteOffers } from '../utils/hooks'
 import { Offer } from '../../../../types'
 import { useSort } from '../hooks/useSort'
 import { useAside } from '../hooks/useAside'
 import { FilterContext } from './FilterContext'
 
-export type Record = Offer & {
-  favorite: boolean
-}
+export type Record = Offer
 
 interface PaginationContextProps {
   records: Record[]
@@ -21,7 +18,6 @@ export const PaginationContext = createContext<PaginationContextProps | undefine
 export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [page, setPage] = useState(1)
   const pageSize = 15
-  const { isOfferFavorite } = useFavoriteOffers()
   const { sortedData } = useSort()
   const { setOffer } = useAside()
 
@@ -53,13 +49,8 @@ export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const records = useMemo<Record[]>(() => {
     const from = (page - 1) * pageSize
     const to = from + pageSize
-    return sortedData.slice(from, to).map((d) => {
-      return {
-        ...d,
-        favorite: isOfferFavorite(d),
-      }
-    })
-  }, [page, pageSize, sortedData, isOfferFavorite])
+    return sortedData.slice(from, to)
+  }, [page, pageSize, sortedData])
 
   useEffect(() => {
     if (records.length > 0) {
