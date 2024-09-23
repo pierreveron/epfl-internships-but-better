@@ -6,7 +6,6 @@ import FormatsSegmentedControl from './FormatsSegmentedControl'
 import LengthsCheckboxes from './LengthsCheckboxes'
 import LocationsCheckbox from './LocationsCheckbox'
 import DisplayModeSegmentedControl from './DisplayModeSegmentedControl'
-import { useAside } from '../hooks/useAside'
 import { FilterContext } from '../contexts/FilterContext'
 import { useData } from '../../utils/useData'
 
@@ -24,8 +23,6 @@ export default function ActionBar() {
     setMinimumSalary,
     nbCitiesSelected,
   } = useContext(FilterContext)!
-
-  const { setOpen } = useAside()
 
   return (
     <Group justify="space-between">
@@ -123,7 +120,6 @@ export default function ActionBar() {
           checked={showOnlyFavorites}
           onChange={(event) => {
             setShowOnlyFavorites(event.currentTarget.checked)
-            setOpen(false)
           }}
         />
       </Group>

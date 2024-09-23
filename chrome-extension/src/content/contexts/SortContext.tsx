@@ -1,24 +1,29 @@
-import React, { createContext, useMemo } from 'react'
-import { useAtomValue } from 'jotai'
-import { sortStatusAtom } from '../atoms'
+import React, { createContext, useMemo, useState } from 'react'
 import { Offer } from '../../../../types'
 import { useFilter } from '../hooks/useFilter'
+import { DataTableSortStatus } from 'mantine-datatable'
+import { Record } from './PaginationContext'
 
 interface SortContextType {
   sortedData: Offer[]
+  sortStatus: DataTableSortStatus<Record>
+  setSortStatus: React.Dispatch<React.SetStateAction<DataTableSortStatus<Record>>>
 }
 
 export const SortContext = createContext<SortContextType | undefined>(undefined)
 
 export const SortProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { filteredData: data } = useFilter()
-  const sortStatus = useAtomValue(sortStatusAtom)
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Record>>({
+    columnAccessor: 'creationDate',
+    direction: 'desc',
+  })
 
   const sortedData = useMemo(() => {
     return sortBy(data, sortStatus.columnAccessor, sortStatus.direction)
   }, [sortStatus, data])
 
-  return <SortContext.Provider value={{ sortedData }}>{children}</SortContext.Provider>
+  return <SortContext.Provider value={{ sortedData, sortStatus, setSortStatus }}>{children}</SortContext.Provider>
 }
 
 const sortBy = (data: Offer[], sortCriteria: string, direction: 'asc' | 'desc'): Offer[] => {

@@ -7,7 +7,7 @@ import BriefcaseIcon from './icons/BriefcaseIcon'
 import ClockIcon from './icons/ClockIcon'
 // import EyeSlashIcon from "./icons/EyeSlashIcon";
 import LocationDotIcon from './icons/LocationDotIcon'
-import { formatLengthLabel } from './LengthsCheckboxes'
+import { formatLengthLabel } from '../utils/formatters'
 import MoneyBillIcon from './icons/MoneyBillIcon'
 import classNames from 'classnames'
 import { useAside } from '../hooks/useAside'

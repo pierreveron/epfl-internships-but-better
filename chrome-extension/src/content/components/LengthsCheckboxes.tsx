@@ -1,19 +1,7 @@
 import { Checkbox, Stack } from '@mantine/core'
 import { useContext } from 'react'
 import { FilterContext } from '../contexts/FilterContext'
-
-export function formatLengthLabel(label: string) {
-  switch (label) {
-    case '4 - 6 mois':
-      return '4 - 6 months'
-    case '2 - 3 mois':
-      return '2 - 3 months'
-    case 'Indifférent':
-      return 'No preference'
-    default:
-      return label
-  }
-}
+import { formatLengthLabel } from '../utils/formatters'
 
 export default function LengthsCheckboxes() {
   const { selectableLengths, setSelectableLengths } = useContext(FilterContext)!

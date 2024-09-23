@@ -1,7 +1,7 @@
-import { useAtom } from 'jotai'
-import { sortStatusAtom } from '../atoms'
 import { Select } from '@mantine/core'
 import { IconArrowsSort } from '@tabler/icons-react'
+import { useContext } from 'react'
+import { SortContext } from '../contexts/SortContext'
 
 const sortOptions = [
   { value: 'creationDate-desc', label: 'Creation date (newest first)' },
@@ -15,7 +15,7 @@ const sortOptions = [
 ]
 
 export default function SortDropdown() {
-  const [sortStatus, setSortStatus] = useAtom(sortStatusAtom)
+  const { sortStatus, setSortStatus } = useContext(SortContext)!
 
   const handleChange = (value: string | null) => {
     if (value) {

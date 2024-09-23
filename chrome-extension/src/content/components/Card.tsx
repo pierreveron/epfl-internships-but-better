@@ -1,7 +1,7 @@
 import { Offer } from '../../../../types'
 import { formatSalary, formatToLabel } from '../utils/format'
 import { getFlagEmojiWithName } from '../utils/countries'
-import { formatLengthLabel } from './LengthsCheckboxes'
+import { formatLengthLabel } from '../utils/formatters'
 import classNames from 'classnames'
 import HeartIcon from './HeartIcon'
 import ClockIcon from './icons/ClockIcon'
@@ -12,14 +12,14 @@ import CalendarIcon from './icons/CalendarIcon'
 import CloseIcon from './icons/CloseIcon'
 import ReplayIcon from './icons/ReplayIcon'
 import { ActionIcon } from '@mantine/core'
-import { TableRecord } from './List'
+import { Record } from '../contexts/PaginationContext'
 interface CardProps {
-  record: TableRecord
+  record: Record
   isSelected: boolean
   isCollapsed: boolean
   onSelect: () => void
-  onReplay: (record: TableRecord) => void
-  onCollapse: (record: TableRecord) => void
+  onReplay: (record: Record) => void
+  onCollapse: (record: Record) => void
   onToggleFavorite: (offer: Offer) => void
 }
 

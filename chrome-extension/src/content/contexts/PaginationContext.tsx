@@ -5,7 +5,7 @@ import { useSort } from '../hooks/useSort'
 import { useAside } from '../hooks/useAside'
 import { FilterContext } from './FilterContext'
 
-type Record = Offer & {
+export type Record = Offer & {
   favorite: boolean
 }
 
