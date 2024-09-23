@@ -73,7 +73,7 @@ export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   }, [page, pageSize, sortedData, isOfferFavorite])
 
   useEffect(() => {
-    if (records.length > 0 && !offer) {
+    if (records.length > 0) {
       console.log('opening first offer')
       setOffer(records[0])
       setOpen(true)
