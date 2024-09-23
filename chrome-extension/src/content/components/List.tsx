@@ -1,12 +1,10 @@
 import {
   companyAtom,
-  filteredOffersAtom,
   formatAtom,
   // formattingOffersAtom,
   // loadingOffersAtom,
   locationsAtom,
   minimumSalaryAtom,
-  nbCitiesSelectedAtom,
   pageAtom,
   showOnlyFavoritesAtom,
   lengthAtom,
@@ -15,7 +13,7 @@ import {
 } from '../atoms'
 import { useFavoriteOffers, useHiddenOffers } from '../utils/hooks'
 import classNames from 'classnames'
-import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { useEffect, useMemo, useState } from 'react'
 import { Offer } from '../../../../types'
 import Card from '../components/Card'
@@ -23,17 +21,15 @@ import SortDropdown from './SortDropdown'
 import { sortStatusAtom } from '../atoms'
 import { useAside } from '../hooks/useAside'
 import { useOfferActions } from '../hooks/useOfferActions'
+import { useFilter } from '../hooks/useFilter'
 
 export const PAGE_SIZE = 15
 
-const NOT_SPECIFIED = 'Not specified'
-
 export type TableRecord = Offer & { favorite: boolean }
 
-export default function List({ data }: { data: Offer[] }) {
+export default function List() {
   // const isFormatingOffers = useAtomValue(formattingOffersAtom)
   // const isLoadingOffers = useAtomValue(loadingOffersAtom)
-  const nbCitiesSelected = useAtomValue(nbCitiesSelectedAtom)
   const selectableFormats = useAtomValue(formatAtom)
   const selectableLengths = useAtomValue(lengthAtom)
   const selectableLocations = useAtomValue(locationsAtom)
@@ -41,7 +37,6 @@ export default function List({ data }: { data: Offer[] }) {
   const showOnlyPositionsNotYetCompleted = useAtomValue(showOnlyPositionsNotYetCompletedAtom)
   const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom)
   const minimumSalary = useAtomValue(minimumSalaryAtom)
-  const setFilteredOffers = useSetAtom(filteredOffersAtom)
 
   const { isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers()
   const { isOfferHidden } = useHiddenOffers()
@@ -51,6 +46,8 @@ export default function List({ data }: { data: Offer[] }) {
 
   const { offer, setOpen, setOffer } = useAside()
   const { collapsedOffers, handleSelectOffer, handleReplayOffer, handleCollapseOffer } = useOfferActions()
+
+  const { filteredData } = useFilter()
 
   useEffect(() => {
     setPage(1)
@@ -68,8 +65,8 @@ export default function List({ data }: { data: Offer[] }) {
   const sortStatus = useAtomValue(sortStatusAtom)
 
   const sortedData = useMemo(() => {
-    return sortBy(data, sortStatus.columnAccessor, sortStatus.direction)
-  }, [sortStatus, data])
+    return sortBy(filteredData, sortStatus.columnAccessor, sortStatus.direction)
+  }, [sortStatus, filteredData])
 
   const [records, setRecords] = useState<TableRecord[]>(
     sortedData.slice(0, PAGE_SIZE).map((d) => {
@@ -79,71 +76,6 @@ export default function List({ data }: { data: Offer[] }) {
       }
     }),
   )
-
-  // filter sorted data on the registered column
-  const filteredData = useMemo(() => {
-    let data = sortedData
-
-    if (selectableFormats.some((f) => f.selected)) {
-      data = data.filter((d) => {
-        return (
-          d.format.filter((f) => {
-            return selectableFormats.find((sf) => sf.name === f)?.selected
-          }).length > 0
-        )
-      })
-    }
-
-    if (minimumSalary !== undefined) {
-      data = data.filter((d) => {
-        return d.salary !== null && typeof d.salary !== 'string' && d.salary >= minimumSalary
-      })
-    }
-
-    if (selectableLengths.some((f: { selected: boolean }) => f.selected)) {
-      data = data.filter((d) => {
-        return selectableLengths.find((sf: { name: string; selected: boolean }) => sf.name === d.length)?.selected
-      })
-    }
-
-    if (selectedCompany) {
-      data = data.filter((d) => d.company === selectedCompany)
-    }
-
-    if (showOnlyFavorites) {
-      data = data.filter((d) => isOfferFavorite(d))
-    }
-
-    if (nbCitiesSelected !== 0) {
-      data = data.filter((d) => {
-        return (
-          d.location.filter((l) => {
-            return selectableLocations[l.country ?? NOT_SPECIFIED]?.find((c) => c.name === l.city)?.selected || false
-          }).length > 0
-        )
-      })
-    }
-
-    if (showOnlyPositionsNotYetCompleted) {
-      data = data.filter((d) => d.registered < d.positions)
-    }
-
-    setFilteredOffers(data)
-
-    return data
-  }, [
-    sortedData,
-    selectableFormats,
-    minimumSalary,
-    selectableLengths,
-    selectedCompany,
-    showOnlyFavorites,
-    nbCitiesSelected,
-    showOnlyPositionsNotYetCompleted,
-    setFilteredOffers,
-    isOfferFavorite,
-    selectableLocations,
-  ])
 
   useEffect(() => {
     const d = filteredData

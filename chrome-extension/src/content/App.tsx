@@ -8,7 +8,7 @@ import mantineDatatableStyles from 'mantine-datatable/styles.css?inline'
 import { MantineProvider, createTheme, AppShell } from '@mantine/core'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useHotkeys, useViewportSize } from '@mantine/hooks'
-import { formatAtom, isAsideMaximizedAtom, lengthAtom, locationsAtom, nbCitiesSelectedAtom } from './atoms'
+import { isAsideMaximizedAtom, lengthAtom, locationsAtom, nbCitiesSelectedAtom } from './atoms'
 // import { useAsideNavigation } from './utils/hooks'
 import { SelectableCity, SelectableLength } from './types'
 import ActionBar from './components/ActionBar'
@@ -26,6 +26,7 @@ import { useData } from '../utils/useData'
 import { AsideProvider } from './contexts/AsideContext'
 import { OfferActionsProvider } from './contexts/OfferActionsContext'
 import { useAside } from './hooks/useAside'
+import { FilterProvider } from './contexts/FilterContext'
 
 const NOT_SPECIFIED = 'Not specified'
 
@@ -203,7 +204,7 @@ function AppContent() {
       {/* <AppShell.Main style={{ height: '100vh', width: '100%' }}> */}
       <main className="tw-flex tw-flex-row tw-gap-x-8 tw-justify-between tw-px-4 tw-w-full tw-flex-1 tw-overflow-hidden">
         {/* <Table data={data} /> */}
-        <List data={data} />
+        <List />
         <OfferDescription />
       </main>
     </AppShell>
@@ -246,13 +247,15 @@ export default function App() {
       <DataProvider>
         <AsideProvider>
           <OfferActionsProvider>
-            <div
-              ref={containerRef}
-              id="extension-main-container"
-              className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
-            >
-              <AppContent />
-            </div>
+            <FilterProvider>
+              <div
+                ref={containerRef}
+                id="extension-main-container"
+                className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
+              >
+                <AppContent />
+              </div>
+            </FilterProvider>
           </OfferActionsProvider>
         </AsideProvider>
       </DataProvider>
