@@ -1,139 +1,30 @@
-import {
-  companyAtom,
-  formatAtom,
-  // formattingOffersAtom,
-  // loadingOffersAtom,
-  locationsAtom,
-  minimumSalaryAtom,
-  pageAtom,
-  showOnlyFavoritesAtom,
-  lengthAtom,
-  showOnlyPositionsNotYetCompletedAtom,
-  // sortStatusAtom,
-} from '../atoms'
-import { useFavoriteOffers, useHiddenOffers } from '../utils/hooks'
+import { useFavoriteOffers } from '../utils/hooks'
 import classNames from 'classnames'
-import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useState } from 'react'
-import { Offer } from '../../../../types'
 import Card from '../components/Card'
 import SortDropdown from './SortDropdown'
 import { useAside } from '../hooks/useAside'
 import { useOfferActions } from '../hooks/useOfferActions'
-import { useSort } from '../hooks/useSort'
-
-export const PAGE_SIZE = 15
-
-export type TableRecord = Offer & { favorite: boolean }
+import { usePagination } from '../hooks/usePagination'
+import { useFilter } from '../hooks/useFilter'
 
 export default function List() {
-  // const isFormatingOffers = useAtomValue(formattingOffersAtom)
-  // const isLoadingOffers = useAtomValue(loadingOffersAtom)
-  const selectableFormats = useAtomValue(formatAtom)
-  const selectableLengths = useAtomValue(lengthAtom)
-  const selectableLocations = useAtomValue(locationsAtom)
-  const selectedCompany = useAtomValue(companyAtom)
-  const showOnlyPositionsNotYetCompleted = useAtomValue(showOnlyPositionsNotYetCompletedAtom)
-  const showOnlyFavorites = useAtomValue(showOnlyFavoritesAtom)
-  const minimumSalary = useAtomValue(minimumSalaryAtom)
+  const { offer: offerAside } = useAside()
+  const { page, setPage, pageSize } = usePagination()
+  const { filteredData: filteredOffers } = useFilter()
+  const { records } = usePagination()
 
-  const { isOfferFavorite, toggleFavoriteOffer } = useFavoriteOffers()
-  const { isOfferHidden } = useHiddenOffers()
-
-  const [page, setPage] = useAtom(pageAtom)
-  // const [sortStatus, setSortStatus] = useAtom(sortStatusAtom)
-
-  const { offer, setOpen, setOffer } = useAside()
   const { collapsedOffers, handleSelectOffer, handleReplayOffer, handleCollapseOffer } = useOfferActions()
-
-  const { sortedData } = useSort()
-
-  useEffect(() => {
-    setPage(1)
-  }, [
-    selectableLocations,
-    selectableFormats,
-    selectableLengths,
-    selectedCompany,
-    showOnlyPositionsNotYetCompleted,
-    showOnlyFavorites,
-    minimumSalary,
-    setPage,
-  ])
-
-  const [records, setRecords] = useState<TableRecord[]>(
-    sortedData.slice(0, PAGE_SIZE).map((d) => {
-      return {
-        ...d,
-        favorite: isOfferFavorite(d),
-      }
-    }),
-  )
-
-  useEffect(() => {
-    const d = sortedData
-
-    setOpen((open) => {
-      if (open && offer && isOfferHidden(offer)) {
-        const hiddenOfferIndex = d.findIndex((o) => o.number === offer!.number)
-        const nextOfferIndex = hiddenOfferIndex === d.length - 1 ? hiddenOfferIndex - 1 : hiddenOfferIndex + 1
-
-        if (nextOfferIndex < 0) {
-          return false
-        }
-      }
-      return open
-    })
-
-    setOffer((offer) => {
-      if (offer && isOfferHidden(offer)) {
-        const hiddenOfferIndex = d.findIndex((o) => o.number === offer!.number)
-        const nextOfferIndex = hiddenOfferIndex === d.length - 1 ? hiddenOfferIndex - 1 : hiddenOfferIndex + 1
-
-        if (nextOfferIndex < 0) {
-          return null
-        }
-
-        const nextOffer = d[nextOfferIndex]
-        const newPage = Math.floor(nextOfferIndex / PAGE_SIZE) + 1
-        setPage(newPage)
-
-        return { ...nextOffer }
-      }
-      return offer
-    })
-  }, [isOfferHidden, isOfferFavorite, setOpen, setOffer, setPage, offer, sortedData])
-
-  useEffect(() => {
-    const from = (page - 1) * PAGE_SIZE
-    const to = from + PAGE_SIZE
-
-    const visibleOffers = sortedData
-    const paginatedOffers = visibleOffers.slice(from, to)
-
-    const records = paginatedOffers.map((d) => ({
-      ...d,
-      favorite: isOfferFavorite(d),
-    }))
-
-    setRecords(records)
-
-    if (records.length > 0 && !offer) {
-      console.log('opening first offer')
-      setOffer(records[0])
-      setOpen(true)
-    }
-  }, [page, isOfferFavorite, offer, setOffer, setOpen, sortedData])
+  const { toggleFavoriteOffer } = useFavoriteOffers()
 
   return (
     <div className="tw-w-4/5 tw-flex tw-flex-col tw-h-full">
       <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
         <p>
-          {sortedData.length === 0 && 'No offers correspond to your criteria'}
-          {sortedData.length === 1 && '1 offer corresponds to your criteria'}
-          {sortedData.length > 1 && (
+          {filteredOffers.length === 0 && 'No offers correspond to your criteria'}
+          {filteredOffers.length === 1 && '1 offer corresponds to your criteria'}
+          {filteredOffers.length > 1 && (
             <>
-              <span className="tw-font-bold">{sortedData.length}</span> offers correspond to your criteria
+              <span className="tw-font-bold">{filteredOffers.length}</span> offers correspond to your criteria
             </>
           )}
         </p>
@@ -144,7 +35,7 @@ export default function List() {
           <Card
             key={record.number}
             record={record}
-            isSelected={offer?.number === record.number}
+            isSelected={record.number === offerAside?.number}
             isCollapsed={collapsedOffers.has(record.number)}
             onSelect={() => handleSelectOffer(record)}
             onReplay={() => handleReplayOffer(record)}
@@ -153,7 +44,7 @@ export default function List() {
           />
         ))}
         <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-flex-wrap">
-          {[...Array(Math.ceil(sortedData.length / 15))].map((_, index) => (
+          {[...Array(Math.ceil(filteredOffers.length / pageSize))].map((_, index) => (
             <button
               key={index}
               onClick={() => {

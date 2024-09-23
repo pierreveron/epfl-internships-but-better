@@ -28,6 +28,7 @@ import { OfferActionsProvider } from './contexts/OfferActionsContext'
 import { useAside } from './hooks/useAside'
 import { FilterProvider } from './contexts/FilterContext'
 import { SortProvider } from './contexts/SortContext'
+import { PaginationProvider } from './contexts/PaginationContext'
 
 const NOT_SPECIFIED = 'Not specified'
 
@@ -250,13 +251,15 @@ export default function App() {
           <OfferActionsProvider>
             <FilterProvider>
               <SortProvider>
-                <div
-                  ref={containerRef}
-                  id="extension-main-container"
-                  className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
-                >
-                  <AppContent />
-                </div>
+                <PaginationProvider>
+                  <div
+                    ref={containerRef}
+                    id="extension-main-container"
+                    className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
+                  >
+                    <AppContent />
+                  </div>
+                </PaginationProvider>
               </SortProvider>
             </FilterProvider>
           </OfferActionsProvider>
