@@ -1,9 +1,8 @@
-import React, { createContext, useState, useEffect, useMemo } from 'react'
+import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react'
 import { Offer, OfferToBeFormatted, Location } from '../../../types'
 import { scrapeJobs } from '../utils/scraping'
 import { formatOffers, abortFormatting } from './utils/offerFormatting'
 import { SelectableCity } from './types'
-import { useHiddenOffers } from './utils/hooks'
 
 interface DataContextType {
   data: Offer[]
@@ -24,26 +23,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [dataDate, setDataDate] = useState<string>('')
   const [isFormattingOffers, setIsFormattingOffers] = useState<boolean>(false)
   const [isLoadingOffers, setIsLoadingOffers] = useState<boolean>(true)
-  const { isOfferHidden } = useHiddenOffers()
 
-  const loadOffers = async () => {
-    const storedData = localStorage.getItem('jobOffers')
-
-    console.log('Loading job offers from local storage of the extension')
-
-    if (storedData) {
-      const { offers, lastUpdated }: { offers: Offer[]; lastUpdated: string } = JSON.parse(storedData)
-
-      setData(offers.filter((d) => !isOfferHidden(d)))
-      setDataDate(new Date(lastUpdated).toLocaleDateString('fr-CH'))
-    } else {
-      await updateData()
-    }
-
-    setIsLoadingOffers(false)
-  }
-
-  const updateData = async () => {
+  const updateData = useCallback(async () => {
     setIsFormattingOffers(true)
 
     const storedData = localStorage.getItem('offersToBeFormatted')
@@ -103,9 +84,28 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     setData(formattedOffers)
     setIsFormattingOffers(false)
-  }
+  }, [])
 
-  const scrapeAndStoreOffers = async () => {
+  const loadOffers = useCallback(async () => {
+    const storedData = localStorage.getItem('jobOffers')
+
+    console.log('Loading job offers from local storage of the extension')
+
+    if (storedData) {
+      const { offers, lastUpdated }: { offers: Offer[]; lastUpdated: string } = JSON.parse(storedData)
+
+      const hiddenOffers = JSON.parse(localStorage.getItem('hidden-offers') ?? '[]')
+
+      setData(offers.filter((d) => !hiddenOffers.includes(d.number)))
+      setDataDate(new Date(lastUpdated).toLocaleDateString('fr-CH'))
+    } else {
+      await updateData()
+    }
+
+    setIsLoadingOffers(false)
+  }, [updateData])
+
+  const scrapeAndStoreOffers = useCallback(async () => {
     try {
       const jobOffers = await scrapeJobs((offersCount, offersLoaded) => {
         console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
@@ -126,7 +126,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Error scraping offers:', error)
       throw new Error('Error scraping offers')
     }
-  }
+  }, [updateData])
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
@@ -143,7 +143,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         })
       }
     }
-  }, [])
+  }, [loadOffers, scrapeAndStoreOffers, updateData])
 
   const locations = useMemo(() => data.map((d) => d.location), [data])
 
