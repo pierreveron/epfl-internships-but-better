@@ -14,14 +14,13 @@ import {
 import { useFavoriteOffers, useHiddenOffers } from '../utils/hooks'
 import classNames from 'classnames'
 import { useAtom, useAtomValue } from 'jotai'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Offer } from '../../../../types'
 import Card from '../components/Card'
 import SortDropdown from './SortDropdown'
-import { sortStatusAtom } from '../atoms'
 import { useAside } from '../hooks/useAside'
 import { useOfferActions } from '../hooks/useOfferActions'
-import { useFilter } from '../hooks/useFilter'
+import { useSort } from '../hooks/useSort'
 
 export const PAGE_SIZE = 15
 
@@ -47,7 +46,7 @@ export default function List() {
   const { offer, setOpen, setOffer } = useAside()
   const { collapsedOffers, handleSelectOffer, handleReplayOffer, handleCollapseOffer } = useOfferActions()
 
-  const { filteredData } = useFilter()
+  const { sortedData } = useSort()
 
   useEffect(() => {
     setPage(1)
@@ -62,12 +61,6 @@ export default function List() {
     setPage,
   ])
 
-  const sortStatus = useAtomValue(sortStatusAtom)
-
-  const sortedData = useMemo(() => {
-    return sortBy(filteredData, sortStatus.columnAccessor, sortStatus.direction)
-  }, [sortStatus, filteredData])
-
   const [records, setRecords] = useState<TableRecord[]>(
     sortedData.slice(0, PAGE_SIZE).map((d) => {
       return {
@@ -78,8 +71,7 @@ export default function List() {
   )
 
   useEffect(() => {
-    const d = filteredData
-    // .filter((offer) => !isOfferHidden(offer))
+    const d = sortedData
 
     setOpen((open) => {
       if (open && offer && isOfferHidden(offer)) {
@@ -110,14 +102,13 @@ export default function List() {
       }
       return offer
     })
-  }, [filteredData, isOfferHidden, isOfferFavorite, setOpen, setOffer, setPage, offer])
+  }, [isOfferHidden, isOfferFavorite, setOpen, setOffer, setPage, offer, sortedData])
 
   useEffect(() => {
     const from = (page - 1) * PAGE_SIZE
     const to = from + PAGE_SIZE
 
-    const visibleOffers = filteredData
-    // .filter((offer) => !isOfferHidden(offer))
+    const visibleOffers = sortedData
     const paginatedOffers = visibleOffers.slice(from, to)
 
     const records = paginatedOffers.map((d) => ({
@@ -132,17 +123,17 @@ export default function List() {
       setOffer(records[0])
       setOpen(true)
     }
-  }, [page, filteredData, isOfferFavorite, offer, setOffer, setOpen])
+  }, [page, isOfferFavorite, offer, setOffer, setOpen, sortedData])
 
   return (
     <div className="tw-w-4/5 tw-flex tw-flex-col tw-h-full">
       <div className="tw-flex tw-justify-between tw-items-center tw-mb-6">
         <p>
-          {filteredData.length === 0 && 'No offers correspond to your criteria'}
-          {filteredData.length === 1 && '1 offer corresponds to your criteria'}
-          {filteredData.length > 1 && (
+          {sortedData.length === 0 && 'No offers correspond to your criteria'}
+          {sortedData.length === 1 && '1 offer corresponds to your criteria'}
+          {sortedData.length > 1 && (
             <>
-              <span className="tw-font-bold">{filteredData.length}</span> offers correspond to your criteria
+              <span className="tw-font-bold">{sortedData.length}</span> offers correspond to your criteria
             </>
           )}
         </p>
@@ -162,7 +153,7 @@ export default function List() {
           />
         ))}
         <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-flex-wrap">
-          {[...Array(Math.ceil(filteredData.length / 15))].map((_, index) => (
+          {[...Array(Math.ceil(sortedData.length / 15))].map((_, index) => (
             <button
               key={index}
               onClick={() => {
@@ -182,44 +173,4 @@ export default function List() {
       </div>
     </div>
   )
-}
-
-const sortBy = (data: Offer[], sortCriteria: string, direction: 'asc' | 'desc'): Offer[] => {
-  if (!sortCriteria) return data
-
-  const dataSorted = [...data]
-  const multiplier = direction === 'asc' ? 1 : -1
-
-  switch (sortCriteria) {
-    case 'company':
-      dataSorted.sort((a, b) => multiplier * a.company.localeCompare(b.company))
-      break
-    case 'creationDate':
-      dataSorted.sort((a, b) => {
-        return (
-          multiplier *
-          (new Date(a.creationDate.split('.').reverse().join('-')).getTime() -
-            new Date(b.creationDate.split('.').reverse().join('-')).getTime())
-        )
-      })
-      break
-    case 'salary':
-      dataSorted.sort((a, b) => {
-        if (typeof a.salary === 'string' || typeof b.salary === 'string') {
-          return 0
-        }
-        if (a.salary === null) return direction === 'asc' ? -1 : 1
-        if (b.salary === null) return direction === 'asc' ? 1 : -1
-        return multiplier * (a.salary - b.salary)
-      })
-      break
-    case 'registered':
-      dataSorted.sort((a, b) => multiplier * (a.registered - b.registered))
-      break
-    default:
-      // If no valid sort criteria is provided, return the original data
-      return data
-  }
-
-  return dataSorted
 }
