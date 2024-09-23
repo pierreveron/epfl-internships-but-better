@@ -6,6 +6,7 @@ import { useAside } from '../hooks/useAside'
 import { useOfferActions } from '../hooks/useOfferActions'
 import { usePagination } from '../hooks/usePagination'
 import { useFilter } from '../hooks/useFilter'
+import { useEffect, useRef } from 'react'
 
 export default function List() {
   const { offer: offerAside } = useAside()
@@ -15,6 +16,14 @@ export default function List() {
 
   const { collapsedOffers, handleSelectOffer, handleReplayOffer, handleCollapseOffer } = useOfferActions()
   const { toggleFavoriteOffer } = useFavoriteOffers()
+
+  const listRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }, [page])
 
   return (
     <div className="tw-w-4/5 tw-flex tw-flex-col tw-h-full">
@@ -30,7 +39,7 @@ export default function List() {
         </p>
         <SortDropdown />
       </div>
-      <div className="tw-flex-1 tw-space-y-4 tw-overflow-y-auto tw-no-scrollbar tw-pb-4">
+      <div ref={listRef} className="tw-flex-1 tw-space-y-4 tw-overflow-y-auto tw-no-scrollbar tw-pb-4">
         {records.map((record) => (
           <Card
             key={record.number}
