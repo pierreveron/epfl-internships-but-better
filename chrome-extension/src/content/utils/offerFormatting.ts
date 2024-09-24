@@ -65,7 +65,6 @@ async function formatSalaries(salaries: string[]) {
 async function formatLocations(locations: string[]) {
   try {
     const apiKey = await getApiKey()
-    console.log('API key:', apiKey)
     const response = await fetch(`${API_URL}/clean-locations`, {
       method: 'POST',
       signal: controller.signal,

@@ -7,8 +7,7 @@ import { SelectableCity } from './types'
 interface DataContextType {
   data: Offer[]
   dataDate: string
-  isFormattingOffers: boolean
-  isLoadingOffers: boolean
+  isLoading: boolean
   locations: Location[][]
   citiesByCountry: Record<string, SelectableCity[]>
   companies: string[]
@@ -21,16 +20,16 @@ export const DataContext = createContext<DataContextType | undefined>(undefined)
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<Offer[]>([])
   const [dataDate, setDataDate] = useState<string>('')
-  const [isFormattingOffers, setIsFormattingOffers] = useState<boolean>(false)
-  const [isLoadingOffers, setIsLoadingOffers] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [error, setError] = useState<Error | null>(null)
 
   const updateData = useCallback(async () => {
-    setIsFormattingOffers(true)
+    setIsLoading(true)
 
     const storedData = localStorage.getItem('offersToBeFormatted')
 
     if (!storedData) {
-      setIsFormattingOffers(false)
+      setIsLoading(false)
       return
     }
 
@@ -55,23 +54,23 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       abortFormatting()
     }
 
-    let formattedOffers
+    let formattedOffers: Offer[] | null = null
     try {
       formattedOffers = await formatOffers(offers)
     } catch (error) {
       console.error('An error occured while formatting the offers', error)
-      setIsFormattingOffers(false)
+      setIsLoading(false)
       window.onbeforeunload = null
       window.onunload = null
-      throw new Error('An error occured while formatting the offers')
+      setError(new Error('An error occured while formatting the offers'))
     }
 
     window.onbeforeunload = null
     window.onunload = null
 
     if (formattedOffers === null) {
-      console.log('An error occured while formatting the offers')
-      throw new Error('An error occured while formatting the offers')
+      setError(new Error('An error occured while formatting the offers'))
+      return
     }
 
     localStorage.setItem(
@@ -83,7 +82,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     )
 
     setData(formattedOffers)
-    setIsFormattingOffers(false)
+    setIsLoading(false)
   }, [])
 
   const loadOffers = useCallback(async () => {
@@ -102,10 +101,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await updateData()
     }
 
-    setIsLoadingOffers(false)
+    setIsLoading(false)
   }, [updateData])
 
   const scrapeAndStoreOffers = useCallback(async () => {
+    setIsLoading(true)
     try {
       const jobOffers = await scrapeJobs((offersCount, offersLoaded) => {
         console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
@@ -124,25 +124,32 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       await updateData()
     } catch (error) {
       console.error('Error scraping offers:', error)
-      throw new Error('Error scraping offers')
+      setIsLoading(false)
+      setError(new Error('Error scraping offers'))
     }
   }, [updateData])
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      const storedOffers = localStorage.getItem('jobOffers')
-      const offersToBeFormatted = localStorage.getItem('offersToBeFormatted')
-      if (storedOffers) {
-        loadOffers()
-      } else if (offersToBeFormatted) {
-        updateData()
-      } else {
-        scrapeAndStoreOffers().catch((error) => {
-          console.error('Error scraping offers:', error)
-          throw new Error('Error scraping offers')
-        })
+    const initializeOffers = async () => {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const storedOffers = localStorage.getItem('jobOffers')
+        const offersToBeFormatted = localStorage.getItem('offersToBeFormatted')
+        try {
+          if (storedOffers) {
+            await loadOffers()
+          } else if (offersToBeFormatted) {
+            await updateData()
+          } else {
+            await scrapeAndStoreOffers()
+          }
+        } catch (error) {
+          setIsLoading(false)
+          setError(error as Error)
+        }
       }
     }
+
+    initializeOffers()
   }, [loadOffers, scrapeAndStoreOffers, updateData])
 
   const locations = useMemo(() => data.map((d) => d.location), [data])
@@ -173,13 +180,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = {
     data,
     dataDate,
-    isFormattingOffers,
-    isLoadingOffers,
+    isLoading,
     locations,
     citiesByCountry,
     companies,
     updateData,
     scrapeAndStoreOffers,
+  }
+
+  if (error) {
+    throw error
   }
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>

@@ -28,11 +28,13 @@ import { FilterProvider } from './contexts/FilterContext'
 import { SortProvider } from './contexts/SortContext'
 import { PaginationProvider } from './contexts/PaginationContext'
 import Table from './components/Table'
+import { useData } from '../utils/useData'
 
 function AppContent() {
   const { offer: asideOffer } = useAside()
   const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom)
   const displayMode = useAtomValue(displayModeAtom)
+  const { isLoading } = useData()
 
   const { width } = useViewportSize()
 
@@ -43,6 +45,16 @@ function AppContent() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width])
+
+  if (isLoading) {
+    return (
+      <div className="tw-flex tw-justify-center tw-items-center tw-h-full">
+        <div className="tw-flex tw-flex-col tw-items-center">
+          <div className="loader"></div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <AppShell
