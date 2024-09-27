@@ -52,7 +52,6 @@ export const signIn = async () => {
     console.log('credential', credential)
     const result = await signInWithCredential(auth, credential)
     console.log('result', result)
-    debugger
     return result.user
   } catch (e) {
     console.error(e)
