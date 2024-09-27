@@ -2,6 +2,7 @@ import asyncio
 import os
 import time
 
+import promptlayer  # type: ignore # Don't forget this 🍰  # noqa: F401
 from dotenv import load_dotenv
 from langchain_community.callbacks import (
     PromptLayerCallbackHandler,
