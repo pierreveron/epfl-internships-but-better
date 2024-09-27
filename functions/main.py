@@ -1,5 +1,6 @@
 import asyncio
 import json
+from typing import Any
 
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salaries_openai
@@ -17,7 +18,8 @@ initialize_app()
 )
 def clean_locations(req: https_fn.Request) -> https_fn.Response:
     try:
-        locations: list[str] = req.get_json()
+        data: dict[str, Any] = req.get_json()
+        locations: list[str] = data.get("data", [])
 
         if len(locations) > 500:
             return https_fn.Response(
@@ -43,7 +45,8 @@ def clean_locations(req: https_fn.Request) -> https_fn.Response:
 )
 def clean_salaries(req: https_fn.Request) -> https_fn.Response:
     try:
-        salaries: list[str] = req.get_json()
+        data: dict[str, Any] = req.get_json()
+        salaries: list[str] = data.get("data", [])
 
         if len(salaries) > 700:
             return https_fn.Response(
