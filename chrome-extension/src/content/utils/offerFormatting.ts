@@ -1,10 +1,23 @@
 import { Location, Offer, OfferToBeFormatted } from '../../../../types'
-import { API_URL } from './constants'
+import { getFunctions, httpsCallable, connectFunctionsEmulator, Functions } from 'firebase/functions'
+import { app } from '../../firebase'
 
-const controller = new AbortController()
+let functions: Functions | null = null
 
-export function abortFormatting() {
-  controller.abort()
+const constants = {
+  nodeEnv: import.meta.env.VITE_NODE_ENV,
+}
+
+function initializeFunctions(): Functions {
+  if (!functions) {
+    functions = getFunctions(app)
+    if (constants.nodeEnv === 'development') {
+      connectFunctionsEmulator(functions, 'localhost', 5001)
+      console.log('Connected to Firebase Functions Emulator')
+    }
+  }
+
+  return functions
 }
 
 export function formatOffers(offers: OfferToBeFormatted[]): Promise<Offer[]> {
@@ -24,36 +37,15 @@ export function formatOffers(offers: OfferToBeFormatted[]): Promise<Offer[]> {
   })
 }
 
-function getApiKey(): Promise<string> {
-  return new Promise((resolve, reject) => {
-    chrome.storage.sync.get(['apiKey'], (result) => {
-      if (result.apiKey) {
-        resolve(result.apiKey)
-      } else {
-        reject(new Error('API key not found'))
-      }
-    })
-  })
-}
-
 async function formatSalaries(salaries: string[]) {
   try {
-    const apiKey = await getApiKey()
-    const response = await fetch(`${API_URL}/clean-salaries`, {
-      method: 'POST',
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': apiKey,
-      },
-      body: JSON.stringify(salaries),
-    })
+    const functions = initializeFunctions()
+    const formatSalariesFunction = httpsCallable(functions, 'clean_salaries')
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok.')
-    }
+    const result = await formatSalariesFunction(salaries)
+    console.log('result', result)
+    const data = result.data as { salaries: { [key: string]: string } }
 
-    const data: { salaries: { [key: string]: string } } = await response.json()
     console.log('Formatted salaries:', data)
     return data.salaries
   } catch (error) {
@@ -64,22 +56,12 @@ async function formatSalaries(salaries: string[]) {
 
 async function formatLocations(locations: string[]) {
   try {
-    const apiKey = await getApiKey()
-    const response = await fetch(`${API_URL}/clean-locations`, {
-      method: 'POST',
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': apiKey,
-      },
-      body: JSON.stringify(locations),
-    })
+    const functions = initializeFunctions()
+    const formatLocationsFunction = httpsCallable(functions, 'clean_locations')
+    const result = await formatLocationsFunction(locations)
+    console.log('result', result)
+    const data = result.data as { locations: { [key: string]: Location[] } }
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok.')
-    }
-
-    const data: { locations: { [key: string]: Location[] } } = await response.json()
     console.log('Formatted locations:', data)
     return data.locations
   } catch (error) {

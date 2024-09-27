@@ -2,7 +2,6 @@ import asyncio
 import os
 import time
 
-import orjson
 from dotenv import load_dotenv
 from langchain_community.callbacks import (
     PromptLayerCallbackHandler,
@@ -39,7 +38,7 @@ prompt = PromptTemplate(
 )
 
 
-async def clean_locations(locations: list[str]):
+async def clean_locations(locations: list[str]) -> LocationDict:
     """
     Clean a list of locations using OpenAI.
 
@@ -134,5 +133,4 @@ async def clean_locations(locations: list[str]):
     print("Total cost: $", round(total_cost, 2))
     print(f"Total time: {elapsed:0.2f} seconds.")
 
-    # Send the unique locations formatted as a json.
-    return orjson.loads(total_data.model_dump_json())
+    return total_data

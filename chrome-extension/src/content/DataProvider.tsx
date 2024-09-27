@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react'
 import { Offer, OfferToBeFormatted, Location } from '../../../types'
 import { scrapeJobs } from '../utils/scraping'
-import { formatOffers, abortFormatting } from './utils/offerFormatting'
+import { formatOffers } from './utils/offerFormatting'
 import { SelectableCity } from './types'
 
 interface DataContextType {
@@ -49,9 +49,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     window.onbeforeunload = function () {
       return 'Data is currently processed and will be lost if you leave the page, are you sure?'
-    }
-    window.onunload = function () {
-      abortFormatting()
     }
 
     let formattedOffers: Offer[] | null = null

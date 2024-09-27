@@ -3,17 +3,21 @@ import json
 
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salaries_openai
-from firebase_admin import initialize_app
-from firebase_functions import https_fn
+from firebase_admin import initialize_app  # type: ignore
+from firebase_functions import https_fn, options  # type: ignore
 
 initialize_app()
 
 
-@https_fn.on_request()
+@https_fn.on_request(
+    cors=options.CorsOptions(
+        cors_origins=["https://isa.epfl.ch"],
+        cors_methods=["POST"],
+    ),
+)
 def clean_locations(req: https_fn.Request) -> https_fn.Response:
     try:
-        request_json = req.get_json()
-        locations: list[str] = request_json.get("locations", [])
+        locations: list[str] = req.get_json()
 
         if len(locations) > 500:
             return https_fn.Response(
@@ -21,18 +25,25 @@ def clean_locations(req: https_fn.Request) -> https_fn.Response:
             )
 
         clean_locations = asyncio.run(clean_locations_openai(locations))
+
+        print("clean_locations", clean_locations)
         return https_fn.Response(
-            json.dumps(clean_locations), content_type="application/json"
+            json.dumps({"data": clean_locations.model_dump()}),
+            content_type="application/json",
         )
     except Exception as e:
         return https_fn.Response(json.dumps({"error": str(e)}), status=500)
 
 
-@https_fn.on_request()
+@https_fn.on_request(
+    cors=options.CorsOptions(
+        cors_origins=["https://isa.epfl.ch"],
+        cors_methods=["POST"],
+    ),
+)
 def clean_salaries(req: https_fn.Request) -> https_fn.Response:
     try:
-        request_json = req.get_json()
-        salaries: list[str] = request_json.get("salaries", [])
+        salaries: list[str] = req.get_json()
 
         if len(salaries) > 700:
             return https_fn.Response(
@@ -40,8 +51,10 @@ def clean_salaries(req: https_fn.Request) -> https_fn.Response:
             )
 
         clean_salaries = asyncio.run(clean_salaries_openai(salaries))
+        print("clean_salaries", clean_salaries)
         return https_fn.Response(
-            json.dumps(clean_salaries), content_type="application/json"
+            json.dumps({"data": clean_salaries.model_dump()}),
+            content_type="application/json",
         )
     except Exception as e:
         return https_fn.Response(json.dumps({"error": str(e)}), status=500)
