@@ -25,7 +25,7 @@
     },
     {
       "js": ["src/content/index.tsx"],
-      "matches": ["https://isa.epfl.ch/*"]
+      "matches": ["https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm"]
     }
   ],
   "externally_connectable": {
