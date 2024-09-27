@@ -2,15 +2,13 @@ import asyncio
 import os
 import time
 
-import promptlayer  # type: ignore # Don't forget this 🍰  # noqa: F401
 from dotenv import load_dotenv
 from langchain_community.callbacks import (
-    PromptLayerCallbackHandler,
     get_openai_callback,
 )
+from langchain_community.chat_models import PromptLayerChatOpenAI
 from langchain_core.output_parsers import PydanticOutputParser
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
 from pydantic import ValidationError
 from salaries_types import SalariesDict
 
@@ -49,12 +47,12 @@ async def clean_salaries(salaries: list[str]) -> SalariesDict:
 
     Returns: A list of unique salaries in a json format.
     """
-    llm = ChatOpenAI(
+    llm = PromptLayerChatOpenAI(
         model="gpt-4o-mini",
         api_key=OPENAI_API_KEY,  # type: ignore
         max_tokens=3000,
         timeout=60,
-        callbacks=[PromptLayerCallbackHandler()],
+        pl_tags=["salaries"],
     )
     # print(llm)
 
