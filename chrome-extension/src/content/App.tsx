@@ -27,6 +27,7 @@ import { useAside } from './hooks/useAside'
 import { FilterProvider } from './contexts/FilterContext'
 import { SortProvider } from './contexts/SortContext'
 import { PaginationProvider } from './contexts/PaginationContext'
+import { UserProvider } from './contexts/UserContext'
 import Table from './components/Table'
 import { useData } from '../utils/useData'
 
@@ -197,25 +198,27 @@ export default function App() {
       getRootElement={() => containerRef.current!}
       cssVariablesSelector="#extension-main-container"
     >
-      <DataProvider>
-        <AsideProvider>
-          <OfferActionsProvider>
-            <FilterProvider>
-              <SortProvider>
-                <PaginationProvider>
-                  <div
-                    ref={containerRef}
-                    id="extension-main-container"
-                    className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
-                  >
-                    <AppContent />
-                  </div>
-                </PaginationProvider>
-              </SortProvider>
-            </FilterProvider>
-          </OfferActionsProvider>
-        </AsideProvider>
-      </DataProvider>
+      <UserProvider>
+        <DataProvider>
+          <AsideProvider>
+            <OfferActionsProvider>
+              <FilterProvider>
+                <SortProvider>
+                  <PaginationProvider>
+                    <div
+                      ref={containerRef}
+                      id="extension-main-container"
+                      className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
+                    >
+                      <AppContent />
+                    </div>
+                  </PaginationProvider>
+                </SortProvider>
+              </FilterProvider>
+            </OfferActionsProvider>
+          </AsideProvider>
+        </DataProvider>
+      </UserProvider>
     </MantineProvider>
   )
 }

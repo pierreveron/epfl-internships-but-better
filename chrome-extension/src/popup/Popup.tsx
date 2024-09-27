@@ -33,9 +33,7 @@ export default function Popup() {
   }
 
   const handleSignOut = async () => {
-    console.log('1. Handle sign out')
     chrome.runtime.sendMessage({ type: 'SIGN_OUT' }, (response) => {
-      console.log('4. Sign-out response', response)
       if (response.success) {
         setUser(null)
       } else {
