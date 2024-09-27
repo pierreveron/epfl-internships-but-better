@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react'
-import { Offer } from '../../../../types'
+import { Offer } from '../../types'
 
 interface AsideContextType {
   offer: Offer | null

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { Offer } from '../../../../types'
+import { Offer } from '../../types'
 import { useSort } from '../hooks/useSort'
 import { useAside } from '../hooks/useAside'
 import { FilterContext } from './FilterContext'

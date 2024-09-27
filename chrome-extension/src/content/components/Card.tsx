@@ -1,4 +1,4 @@
-import { Offer } from '../../../../types'
+import { Offer } from '../../types'
 import { formatSalary, formatToLabel } from '../utils/format'
 import { getFlagEmojiWithName } from '../utils/countries'
 import { formatLengthLabel } from '../utils/formatters'

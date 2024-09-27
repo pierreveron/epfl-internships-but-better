@@ -1,7 +1,7 @@
 import { getCurrentTab } from '../utils/chrome-helpers'
 import { ISA_JOB_BOARD_URL, NEW_JOB_BOARD_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
-import { OfferToBeFormatted } from '../../../types'
+import { OfferToBeFormatted } from '../types'
 import { signIn, auth } from '../firebase'
 import { User } from 'firebase/auth'
 

@@ -1,5 +1,5 @@
 import React, { createContext, useMemo, useState } from 'react'
-import { Offer } from '../../../../types'
+import { Offer } from '../../types'
 import { useFilter } from '../hooks/useFilter'
 import { DataTableSortStatus } from 'mantine-datatable'
 import { Record } from './PaginationContext'

@@ -1,5 +1,5 @@
 import { createContext, useCallback, useState } from 'react'
-import { Offer } from '../../../../types'
+import { Offer } from '../../types'
 import { useHiddenOffers } from '../utils/hooks'
 import { useAside } from '../hooks/useAside'
 

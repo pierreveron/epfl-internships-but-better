@@ -1,4 +1,4 @@
-import { Format } from '../../../types'
+import { Format } from '../types'
 
 export type SelectableCity = { name: string; selected: boolean }
 

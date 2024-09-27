@@ -1,6 +1,6 @@
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { useMemo } from 'react'
-import { Offer } from '../../../../types'
+import { Offer } from '../../types'
 import { useAside } from '../hooks/useAside'
 import { useFilter } from '../hooks/useFilter'
 import { usePagination } from '../hooks/usePagination'

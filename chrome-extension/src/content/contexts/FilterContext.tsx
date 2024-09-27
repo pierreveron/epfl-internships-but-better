@@ -1,5 +1,5 @@
 import React, { createContext, useState, useMemo, useEffect } from 'react'
-import { Offer } from '../../../../types'
+import { Offer } from '../../types'
 import { useFavoriteOffers } from '../utils/hooks'
 import { useData } from '../../utils/useData'
 import { SelectableCity, SelectableFormat, SelectableLength } from '../types'

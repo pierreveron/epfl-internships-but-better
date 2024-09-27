@@ -1,4 +1,4 @@
-import { Location, Offer, OfferToBeFormatted } from '../../../../types'
+import { Location, Offer, OfferToBeFormatted } from '../../types'
 import { getFunctions, httpsCallable, connectFunctionsEmulator, Functions } from 'firebase/functions'
 import { app } from '../../firebase'
 
