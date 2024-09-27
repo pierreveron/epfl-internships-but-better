@@ -1,24 +1,46 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { User } from 'firebase/auth'
 
 export default function Popup() {
-  const [apiKey, setApiKey] = useState('')
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    // Load the API key from storage when the component mounts
-    chrome.storage.sync.get(['apiKey'], (result) => {
-      if (result.apiKey) {
-        setApiKey(result.apiKey)
-      }
+    chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
+      setUser(response.user)
     })
+
+    const listener = (request: { type: string; user: User | null }) => {
+      if (request.type === 'AUTH_STATE_CHANGED') {
+        setUser(request.user)
+      }
+    }
+
+    chrome.runtime.onMessage.addListener(listener)
+
+    return () => {
+      chrome.runtime.onMessage.removeListener(listener)
+    }
   }, [])
 
-  const handleApiKeyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setApiKey(event.target.value)
+  const handleSignIn = async () => {
+    chrome.runtime.sendMessage({ type: 'SIGN_IN' }, (response) => {
+      if (response.success) {
+        setUser(response.user)
+      } else {
+        console.error('Sign-in failed:', response.error)
+      }
+    })
   }
 
-  const saveApiKey = () => {
-    chrome.storage.sync.set({ apiKey }, () => {
-      console.log('API key saved')
+  const handleSignOut = async () => {
+    console.log('1. Handle sign out')
+    chrome.runtime.sendMessage({ type: 'SIGN_OUT' }, (response) => {
+      console.log('4. Sign-out response', response)
+      if (response.success) {
+        setUser(null)
+      } else {
+        console.error('Sign-out failed:', response.error)
+      }
     })
   }
 
@@ -32,23 +54,24 @@ export default function Popup() {
         features.
       </p>
       <div className="tw-space-y-2">
-        <label htmlFor="apiKey" className="tw-block tw-text-sm tw-font-medium tw-text-gray-700">
-          API Key
-        </label>
-        <input
-          type="text"
-          id="apiKey"
-          value={apiKey}
-          onChange={handleApiKeyChange}
-          className="tw-mt-1 tw-block tw-w-full tw-rounded-md tw-border-gray-300 tw-shadow-sm focus:tw-border-red-500 focus:tw-ring-red-500 tw-sm:text-sm"
-          placeholder="Enter your API key"
-        />
-        <button
-          onClick={saveApiKey}
-          className="tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-transparent tw-text-sm tw-font-medium tw-rounded-md tw-shadow-sm tw-text-white tw-bg-red-600 hover:tw-bg-red-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-red-500"
-        >
-          Save API Key
-        </button>
+        {user ? (
+          <>
+            <p>Welcome, {user.displayName}!</p>
+            <button
+              onClick={handleSignOut}
+              className="tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-transparent tw-text-sm tw-font-medium tw-rounded-md tw-shadow-sm tw-text-white tw-bg-red-600 hover:tw-bg-red-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-red-500"
+            >
+              Sign Out
+            </button>
+          </>
+        ) : (
+          <button
+            onClick={handleSignIn}
+            className="tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-transparent tw-text-sm tw-font-medium tw-rounded-md tw-shadow-sm tw-text-white tw-bg-red-600 hover:tw-bg-red-700 focus:tw-outline-none focus:tw-ring-2 tw-ring-offset-2 tw-ring-red-500"
+          >
+            Sign In with Google
+          </button>
+        )}
       </div>
     </div>
   )
