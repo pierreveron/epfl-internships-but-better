@@ -7,7 +7,7 @@ import LengthsCheckboxes from './LengthsCheckboxes'
 import LocationsCheckbox from './LocationsCheckbox'
 import DisplayModeSegmentedControl from './DisplayModeSegmentedControl'
 import { FilterContext } from '../contexts/FilterContext'
-import { useData } from '../../utils/useData'
+import { useData } from '../hooks/useData'
 
 export default function ActionBar() {
   const { companies } = useData()

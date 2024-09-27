@@ -1,7 +1,7 @@
 import React, { createContext, useState, useMemo, useEffect } from 'react'
 import { Offer } from '../../types'
 import { useFavoriteOffers } from '../utils/hooks'
-import { useData } from '../../utils/useData'
+import { useData } from '../hooks/useData'
 import { SelectableCity, SelectableFormat, SelectableLength } from '../types'
 
 const NOT_SPECIFIED = 'Not specified'

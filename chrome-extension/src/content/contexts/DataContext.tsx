@@ -1,8 +1,8 @@
 import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react'
-import { Offer, OfferToBeFormatted, Location } from '../types'
-import { scrapeJobs } from '../utils/scraping'
-import { formatOffers } from './utils/offerFormatting'
-import { SelectableCity } from './types'
+import { Offer, OfferToBeFormatted, Location } from '../../types'
+import { scrapeJobs } from '../../utils/scraping'
+import { formatOffers } from '../utils/offerFormatting'
+import { SelectableCity } from '../types'
 
 interface DataContextType {
   data: Offer[]

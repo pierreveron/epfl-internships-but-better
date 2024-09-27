@@ -20,7 +20,7 @@ import OfferDescription from './components/OfferDescription'
 // import XMarkIcon from './components/icons/XMarkIcon'
 // import classNames from 'classnames'
 import List from './components/List'
-import { DataProvider } from './DataProvider'
+import { DataProvider } from './contexts/DataContext'
 import { AsideProvider } from './contexts/AsideContext'
 import { OfferActionsProvider } from './contexts/OfferActionsContext'
 import { useAside } from './hooks/useAside'
@@ -29,7 +29,7 @@ import { SortProvider } from './contexts/SortContext'
 import { PaginationProvider } from './contexts/PaginationContext'
 import { UserProvider } from './contexts/UserContext'
 import Table from './components/Table'
-import { useData } from '../utils/useData'
+import { useData } from './hooks/useData'
 
 function AppContent() {
   const { offer: asideOffer } = useAside()
