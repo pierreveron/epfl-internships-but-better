@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useRef } from 'react'
 import styles from '../styles/index.css?inline'
-import loadingDots from '../styles/loading-dots.css?inline'
 import mantineStyles from '@mantine/core/styles.css?inline'
 import mantineDatatableStyles from 'mantine-datatable/styles.css?inline'
 import { MantineProvider, createTheme, AppShell } from '@mantine/core'
@@ -171,7 +170,7 @@ export default function App() {
   useEffect(() => {
     if (containerRef.current) {
       const style = document.createElement('style')
-      style.textContent = styles + loadingDots + mantineStyles + mantineDatatableStyles
+      style.textContent = styles + mantineStyles + mantineDatatableStyles
       containerRef.current.getRootNode().appendChild(style)
     }
   }, [])
