@@ -19,7 +19,11 @@ auth.onAuthStateChanged((user) => {
         currentUser = { ...user, isPremium }
 
         chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user }).catch((error) => {
-          console.error('Error sending message to extension:', error)
+          if (error.message === 'Could not establish connection. Receiving end does not exist.') {
+            // console.log('Error sending message to extension:', error)
+          } else {
+            console.error('Error sending message to extension:', error)
+          }
         })
       })
       .catch((error) => {
@@ -29,7 +33,11 @@ auth.onAuthStateChanged((user) => {
   } else {
     currentUser = null
     chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user: null }).catch((error) => {
-      console.error('Error sending message to extension:', error)
+      if (error.message === 'Could not establish connection. Receiving end does not exist.') {
+        // console.log('Error sending message to extension:', error)
+      } else {
+        console.error('Error sending message to extension:', error)
+      }
     })
   }
 })
