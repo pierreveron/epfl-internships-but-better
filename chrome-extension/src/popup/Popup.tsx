@@ -24,20 +24,19 @@ export default function Popup() {
 
   const handleSignIn = async () => {
     chrome.runtime.sendMessage({ type: 'SIGN_IN' }, (response) => {
-      if (response.success) {
-        chrome.tabs.reload()
-      } else {
+      console.log(response)
+      if (response.error) {
         console.error('Sign-in failed:', response.error)
+        alert('Sign-in failed')
       }
     })
   }
 
   const handleSignOut = async () => {
     chrome.runtime.sendMessage({ type: 'SIGN_OUT' }, (response) => {
-      if (response.success) {
-        chrome.tabs.reload()
-      } else {
+      if (response.error) {
         console.error('Sign-out failed:', response.error)
+        alert('Sign-out failed')
       }
     })
   }

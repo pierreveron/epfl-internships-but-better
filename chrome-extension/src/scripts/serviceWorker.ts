@@ -115,14 +115,19 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     signIn()
       .then((user) => {
         if (user) {
-          sendResponse({ success: true })
+          chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
+            if (tab) {
+              chrome.tabs.reload(tab.id!)
+            }
+          })
         } else {
-          sendResponse({ success: false, error: 'Sign-in failed' })
+          sendResponse({ error: 'Sign-in failed' })
         }
       })
       .catch((error) => {
         console.error('Error signing in:', error)
-        sendResponse({ success: false, error: 'Sign-in error' })
+        sendResponse({ error: 'Sign-in error' })
       })
     return true // Indicates that the response is sent asynchronously
   }
@@ -131,11 +136,16 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     auth
       .signOut()
       .then(() => {
-        sendResponse({ success: true })
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+          const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
+          if (tab) {
+            chrome.tabs.reload(tab.id!)
+          }
+        })
       })
       .catch((error) => {
         console.error('Error signing out:', error)
-        sendResponse({ success: false, error: 'Sign-out error' })
+        sendResponse({ error: 'Sign-out error' })
       })
     return true // Indicates that the response is sent asynchronously
   }
