@@ -1,24 +1,5 @@
 import { Location, Offer, OfferToBeFormatted } from '../../types'
-import { getFunctions, httpsCallable, connectFunctionsEmulator, Functions } from 'firebase/functions'
-import { app } from '../../firebase'
-
-let functions: Functions | null = null
-
-const constants = {
-  nodeEnv: import.meta.env.VITE_NODE_ENV,
-}
-
-function initializeFunctions(): Functions {
-  if (!functions) {
-    functions = getFunctions(app)
-    if (constants.nodeEnv === 'development') {
-      connectFunctionsEmulator(functions, 'localhost', 5001)
-      console.log('Connected to Firebase Functions Emulator')
-    }
-  }
-
-  return functions
-}
+import { cleanSalaries, cleanLocations } from '../../utils/firebase'
 
 export function formatOffers(offers: OfferToBeFormatted[]): Promise<Offer[]> {
   const salaries = offers.map((offer) => offer.salary)
@@ -36,13 +17,9 @@ export function formatOffers(offers: OfferToBeFormatted[]): Promise<Offer[]> {
     return formattedOffers
   })
 }
-
 async function formatSalaries(salaries: string[]) {
   try {
-    const functions = initializeFunctions()
-    const formatSalariesFunction = httpsCallable(functions, 'clean_salaries')
-
-    const result = await formatSalariesFunction(salaries)
+    const result = await cleanSalaries(salaries)
     console.log('result', result)
     const data = result.data as { salaries: { [key: string]: string } }
 
@@ -56,9 +33,7 @@ async function formatSalaries(salaries: string[]) {
 
 async function formatLocations(locations: string[]) {
   try {
-    const functions = initializeFunctions()
-    const formatLocationsFunction = httpsCallable(functions, 'clean_locations')
-    const result = await formatLocationsFunction(locations)
+    const result = await cleanLocations(locations)
     console.log('result', result)
     const data = result.data as { locations: { [key: string]: Location[] } }
 
