@@ -2,8 +2,13 @@
 
 from typing import Any
 
-from firebase_admin import firestore  # type: ignore
+from firebase_admin import (  # type: ignore
+    firestore,
+    initialize_app,  # type: ignore
+)
 from google.cloud.firestore_v1.document import DocumentReference
+
+initialize_app()
 
 db = firestore.client()
 

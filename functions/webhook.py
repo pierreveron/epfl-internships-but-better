@@ -1,8 +1,7 @@
 from typing import Any
 
 from firebase_functions import https_fn  # type: ignore
-
-from functions.firestore import add_payment  # type: ignore
+from firestore_helper import add_payment  # type: ignore
 
 
 def fulfill_checkout(order_payload: dict[str, Any]) -> https_fn.Response:

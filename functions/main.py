@@ -8,14 +8,9 @@ from typing import Any
 
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salaries_openai
-from firebase_admin import initialize_app  # type: ignore
 from firebase_functions import https_fn, options  # type: ignore
-
-from functions.firestore import check_payment_status  # Add this import
-from functions.webhook import fulfill_checkout  # type: ignore
-
-app = initialize_app()
-
+from firestore_helper import check_payment_status  # Add this import
+from webhook import fulfill_checkout  # type: ignore
 
 WEBHOOK_SECRET = os.environ["LEMON_SQUEEZY_SIGNING_SECRET"]
 
