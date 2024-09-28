@@ -115,7 +115,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     signIn()
       .then((user) => {
         if (user) {
-          sendResponse({ success: true, user })
+          sendResponse({ success: true })
         } else {
           sendResponse({ success: false, error: 'Sign-in failed' })
         }

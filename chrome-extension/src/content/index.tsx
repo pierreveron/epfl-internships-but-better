@@ -85,4 +85,8 @@ Please try again (we never know 🤷‍♂️) & contact Pierre Véron on Linked
   alert(errorMessage)
 }
 
-injectReactApp()
+chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
+  if (response.user) {
+    injectReactApp()
+  }
+})
