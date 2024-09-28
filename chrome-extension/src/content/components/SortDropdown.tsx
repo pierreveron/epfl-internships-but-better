@@ -14,16 +14,15 @@ const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) =>
 
 export default function SortDropdown() {
   const { sortStatus, setSortStatus } = useContext(SortContext)!
-  const { user } = useUser()
-  const isPremiumUser = user?.hasPremium ?? false
+  const user = useUser().user!
 
   const sortOptions = [
     { value: 'creationDate-desc', label: 'Creation date (newest first)' },
     { value: 'creationDate-asc', label: 'Creation date (oldest first)' },
     { value: 'company-asc', label: 'Company (A-Z)' },
     { value: 'company-desc', label: 'Company (Z-A)' },
-    { value: 'salary-desc', label: 'Salary (high to low)', disabled: !isPremiumUser },
-    { value: 'salary-asc', label: 'Salary (low to high)', disabled: !isPremiumUser },
+    { value: 'salary-desc', label: 'Salary (high to low)', disabled: !user.isPremium },
+    { value: 'salary-asc', label: 'Salary (low to high)', disabled: !user.isPremium },
     { value: 'registered-desc', label: 'Number of candidates (high to low)' },
     { value: 'registered-asc', label: 'Number of candidates (low to high)' },
   ]
