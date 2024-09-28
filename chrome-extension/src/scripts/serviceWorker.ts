@@ -166,8 +166,8 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       .then(() => {
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
           const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
-          if (tab) {
-            chrome.tabs.reload(tab.id!)
+          if (tab?.id) {
+            chrome.tabs.reload(tab.id)
           }
         })
       })

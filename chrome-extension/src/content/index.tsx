@@ -44,8 +44,14 @@ function injectReactApp() {
       // This allows external scripts to access the shadow DOM like Mantine
       const shadowRoot = root.attachShadow({ mode: 'open' })
 
-      // Hide the target element
-      targetElement.style.display = 'none'
+      // Hide the target element only if the extension is disabled
+      chrome.storage.local.get('isEnabled', (result) => {
+        if (result.isEnabled === false) {
+          switchElementsDisplay(targetElement, root)
+        } else {
+          switchElementsDisplay(root, targetElement)
+        }
+      })
 
       // Insert our root element after the target element
       targetElement.parentNode?.insertBefore(root, targetElement.nextSibling)
@@ -87,5 +93,28 @@ Please try again (we never know 🤷‍♂️) & contact Pierre Véron on Linked
 chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
   if (response.user) {
     injectReactApp()
+  }
+})
+
+function switchElementsDisplay(activeElement: HTMLElement | null, disabledElement: HTMLElement | null) {
+  if (activeElement) {
+    activeElement.style.display = ''
+  }
+  if (disabledElement) {
+    disabledElement.style.display = 'none'
+  }
+}
+
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.type === 'CHANGE_STATE') {
+    const isEnabled = request.state === 'ENABLED'
+    const targetElement = document.getElementById('BB308197177_300')
+    const root = document.getElementById('extension-content-root')
+
+    if (isEnabled) {
+      switchElementsDisplay(root, targetElement)
+    } else {
+      switchElementsDisplay(targetElement, root)
+    }
   }
 })

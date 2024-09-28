@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { Button } from '@mantine/core'
+import { Button, Switch } from '@mantine/core'
 import { IconCrown, IconExternalLink } from '@tabler/icons-react'
 import { UserWithPremium } from '../types'
 
 export default function Popup() {
   const [user, setUser] = useState<UserWithPremium | null>(null)
   const [isOnJobBoard, setIsOnJobBoard] = useState(false)
+  const [isEnabled, setIsEnabled] = useState(true)
 
   useEffect(() => {
     chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
@@ -25,6 +26,11 @@ export default function Popup() {
     }
 
     chrome.runtime.onMessage.addListener(listener)
+
+    // Get the current state of the extension
+    chrome.storage.local.get('isEnabled', (result) => {
+      setIsEnabled(result.isEnabled !== false)
+    })
 
     return () => {
       chrome.runtime.onMessage.removeListener(listener)
@@ -51,6 +57,21 @@ export default function Popup() {
 
   const navigateToJobBoard = () => {
     chrome.tabs.create({ url: 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290' })
+  }
+
+  const changeState = (enabled: boolean) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
+      if (tab?.id) {
+        chrome.tabs.sendMessage(tab.id, { type: 'CHANGE_STATE', state: enabled ? 'ENABLED' : 'DISABLED' })
+      }
+    })
+  }
+
+  const handleToggle = (checked: boolean) => {
+    setIsEnabled(checked)
+    chrome.storage.local.set({ isEnabled: checked })
+    changeState(checked)
   }
 
   return (
@@ -90,6 +111,11 @@ export default function Popup() {
                 Upgrade to Premium
               </Button>
             )}
+
+            <div className="tw-flex tw-items-center tw-justify-between">
+              <span className="tw-text-sm tw-text-gray-700">Enable extension</span>
+              <Switch checked={isEnabled} onChange={(event) => handleToggle(event.currentTarget.checked)} />
+            </div>
 
             <button
               onClick={handleSignOut}

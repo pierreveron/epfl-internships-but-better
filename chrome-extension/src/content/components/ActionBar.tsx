@@ -12,7 +12,7 @@ import { useUser } from '../hooks/useUser'
 
 export default function ActionBar() {
   const { companies } = useData()
-  const user = useUser().user!
+  const { user } = useUser()
 
   const {
     selectableLocations,
@@ -102,14 +102,14 @@ export default function ActionBar() {
           }}
           step={500}
           min={0}
-          disabled={!user.isPremium}
-          title={!user.isPremium ? 'Premium feature: Upgrade to filter by salary' : undefined}
+          disabled={!user?.isPremium}
+          title={!user?.isPremium ? 'Premium feature: Upgrade to filter by salary' : undefined}
         />
 
-        {!user.isPremium && (
+        {!user?.isPremium && (
           <Button
             component="a"
-            href={`https://epfl-internships-but-better.lemonsqueezy.com/buy/55677453-102d-4b40-9002-82c5d54176b8?checkout[email]=${user.email}`}
+            href={`https://epfl-internships-but-better.lemonsqueezy.com/buy/55677453-102d-4b40-9002-82c5d54176b8?checkout[email]=${user?.email}`}
             variant="gradient"
             gradient={{ from: 'gold', to: 'orange' }}
             leftSection={<IconCrown size={18} />}
