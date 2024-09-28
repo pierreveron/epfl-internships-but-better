@@ -3,12 +3,21 @@ import { ISA_JOB_BOARD_URL, NEW_JOB_BOARD_URL } from '../utils/constants'
 import { scrapeJobs } from '../utils/scraping'
 import { OfferToBeFormatted } from '../types'
 import { signIn, auth } from '../firebase'
-import { User } from 'firebase/auth'
+import { getPaymentStatus } from '../utils/firebase'
+import { UserWithPremium } from '../types'
 
-let currentUser: User | null = null
+let currentUser: UserWithPremium | null = null
 
-auth.onAuthStateChanged((user) => {
-  currentUser = user
+auth.onAuthStateChanged(async (user) => {
+  let isPremium = false
+  if (user) {
+    const response = await getPaymentStatus(user.email)
+    const data = response.data as { has_payment: boolean }
+    isPremium = data.has_payment
+  }
+
+  currentUser = user ? { ...user, isPremium } : null
+
   chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user }).catch((error) => {
     console.log('Error sending message to extension:', error)
   })

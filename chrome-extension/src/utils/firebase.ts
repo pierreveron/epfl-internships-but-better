@@ -19,3 +19,4 @@ const functions = initializeFunctions()
 
 export const cleanSalaries = httpsCallable(functions, 'clean_salaries')
 export const cleanLocations = httpsCallable(functions, 'clean_locations')
+export const getPaymentStatus = httpsCallable(functions, 'get_payment_status')

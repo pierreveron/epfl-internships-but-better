@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import json
 import os
+import re
 from typing import Any
 
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
@@ -108,12 +109,16 @@ def webhook(request: https_fn.Request) -> https_fn.Response:
     ),
 )
 def get_payment_status(req: https_fn.Request) -> https_fn.Response:
-    if req.method != "GET":
+    if req.method != "POST":
         return https_fn.Response("Method not allowed", status=405)
 
-    email = req.args.get("email")
+    data: dict[str, Any] = req.get_json()
+    email: str = data.get("data", "")
     if not email:
         return https_fn.Response("Email parameter is required", status=400)
+
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        return https_fn.Response("Invalid email", status=400)
 
     payment_status = check_payment_status(email)
     return https_fn.Response(
