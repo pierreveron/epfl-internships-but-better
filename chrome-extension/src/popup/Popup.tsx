@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
-import { User } from 'firebase/auth'
 import { Button } from '@mantine/core'
 import { IconCrown } from '@tabler/icons-react'
-
-type UserWithPremium = User & { isPremium: boolean }
+import { UserWithPremium } from '../types'
 
 export default function Popup() {
   const [user, setUser] = useState<UserWithPremium | null>(null)

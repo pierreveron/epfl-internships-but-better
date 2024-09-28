@@ -1,7 +1,6 @@
 import { createContext, useState, useEffect } from 'react'
-import { User } from 'firebase/auth'
+import { UserWithPremium } from '../../types'
 
-type UserWithPremium = User & { isPremium: boolean }
 interface UserContextType {
   user: UserWithPremium | null
   setUser: React.Dispatch<React.SetStateAction<UserWithPremium | null>>
