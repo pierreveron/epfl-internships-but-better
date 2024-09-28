@@ -26,8 +26,7 @@ export default function Popup() {
 
   const handleSignIn = async () => {
     chrome.runtime.sendMessage({ type: 'SIGN_IN' }, (response) => {
-      console.log(response)
-      if (response.error) {
+      if (response && response.error) {
         console.error('Sign-in failed:', response.error)
         alert('Sign-in failed')
       }
@@ -36,7 +35,7 @@ export default function Popup() {
 
   const handleSignOut = async () => {
     chrome.runtime.sendMessage({ type: 'SIGN_OUT' }, (response) => {
-      if (response.error) {
+      if (response && response.error) {
         console.error('Sign-out failed:', response.error)
         alert('Sign-out failed')
       }
