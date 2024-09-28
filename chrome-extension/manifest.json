@@ -43,6 +43,6 @@
   ],
   "host_permissions": ["https://isa.epfl.ch/*"],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebase.com http://localhost:5001;"
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebase.com http://localhost:5001 https://us-central1-epfl-internships-but-better-ch.cloudfunctions.net;"
   }
 }

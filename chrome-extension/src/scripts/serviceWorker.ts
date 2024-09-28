@@ -8,19 +8,30 @@ import { UserWithPremium } from '../types'
 
 let currentUser: UserWithPremium | null = null
 
-auth.onAuthStateChanged(async (user) => {
+auth.onAuthStateChanged((user) => {
   let isPremium = false
   if (user) {
-    const response = await getPaymentStatus(user.email)
-    const data = response.data as { has_payment: boolean }
-    isPremium = data.has_payment
+    getPaymentStatus(user.email)
+      .then((response) => {
+        const data = response.data as { has_payment: boolean }
+        isPremium = data.has_payment
+
+        currentUser = { ...user, isPremium }
+
+        chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user }).catch((error) => {
+          console.error('Error sending message to extension:', error)
+        })
+      })
+      .catch((error) => {
+        console.error('Error getting payment status:', error)
+        currentUser = { ...user, isPremium: false }
+      })
+  } else {
+    currentUser = null
+    chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user: null }).catch((error) => {
+      console.error('Error sending message to extension:', error)
+    })
   }
-
-  currentUser = user ? { ...user, isPremium } : null
-
-  chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user }).catch((error) => {
-    console.log('Error sending message to extension:', error)
-  })
 })
 
 async function pollTabUntilNot(tabId: number, status: string) {
