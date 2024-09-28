@@ -1,15 +1,19 @@
 import { useState, useEffect } from 'react'
 import { User } from 'firebase/auth'
+import { Button } from '@mantine/core'
+import { IconCrown } from '@tabler/icons-react'
+
+type UserWithPremium = User & { isPremium: boolean }
 
 export default function Popup() {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<UserWithPremium | null>(null)
 
   useEffect(() => {
     chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
       setUser(response.user)
     })
 
-    const listener = (request: { type: string; user: User | null }) => {
+    const listener = (request: { type: string; user: UserWithPremium | null }) => {
       if (request.type === 'AUTH_STATE_CHANGED') {
         setUser(request.user)
       }
@@ -54,6 +58,21 @@ export default function Popup() {
         {user ? (
           <>
             <p>Welcome, {user.displayName}!</p>
+            {!user.isPremium && (
+              <Button
+                onClick={() =>
+                  chrome.tabs.create({
+                    url: `https://epfl-internships-but-better.lemonsqueezy.com/buy/55677453-102d-4b40-9002-82c5d54176b8?checkout[email]=${user.email}`,
+                  })
+                }
+                variant="gradient"
+                gradient={{ from: 'gold', to: 'orange' }}
+                leftSection={<IconCrown size={18} />}
+              >
+                Upgrade to Premium
+              </Button>
+            )}
+
             <button
               onClick={handleSignOut}
               className="tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-transparent tw-text-sm tw-font-medium tw-rounded-md tw-shadow-sm tw-text-white tw-bg-red-600 hover:tw-bg-red-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-red-500"
