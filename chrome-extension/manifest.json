@@ -8,7 +8,7 @@
   "action": { "default_popup": "index.html" },
   "permissions": ["storage", "activeTab", "identity"],
   "oauth2": {
-    "client_id": "566575740724-s3h77dnuqbcqts69q0u4u1d9dhkrefi9.apps.googleusercontent.com",
+    "client_id": "150257566382-5jl2lfi02tks35574au0j33hq7ts9o3o.apps.googleusercontent.com",
     "scopes": ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
   },
   "background": {
