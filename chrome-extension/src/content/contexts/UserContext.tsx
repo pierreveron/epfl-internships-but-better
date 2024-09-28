@@ -13,12 +13,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
-      setUser({ ...response.user, isPremium: false })
+      setUser(response.user)
     })
 
     const listener = (request: { type: string; user: UserWithPremium | null }) => {
       if (request.type === 'AUTH_STATE_CHANGED' && request.user) {
-        setUser({ ...request.user, isPremium: false })
+        setUser(request.user)
       }
     }
 
