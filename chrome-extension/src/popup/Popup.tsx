@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@mantine/core'
-import { IconCrown } from '@tabler/icons-react'
+import { IconCrown, IconExternalLink } from '@tabler/icons-react'
 import { UserWithPremium } from '../types'
 
 export default function Popup() {
   const [user, setUser] = useState<UserWithPremium | null>(null)
+  const [isOnJobBoard, setIsOnJobBoard] = useState(false)
 
   useEffect(() => {
     chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
       setUser(response.user)
+    })
+
+    // Check if the current tab is on the IS-Academia job board
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const currentUrl = tabs[0].url
+      setIsOnJobBoard(currentUrl?.includes('isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290') || false)
     })
 
     const listener = (request: { type: string; user: UserWithPremium | null }) => {
@@ -42,6 +49,10 @@ export default function Popup() {
     })
   }
 
+  const navigateToJobBoard = () => {
+    chrome.tabs.create({ url: 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290' })
+  }
+
   return (
     <div className="tw-space-y-4 tw-p-4">
       <h1 className="tw-text-2xl tw-whitespace-nowrap">
@@ -51,6 +62,16 @@ export default function Popup() {
         This extension enhances the IS-Academia job board experience. Open the IS-Academia job board to use the enhanced
         features.
       </p>
+      <Button
+        onClick={navigateToJobBoard}
+        variant="outline"
+        color="red"
+        leftSection={<IconExternalLink size={18} />}
+        fullWidth
+        disabled={isOnJobBoard}
+      >
+        {isOnJobBoard ? 'Currently on Job Board' : 'Open IS-Academia Job Board'}
+      </Button>
       <div className="tw-space-y-2">
         {user ? (
           <>
