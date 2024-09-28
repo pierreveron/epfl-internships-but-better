@@ -99,8 +99,8 @@ def webhook(request: https_fn.Request) -> https_fn.Response:
 
 @https_fn.on_request(
     cors=options.CorsOptions(
-        cors_origins=["https://isa.epfl.ch"],
-        cors_methods=["GET"],
+        cors_origins=["chrome-extension://cgdpalglfipokmbjbofifdlhlkpcipnk"],
+        cors_methods=["POST"],
     ),
 )
 def get_payment_status(req: https_fn.Request) -> https_fn.Response:
