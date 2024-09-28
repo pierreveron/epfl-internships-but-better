@@ -6,11 +6,23 @@ import os
 import re
 from typing import Any
 
+import google.cloud.firestore  # type: ignore
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salaries_openai
+
+# The Firebase Admin SDK to access Cloud Firestore.
+from firebase_admin import firestore, initialize_app  # type: ignore
+
+# The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
-from firestore_helper import check_payment_status  # Add this import
-from webhook import fulfill_checkout  # type: ignore
+from firestore_helper import add_payment, check_payment_status
+
+app = initialize_app()
+
+
+def get_db() -> google.cloud.firestore.Client:
+    return firestore.client(app)  # type: ignore
+
 
 WEBHOOK_SECRET = os.environ["LEMON_SQUEEZY_SIGNING_SECRET"]
 
@@ -70,6 +82,23 @@ def clean_salaries(req: https_fn.Request) -> https_fn.Response:
 
 @https_fn.on_request()
 def webhook(request: https_fn.Request) -> https_fn.Response:
+    def fulfill_checkout(order_payload: dict[str, Any]) -> https_fn.Response:
+        print(f"Fulfilling order: {order_payload}")
+        attributes = order_payload["attributes"]
+
+        email = attributes.get("user_email")
+        payment_status = attributes.get("status")
+
+        if payment_status == "paid" and email:
+            try:
+                add_payment(get_db(), "lemon-squeezy", email, order_payload)
+                return https_fn.Response("Payment fulfilled", status=200)
+            except Exception as e:
+                print(f"Error fulfilling payment: {e}")
+                return https_fn.Response("Error fulfilling payment", status=500)
+
+        return https_fn.Response("Payment not fulfilled", status=200)
+
     if request.method != "POST":
         return https_fn.Response("Method not allowed", status=405)
 
@@ -115,7 +144,7 @@ def get_payment_status(req: https_fn.Request) -> https_fn.Response:
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
         return https_fn.Response("Invalid email", status=400)
 
-    payment_status = check_payment_status(email)
+    payment_status = check_payment_status(get_db(), email)
     return https_fn.Response(
         json.dumps({"data": {"has_payment": payment_status}}),
         content_type="application/json",
