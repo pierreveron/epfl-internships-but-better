@@ -32,6 +32,7 @@ WEBHOOK_SECRET = os.environ["LEMON_SQUEEZY_SIGNING_SECRET"]
         cors_origins=["https://isa.epfl.ch"],
         cors_methods=["POST"],
     ),
+    timeout_sec=120,
 )
 def clean_data(req: https_fn.Request) -> https_fn.Response:
     try:
