@@ -60,8 +60,8 @@ def clean_data(req: https_fn.Request) -> https_fn.Response:
                 clean_locations_task, clean_salaries_task
             )
             return {
-                "locations": clean_locations.model_dump(),
-                "salaries": clean_salaries.model_dump(),
+                "locations": clean_locations.model_dump()["locations"],
+                "salaries": clean_salaries.model_dump()["salaries"],
             }
 
         result = asyncio.run(process_data())
