@@ -4,6 +4,22 @@ import App from './App.tsx'
 import '../styles/index.css'
 import ErrorBoundary from './components/ErrorBoundary'
 
+const constants = {
+  consoleLog: import.meta.env.VITE_CONSOLE_LOG,
+}
+
+// Override console.log
+if (constants.consoleLog !== 'true') {
+  console.log = () => {}
+} else {
+  const originalConsoleLog = console.log
+  console.log = (...args) => {
+    originalConsoleLog('[DEV]', ...args)
+  }
+}
+
+let isReactAppInjected = false
+
 function checkForElement(): Promise<HTMLElement | null> {
   return new Promise((resolve) => {
     const check = () => {
@@ -57,6 +73,7 @@ function injectReactApp() {
       targetElement.parentNode?.insertBefore(root, targetElement.nextSibling)
 
       try {
+        isReactAppInjected = true
         ReactDOM.createRoot(shadowRoot).render(
           <React.StrictMode>
             <ErrorBoundary handleError={(error) => handleError(error, targetElement)}>
@@ -64,6 +81,7 @@ function injectReactApp() {
             </ErrorBoundary>
           </React.StrictMode>,
         )
+        console.log('React app injected')
       } catch (error) {
         handleError(error as Error, targetElement)
       }
@@ -92,8 +110,20 @@ Please try again (we never know 🤷‍♂️) & contact Pierre Véron on Linked
 
 chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
   console.log('GET_CURRENT_USER in content', response)
-  if (response.user) {
+  if (response.user && !isReactAppInjected) {
+    console.log('injecting React app on GET_CURRENT_USER')
     injectReactApp()
+  }
+})
+
+chrome.runtime.onMessage.addListener((request) => {
+  console.log('onMessage', request)
+  if (request.type === 'AUTH_STATE_CHANGED') {
+    console.log('AUTH_STATE_CHANGED in content', request.user)
+    if (request.user && !isReactAppInjected) {
+      console.log('injecting React app on AUTH_STATE_CHANGED')
+      injectReactApp()
+    }
   }
 })
 
@@ -119,17 +149,3 @@ chrome.runtime.onMessage.addListener((request) => {
     }
   }
 })
-
-const constants = {
-  consoleLog: import.meta.env.VITE_CONSOLE_LOG,
-}
-
-// Override console.log
-if (constants.consoleLog !== 'true') {
-  console.log = () => {}
-} else {
-  const originalConsoleLog = console.log
-  console.log = (...args) => {
-    originalConsoleLog('[DEV]', ...args)
-  }
-}
