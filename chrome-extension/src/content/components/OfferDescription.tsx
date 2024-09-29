@@ -13,6 +13,29 @@ import classNames from 'classnames'
 import { useAside } from '../hooks/useAside'
 import { useFavoriteOffers } from '../utils/hooks'
 
+// https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script
+const createScript = (id: string, offerId: string) => {
+  const s = document.createElement('script')
+  s.textContent = offerId
+  s.src = chrome.runtime.getURL('src/scripts/navigateToOffer.js')
+  s.id = id
+  s.onload = function () {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    this.remove()
+  }
+  // see also "Dynamic values in the injected code" section in this answer
+  ;(document.head || document.documentElement).appendChild(s)
+}
+
+async function navigateToView(offerId: string) {
+  createScript('navigateToView', offerId)
+}
+
+async function navigateToRegister(offerId: string) {
+  createScript('navigateToRegister', offerId)
+}
+
 const getFirstValidWebsite = (websites: string): string => {
   const validWebsites = websites
     .split(';')
@@ -230,11 +253,9 @@ export default function OfferDescription() {
 
       <div className="tw-flex tw-flex-row tw-gap-4 tw-items-center">
         <Button
-          data-offer-id={offer.id}
-          id="register-button"
-          component="a"
-          href="https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab300"
-          target="_blank"
+          onClick={() => {
+            navigateToRegister(offer.id)
+          }}
           w={200}
           size="md"
           rightSection={<ArrowRightLongIcon className="tw-w-4 tw-h-4 tw-fill-white" />}
@@ -267,15 +288,15 @@ export default function OfferDescription() {
           <EyeSlashIcon className="tw-w-6 tw-fill-gray-900" />
         </ActionIcon> */}
 
-        <Anchor
-          data-offer-id={offer.id}
+        <Button
           id="view-button"
-          href="https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab300"
-          target="_blank"
-          underline="never"
+          onClick={() => {
+            navigateToView(offer.id)
+          }}
+          variant="transparent"
         >
           View original offer
-        </Anchor>
+        </Button>
       </div>
 
       <div className="tw-space-y-4 tw-mt-4">
