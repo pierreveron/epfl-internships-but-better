@@ -19,6 +19,7 @@ if (constants.consoleLog !== 'true') {
 let currentUser: UserWithPremium | null = null
 
 auth.onAuthStateChanged((user) => {
+  console.log('auth.onAuthStateChanged', user)
   let isPremium = false
   if (user) {
     getPaymentStatus(user.email)
@@ -28,11 +29,13 @@ auth.onAuthStateChanged((user) => {
 
         currentUser = { ...user, isPremium, formattingCount: 0 }
 
-        chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user }).catch((error) => {
-          if (error.message === 'Could not establish connection. Receiving end does not exist.') {
-            // console.log('Error sending message to extension:', error)
-          } else {
-            console.error('Error sending message to extension:', error)
+        // Send message to content script
+        chrome.tabs.query({}, function (tabs) {
+          const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
+          if (tab?.id) {
+            chrome.tabs.sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user: currentUser }).catch((error) => {
+              console.log(`Error sending message to tab ${tab.id}:`, error)
+            })
           }
         })
       })
@@ -42,11 +45,13 @@ auth.onAuthStateChanged((user) => {
       })
   } else {
     currentUser = null
-    chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user: null }).catch((error) => {
-      if (error.message === 'Could not establish connection. Receiving end does not exist.') {
-        // console.log('Error sending message to extension:', error)
-      } else {
-        console.error('Error sending message to extension:', error)
+    // Send message to content script
+    chrome.tabs.query({}, function (tabs) {
+      const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
+      if (tab?.id) {
+        chrome.tabs.sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user: currentUser }).catch((error) => {
+          console.log(`Error sending message to tab ${tab.id}:`, error)
+        })
       }
     })
   }
@@ -57,12 +62,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     signIn()
       .then((user) => {
         if (user) {
-          chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
-            if (tab) {
-              chrome.tabs.reload(tab.id!)
-            }
-          })
+          console.log('User signed in')
         } else {
           sendResponse({ error: 'Sign-in failed' })
         }
@@ -78,12 +78,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     auth
       .signOut()
       .then(() => {
-        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-          const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
-          if (tab?.id) {
-            chrome.tabs.reload(tab.id)
-          }
-        })
+        console.log('User signed out')
       })
       .catch((error) => {
         console.error('Error signing out:', error)

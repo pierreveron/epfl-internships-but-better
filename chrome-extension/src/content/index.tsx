@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import '../styles/index.css'
 import ErrorBoundary from './components/ErrorBoundary'
+import { UserWithPremium } from '../types.ts'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -108,25 +109,6 @@ Please try again (we never know 🤷‍♂️) & contact Pierre Véron on Linked
   alert(errorMessage)
 }
 
-chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
-  console.log('GET_CURRENT_USER in content', response)
-  if (response.user && !isReactAppInjected) {
-    console.log('injecting React app on GET_CURRENT_USER')
-    injectReactApp()
-  }
-})
-
-chrome.runtime.onMessage.addListener((request) => {
-  console.log('onMessage', request)
-  if (request.type === 'AUTH_STATE_CHANGED') {
-    console.log('AUTH_STATE_CHANGED in content', request.user)
-    if (request.user && !isReactAppInjected) {
-      console.log('injecting React app on AUTH_STATE_CHANGED')
-      injectReactApp()
-    }
-  }
-})
-
 function switchElementsDisplay(activeElement: HTMLElement | null, disabledElement: HTMLElement | null) {
   if (activeElement) {
     activeElement.style.display = ''
@@ -147,5 +129,49 @@ chrome.runtime.onMessage.addListener((request) => {
     } else {
       switchElementsDisplay(targetElement, root)
     }
+  }
+})
+
+// Function to handle auth state changes
+function handleAuthStateChanged(user: UserWithPremium) {
+  console.log('handleAuthStateChanged', user)
+  if (user && !isReactAppInjected) {
+    console.log('injecting React app on AUTH_STATE_CHANGED')
+    injectReactApp()
+  } else if (!user && isReactAppInjected) {
+    console.log('removing React app on AUTH_STATE_CHANGED')
+    removeReactApp()
+  }
+}
+
+// Function to remove React app
+function removeReactApp() {
+  const root = document.getElementById('extension-content-root')
+  if (root) {
+    root.remove()
+    isReactAppInjected = false
+    console.log('React app removed')
+  }
+  const targetElement = document.getElementById('BB308197177_300')
+  if (targetElement) {
+    targetElement.style.display = ''
+  }
+}
+
+// Listen for messages from the service worker
+chrome.runtime.onMessage.addListener((message) => {
+  console.log('AUTH_STATE_CHANGED in content:', message)
+  if (message.type === 'AUTH_STATE_CHANGED') {
+    handleAuthStateChanged(message.user)
+  }
+  // Make sure to return true if you want to send a response asynchronously
+  return true
+})
+
+// Initial check for current user
+chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
+  console.log('GET_CURRENT_USER in content', response)
+  if (response && response.user) {
+    handleAuthStateChanged(response.user)
   }
 })
