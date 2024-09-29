@@ -20,9 +20,6 @@
       "matches": ["https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm"]
     }
   ],
-  "externally_connectable": {
-    "matches": ["https://epfl-internships-but-better.vercel.app/*"]
-  },
   "web_accessible_resources": [
     {
       "resources": ["src/scripts/navigateToOffer.js"],
