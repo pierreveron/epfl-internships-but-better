@@ -140,7 +140,7 @@ export default function ActionBar() {
         />
       </Group>
 
-      {user?.isPremium && (
+      {!user?.isPremium && (
         <Button
           variant="subtle"
           color="red"
