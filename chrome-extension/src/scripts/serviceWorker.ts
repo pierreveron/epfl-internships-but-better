@@ -2,6 +2,20 @@ import { signIn, auth } from '../firebase'
 import { getPaymentStatus } from '../utils/firebase'
 import { UserWithPremium } from '../types'
 
+const constants = {
+  consoleLog: import.meta.env.VITE_CONSOLE_LOG,
+}
+
+// Override console.log
+if (constants.consoleLog !== 'true') {
+  console.log = () => {}
+} else {
+  const originalConsoleLog = console.log
+  console.log = (...args) => {
+    originalConsoleLog('[DEV]', ...args)
+  }
+}
+
 let currentUser: UserWithPremium | null = null
 
 auth.onAuthStateChanged((user) => {
