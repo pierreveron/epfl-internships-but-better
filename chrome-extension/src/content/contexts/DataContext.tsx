@@ -87,7 +87,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const initializeOffers = async (user: UserWithPremium) => {
-      console.log('initializeOffers', user)
       try {
         if (typeof window !== 'undefined' && window.localStorage) {
           const { offers } = getOffersFromLocalStorage()
@@ -131,8 +130,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setError(new Error('Error initializing offers'))
       }
     }
-
-    console.log('user in useEffect', user)
 
     if (user) {
       initializeOffers(user)

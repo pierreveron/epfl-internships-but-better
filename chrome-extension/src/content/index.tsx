@@ -91,6 +91,7 @@ Please try again (we never know 🤷‍♂️) & contact Pierre Véron on Linked
 }
 
 chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
+  console.log('GET_CURRENT_USER in content', response)
   if (response.user) {
     injectReactApp()
   }
@@ -118,3 +119,17 @@ chrome.runtime.onMessage.addListener((request) => {
     }
   }
 })
+
+const constants = {
+  consoleLog: import.meta.env.VITE_CONSOLE_LOG,
+}
+
+// Override console.log
+if (constants.consoleLog !== 'true') {
+  console.log = () => {}
+} else {
+  const originalConsoleLog = console.log
+  console.log = (...args) => {
+    originalConsoleLog('[DEV]', ...args)
+  }
+}
