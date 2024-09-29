@@ -1,46 +1,36 @@
 import { Location, Offer, OfferToBeFormatted } from '../../types'
-import { cleanSalaries, cleanLocations } from '../../utils/firebase'
+import { cleanData } from '../../utils/firebase'
 
-export function formatOffers(offers: OfferToBeFormatted[]): Promise<Offer[]> {
+const handleCleanData = async (
+  locations: string[],
+  salaries: string[],
+): Promise<{ locations: { [key: string]: Location[] }; salaries: { [key: string]: string } }> => {
+  try {
+    const result = await cleanData({ locations, salaries })
+    const cleanedData = result.data as { locations: { [key: string]: Location[] }; salaries: { [key: string]: string } }
+
+    // Use cleanedData.locations and cleanedData.salaries as needed
+    console.log('Cleaned locations:', cleanedData.locations)
+    console.log('Cleaned salaries:', cleanedData.salaries)
+
+    // Update your UI or state with the cleaned data
+    return cleanedData
+  } catch (error) {
+    console.error('Error cleaning data:', error)
+    throw error
+  }
+}
+
+export async function formatOffers(offers: OfferToBeFormatted[]): Promise<Offer[]> {
   const salaries = offers.map((offer) => offer.salary)
-  const salariesMap = formatSalaries(salaries)
-
   const locations = offers.map((offer) => offer.location)
-  const locationsMap = formatLocations(locations)
 
-  return Promise.all([salariesMap, locationsMap]).then(([salariesMap, locationsMap]) => {
-    const formattedOffers = offers.map((offer) => ({
-      ...offer,
-      salary: salariesMap ? salariesMap[offer.salary] : offer.salary,
-      location: locationsMap ? locationsMap[offer.location] : [{ city: offer.location, country: null }],
-    }))
-    return formattedOffers
-  })
-}
-async function formatSalaries(salaries: string[]) {
-  try {
-    const result = await cleanSalaries(salaries)
-    console.log('result', result)
-    const data = result.data as { salaries: { [key: string]: string } }
+  const { locations: locationsMap, salaries: salariesMap } = await handleCleanData(locations, salaries)
 
-    console.log('Formatted salaries:', data)
-    return data.salaries
-  } catch (error) {
-    console.error('Error formatting salaries:', error)
-    throw error
-  }
-}
-
-async function formatLocations(locations: string[]) {
-  try {
-    const result = await cleanLocations(locations)
-    console.log('result', result)
-    const data = result.data as { locations: { [key: string]: Location[] } }
-
-    console.log('Formatted locations:', data)
-    return data.locations
-  } catch (error) {
-    console.error('Error formatting locations:', error)
-    throw error
-  }
+  const formattedOffers = offers.map((offer) => ({
+    ...offer,
+    salary: salariesMap ? salariesMap[offer.salary] : offer.salary,
+    location: locationsMap ? locationsMap[offer.location] : [{ city: offer.location, country: null }],
+  }))
+  return formattedOffers
 }

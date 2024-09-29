@@ -17,6 +17,5 @@ function initializeFunctions(): Functions {
 
 const functions = initializeFunctions()
 
-export const cleanSalaries = httpsCallable(functions, 'clean_salaries')
-export const cleanLocations = httpsCallable(functions, 'clean_locations')
+export const cleanData = httpsCallable(functions, 'clean_data')
 export const getUserData = httpsCallable(functions, 'get_user_data')

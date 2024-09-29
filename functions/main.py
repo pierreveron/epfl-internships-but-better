@@ -33,47 +33,37 @@ WEBHOOK_SECRET = os.environ["LEMON_SQUEEZY_SIGNING_SECRET"]
         cors_methods=["POST"],
     ),
 )
-def clean_locations(req: https_fn.Request) -> https_fn.Response:
+def clean_data(req: https_fn.Request) -> https_fn.Response:
     try:
         data: dict[str, Any] = req.get_json()
-        locations: list[str] = data.get("data", [])
+        locations: list[str] = data.get("locations", [])
+        salaries: list[str] = data.get("salaries", [])
 
         if len(locations) > 500:
             return https_fn.Response(
-                json.dumps({"data": {"error": "Too many locations"}}), status=400
+                json.dumps({"error": "Too many locations"}), status=400
             )
-
-        clean_locations = asyncio.run(clean_locations_openai(locations))
-
-        print("clean_locations", clean_locations)
-        return https_fn.Response(
-            json.dumps({"data": clean_locations.model_dump()}),
-            content_type="application/json",
-        )
-    except Exception as e:
-        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
-
-
-@https_fn.on_request(
-    cors=options.CorsOptions(
-        cors_origins=["https://isa.epfl.ch"],
-        cors_methods=["POST"],
-    ),
-)
-def clean_salaries(req: https_fn.Request) -> https_fn.Response:
-    try:
-        data: dict[str, Any] = req.get_json()
-        salaries: list[str] = data.get("data", [])
-
         if len(salaries) > 700:
             return https_fn.Response(
-                json.dumps({"data": {"error": "Too many salaries"}}), status=400
+                json.dumps({"error": "Too many salaries"}), status=400
             )
 
-        clean_salaries = asyncio.run(clean_salaries_openai(salaries))
-        print("clean_salaries", clean_salaries)
+        async def process_data():
+            clean_locations_task = clean_locations_openai(locations)
+            clean_salaries_task = clean_salaries_openai(salaries)
+            clean_locations, clean_salaries = await asyncio.gather(
+                clean_locations_task, clean_salaries_task
+            )
+            return {
+                "locations": clean_locations.model_dump(),
+                "salaries": clean_salaries.model_dump(),
+            }
+
+        result = asyncio.run(process_data())
+
+        print("clean_data result:", result)
         return https_fn.Response(
-            json.dumps({"data": clean_salaries.model_dump()}),
+            json.dumps({"data": result}),
             content_type="application/json",
         )
     except Exception as e:
