@@ -91,4 +91,5 @@ export type Offer = {
 
 export type UserWithPremium = User & {
   isPremium: boolean
+  formattingCount: number
 }

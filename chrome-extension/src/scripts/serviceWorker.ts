@@ -16,7 +16,7 @@ auth.onAuthStateChanged((user) => {
         const data = response.data as { has_payment: boolean }
         isPremium = data.has_payment
 
-        currentUser = { ...user, isPremium }
+        currentUser = { ...user, isPremium, formattingCount: 0 }
 
         chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user }).catch((error) => {
           if (error.message === 'Could not establish connection. Receiving end does not exist.') {
@@ -28,7 +28,7 @@ auth.onAuthStateChanged((user) => {
       })
       .catch((error) => {
         console.error('Error getting payment status:', error)
-        currentUser = { ...user, isPremium: false }
+        currentUser = { ...user, isPremium: false, formattingCount: 0 }
       })
   } else {
     currentUser = null
@@ -113,7 +113,7 @@ chrome.runtime.onMessage.addListener(async function (request) {
   }
 
   try {
-    jobOffers = await scrapeJobs((offersCount, offersLoaded) => {
+    jobOffers = await scrapeJobs([], (offersCount, offersLoaded) => {
       chrome.runtime.sendMessage({
         offersCount,
         offersLoaded,

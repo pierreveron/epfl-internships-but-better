@@ -1,8 +1,14 @@
 import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react'
-import { Offer, OfferToBeFormatted, Location } from '../../types'
+import { Offer, Location, UserWithPremium } from '../../types'
 import { scrapeJobs } from '../../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
 import { SelectableCity } from '../types'
+import { useUser } from '../hooks/useUser'
+
+type JobOffers = {
+  offers: Offer[]
+  lastUpdated: number
+}
 
 interface DataContextType {
   data: Offer[]
@@ -11,143 +17,127 @@ interface DataContextType {
   locations: Location[][]
   citiesByCountry: Record<string, SelectableCity[]>
   companies: string[]
-  updateData: () => Promise<void>
-  scrapeAndStoreOffers: () => Promise<void>
+  newOffersCount: number
+  refreshData: () => void
 }
 
 export const DataContext = createContext<DataContextType | undefined>(undefined)
+
+const getOffersFromLocalStorage = (): JobOffers => {
+  const storedOffers = localStorage.getItem('jobOffers')
+  return storedOffers
+    ? JSON.parse(storedOffers)
+    : ({
+        offers: [],
+        lastUpdated: Date.now(),
+      } as JobOffers)
+}
+
+const storeOffersInLocalStorage = (offers: Offer[]) => {
+  localStorage.setItem(
+    'jobOffers',
+    JSON.stringify({
+      offers: offers,
+      lastUpdated: Date.now(),
+    }),
+  )
+}
+
+const getHiddenOffersNumbers = (): string[] => {
+  return JSON.parse(localStorage.getItem('hidden-offers') ?? '[]')
+}
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<Offer[]>([])
   const [dataDate, setDataDate] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error | null>(null)
+  const [newOffersCount, setNewOffersCount] = useState<number>(0)
+  const { user } = useUser()
 
-  const updateData = useCallback(async () => {
-    setIsLoading(true)
-
-    const storedData = localStorage.getItem('offersToBeFormatted')
-
-    if (!storedData) {
-      setIsLoading(false)
-      return
-    }
-
-    console.log('offersToBeFormatted saved in local storage', storedData)
-
-    const {
-      offers,
-      lastUpdated,
-    }: {
-      offers: OfferToBeFormatted[]
-      lastUpdated: string
-    } = JSON.parse(storedData)
-
-    console.log('offersToBeFormatted', offers)
-
-    setDataDate(new Date(lastUpdated).toLocaleDateString('fr-CH'))
-
-    window.onbeforeunload = function () {
-      return 'Data is currently processed and will be lost if you leave the page, are you sure?'
-    }
-
-    let formattedOffers: Offer[] | null = null
+  const refreshData = useCallback(async () => {
     try {
-      formattedOffers = await formatOffers(offers)
-    } catch (error) {
-      console.error('An error occured while formatting the offers', error)
-      setIsLoading(false)
-      window.onbeforeunload = null
-      window.onunload = null
-      setError(new Error('An error occured while formatting the offers'))
-    }
+      const { offers } = getOffersFromLocalStorage()
 
-    window.onbeforeunload = null
-    window.onunload = null
-
-    if (formattedOffers === null) {
-      setError(new Error('An error occured while formatting the offers'))
-      return
-    }
-
-    localStorage.setItem(
-      'jobOffers',
-      JSON.stringify({
-        offers: formattedOffers,
-        lastUpdated,
-      }),
-    )
-
-    setData(formattedOffers)
-    setIsLoading(false)
-  }, [])
-
-  const loadOffers = useCallback(async () => {
-    const storedData = localStorage.getItem('jobOffers')
-
-    console.log('Loading job offers from local storage of the extension')
-
-    if (storedData) {
-      const { offers, lastUpdated }: { offers: Offer[]; lastUpdated: string } = JSON.parse(storedData)
-
-      const hiddenOffers = JSON.parse(localStorage.getItem('hidden-offers') ?? '[]')
-
-      setData(offers.filter((d) => !hiddenOffers.includes(d.number)))
-      setDataDate(new Date(lastUpdated).toLocaleDateString('fr-CH'))
-    } else {
-      await updateData()
-    }
-
-    setIsLoading(false)
-  }, [updateData])
-
-  const scrapeAndStoreOffers = useCallback(async () => {
-    setIsLoading(true)
-    try {
-      const jobOffers = await scrapeJobs((offersCount, offersLoaded) => {
-        console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
-      })
-
-      localStorage.setItem(
-        'offersToBeFormatted',
-        JSON.stringify({
-          offers: jobOffers,
-          lastUpdated: Date.now(),
-        }),
+      // Get the offers that are not in the stored offers
+      const newOffers = await scrapeJobs(
+        offers.map((o) => o.id),
+        (offersCount, offersLoaded) => {
+          console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
+        },
       )
 
-      console.log('jobOffers saved in local storage', jobOffers)
+      const newFormattedOffers = await formatOffers(newOffers)
 
-      await updateData()
-    } catch (error) {
-      console.error('Error scraping offers:', error)
+      const refreshedOffers = offers.concat(newFormattedOffers)
+
+      storeOffersInLocalStorage(refreshedOffers)
+
+      const hiddenOffersNumbers = getHiddenOffersNumbers()
+
+      setData(refreshedOffers.filter((d) => !hiddenOffersNumbers.includes(d.number)))
+      setDataDate(new Date(Date.now()).toLocaleDateString('fr-CH'))
+
       setIsLoading(false)
-      setError(new Error('Error scraping offers'))
+    } catch (error) {
+      console.error('Error refreshing data:', error)
+      setError(new Error('Error refreshing data'))
     }
-  }, [updateData])
+  }, [])
 
   useEffect(() => {
-    const initializeOffers = async () => {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const storedOffers = localStorage.getItem('jobOffers')
-        const offersToBeFormatted = localStorage.getItem('offersToBeFormatted')
-        try {
-          if (storedOffers) {
-            await loadOffers()
-          } else if (offersToBeFormatted) {
-            await updateData()
-          } else {
-            await scrapeAndStoreOffers()
+    const initializeOffers = async (user: UserWithPremium) => {
+      console.log('initializeOffers', user)
+      try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const { offers } = getOffersFromLocalStorage()
+
+          // Get the offers that are not in the stored offers
+          const newOffers = await scrapeJobs(
+            offers.map((o) => o.id),
+            (offersCount, offersLoaded) => {
+              console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
+            },
+          )
+
+          if (!user.isPremium && user.formattingCount > 0) {
+            console.log('User is not premium and has already formatted before, skipping automatic formatting')
+            setNewOffersCount(newOffers.length)
+            setIsLoading(false)
+            return
           }
-        } catch (error) {
+
+          let data: Offer[] = []
+
+          if (newOffers.length > 0) {
+            console.log('New offers found, formatting...')
+            const formattedOffers = await formatOffers(newOffers)
+
+            const refreshedOffers = offers.concat(formattedOffers)
+
+            storeOffersInLocalStorage(refreshedOffers)
+
+            data = refreshedOffers
+          } else {
+            data = offers
+          }
+
+          setData(data)
+          setDataDate(new Date(Date.now()).toLocaleDateString('fr-CH'))
           setIsLoading(false)
-          setError(error as Error)
         }
+      } catch (error) {
+        console.error('Error initializing offers:', error)
+        setError(new Error('Error initializing offers'))
       }
     }
 
-    initializeOffers()
-  }, [loadOffers, scrapeAndStoreOffers, updateData])
+    console.log('user in useEffect', user)
+
+    if (user) {
+      initializeOffers(user)
+    }
+  }, [user])
 
   const locations = useMemo(() => data.map((d) => d.location), [data])
 
@@ -181,8 +171,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     locations,
     citiesByCountry,
     companies,
-    updateData,
-    scrapeAndStoreOffers,
+    newOffersCount,
+    refreshData,
   }
 
   if (error) {

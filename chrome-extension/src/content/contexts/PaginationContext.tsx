@@ -54,7 +54,6 @@ export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   useEffect(() => {
     if (records.length > 0) {
-      console.log('opening first offer')
       setOffer(records[0])
     }
 

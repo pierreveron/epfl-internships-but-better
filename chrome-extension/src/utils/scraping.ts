@@ -94,10 +94,10 @@ async function fetchAndExtract(portalCell: HTMLElement, id: string): Promise<Off
   return { id, ...portalCellData, ...pageData }
 }
 
-export async function scrapeJobs(
-  callback: (offersCount: number, offersLoaded: number) => void,
-): Promise<OfferToBeFormatted[]> {
-  const portalCell = await fetchPortalCell()
+export async function detectNewJobs(existingOffers: string[], portalCell?: HTMLElement): Promise<string[]> {
+  if (!portalCell) {
+    portalCell = await fetchPortalCell()
+  }
 
   const jobsIds = portalCell
     .querySelectorAll('tr')
@@ -107,6 +107,16 @@ export async function scrapeJobs(
   if (jobsIds.length === 0) {
     throw new Error('No jobs found')
   }
+
+  return jobsIds.filter((id) => !existingOffers.includes(id))
+}
+
+export async function scrapeJobs(
+  existingOffers: string[],
+  callback: (offersCount: number, offersLoaded: number) => void,
+): Promise<OfferToBeFormatted[]> {
+  const portalCell = await fetchPortalCell()
+  const jobsIds = await detectNewJobs(existingOffers, portalCell)
 
   const jobs = jobsIds.map((id) => fetchAndExtract(portalCell, id))
 
