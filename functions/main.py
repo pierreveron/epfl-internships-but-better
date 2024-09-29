@@ -35,9 +35,14 @@ WEBHOOK_SECRET = os.environ["LEMON_SQUEEZY_SIGNING_SECRET"]
 )
 def clean_data(req: https_fn.Request) -> https_fn.Response:
     try:
-        data: dict[str, Any] = req.get_json()
-        locations: list[str] = data.get("locations", [])
-        salaries: list[str] = data.get("salaries", [])
+        json_data: dict[str, dict[str, list[str]]] = req.get_json()
+        print("json_data:", json_data)
+        data = json_data.get("data", {})
+        locations = data.get("locations", [])
+        salaries = data.get("salaries", [])
+
+        print("locations:", len(locations))
+        print("salaries:", len(salaries))
 
         if len(locations) > 500:
             return https_fn.Response(
