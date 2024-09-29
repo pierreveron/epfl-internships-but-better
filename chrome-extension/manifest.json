@@ -16,10 +16,6 @@
   },
   "content_scripts": [
     {
-      "js": ["src/scripts/isaContentScript.ts"],
-      "matches": ["https://isa.epfl.ch/*"]
-    },
-    {
       "js": ["src/content/index.tsx"],
       "matches": ["https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm"]
     }
