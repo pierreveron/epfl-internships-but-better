@@ -31,6 +31,8 @@ auth.onAuthStateChanged((user) => {
 
         currentUser = { ...user, isPremium, formattingCount }
 
+        chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user: currentUser })
+
         // Send message to content script
         chrome.tabs.query({}, function (tabs) {
           const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
@@ -43,10 +45,13 @@ auth.onAuthStateChanged((user) => {
       })
       .catch((error) => {
         console.error('Error getting payment status:', error)
-        currentUser = { ...user, isPremium: false, formattingCount }
+        currentUser = { ...user, isPremium: false, formattingCount: 0 }
       })
   } else {
     currentUser = null
+
+    chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user: currentUser })
+
     // Send message to content script
     chrome.tabs.query({}, function (tabs) {
       const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
