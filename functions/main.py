@@ -15,7 +15,7 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
-from firestore_helper import add_payment, check_payment_status
+from firestore_helper import add_payment, check_payment_status, get_formatting_count
 
 app = initialize_app()
 
@@ -132,7 +132,7 @@ def webhook(request: https_fn.Request) -> https_fn.Response:
         cors_methods=["POST"],
     ),
 )
-def get_payment_status(req: https_fn.Request) -> https_fn.Response:
+def get_user_data(req: https_fn.Request) -> https_fn.Response:
     if req.method != "POST":
         return https_fn.Response("Method not allowed", status=405)
 
@@ -145,7 +145,15 @@ def get_payment_status(req: https_fn.Request) -> https_fn.Response:
         return https_fn.Response("Invalid email", status=400)
 
     payment_status = check_payment_status(get_db(), email)
+    formatting_count = get_formatting_count(get_db(), email)
     return https_fn.Response(
-        json.dumps({"data": {"has_payment": payment_status}}),
+        json.dumps(
+            {
+                "data": {
+                    "has_payment": payment_status,
+                    "formatting_count": formatting_count,
+                }
+            }
+        ),
         content_type="application/json",
     )

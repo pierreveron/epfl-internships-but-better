@@ -8,10 +8,12 @@ from google.cloud.firestore_v1.document import DocumentReference
 
 def check_payment_status(db: google.cloud.firestore.Client, email: str) -> bool:
     try:
-        payments_collection = db.collection("payments")
-        query = payments_collection.where("userEmail", "==", email)
-        query_snapshot = query.get()
-        return len(query_snapshot) > 0
+        users_collection = db.collection("users")
+        doc_ref = users_collection.document(email)
+        doc = doc_ref.get()
+        if doc.exists:
+            return doc.get("payment") is not None
+        return False
     except Exception as error:
         print("Error checking payment status:", error)
         return False
@@ -23,18 +25,34 @@ def add_payment(
     user_email: str,
     data: dict[str, Any],
 ):
-    payments_collection = db.collection("payments")
-    result = payments_collection.add(
+    users_collection = db.collection("users")
+    result = users_collection.add(
         {
-            "processor": processor,
-            "userEmail": user_email,
-            "data": data,
-        }
+            "payment": {
+                "processor": processor,
+                "data": data,
+            }
+        },
+        user_email,
     )
 
     doc_ref: DocumentReference = result[1]
 
     print("Payment added to Firestore", user_email, doc_ref.id)  # type: ignore
+
+
+def get_formatting_count(db: google.cloud.firestore.Client, email: str) -> int:
+    try:
+        users_collection = db.collection("users")
+        doc_ref = users_collection.document(email)
+        doc = doc_ref.get()
+        if doc.exists:
+            doc_dict = doc.to_dict()
+            return doc_dict.get("formatting_count", 0) if doc_dict else 0
+        return 0
+    except Exception as error:
+        print("Error getting formatting count:", error)
+        return 0
 
 
 # Export functions

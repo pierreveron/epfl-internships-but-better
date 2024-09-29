@@ -1,5 +1,5 @@
 import { signIn, auth } from '../firebase'
-import { getPaymentStatus } from '../utils/firebase'
+import { getUserData } from '../utils/firebase'
 import { UserWithPremium } from '../types'
 
 const constants = {
@@ -21,13 +21,15 @@ let currentUser: UserWithPremium | null = null
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
   let isPremium = false
+  let formattingCount = 0
   if (user) {
-    getPaymentStatus(user.email)
+    getUserData(user.email)
       .then((response) => {
-        const data = response.data as { has_payment: boolean }
+        const data = response.data as { has_payment: boolean; formatting_count: number }
         isPremium = data.has_payment
+        formattingCount = data.formatting_count
 
-        currentUser = { ...user, isPremium, formattingCount: 0 }
+        currentUser = { ...user, isPremium, formattingCount }
 
         // Send message to content script
         chrome.tabs.query({}, function (tabs) {
@@ -41,7 +43,7 @@ auth.onAuthStateChanged((user) => {
       })
       .catch((error) => {
         console.error('Error getting payment status:', error)
-        currentUser = { ...user, isPremium: false, formattingCount: 0 }
+        currentUser = { ...user, isPremium: false, formattingCount }
       })
   } else {
     currentUser = null
