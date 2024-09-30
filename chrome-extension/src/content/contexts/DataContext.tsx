@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useMemo, useCallback } from 'react'
+import React, { createContext, useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Offer, Location, UserWithPremium } from '../../types'
 import { scrapeJobs } from '../../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
@@ -54,6 +54,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [error, setError] = useState<Error | null>(null)
   const [newOffersCount, setNewOffersCount] = useState<number>(0)
   const { user, increaseFormattingCount } = useUser()
+  const userInitializedRef = useRef(false)
 
   const refreshData = useCallback(async () => {
     if (!user || !user.email) {
@@ -147,15 +148,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { data: [], dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
     }
 
-    if (user) {
-      console.log('user', user)
+    if (user && !userInitializedRef.current) {
+      console.log('Initializing user data')
+      userInitializedRef.current = true
       initializeOffers(user).then(({ data, dataDate }) => {
         setData(data)
         setDataDate(dataDate)
         setIsLoading(false)
       })
     }
-  }, [user])
+  }, [user, increaseFormattingCount])
 
   const locations = useMemo(() => data.map((d) => d.location), [data])
 
