@@ -13,7 +13,7 @@ import classNames from 'classnames'
 import { useAside } from '../hooks/useAside'
 import { useData } from '../contexts/DataContext'
 
-const URL = 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290'
+const EPFL_PORTAL_URL = 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290'
 
 // https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script
 const injectScript = (newWindow: Window, id: string, offerId: string) => {
@@ -29,37 +29,37 @@ const injectScript = (newWindow: Window, id: string, offerId: string) => {
     // @ts-ignore
     this.remove()
   }
+  s.onerror = function () {
+    console.error('Failed to load the script:', this.src)
+    newWindow.alert('Failed to navigate to the offer. Please check your popup blocker settings.')
+  }
   ;(newWindow.document.head || newWindow.document.documentElement).appendChild(s)
 }
 
-const waitForWindowLoad = (newWindow: Window, callback: () => void) => {
+const waitForWindowLoad = (newWindow: Window, callback: () => void, timeout = 10000) => {
+  const startTime = Date.now()
   const checkReadyState = setInterval(() => {
     if (newWindow.document.readyState === 'complete') {
       clearInterval(checkReadyState)
       callback()
+    } else if (Date.now() - startTime > timeout) {
+      clearInterval(checkReadyState)
+      console.error('Timeout waiting for window to load')
     }
   }, 100)
 }
 
-async function navigateToView(offerId: string) {
-  const newWindow = window.open(URL, '_blank')
+const navigateTo = async (offerId: string, action: 'view' | 'register') => {
+  const newWindow = window.open(EPFL_PORTAL_URL, '_blank')
   if (newWindow) {
     console.log('newWindow', newWindow)
     waitForWindowLoad(newWindow, () => {
       console.log('Window loaded, injecting script')
-      injectScript(newWindow, 'navigateToView', offerId)
+      injectScript(newWindow, `navigateTo${action.charAt(0).toUpperCase() + action.slice(1)}`, offerId)
     })
-  }
-}
-
-async function navigateToRegister(offerId: string) {
-  const newWindow = window.open(URL, '_blank')
-  if (newWindow) {
-    console.log('newWindow', newWindow)
-    waitForWindowLoad(newWindow, () => {
-      console.log('Window loaded, injecting script')
-      injectScript(newWindow, 'navigateToRegister', offerId)
-    })
+  } else {
+    console.error('Failed to open new window. Please check your popup blocker settings.')
+    alert('Failed to open new window. Please check your popup blocker settings.')
   }
 }
 
@@ -280,7 +280,7 @@ export default function OfferDescription() {
       <div className="tw-flex tw-flex-row tw-gap-4 tw-items-center">
         <Button
           onClick={() => {
-            navigateToRegister(offer.id)
+            navigateTo(offer.id, 'register')
           }}
           w={200}
           size="md"
@@ -317,7 +317,7 @@ export default function OfferDescription() {
         <Button
           id="view-button"
           onClick={() => {
-            navigateToView(offer.id)
+            navigateTo(offer.id, 'view')
           }}
           variant="transparent"
         >
