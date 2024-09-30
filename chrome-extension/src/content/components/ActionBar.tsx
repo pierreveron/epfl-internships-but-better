@@ -139,11 +139,15 @@ export default function ActionBar() {
           onClick={() => {
             refreshData()
           }}
-          disabled={newOffersCount === 0 || (user?.formattingCount ?? 0) >= 3}
-          rightSection={`(${user?.formattingCount ?? 0}/3)`}
+          disabled={newOffersCount === 0 || (user?.formattingCount ?? 0) >= 4}
+          rightSection={
+            (user?.formattingCount ?? 0) >= 4
+              ? undefined
+              : `(${4 - (user?.formattingCount ?? 1)} refresh${(user?.formattingCount ?? 0) === 3 ? '' : 's'} left)`
+          }
         >
-          {(user?.formattingCount ?? 0) >= 3
-            ? 'No formatting credits left, please upgrade to premium'
+          {(user?.formattingCount ?? 0) >= 4
+            ? 'No refresh left, please upgrade to premium'
             : newOffersCount === 0
             ? 'No new offers'
             : newOffersCount === 1

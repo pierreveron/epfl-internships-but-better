@@ -53,12 +53,14 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [error, setError] = useState<Error | null>(null)
   const [newOffersCount, setNewOffersCount] = useState<number>(0)
-  const { user } = useUser()
+  const { user, increaseFormattingCount } = useUser()
 
   const refreshData = useCallback(async () => {
     if (!user || !user.email) {
       return
     }
+
+    setIsLoading(true)
 
     try {
       const { offers } = getOffersFromLocalStorage()
@@ -81,16 +83,19 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       setData(refreshedOffers.filter((d) => !hiddenOffersNumbers.includes(d.number)))
       setDataDate(new Date(Date.now()).toLocaleDateString('fr-CH'))
-
-      setIsLoading(false)
+      setNewOffersCount(0)
+      increaseFormattingCount()
     } catch (error) {
       console.error('Error refreshing data:', error)
       setError(new Error('Error refreshing data'))
     }
-  }, [user])
+
+    setIsLoading(false)
+  }, [increaseFormattingCount, user])
 
   useEffect(() => {
     const initializeOffers = async (user: UserWithPremium): Promise<{ data: Offer[]; dataDate: string }> => {
+      console.log('initializeOffers', user)
       if (user.email) {
         try {
           if (typeof window !== 'undefined' && window.localStorage) {
@@ -103,8 +108,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
               },
             )
-
-            if (!user.isPremium && user.formattingCount > 0) {
+            if (user.isPremium || user.formattingCount == 0) {
+              // Skip the next condition and proceed with formatting
+              // This is because the user is premium and can format offers automatically
+            } else if (offers.length === 0 && newOffers.length !== 0 && user.formattingCount < 4) {
+              // Skip the next condition and proceed with formatting
+              // This can happen if the user has deleted local storage but still having formatting credits
+            } else {
               console.log('User is not premium and has already formatted before, skipping automatic formatting')
               setNewOffersCount(newOffers.length)
               return { data: offers, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
@@ -115,6 +125,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             if (newOffers.length > 0) {
               console.log('New offers found, formatting...')
               const formattedOffers = await formatOffers(user.email, newOffers)
+              increaseFormattingCount()
 
               const refreshedOffers = offers.concat(formattedOffers)
 
