@@ -90,58 +90,59 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [user])
 
   useEffect(() => {
-    const initializeOffers = async (user: UserWithPremium) => {
-      if (!user.email) {
-        return
-      }
+    const initializeOffers = async (user: UserWithPremium): Promise<{ data: Offer[]; dataDate: string }> => {
+      if (user.email) {
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            const { offers } = getOffersFromLocalStorage()
 
-      try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          const { offers } = getOffersFromLocalStorage()
+            // Get the offers that are not in the stored offers
+            const newOffers = await scrapeJobs(
+              offers.map((o) => o.id),
+              (offersCount, offersLoaded) => {
+                console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
+              },
+            )
 
-          // Get the offers that are not in the stored offers
-          const newOffers = await scrapeJobs(
-            offers.map((o) => o.id),
-            (offersCount, offersLoaded) => {
-              console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
-            },
-          )
+            if (!user.isPremium && user.formattingCount > 0) {
+              console.log('User is not premium and has already formatted before, skipping automatic formatting')
+              setNewOffersCount(newOffers.length)
+              return { data: offers, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
+            }
 
-          if (!user.isPremium && user.formattingCount > 0) {
-            console.log('User is not premium and has already formatted before, skipping automatic formatting')
-            setNewOffersCount(newOffers.length)
-            setIsLoading(false)
-            return
+            let data: Offer[] = []
+
+            if (newOffers.length > 0) {
+              console.log('New offers found, formatting...')
+              const formattedOffers = await formatOffers(user.email, newOffers)
+
+              const refreshedOffers = offers.concat(formattedOffers)
+
+              storeOffersInLocalStorage(refreshedOffers)
+
+              data = refreshedOffers
+            } else {
+              data = offers
+            }
+
+            return { data, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
           }
-
-          let data: Offer[] = []
-
-          if (newOffers.length > 0) {
-            console.log('New offers found, formatting...')
-            const formattedOffers = await formatOffers(user.email, newOffers)
-
-            const refreshedOffers = offers.concat(formattedOffers)
-
-            storeOffersInLocalStorage(refreshedOffers)
-
-            data = refreshedOffers
-          } else {
-            data = offers
-          }
-
-          setData(data)
-          setDataDate(new Date(Date.now()).toLocaleDateString('fr-CH'))
-          setIsLoading(false)
+        } catch (error) {
+          console.error('Error initializing offers:', error)
+          setError(new Error('Error initializing offers'))
         }
-      } catch (error) {
-        console.error('Error initializing offers:', error)
-        setError(new Error('Error initializing offers'))
       }
+
+      return { data: [], dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
     }
 
     if (user) {
       console.log('user', user)
-      initializeOffers(user)
+      initializeOffers(user).then(({ data, dataDate }) => {
+        setData(data)
+        setDataDate(dataDate)
+        setIsLoading(false)
+      })
     }
   }, [user])
 
