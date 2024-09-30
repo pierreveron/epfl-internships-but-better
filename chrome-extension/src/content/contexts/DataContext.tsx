@@ -1,9 +1,10 @@
-import React, { createContext, useState, useEffect, useMemo, useCallback, useRef } from 'react'
+import React, { createContext, useState, useContext, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Offer, Location, UserWithPremium } from '../../types'
 import { scrapeJobs } from '../../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
 import { SelectableCity } from '../types'
 import { useUser } from '../hooks/useUser'
+import { getStorageData, setStorageData } from '../utils/storage'
 
 type JobOffers = {
   offers: Offer[]
@@ -11,6 +12,12 @@ type JobOffers = {
 }
 
 interface DataContextType {
+  favoriteOffers: string[]
+  toggleFavoriteOffer: (offer: Offer) => void
+  isOfferFavorite: (offer: Offer) => boolean
+  hiddenOffers: string[]
+  toggleHiddenOffer: (offer: Offer) => void
+  isOfferHidden: (offer: Offer) => boolean
   data: Offer[]
   dataDate: string
   isLoading: boolean
@@ -42,8 +49,9 @@ const storeOffersInLocalStorage = (offers: Offer[]) => {
   })
 }
 
-const getHiddenOffersNumbers = (): string[] => {
-  return JSON.parse(localStorage.getItem('hidden-offers') ?? '[]')
+const getHiddenOffersNumbers = async (): Promise<string[]> => {
+  const result = await chrome.storage.local.get('hidden-offers')
+  return result['hidden-offers'] || []
 }
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -54,6 +62,35 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [newOffersCount, setNewOffersCount] = useState<number>(0)
   const { user, increaseFormattingCount } = useUser()
   const userInitializedRef = useRef(false)
+  const [favoriteOffers, setFavoriteOffers] = useState<string[]>([])
+  const [hiddenOffers, setHiddenOffers] = useState<string[]>([])
+
+  useEffect(() => {
+    getStorageData('favorite-offers', []).then(setFavoriteOffers)
+    getStorageData('hidden-offers', []).then(setHiddenOffers)
+  }, [])
+
+  const toggleFavoriteOffer = (offer: Offer) => {
+    const id = offer.number
+    setFavoriteOffers((ids) => {
+      const newIds = ids.includes(id) ? ids.filter((currentId) => currentId !== id) : [...ids, id]
+      setStorageData('favorite-offers', newIds)
+      return newIds
+    })
+  }
+
+  const isOfferFavorite = (offer: Offer) => favoriteOffers.includes(offer.number)
+
+  const toggleHiddenOffer = (offer: Offer) => {
+    const id = offer.number
+    setHiddenOffers((ids) => {
+      const newIds = ids.includes(id) ? ids.filter((currentId) => currentId !== id) : [...ids, id]
+      setStorageData('hidden-offers', newIds)
+      return newIds
+    })
+  }
+
+  const isOfferHidden = (offer: Offer) => hiddenOffers.includes(offer.number)
 
   const refreshData = useCallback(async () => {
     if (!user || !user.email) {
@@ -78,7 +115,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       storeOffersInLocalStorage(refreshedOffers)
 
-      const hiddenOffersNumbers = getHiddenOffersNumbers()
+      const hiddenOffersNumbers = await getHiddenOffersNumbers()
 
       setData(refreshedOffers.filter((d) => !hiddenOffersNumbers.includes(d.number)))
       setDataDate(new Date(Date.now()).toLocaleDateString('fr-CH'))
@@ -191,6 +228,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     companies,
     newOffersCount,
     refreshData,
+    favoriteOffers,
+    toggleFavoriteOffer,
+    isOfferFavorite,
+    hiddenOffers,
+    toggleHiddenOffer,
+    isOfferHidden,
   }
 
   if (error) {
@@ -198,4 +241,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>
+}
+
+export const useData = () => {
+  const context = useContext(DataContext)
+  if (context === undefined) {
+    throw new Error('useData must be used within a DataProvider')
+  }
+  return context
 }

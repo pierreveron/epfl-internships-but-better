@@ -11,7 +11,7 @@ import { formatLengthLabel } from '../utils/formatters'
 import MoneyBillIcon from './icons/MoneyBillIcon'
 import classNames from 'classnames'
 import { useAside } from '../hooks/useAside'
-import { useFavoriteOffers } from '../utils/hooks'
+import { useData } from '../contexts/DataContext'
 
 // https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script
 const createScript = (id: string, offerId: string) => {
@@ -50,8 +50,7 @@ const getFirstValidWebsite = (websites: string): string => {
 
 export default function OfferDescription() {
   const { offer } = useAside()
-
-  const { toggleFavoriteOffer, isOfferFavorite } = useFavoriteOffers()
+  const { toggleFavoriteOffer, isOfferFavorite } = useData()
 
   const countryName = (language: string) => {
     switch (language) {

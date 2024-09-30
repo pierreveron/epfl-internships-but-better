@@ -1,4 +1,3 @@
-import { useFavoriteOffers } from '../utils/hooks'
 import classNames from 'classnames'
 import Card from '../components/Card'
 import SortDropdown from './SortDropdown'
@@ -15,7 +14,6 @@ export default function List() {
   const { records } = usePagination()
 
   const { collapsedOffers, handleSelectOffer, handleReplayOffer, handleCollapseOffer } = useOfferActions()
-  const { toggleFavoriteOffer } = useFavoriteOffers()
 
   const listRef = useRef<HTMLDivElement>(null)
 
@@ -52,7 +50,6 @@ export default function List() {
             onSelect={() => handleSelectOffer(record)}
             onReplay={() => handleReplayOffer(record)}
             onCollapse={() => handleCollapseOffer(record)}
-            onToggleFavorite={() => toggleFavoriteOffer(record)}
           />
         ))}
         <div className="tw-flex tw-flex-row tw-gap-2 tw-justify-center tw-flex-wrap">

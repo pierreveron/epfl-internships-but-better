@@ -1,5 +1,4 @@
 import { formatSalary, formatToLabel } from '../utils/format'
-import { useFavoriteOffers, useHiddenOffers } from '../utils/hooks'
 import classNames from 'classnames'
 import { DataTable } from 'mantine-datatable'
 import { useEffect, useRef, useContext } from 'react'
@@ -12,12 +11,12 @@ import { useSort } from '../hooks/useSort'
 import { useOfferActions } from '../hooks/useOfferActions'
 import CloseIcon from './icons/CloseIcon'
 import ReplayIcon from './icons/ReplayIcon'
+import { useData } from '../contexts/DataContext'
 
 export default function Table() {
   const { selectableFormats } = useContext(FilterContext)!
   const { offer, setOffer: setAside } = useAside()
-  const { toggleFavoriteOffer, isOfferFavorite } = useFavoriteOffers()
-  const { isOfferHidden } = useHiddenOffers()
+  const { toggleFavoriteOffer, isOfferFavorite, isOfferHidden } = useData()
   const { records, page, pageSize, setPage } = usePagination()
   const { sortStatus, setSortStatus, sortedData } = useSort()
   const previousPage = usePrevious(page)

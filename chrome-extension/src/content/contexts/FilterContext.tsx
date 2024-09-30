@@ -1,6 +1,5 @@
 import React, { createContext, useState, useMemo, useEffect } from 'react'
 import { Offer } from '../../types'
-import { useFavoriteOffers } from '../utils/hooks'
 import { useData } from '../hooks/useData'
 import { SelectableCity, SelectableFormat, SelectableLength } from '../types'
 
@@ -26,7 +25,7 @@ interface FilterContextProps {
 export const FilterContext = createContext<FilterContextProps | undefined>(undefined)
 
 export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { data, citiesByCountry } = useData()
+  const { data, citiesByCountry, isOfferFavorite } = useData()
   const [selectableLocations, setSelectableLocations] = useState<Record<string, SelectableCity[]>>({})
   const [selectableFormats, setSelectableFormats] = useState<SelectableFormat[]>([
     { name: 'internship', selected: false },
@@ -36,8 +35,6 @@ export const FilterProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [selectedCompany, setSelectedCompany] = useState<string | null>(null)
   const [showOnlyFavorites, setShowOnlyFavorites] = useState(false)
   const [minimumSalary, setMinimumSalary] = useState<number | undefined>(undefined)
-
-  const { isOfferFavorite } = useFavoriteOffers()
 
   const nbCitiesSelected = useMemo(() => {
     return Object.values(selectableLocations).reduce((acc, cities) => {

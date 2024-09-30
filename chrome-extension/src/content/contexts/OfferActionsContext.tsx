@@ -1,7 +1,7 @@
 import { createContext, useCallback, useState } from 'react'
 import { Offer } from '../../types'
-import { useHiddenOffers } from '../utils/hooks'
 import { useAside } from '../hooks/useAside'
+import { useData } from './DataContext'
 
 interface OfferActionsContextType {
   collapsedOffers: Set<string>
@@ -15,7 +15,7 @@ export const OfferActionsContext = createContext<OfferActionsContextType | undef
 
 export const OfferActionsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [collapsedOffers, setCollapsedOffers] = useState<Set<string>>(new Set())
-  const { toggleHiddenOffer } = useHiddenOffers()
+  const { toggleHiddenOffer } = useData()
   const { setOffer } = useAside()
 
   const handleSelectOffer = useCallback(

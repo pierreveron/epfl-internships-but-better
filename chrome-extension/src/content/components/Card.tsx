@@ -1,4 +1,3 @@
-import { Offer } from '../../types'
 import { formatSalary, formatToLabel } from '../utils/format'
 import { getFlagEmojiWithName } from '../utils/countries'
 import { formatLengthLabel } from '../utils/formatters'
@@ -13,7 +12,7 @@ import CloseIcon from './icons/CloseIcon'
 import ReplayIcon from './icons/ReplayIcon'
 import { ActionIcon } from '@mantine/core'
 import { Record } from '../contexts/PaginationContext'
-import { useFavoriteOffers } from '../utils/hooks'
+import { useData } from '../contexts/DataContext'
 
 interface CardProps {
   record: Record
@@ -22,19 +21,10 @@ interface CardProps {
   onSelect: () => void
   onReplay: (record: Record) => void
   onCollapse: (record: Record) => void
-  onToggleFavorite: (offer: Offer) => void
 }
 
-export default function Card({
-  record,
-  isSelected,
-  isCollapsed,
-  onSelect,
-  onReplay,
-  onCollapse,
-  onToggleFavorite,
-}: CardProps) {
-  const { isOfferFavorite } = useFavoriteOffers()
+export default function Card({ record, isSelected, isCollapsed, onSelect, onReplay, onCollapse }: CardProps) {
+  const { isOfferFavorite, toggleFavoriteOffer } = useData()
   return (
     <div
       className={classNames(
@@ -170,7 +160,7 @@ export default function Card({
             <ActionIcon
               onClick={(event) => {
                 event.stopPropagation()
-                onToggleFavorite(record)
+                toggleFavoriteOffer(record)
               }}
               variant="subtle"
               color="red"
