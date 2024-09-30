@@ -145,6 +145,7 @@ export default function Popup() {
             <div className="tw-flex tw-items-center tw-justify-between">
               <span className="tw-text-sm tw-font-medium">Enable extension</span>
               <Switch
+                color="red"
                 checked={isEnabled}
                 onChange={(event) => handleToggle(event.currentTarget.checked)}
                 aria-label="Toggle extension"
