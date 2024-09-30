@@ -51,11 +51,13 @@ function AppContent() {
       <div className="tw-flex tw-justify-center tw-items-center tw-h-full">
         <div className="tw-flex tw-flex-col tw-items-center">
           <div className="loader"></div>
-          {newOffersCount > 0 && (
+          {newOffersCount > 0 ? (
             <p className="tw-mt-4 tw-text-gray-700">
               Found <span className="tw-font-semibold">{newOffersCount}</span> new offer
               {newOffersCount !== 1 ? 's' : ''}. Processing...
             </p>
+          ) : (
+            <p className="tw-mt-4 tw-text-gray-700">Looking for new offers...</p>
           )}
         </div>
       </div>
