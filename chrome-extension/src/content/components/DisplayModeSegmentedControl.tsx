@@ -1,10 +1,9 @@
 import { SegmentedControl } from '@mantine/core'
-import { useAtom } from 'jotai'
+import { useDisplay } from '../hooks/useDisplay'
 import { IconList, IconTable } from '@tabler/icons-react'
-import { displayModeAtom } from '../atoms'
 
 export default function DisplayModeSegmentedControl() {
-  const [displayMode, setDisplayMode] = useAtom(displayModeAtom)
+  const { displayMode, setDisplayMode } = useDisplay()
 
   const data = [
     { label: 'List', value: 'list', icon: <IconList size={16} /> },

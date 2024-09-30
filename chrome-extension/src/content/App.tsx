@@ -5,9 +5,6 @@ import styles from '../styles/index.css?inline'
 import mantineStyles from '@mantine/core/styles.css?inline'
 import mantineDatatableStyles from 'mantine-datatable/styles.css?inline'
 import { MantineProvider, createTheme, AppShell } from '@mantine/core'
-import { useAtom, useAtomValue } from 'jotai'
-import { useViewportSize } from '@mantine/hooks'
-import { displayModeAtom, isAsideMaximizedAtom } from './atoms'
 // import { useAsideNavigation } from './utils/hooks'
 import ActionBar from './components/ActionBar'
 // import Table from './components/Table'
@@ -22,29 +19,18 @@ import List from './components/List'
 import { DataProvider } from './contexts/DataContext'
 import { AsideProvider } from './contexts/AsideContext'
 import { OfferActionsProvider } from './contexts/OfferActionsContext'
-import { useAside } from './hooks/useAside'
 import { FilterProvider } from './contexts/FilterContext'
 import { SortProvider } from './contexts/SortContext'
 import { PaginationProvider } from './contexts/PaginationContext'
 import { UserProvider } from './contexts/UserContext'
 import Table from './components/Table'
 import { useData } from './hooks/useData'
+import { DisplayProvider } from './providers/DisplayProvider'
+import { useDisplay } from './hooks/useDisplay'
 
 function AppContent() {
-  const { offer: asideOffer } = useAside()
-  const [isAsideMaximized, setIsAsideMaximized] = useAtom(isAsideMaximizedAtom)
-  const displayMode = useAtomValue(displayModeAtom)
+  const { displayMode } = useDisplay()
   const { isLoading, newOffersCount } = useData()
-
-  const { width } = useViewportSize()
-
-  useEffect(() => {
-    if (width <= 992 && isAsideMaximized) {
-      setIsAsideMaximized(false)
-      return
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width])
 
   if (isLoading) {
     return (
@@ -67,10 +53,11 @@ function AppContent() {
   return (
     <AppShell
       aside={{
-        width: {
-          md: isAsideMaximized ? '100%' : 550,
-          lg: asideOffer !== null ? (isAsideMaximized ? '100%' : 'max(40%, 550px)') : 0,
-        },
+        // width: {
+        //   md: isAsideMaximized ? '100%' : 550,
+        //   lg: asideOffer !== null ? (isAsideMaximized ? '100%' : 'max(40%, 550px)') : 0,
+        // },
+        width: '100%',
         breakpoint: 'md',
         collapsed: { mobile: false, desktop: false },
       }}
@@ -206,25 +193,27 @@ export default function App() {
       cssVariablesSelector="#extension-main-container"
     >
       <UserProvider>
-        <DataProvider>
-          <AsideProvider>
-            <OfferActionsProvider>
-              <FilterProvider>
-                <SortProvider>
-                  <PaginationProvider>
-                    <div
-                      ref={containerRef}
-                      id="extension-main-container"
-                      className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
-                    >
-                      <AppContent />
-                    </div>
-                  </PaginationProvider>
-                </SortProvider>
-              </FilterProvider>
-            </OfferActionsProvider>
-          </AsideProvider>
-        </DataProvider>
+        <DisplayProvider>
+          <DataProvider>
+            <AsideProvider>
+              <OfferActionsProvider>
+                <FilterProvider>
+                  <SortProvider>
+                    <PaginationProvider>
+                      <div
+                        ref={containerRef}
+                        id="extension-main-container"
+                        className="tw-bg-white tw-text-sm tw-font-sans tw-h-full tw-flex tw-flex-col"
+                      >
+                        <AppContent />
+                      </div>
+                    </PaginationProvider>
+                  </SortProvider>
+                </FilterProvider>
+              </OfferActionsProvider>
+            </AsideProvider>
+          </DataProvider>
+        </DisplayProvider>
       </UserProvider>
     </MantineProvider>
   )
