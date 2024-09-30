@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Button, Switch } from '@mantine/core'
-import { IconExternalLink } from '@tabler/icons-react'
+import {
+  IconExternalLink,
+  IconBrandLinkedin,
+  IconBrandGithub,
+  IconCheck,
+  IconCrown,
+  IconLogout,
+  IconBrandGoogleFilled,
+  IconHeart,
+} from '@tabler/icons-react'
 import { useUser } from '../content/hooks/useUser'
 import UpgradeButton from '../content/components/UpgradeButton'
 
@@ -64,51 +73,122 @@ export default function Popup() {
   }
 
   return (
-    <div className="tw-space-y-4 tw-p-4">
-      <h1 className="tw-text-2xl tw-whitespace-nowrap">
-        <span className="tw-text-[red]">EPFL</span> internships but better
-      </h1>
-      <p className="tw-text-sm tw-text-gray-500 tw-text-left">
-        This extension enhances the IS-Academia job board experience. Open the IS-Academia job board to use the enhanced
-        features.
-      </p>
-      <Button
-        onClick={navigateToJobBoard}
-        variant="outline"
-        color="red"
-        leftSection={<IconExternalLink size={18} />}
-        fullWidth
-        disabled={isOnJobBoard}
-      >
-        {isOnJobBoard ? 'Currently on Job Board' : 'Open IS-Academia Job Board'}
-      </Button>
-      <div className="tw-space-y-2">
+    <div className="tw-w-96 tw-p-6 tw-bg-white tw-text-black">
+      <header className="tw-mb-4">
+        <h1 className="tw-text-2xl tw-font-bold">
+          <span className="tw-text-red-500">EPFL</span> internships but better
+        </h1>
+      </header>
+
+      <main className="tw-space-y-4">
+        <div className="tw-space-y-1">
+          <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
+            Enjoy a better internship search on the EPFL job board. Experience an improved UI and advanced filters.
+          </p>
+          {!user?.isPremium && (
+            <>
+              <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
+                <span className="tw-font-bold">Free</span> version includes location filtering and 3 manual offers
+                refreshes.
+                <span className="tw-font-bold tw-ml-1">Upgrade to Premium</span> for unlimited refreshes and salary
+                filtering.
+              </p>
+            </>
+          )}
+        </div>
+
         {user ? (
           <>
-            <p>Logged in as {user.email}</p>
-            {!user?.isPremium && <UpgradeButton email={user?.email ?? ''} />}
+            <Button w="100%" variant="outline" color="red" onClick={navigateToJobBoard} disabled={isOnJobBoard}>
+              <IconExternalLink className="tw-w-4 tw-h-4 tw-mr-2" />
+              {isOnJobBoard ? 'Currently on Job Board' : 'Open IS-Academia Job Board'}
+            </Button>
 
-            <div className="tw-flex tw-items-center tw-justify-between">
-              <span className="tw-text-sm tw-text-gray-700">Enable extension</span>
-              <Switch checked={isEnabled} onChange={(event) => handleToggle(event.currentTarget.checked)} />
+            <div className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
+              Logged in as <span className="tw-font-bold">{user.email}</span>
             </div>
 
-            <button
-              onClick={handleSignOut}
-              className="tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-transparent tw-text-sm tw-font-medium tw-rounded-md tw-shadow-sm tw-text-white tw-bg-red-600 hover:tw-bg-red-700 focus:tw-outline-none focus:tw-ring-2 focus:tw-ring-offset-2 focus:tw-ring-red-500"
-            >
+            {user.isPremium ? (
+              <div className="tw-bg-gradient-to-r tw-from-red-500/30 tw-to-yellow-500/30 tw-p-4 tw-rounded-lg tw-text-gray-800 tw-border tw-border-red-200">
+                <h2 className="tw-text-lg tw-font-semibold tw-mb-2 tw-flex tw-items-center">
+                  <IconHeart className="tw-w-5 tw-h-5 tw-mr-2 tw-text-red-500" />
+                  Thank You for Being Premium!
+                </h2>
+                <p className="tw-text-sm tw-text-left">
+                  I appreciate your support. Enjoy unlimited refreshes and salary filtering! <br />
+                  Good luck with your job search!
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="tw-bg-gray-100 tw-p-4 tw-rounded-lg">
+                  <h2 className="tw-text-lg tw-font-semibold tw-mb-2 tw-flex tw-items-center">
+                    <IconCrown className="tw-w-5 tw-h-5 tw-mr-2 tw-text-yellow-500" />
+                    Premium Features
+                  </h2>
+                  <ul className="tw-space-y-2">
+                    <li className="tw-flex tw-items-center tw-text-sm">
+                      <IconCheck className="tw-w-4 tw-h-4 tw-mr-2 tw-text-green-500" />
+                      Filter and sort offers by salary
+                    </li>
+                    <li className="tw-flex tw-items-center tw-text-sm">
+                      <IconCheck className="tw-w-4 tw-h-4 tw-mr-2 tw-text-green-500" />
+                      Unlimited and automatic offers refreshs
+                    </li>
+                  </ul>
+                </div>
+
+                <UpgradeButton email={user.email ?? ''} fullWidth />
+              </>
+            )}
+
+            <div className="tw-flex tw-items-center tw-justify-between">
+              <span className="tw-text-sm tw-font-medium">Enable extension</span>
+              <Switch
+                checked={isEnabled}
+                onChange={(event) => handleToggle(event.currentTarget.checked)}
+                aria-label="Toggle extension"
+              />
+            </div>
+
+            <Button variant="filled" color="red" w="100%" onClick={handleSignOut}>
+              <IconLogout className="tw-w-4 tw-h-4 tw-mr-2" />
               Sign Out
-            </button>
+            </Button>
           </>
         ) : (
-          <button
-            onClick={handleSignIn}
-            className="tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-transparent tw-text-sm tw-font-medium tw-rounded-md tw-shadow-sm tw-text-white tw-bg-red-600 hover:tw-bg-red-700 focus:tw-outline-none focus:tw-ring-2 tw-ring-offset-2 tw-ring-red-500"
-          >
+          <Button variant="filled" color="red" w="100%" onClick={handleSignIn}>
+            <IconBrandGoogleFilled className="tw-w-4 tw-h-4 tw-mr-2" />
             Sign In with Google
-          </button>
+          </Button>
         )}
-      </div>
+      </main>
+
+      <footer className="tw-mt-6 tw-pt-4 tw-border-t tw-border-gray-200">
+        <div className="tw-flex tw-justify-between tw-items-center">
+          <a
+            href="https://github.com/pierreveron/epfl-internships-but-better"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tw-flex tw-items-center tw-text-sm tw-text-gray-600 hover:tw-text-black tw-transition-colors"
+          >
+            <IconBrandGithub className="tw-w-4 tw-h-4 tw-mr-1" />
+            GitHub
+          </a>
+          <span className="tw-flex tw-items-center tw-text-sm tw-text-gray-600">
+            Made with ❤️ by
+            <a
+              href="https://www.linkedin.com/in/pierre-veron/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tw-ml-1 tw-flex tw-items-center hover:tw-text-black tw-transition-colors"
+            >
+              Pierre Véron
+              <IconBrandLinkedin className="tw-w-4 tw-h-4 tw-ml-1" />
+            </a>
+          </span>
+        </div>
+      </footer>
     </div>
   )
 }

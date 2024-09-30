@@ -4,7 +4,7 @@ import { getUpgradeUrl } from '../../utils/firebase'
 import { IconCrown } from '@tabler/icons-react'
 import { useState } from 'react'
 
-export default function UpgradeButton({ email }: { email: string }) {
+export default function UpgradeButton({ email, fullWidth = false }: { email: string; fullWidth?: boolean }) {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleUpgrade = async () => {
@@ -39,6 +39,7 @@ export default function UpgradeButton({ email }: { email: string }) {
       gradient={{ from: 'gold', to: 'orange' }}
       leftSection={<IconCrown size={18} />}
       loading={isLoading}
+      fullWidth={fullWidth}
     >
       Upgrade to Premium
     </Button>
