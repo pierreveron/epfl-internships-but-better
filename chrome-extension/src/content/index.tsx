@@ -104,7 +104,7 @@ function handleError(error: Error, targetElement: HTMLElement) {
 function showErrorAlert() {
   const errorMessage = `Oups... 🙇‍♂️
 Something went wrong while loading the data.
-Please try again (we never know 🤷‍♂️) & contact Pierre Véron on Linkedin (https://www.linkedin.com/in/pierre-veron/) or by email (pierre.veron@epfl.ch).`
+Please reload the page (we never know 🤷‍♂️) & contact Pierre Véron on Linkedin (https://www.linkedin.com/in/pierre-veron/) or by email (pierre.veron@epfl.ch).`
 
   alert(errorMessage)
 }
