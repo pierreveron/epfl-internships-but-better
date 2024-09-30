@@ -13,27 +13,54 @@ import classNames from 'classnames'
 import { useAside } from '../hooks/useAside'
 import { useData } from '../contexts/DataContext'
 
+const URL = 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290'
+
 // https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script
-const createScript = (id: string, offerId: string) => {
-  const s = document.createElement('script')
-  s.textContent = offerId
+const injectScript = (newWindow: Window, id: string, offerId: string) => {
+  const s = newWindow.document.createElement('script')
   s.src = chrome.runtime.getURL('src/scripts/navigateToOffer.js')
   s.id = id
   s.onload = function () {
+    newWindow.postMessage({ type: id, offerId: offerId }, '*')
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    // newWindow.console.log('Script loaded and executed')
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.remove()
   }
-  // see also "Dynamic values in the injected code" section in this answer
-  ;(document.head || document.documentElement).appendChild(s)
+  ;(newWindow.document.head || newWindow.document.documentElement).appendChild(s)
+}
+
+const waitForWindowLoad = (newWindow: Window, callback: () => void) => {
+  const checkReadyState = setInterval(() => {
+    if (newWindow.document.readyState === 'complete') {
+      clearInterval(checkReadyState)
+      callback()
+    }
+  }, 100)
 }
 
 async function navigateToView(offerId: string) {
-  createScript('navigateToView', offerId)
+  const newWindow = window.open(URL, '_blank')
+  if (newWindow) {
+    console.log('newWindow', newWindow)
+    waitForWindowLoad(newWindow, () => {
+      console.log('Window loaded, injecting script')
+      injectScript(newWindow, 'navigateToView', offerId)
+    })
+  }
 }
 
 async function navigateToRegister(offerId: string) {
-  createScript('navigateToRegister', offerId)
+  const newWindow = window.open(URL, '_blank')
+  if (newWindow) {
+    console.log('newWindow', newWindow)
+    waitForWindowLoad(newWindow, () => {
+      console.log('Window loaded, injecting script')
+      injectScript(newWindow, 'navigateToRegister', offerId)
+    })
+  }
 }
 
 const getFirstValidWebsite = (websites: string): string => {
