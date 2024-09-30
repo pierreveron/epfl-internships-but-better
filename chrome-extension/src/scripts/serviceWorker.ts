@@ -1,6 +1,5 @@
+import { User } from 'firebase/auth'
 import { signIn, auth } from '../firebase'
-import { getUserData } from '../utils/firebase'
-import { UserWithPremium } from '../types'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -16,52 +15,28 @@ if (constants.consoleLog !== 'true') {
   }
 }
 
-let currentUser: UserWithPremium | null = null
+let currentUser: User | null = null
 
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
-  let isPremium = false
-  let formattingCount = 0
-  if (user) {
-    getUserData(user.email)
-      .then((response) => {
-        const data = response.data as { has_payment: boolean; formatting_count: number }
-        isPremium = data.has_payment
-        formattingCount = data.formatting_count
+  currentUser = user
 
-        currentUser = { ...user, isPremium, formattingCount }
+  chrome.runtime
+    .sendMessage({ type: 'AUTH_STATE_CHANGED', user: currentUser })
+    .then(() => console.log('Message sent successfully to popup'))
+    .catch((error) => console.log('Error sending message to popup:', error))
 
-        chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user: currentUser })
-
-        // Send message to content script
-        chrome.tabs.query({}, function (tabs) {
-          const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
-          if (tab?.id) {
-            chrome.tabs.sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user: currentUser }).catch((error) => {
-              console.log(`Error sending message to tab ${tab.id}:`, error)
-            })
-          }
-        })
-      })
-      .catch((error) => {
-        console.error('Error getting payment status:', error)
-        currentUser = { ...user, isPremium: false, formattingCount: 0 }
-      })
-  } else {
-    currentUser = null
-
-    chrome.runtime.sendMessage({ type: 'AUTH_STATE_CHANGED', user: currentUser })
-
-    // Send message to content script
-    chrome.tabs.query({}, function (tabs) {
-      const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
-      if (tab?.id) {
-        chrome.tabs.sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user: currentUser }).catch((error) => {
-          console.log(`Error sending message to tab ${tab.id}:`, error)
-        })
-      }
-    })
-  }
+  // Send message to content script
+  chrome.tabs.query({}, function (tabs) {
+    console.log('tabs', tabs)
+    const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
+    if (tab?.id) {
+      chrome.tabs
+        .sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user: currentUser })
+        .then(() => console.log('Message sent successfully to content script'))
+        .catch((error) => console.log(`Error sending message to content script in tab ${tab.id}:`, error))
+    }
+  })
 })
 
 chrome.runtime.onMessage.addListener((request, _, sendResponse) => {

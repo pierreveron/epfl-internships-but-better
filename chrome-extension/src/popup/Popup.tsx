@@ -1,40 +1,24 @@
 import { useState, useEffect } from 'react'
 import { Button, Switch } from '@mantine/core'
 import { IconCrown, IconExternalLink } from '@tabler/icons-react'
-import { UserWithPremium } from '../types'
+import { useUser } from '../content/hooks/useUser'
 
 export default function Popup() {
-  const [user, setUser] = useState<UserWithPremium | null>(null)
+  const { user } = useUser()
   const [isOnJobBoard, setIsOnJobBoard] = useState(false)
   const [isEnabled, setIsEnabled] = useState(true)
 
   useEffect(() => {
-    chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response) => {
-      setUser(response.user)
-    })
-
     // Check if the current tab is on the IS-Academia job board
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const currentUrl = tabs[0].url
       setIsOnJobBoard(currentUrl?.includes('isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290') || false)
     })
 
-    const listener = (request: { type: string; user: UserWithPremium | null }) => {
-      if (request.type === 'AUTH_STATE_CHANGED') {
-        setUser(request.user)
-      }
-    }
-
-    chrome.runtime.onMessage.addListener(listener)
-
     // Get the current state of the extension
     chrome.storage.local.get('isEnabled', (result) => {
       setIsEnabled(result.isEnabled !== false)
     })
-
-    return () => {
-      chrome.runtime.onMessage.removeListener(listener)
-    }
   }, [])
 
   const handleSignIn = async () => {
