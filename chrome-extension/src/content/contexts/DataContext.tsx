@@ -23,24 +23,23 @@ interface DataContextType {
 
 export const DataContext = createContext<DataContextType | undefined>(undefined)
 
-const getOffersFromLocalStorage = (): JobOffers => {
-  const storedOffers = localStorage.getItem('jobOffers')
-  return storedOffers
-    ? JSON.parse(storedOffers)
-    : ({
-        offers: [],
-        lastUpdated: Date.now(),
-      } as JobOffers)
+const getOffersFromLocalStorage = async (): Promise<JobOffers> => {
+  const result = (await chrome.storage.local.get('jobOffers')) as { jobOffers?: JobOffers }
+  return (
+    result.jobOffers || {
+      offers: [],
+      lastUpdated: Date.now(),
+    }
+  )
 }
 
 const storeOffersInLocalStorage = (offers: Offer[]) => {
-  localStorage.setItem(
-    'jobOffers',
-    JSON.stringify({
+  chrome.storage.local.set({
+    jobOffers: {
       offers: offers,
       lastUpdated: Date.now(),
-    }),
-  )
+    },
+  })
 }
 
 const getHiddenOffersNumbers = (): string[] => {
@@ -64,8 +63,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true)
 
     try {
-      const { offers } = getOffersFromLocalStorage()
-
+      const { offers } = await getOffersFromLocalStorage()
       // Get the offers that are not in the stored offers
       const newOffers = await scrapeJobs(
         offers.map((o) => o.id),
@@ -99,48 +97,46 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('initializeOffers', user)
       if (user.email) {
         try {
-          if (typeof window !== 'undefined' && window.localStorage) {
-            const { offers } = getOffersFromLocalStorage()
+          const { offers } = await getOffersFromLocalStorage()
 
-            // Get the offers that are not in the stored offers
-            const newOffers = await scrapeJobs(
-              offers.map((o) => o.id),
-              (offersCount, offersLoaded) => {
-                console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
-              },
-            )
+          // Get the offers that are not in the stored offers
+          const newOffers = await scrapeJobs(
+            offers.map((o) => o.id),
+            (offersCount, offersLoaded) => {
+              console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
+            },
+          )
 
-            setNewOffersCount(newOffers.length)
+          setNewOffersCount(newOffers.length)
 
-            if (user.isPremium || user.formattingCount == 0) {
-              // Skip the next condition and proceed with formatting
-              // This is because the user is premium and can format offers automatically
-            } else if (offers.length === 0 && newOffers.length !== 0 && user.formattingCount < 4) {
-              // Skip the next condition and proceed with formatting
-              // This can happen if the user has deleted local storage but still having formatting credits
-            } else {
-              console.log('User is not premium and has already formatted before, skipping automatic formatting')
-              return { data: offers, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
-            }
-
-            let data: Offer[] = []
-
-            if (newOffers.length > 0) {
-              console.log('New offers found, formatting...')
-              const formattedOffers = await formatOffers(user.email, newOffers)
-              increaseFormattingCount()
-
-              const refreshedOffers = offers.concat(formattedOffers)
-
-              storeOffersInLocalStorage(refreshedOffers)
-
-              data = refreshedOffers
-            } else {
-              data = offers
-            }
-
-            return { data, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
+          if (user.isPremium || user.formattingCount == 0) {
+            // Skip the next condition and proceed with formatting
+            // This is because the user is premium and can format offers automatically
+          } else if (offers.length === 0 && newOffers.length !== 0 && user.formattingCount < 4) {
+            // Skip the next condition and proceed with formatting
+            // This can happen if the user has deleted local storage but still having formatting credits
+          } else {
+            console.log('User is not premium and has already formatted before, skipping automatic formatting')
+            return { data: offers, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
           }
+
+          let data: Offer[] = []
+
+          if (newOffers.length > 0) {
+            console.log('New offers found, formatting...')
+            const formattedOffers = await formatOffers(user.email, newOffers)
+            increaseFormattingCount()
+
+            const refreshedOffers = offers.concat(formattedOffers)
+
+            storeOffersInLocalStorage(refreshedOffers)
+
+            data = refreshedOffers
+          } else {
+            data = offers
+          }
+
+          return { data, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
         } catch (error) {
           console.error('Error initializing offers:', error)
           setError(new Error('Error initializing offers'))
