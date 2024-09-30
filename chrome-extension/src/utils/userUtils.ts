@@ -11,6 +11,7 @@ const getUserDataFromStorage = async (): Promise<{
 
 export const resetUserData = async () => {
   await chrome.storage.local.remove('userData')
+  console.log('User data reset')
 }
 
 const MAX_CACHE_TIME = 1000 * 60 * 60 * 24 * 7 // 1 week

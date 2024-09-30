@@ -1,5 +1,6 @@
 import { User } from 'firebase/auth'
 import { signIn, auth } from '../firebase'
+import { resetUserData } from '../utils/userUtils'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -60,6 +61,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     auth
       .signOut()
       .then(() => {
+        resetUserData().then(() => console.log('User data reset on sign out'))
         console.log('User signed out')
       })
       .catch((error) => {
