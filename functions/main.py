@@ -59,6 +59,13 @@ def clean_data(req: https_fn.Request) -> https_fn.Response:
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return https_fn.Response("Invalid email", status=400)
 
+        formatting_count = get_formatting_count(get_db(), email)
+
+        if formatting_count >= 4:
+            return https_fn.Response(
+                json.dumps({"error": "Too many formatting requests"}), status=400
+            )
+
         print("locations:", len(locations))
         print("salaries:", len(salaries))
 
