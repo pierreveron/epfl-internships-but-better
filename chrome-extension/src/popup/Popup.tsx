@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Button, Switch } from '@mantine/core'
-import { IconCrown, IconExternalLink } from '@tabler/icons-react'
+import { IconExternalLink } from '@tabler/icons-react'
 import { useUser } from '../content/hooks/useUser'
+import UpgradeButton from '../content/components/UpgradeButton'
 
 export default function Popup() {
-  const { user } = useUser()
+  const { user, isLoading } = useUser()
   const [isOnJobBoard, setIsOnJobBoard] = useState(false)
   const [isEnabled, setIsEnabled] = useState(true)
 
@@ -58,6 +59,10 @@ export default function Popup() {
     changeState(checked)
   }
 
+  if (isLoading) {
+    return <div className="loader"></div>
+  }
+
   return (
     <div className="tw-space-y-4 tw-p-4">
       <h1 className="tw-text-2xl tw-whitespace-nowrap">
@@ -81,20 +86,7 @@ export default function Popup() {
         {user ? (
           <>
             <p>Welcome, {user.displayName}!</p>
-            {!user.isPremium && (
-              <Button
-                onClick={() =>
-                  chrome.tabs.create({
-                    url: `https://epfl-internships-but-better.lemonsqueezy.com/buy/55677453-102d-4b40-9002-82c5d54176b8?checkout[email]=${user.email}`,
-                  })
-                }
-                variant="gradient"
-                gradient={{ from: 'gold', to: 'orange' }}
-                leftSection={<IconCrown size={18} />}
-              >
-                Upgrade to Premium
-              </Button>
-            )}
+            {!user?.isPremium && <UpgradeButton email={user?.email ?? ''} />}
 
             <div className="tw-flex tw-items-center tw-justify-between">
               <span className="tw-text-sm tw-text-gray-700">Enable extension</span>

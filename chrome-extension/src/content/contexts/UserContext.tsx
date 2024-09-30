@@ -6,12 +6,14 @@ import { User } from 'firebase/auth'
 interface UserContextType {
   user: UserWithPremium | null
   setUser: React.Dispatch<React.SetStateAction<UserWithPremium | null>>
+  isLoading: boolean
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserWithPremium | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response: { user: User | null }) => {
@@ -19,9 +21,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (user && user.email) {
         fetchUserData(user.email).then(({ isPremium, formattingCount }) => {
           setUser({ ...user, isPremium, formattingCount })
+          setIsLoading(false)
         })
       } else {
         setUser(null)
+        setIsLoading(false)
       }
     })
 
@@ -31,9 +35,11 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (user && user.email) {
           fetchUserData(user.email).then(({ isPremium, formattingCount }) => {
             setUser({ ...user, isPremium, formattingCount })
+            setIsLoading(false)
           })
         } else {
           setUser(null)
+          setIsLoading(false)
         }
       }
 
@@ -51,6 +57,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const value = {
     user,
     setUser,
+    isLoading,
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
