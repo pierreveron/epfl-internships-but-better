@@ -83,7 +83,7 @@ export default function Popup() {
       <main className="tw-space-y-4">
         <div className="tw-space-y-1">
           <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
-            Enjoy a better internship search on the EPFL job board. Experience an improved UI and advanced filters.
+            Enjoy a better internship search on IS-Academia job board. Experience an improved UI and advanced filters.
           </p>
           {!user?.isPremium && (
             <>
@@ -177,12 +177,12 @@ export default function Popup() {
             GitHub
           </a>
           <span className="tw-flex tw-items-center tw-text-sm tw-text-gray-600">
-            Made with ❤️ by
+            Made by
             <a
               href="https://www.linkedin.com/in/pierre-veron/"
               target="_blank"
               rel="noopener noreferrer"
-              className="tw-ml-1 tw-flex tw-items-center hover:tw-text-black tw-transition-colors"
+              className="tw-ml-1 tw-flex tw-items-center hover:tw-text-red-500 tw-transition-colors tw-text-red-400"
             >
               Pierre Véron
               <IconBrandLinkedin className="tw-w-4 tw-h-4 tw-ml-1" />
