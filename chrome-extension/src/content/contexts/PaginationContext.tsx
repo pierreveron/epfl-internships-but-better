@@ -21,10 +21,6 @@ export const PaginationProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const { sortedData } = useSort()
   const { setOffer } = useAside()
 
-  //   const { selectableLocations, selectableFormats, selectableLengths, selectedCompany, showOnlyPositionsNotYetCompleted, showOnlyFavorites, minimumSalary } = useFilter()
-  // const isFormatingOffers = useAtomValue(formattingOffersAtom)
-  // const isLoadingOffers = useAtomValue(loadingOffersAtom)
-
   const {
     selectableFormats,
     selectableLengths,

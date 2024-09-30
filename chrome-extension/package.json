@@ -21,8 +21,6 @@
     "@tabler/icons-react": "^3.15.0",
     "classnames": "^2.3.2",
     "firebase": "^10.13.2",
-    "jotai": "^2.9.3",
-    "jotai-optics": "^0.4.0",
     "mantine-datatable": "^7.1.6",
     "node-html-parser": "^6.1.10",
     "postcss-prefix-selector": "^1.16.0",
