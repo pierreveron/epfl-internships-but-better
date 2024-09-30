@@ -85,7 +85,7 @@ export default function Popup() {
       <div className="tw-space-y-2">
         {user ? (
           <>
-            <p>Welcome, {user.displayName}!</p>
+            <p>Logged in as {user.email}</p>
             {!user?.isPremium && <UpgradeButton email={user?.email ?? ''} />}
 
             <div className="tw-flex tw-items-center tw-justify-between">
