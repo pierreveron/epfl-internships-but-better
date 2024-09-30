@@ -3,6 +3,7 @@
 from typing import Any
 
 import google.cloud.firestore  # type: ignore
+from google.cloud.firestore import Increment  # type: ignore
 from google.cloud.firestore_v1.document import DocumentReference
 
 
@@ -39,6 +40,11 @@ def add_payment(
     doc_ref: DocumentReference = result[1]
 
     print("Payment added to Firestore", user_email, doc_ref.id)  # type: ignore
+
+
+def increment_formatting_count(db: google.cloud.firestore.Client, email: str):
+    users_collection = db.collection("users")
+    users_collection.document(email).set({"formatting_count": Increment(1)}, merge=True)
 
 
 def get_formatting_count(db: google.cloud.firestore.Client, email: str) -> int:

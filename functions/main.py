@@ -15,7 +15,12 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
-from firestore_helper import add_payment, check_payment_status, get_formatting_count
+from firestore_helper import (
+    add_payment,
+    check_payment_status,
+    get_formatting_count,
+    increment_formatting_count,
+)
 
 app = initialize_app()
 
@@ -39,11 +44,20 @@ EXTENSION_ORIGIN = "chrome-extension://cgdpalglfipokmbjbofifdlhlkpcipnk"
 )
 def clean_data(req: https_fn.Request) -> https_fn.Response:
     try:
-        json_data: dict[str, dict[str, list[str]]] = req.get_json()
+        json_data: dict[str, dict[str, Any]] = req.get_json()
         print("json_data:", json_data)
         data = json_data.get("data", {})
-        locations = data.get("locations", [])
-        salaries = data.get("salaries", [])
+        email: str = data.get("email", "")
+        locations: list[str] = data.get("locations", [])
+        salaries: list[str] = data.get("salaries", [])
+
+        if not email:
+            return https_fn.Response(
+                json.dumps({"error": "Email parameter is required"}), status=400
+            )
+
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return https_fn.Response("Invalid email", status=400)
 
         print("locations:", len(locations))
         print("salaries:", len(salaries))
@@ -71,6 +85,9 @@ def clean_data(req: https_fn.Request) -> https_fn.Response:
         result = asyncio.run(process_data())
 
         print("clean_data result:", result)
+
+        increment_formatting_count(get_db(), email)
+
         return https_fn.Response(
             json.dumps({"data": result}),
             content_type="application/json",

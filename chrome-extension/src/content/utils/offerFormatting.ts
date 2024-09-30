@@ -2,11 +2,12 @@ import { Location, Offer, OfferToBeFormatted } from '../../types'
 import { cleanData } from '../../utils/firebase'
 
 const handleCleanData = async (
+  email: string,
   locations: string[],
   salaries: string[],
 ): Promise<{ locations: { [key: string]: Location[] }; salaries: { [key: string]: string } }> => {
   try {
-    const result = await cleanData({ locations, salaries })
+    const result = await cleanData({ email, locations, salaries })
     const cleanedData = result.data as { locations: { [key: string]: Location[] }; salaries: { [key: string]: string } }
 
     // Use cleanedData.locations and cleanedData.salaries as needed
@@ -21,11 +22,11 @@ const handleCleanData = async (
   }
 }
 
-export async function formatOffers(offers: OfferToBeFormatted[]): Promise<Offer[]> {
+export async function formatOffers(email: string, offers: OfferToBeFormatted[]): Promise<Offer[]> {
   const salaries = offers.map((offer) => offer.salary)
   const locations = offers.map((offer) => offer.location)
 
-  const { locations: locationsMap, salaries: salariesMap } = await handleCleanData(locations, salaries)
+  const { locations: locationsMap, salaries: salariesMap } = await handleCleanData(email, locations, salaries)
 
   const formattedOffers = offers.map((offer) => ({
     ...offer,

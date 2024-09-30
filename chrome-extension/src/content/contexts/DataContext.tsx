@@ -56,6 +56,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { user } = useUser()
 
   const refreshData = useCallback(async () => {
+    if (!user || !user.email) {
+      return
+    }
+
     try {
       const { offers } = getOffersFromLocalStorage()
 
@@ -67,7 +71,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
       )
 
-      const newFormattedOffers = await formatOffers(newOffers)
+      const newFormattedOffers = await formatOffers(user.email, newOffers)
 
       const refreshedOffers = offers.concat(newFormattedOffers)
 
@@ -83,10 +87,14 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.error('Error refreshing data:', error)
       setError(new Error('Error refreshing data'))
     }
-  }, [])
+  }, [user])
 
   useEffect(() => {
     const initializeOffers = async (user: UserWithPremium) => {
+      if (!user.email) {
+        return
+      }
+
       try {
         if (typeof window !== 'undefined' && window.localStorage) {
           const { offers } = getOffersFromLocalStorage()
@@ -110,7 +118,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           if (newOffers.length > 0) {
             console.log('New offers found, formatting...')
-            const formattedOffers = await formatOffers(newOffers)
+            const formattedOffers = await formatOffers(user.email, newOffers)
 
             const refreshedOffers = offers.concat(formattedOffers)
 
@@ -132,6 +140,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     if (user) {
+      console.log('user', user)
       initializeOffers(user)
     }
   }, [user])
