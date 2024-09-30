@@ -26,10 +26,13 @@ def get_db() -> google.cloud.firestore.Client:
 
 WEBHOOK_SECRET = os.environ["LEMON_SQUEEZY_SIGNING_SECRET"]
 
+ISA_ORIGIN = "https://isa.epfl.ch"
+EXTENSION_ORIGIN = "chrome-extension://cgdpalglfipokmbjbofifdlhlkpcipnk"
+
 
 @https_fn.on_request(
     cors=options.CorsOptions(
-        cors_origins=["https://isa.epfl.ch"],
+        cors_origins=[ISA_ORIGIN],
         cors_methods=["POST"],
     ),
     timeout_sec=120,
@@ -124,7 +127,7 @@ def webhook(request: https_fn.Request) -> https_fn.Response:
 
 @https_fn.on_request(
     cors=options.CorsOptions(
-        cors_origins=["chrome-extension://cgdpalglfipokmbjbofifdlhlkpcipnk"],
+        cors_origins=[ISA_ORIGIN, EXTENSION_ORIGIN],
         cors_methods=["POST"],
     ),
 )
@@ -151,5 +154,24 @@ def get_user_data(req: https_fn.Request) -> https_fn.Response:
                 }
             }
         ),
+        content_type="application/json",
+    )
+
+
+@https_fn.on_request(
+    cors=options.CorsOptions(
+        cors_origins=[ISA_ORIGIN, EXTENSION_ORIGIN],
+        cors_methods=["POST"],
+    ),
+)
+def get_upgrade_url(req: https_fn.Request) -> https_fn.Response:
+    if req.method != "POST":
+        return https_fn.Response("Method not allowed", status=405)
+
+    # Generate or retrieve the upgrade URL
+    upgrade_url = os.getenv("LEMON_SQUEEZY_STORE_URL")
+
+    return https_fn.Response(
+        json.dumps({"data": {"url": upgrade_url}}),
         content_type="application/json",
     )
