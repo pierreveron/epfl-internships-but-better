@@ -109,6 +109,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
               },
             )
+
+            setNewOffersCount(newOffers.length)
+
             if (user.isPremium || user.formattingCount == 0) {
               // Skip the next condition and proceed with formatting
               // This is because the user is premium and can format offers automatically
@@ -117,7 +120,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
               // This can happen if the user has deleted local storage but still having formatting credits
             } else {
               console.log('User is not premium and has already formatted before, skipping automatic formatting')
-              setNewOffersCount(newOffers.length)
               return { data: offers, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
             }
 
