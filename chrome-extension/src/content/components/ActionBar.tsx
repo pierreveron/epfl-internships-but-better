@@ -133,7 +133,7 @@ export default function ActionBar() {
 
       {!user?.isPremium && (
         <Button
-          variant="subtle"
+          variant="light"
           color="red"
           leftSection={<IconRefresh size={18} />}
           onClick={() => {
