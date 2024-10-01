@@ -33,11 +33,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (user && user.email) {
         fetchUserData(user.email).then(({ isPremium, formattingCount }) => {
           setUser({ ...user, isPremium, formattingCount })
+          setIsLoading(false)
         })
       } else {
         setUser(null)
+        setIsLoading(false)
       }
-      setIsLoading(false)
     })
 
     const listener = (request: { type: string; user: User | null }) => {
