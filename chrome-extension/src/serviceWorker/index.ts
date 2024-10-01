@@ -37,6 +37,10 @@ auth.onAuthStateChanged((user) => {
   } else {
     currentUser = null
     sendUserUpdateMessages(null)
+    // Remove all storage
+    chrome.storage.local.clear(() => {
+      console.log('All chrome.storage.local data cleared when user changes')
+    })
   }
 })
 
