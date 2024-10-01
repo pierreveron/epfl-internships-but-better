@@ -17,6 +17,7 @@ export default function Popup() {
   const { user, isLoading } = useUser()
   const [isOnJobBoard, setIsOnJobBoard] = useState(false)
   const [isEnabled, setIsEnabled] = useState(true)
+  const [isSigningIn, setIsSigningIn] = useState(false)
 
   useEffect(() => {
     // Check if the current tab is on the IS-Academia job board
@@ -32,11 +33,13 @@ export default function Popup() {
   }, [])
 
   const handleSignIn = async () => {
+    setIsSigningIn(true)
     chrome.runtime.sendMessage({ type: 'SIGN_IN' }, (response) => {
       if (response && response.error) {
         console.error('Sign-in failed:', response.error)
         alert('Sign-in failed')
       }
+      setIsSigningIn(false)
     })
   }
 
@@ -158,7 +161,7 @@ export default function Popup() {
             </Button>
           </>
         ) : (
-          <Button variant="filled" color="red" w="100%" onClick={handleSignIn}>
+          <Button variant="filled" color="red" w="100%" onClick={handleSignIn} loading={isSigningIn}>
             <IconBrandGoogleFilled className="tw-w-4 tw-h-4 tw-mr-2" />
             Sign In with Google
           </Button>
