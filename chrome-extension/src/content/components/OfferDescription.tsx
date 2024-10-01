@@ -11,7 +11,7 @@ import { formatLengthLabel } from '../utils/formatters'
 import MoneyBillIcon from './icons/MoneyBillIcon'
 import classNames from 'classnames'
 import { useAside } from '../hooks/useAside'
-import { useData } from '../contexts/DataContext'
+import { useData } from '../hooks/useData'
 
 const EPFL_PORTAL_URL = 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290'
 

@@ -12,7 +12,7 @@ import CloseIcon from './icons/CloseIcon'
 import ReplayIcon from './icons/ReplayIcon'
 import { ActionIcon } from '@mantine/core'
 import { Record } from '../contexts/PaginationContext'
-import { useData } from '../contexts/DataContext'
+import { useData } from '../hooks/useData'
 
 interface CardProps {
   record: Record

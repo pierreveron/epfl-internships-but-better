@@ -1,7 +1,7 @@
 import { createContext, useCallback, useState } from 'react'
 import { Offer } from '../../types'
 import { useAside } from '../hooks/useAside'
-import { useData } from './DataContext'
+import { useData } from '../hooks/useData'
 
 interface OfferActionsContextType {
   collapsedOffers: Set<string>

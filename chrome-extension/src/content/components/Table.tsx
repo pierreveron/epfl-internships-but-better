@@ -11,7 +11,7 @@ import { useSort } from '../hooks/useSort'
 import { useOfferActions } from '../hooks/useOfferActions'
 import CloseIcon from './icons/CloseIcon'
 import ReplayIcon from './icons/ReplayIcon'
-import { useData } from '../contexts/DataContext'
+import { useData } from '../hooks/useData'
 
 export default function Table() {
   const { selectableFormats } = useContext(FilterContext)!
