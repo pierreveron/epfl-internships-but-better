@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect, useMemo, useCallback, useRef } from 'react'
+import React, { createContext, useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Offer, Location, UserWithPremium } from '../../types'
 import { scrapeJobs } from '../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
@@ -174,6 +174,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             data = offers
           }
 
+          setNewOffersCount(0)
+
           return { data, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
         } catch (error) {
           console.error('Error initializing offers:', error)
@@ -242,12 +244,4 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>
-}
-
-export const useData = () => {
-  const context = useContext(DataContext)
-  if (context === undefined) {
-    throw new Error('useData must be used within a DataProvider')
-  }
-  return context
 }
