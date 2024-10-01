@@ -1,7 +1,8 @@
 import { auth, signIn } from './firebase/firebaseAuth'
 import { resetUserData } from '../content/utils/userUtils'
-import { fetchUserData } from './userUtils' // Make sure to create this function in userUtils.ts
+import { fetchUserData } from './helpers/userData' // Make sure to create this function in userUtils.ts
 import { UserWithPremium } from '../types'
+import { formatOffersInWorker } from './helpers/offerFormatting'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -92,5 +93,18 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
   if (request.type === 'GET_CURRENT_USER') {
     sendResponse({ user: currentUser })
     return true
+  }
+
+  if (request.action === 'formatOffers') {
+    const { email, offers } = request
+    formatOffersInWorker(email, offers)
+      .then((formattedOffers) => {
+        sendResponse(formattedOffers)
+      })
+      .catch((error) => {
+        console.error('Error formatting offers:', error)
+        sendResponse({ error: 'Offer formatting error' })
+      })
+    return true // Indicates that the response is sent asynchronously
   }
 })

@@ -162,6 +162,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (newOffers.length > 0) {
             console.log('New offers found, formatting...')
             const formattedOffers = await formatOffers(user.email, newOffers)
+            console.log('New offers formatted', formattedOffers)
             increaseFormattingCount()
 
             const refreshedOffers = offers.concat(formattedOffers)

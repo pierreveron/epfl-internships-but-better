@@ -37,12 +37,15 @@ EXTENSION_ORIGIN = "chrome-extension://cgdpalglfipokmbjbofifdlhlkpcipnk"
 
 @https_fn.on_request(
     cors=options.CorsOptions(
-        cors_origins=[ISA_ORIGIN],
+        cors_origins=[EXTENSION_ORIGIN],
         cors_methods=["POST"],
     ),
     timeout_sec=120,
 )
 def clean_data(req: https_fn.Request) -> https_fn.Response:
+    if req.method != "POST":
+        return https_fn.Response("Method not allowed", status=405)
+
     try:
         json_data: dict[str, dict[str, Any]] = req.get_json()
         print("json_data:", json_data)
@@ -153,7 +156,7 @@ def webhook(request: https_fn.Request) -> https_fn.Response:
 
 @https_fn.on_request(
     cors=options.CorsOptions(
-        cors_origins=[ISA_ORIGIN, EXTENSION_ORIGIN],
+        cors_origins=[EXTENSION_ORIGIN],
         cors_methods=["POST"],
     ),
 )

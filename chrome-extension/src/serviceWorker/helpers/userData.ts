@@ -1,4 +1,4 @@
-import { getUserData } from './firebase/firebaseFunctions'
+import { getUserData } from '../firebase/firebaseFunctions'
 
 export const incrementFormattingCountInStorage = async (): Promise<number | undefined> => {
   const result = await chrome.storage.local.get('userData')
