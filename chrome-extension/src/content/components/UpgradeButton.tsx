@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core'
-import { resetUserData } from '../../utils/userUtils'
-import { getUpgradeUrl } from '../../utils/firebase'
+import { resetUserData } from '../utils/userUtils'
+import { getUpgradeUrl } from '../../serviceWorker/firebase/firebaseFunctions'
 import { IconCrown } from '@tabler/icons-react'
 import { useState } from 'react'
 

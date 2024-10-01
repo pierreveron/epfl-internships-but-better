@@ -1,5 +1,5 @@
 import { getFunctions, connectFunctionsEmulator, Functions, httpsCallable } from 'firebase/functions'
-import { app } from '../firebase'
+import { app } from './firebaseApp'
 
 const constants = {
   nodeEnv: import.meta.env.VITE_NODE_ENV,

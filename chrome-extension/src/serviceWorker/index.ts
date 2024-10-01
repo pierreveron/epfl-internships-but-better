@@ -1,6 +1,7 @@
-import { User } from 'firebase/auth'
-import { signIn, auth } from '../firebase'
-import { resetUserData } from '../utils/userUtils'
+import { auth, signIn } from './firebase/firebaseAuth'
+import { resetUserData } from '../content/utils/userUtils'
+import { fetchUserData } from './userUtils' // Make sure to create this function in userUtils.ts
+import { UserWithPremium } from '../types'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -16,14 +17,31 @@ if (constants.consoleLog !== 'true') {
   }
 }
 
-let currentUser: User | null = null
+let currentUser: UserWithPremium | null = null
 
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
-  currentUser = user
 
+  if (user && user.email) {
+    fetchUserData(user.email)
+      .then((userPremiumStatus) => {
+        currentUser = { ...user, ...userPremiumStatus }
+        sendUserUpdateMessages(currentUser)
+      })
+      .catch((error) => {
+        console.error('Error fetching user data:', error)
+        currentUser = null
+        sendUserUpdateMessages(null)
+      })
+  } else {
+    currentUser = null
+    sendUserUpdateMessages(null)
+  }
+})
+
+function sendUserUpdateMessages(user: UserWithPremium | null) {
   chrome.runtime
-    .sendMessage({ type: 'AUTH_STATE_CHANGED', user: currentUser })
+    .sendMessage({ type: 'AUTH_STATE_CHANGED', user })
     .then(() => console.log('Message sent successfully to popup'))
     .catch((error) => console.log('Error sending message to popup:', error))
 
@@ -33,12 +51,12 @@ auth.onAuthStateChanged((user) => {
     const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
     if (tab?.id) {
       chrome.tabs
-        .sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user: currentUser })
+        .sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user })
         .then(() => console.log('Message sent successfully to content script'))
         .catch((error) => console.log(`Error sending message to content script in tab ${tab.id}:`, error))
     }
   })
-})
+}
 
 chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
   if (request.type === 'SIGN_IN') {

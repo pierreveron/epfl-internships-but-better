@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Offer, Location, UserWithPremium } from '../../types'
-import { scrapeJobs } from '../../utils/scraping'
+import { scrapeJobs } from '../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
 import { SelectableCity } from '../types'
 import { useUser } from '../hooks/useUser'
