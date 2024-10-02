@@ -4,7 +4,6 @@ from typing import Any
 
 import google.cloud.firestore  # type: ignore
 from google.cloud.firestore import Increment  # type: ignore
-from google.cloud.firestore_v1.document import DocumentReference
 
 
 def check_payment_status(db: google.cloud.firestore.Client, email: str) -> bool:
@@ -27,19 +26,17 @@ def add_payment(
     data: dict[str, Any],
 ):
     users_collection = db.collection("users")
-    result = users_collection.add(
+    result = users_collection.document(user_email).set(
         {
             "payment": {
                 "processor": processor,
                 "data": data,
             }
         },
-        user_email,
+        merge=True,
     )
 
-    doc_ref: DocumentReference = result[1]
-
-    print("Payment added to Firestore", user_email, doc_ref.id)  # type: ignore
+    print("Payment added to Firestore", user_email, result)  # type: ignore
 
 
 def increment_formatting_count(db: google.cloud.firestore.Client, email: str):
