@@ -3,7 +3,7 @@ import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
 import { jobOffersFromLocalStorage, userDataFromLocalStorage } from '../localStorage'
-import { Offer } from '../types'
+import { Offer, UserData } from '../types'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -21,6 +21,7 @@ if (constants.consoleLog !== 'true') {
 
 let currentUser: User | null = null
 let formattingPromise: Promise<Offer[]> | null = null
+let fetchUserDataPromise: Promise<UserData> | null = null
 
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
@@ -136,14 +137,34 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
 
   if (request.type === 'FETCH_USER_DATA') {
     if (currentUser && currentUser.email) {
-      fetchUserData(currentUser.email)
-        .then((userData) => {
-          sendResponse({ userData })
-        })
-        .catch((error) => {
-          console.error('Error fetching user data:', error)
-          sendResponse({ error: 'Failed to fetch user data' })
-        })
+      if (fetchUserDataPromise) {
+        fetchUserDataPromise
+          .then((userData) => {
+            sendResponse({ userData })
+          })
+          .catch((error) => {
+            console.error('Error fetching user data:', error)
+            sendResponse({ error: 'Failed to fetch user data' })
+          })
+      } else {
+        fetchUserDataPromise = fetchUserData(currentUser.email)
+          .catch((error) => {
+            console.error('Error fetching user data:', error)
+            throw error
+          })
+          .finally(() => {
+            fetchUserDataPromise = null
+          })
+
+        fetchUserDataPromise
+          .then((userData) => {
+            sendResponse({ userData })
+          })
+          .catch((error) => {
+            console.error('Error fetching user data:', error)
+            sendResponse({ error: 'Failed to fetch user data' })
+          })
+      }
     } else {
       sendResponse({ error: 'No current user' })
     }
