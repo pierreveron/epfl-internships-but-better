@@ -151,7 +151,7 @@ export default function Popup() {
                     </li>
                     <li className="tw-flex tw-items-center tw-text-sm">
                       <IconCheck className="tw-w-4 tw-h-4 tw-mr-2 tw-text-green-500" />
-                      Unlimited and automatic offers refreshs
+                      Unlimited and automatic offers refreshes
                     </li>
                   </ul>
                 </div>
