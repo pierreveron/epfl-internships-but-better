@@ -3,11 +3,9 @@ import { getUserData } from '../firebase/firebaseFunctions'
 import { userDataFromLocalStorage } from '../../localStorage'
 
 export const fetchUserData = async (email: string): Promise<UserData> => {
-  console.log('fetching user data')
+  console.log('fetching user data from firestore')
 
   try {
-    console.log('fetching user data from firestore')
-
     const response = await getUserData(email)
     const data = response.data as { has_payment: boolean; formatting_count: number }
     const userData = {
