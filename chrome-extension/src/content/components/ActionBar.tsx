@@ -142,13 +142,11 @@ export default function ActionBar() {
           disabled={newOffersCount === 0 || (user?.formattingCount ?? 0) >= 4}
           rightSection={
             (user?.formattingCount ?? 0) >= 4
-              ? undefined
+              ? '(No refresh left, please upgrade to premium)'
               : `(${4 - (user?.formattingCount ?? 1)} refresh${(user?.formattingCount ?? 0) === 3 ? '' : 's'} left)`
           }
         >
-          {(user?.formattingCount ?? 0) >= 4
-            ? 'No refresh left, please upgrade to premium'
-            : newOffersCount === 0
+          {newOffersCount === 0
             ? 'No new offers'
             : newOffersCount === 1
             ? '1 new offer'
