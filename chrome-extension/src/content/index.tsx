@@ -139,7 +139,7 @@ function handleAuthStateChanged(user: User | null) {
   if (user && !isReactAppInjected) {
     console.log('injecting React app on AUTH_STATE_CHANGED')
     injectReactApp()
-  } else if (!user && isReactAppInjected) {
+  } else if (!user) {
     console.log('removing React app on AUTH_STATE_CHANGED')
     removeReactApp()
   }
@@ -165,8 +165,6 @@ chrome.runtime.onMessage.addListener((message: { type: string; user: User | null
   if (message.type === 'AUTH_STATE_CHANGED') {
     handleAuthStateChanged(message.user)
   }
-  // Make sure to return true if you want to send a response asynchronously
-  return true
 })
 
 // Initial check for current user
