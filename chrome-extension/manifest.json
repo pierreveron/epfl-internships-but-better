@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "EPFL internships but better",
-  "version": "0.0.0.11",
+  "version": "0.0.0.12",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwJNHrtKj5/jkvT2N/ExE5h520XLchk8MQsgH+Km3nUysNgOUVLf7tBfBD6fvHXeu6kW97AJhIl5UXTAhBlaVrtmVxmz7Npz6DUz3V4xq7wc5+WJma9D+J8kpyY+UdBZUEXxbcVbZ7Efl22HT7hsALSkQxtMre7BF9/rEurF87LBfeTp+oEusWCRE37I7QylMxGAmvZqk0N1c2ax1akQKQ6qBCbpVmUZ4qo2Rs2v4eoyX3+EFoELNtU1Ctn2heRUdk1xL9RPh9A5E/gkglA769Y4goYZxCkNkMRAnElq/NerN/p4izGr6TsYhIEXqkaMoyvUaXelBPRA3meuf7z7OqwIDAQAB",
   "description": "An extension to improve job search on EPFL IS-Academia platform.",
   "icons": { "48": "icon48.png", "128": "icon128.png", "500": "icon.png" },
