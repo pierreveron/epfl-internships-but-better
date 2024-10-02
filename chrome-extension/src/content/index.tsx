@@ -13,10 +13,15 @@ const constants = {
 // Override console.log
 if (constants.consoleLog !== 'true') {
   console.log = () => {}
+  console.error = () => {}
 } else {
   const originalConsoleLog = console.log
   console.log = (...args) => {
     originalConsoleLog('[DEV]', ...args)
+  }
+  const originalConsoleError = console.error
+  console.error = (...args) => {
+    originalConsoleError('[DEV]', ...args)
   }
 }
 
