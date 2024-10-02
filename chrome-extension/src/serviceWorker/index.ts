@@ -87,7 +87,6 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
 
   if (request.type === 'GET_CURRENT_USER') {
     sendResponse({ user: currentUser })
-    return true
   }
 
   if (request.action === 'formatOffers') {
