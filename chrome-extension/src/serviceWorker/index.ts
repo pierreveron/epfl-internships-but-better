@@ -3,6 +3,7 @@ import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
 import { jobOffersFromLocalStorage, userDataFromLocalStorage } from '../localStorage'
+import { Offer } from '../types'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -19,6 +20,7 @@ if (constants.consoleLog !== 'true') {
 }
 
 let currentUser: User | null = null
+let formattingPromise: Promise<Offer[]> | null = null
 
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
@@ -44,13 +46,15 @@ function sendUserUpdateMessages(user: User | null) {
   // Send message to content script
   chrome.tabs.query({}, function (tabs) {
     console.log('tabs', tabs)
-    const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
-    if (tab?.id) {
-      chrome.tabs
-        .sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user })
-        .then(() => console.log('AUTH_STATE_CHANGED sent successfully to content script'))
-        .catch((error) => console.log(`Error sending AUTH_STATE_CHANGED to content script in tab ${tab.id}:`, error))
-    }
+    tabs = tabs.filter((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
+    tabs.forEach((tab) => {
+      if (tab?.id) {
+        chrome.tabs
+          .sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user })
+          .then(() => console.log('AUTH_STATE_CHANGED sent successfully to content script'))
+          .catch((error) => console.log(`Error sending AUTH_STATE_CHANGED to content script in tab ${tab.id}:`, error))
+      }
+    })
   })
 }
 
@@ -91,15 +95,42 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
 
   if (request.action === 'formatOffers') {
     const { email, offers } = request
-    formatOffersInWorker(email, offers)
-      .then((formattedOffers) => {
-        jobOffersFromLocalStorage.set({ offers: formattedOffers, lastUpdated: Date.now() })
-        sendResponse(formattedOffers)
-      })
-      .catch((error) => {
-        console.error('Error formatting offers:', error)
-        sendResponse({ error: 'Offer formatting error' })
-      })
+
+    // If formatting is already in progress, wait for it to finish
+    if (formattingPromise) {
+      formattingPromise
+        .then((formattedOffers) => {
+          sendResponse(formattedOffers)
+        })
+        .catch((error) => {
+          console.error('Error while waiting for formatting:', error)
+          sendResponse({ error: 'Offer formatting error' })
+        })
+    } else {
+      // Start a new formatting operation
+      formattingPromise = formatOffersInWorker(email, offers)
+        .then((formattedOffers) => {
+          jobOffersFromLocalStorage.set({ offers: formattedOffers, lastUpdated: Date.now() })
+          return formattedOffers
+        })
+        .catch((error) => {
+          console.error('Error formatting offers:', error)
+          throw error
+        })
+        .finally(() => {
+          formattingPromise = null
+        })
+
+      formattingPromise
+        .then((formattedOffers) => {
+          sendResponse(formattedOffers)
+        })
+        .catch((error) => {
+          console.error('Error while waiting for formatting:', error)
+          sendResponse({ error: 'Offer formatting error' })
+        })
+    }
+
     return true // Indicates that the response is sent asynchronously
   }
 
