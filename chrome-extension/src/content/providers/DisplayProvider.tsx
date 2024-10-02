@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
-import { getStorageData, setStorageData } from '../utils/storage'
-
-type DisplayMode = 'list' | 'table'
+import { displayModeFromLocalStorage } from '../../localStorage'
+import { DisplayMode } from '../../types'
 
 interface DisplayContextType {
   displayMode: DisplayMode
@@ -15,11 +14,11 @@ export const DisplayProvider: React.FC<React.PropsWithChildren> = ({ children })
   //   const { width } = useViewportSize()
 
   useEffect(() => {
-    getStorageData<DisplayMode>('displayMode', 'list').then(setDisplayMode)
+    displayModeFromLocalStorage.get().then(setDisplayMode)
   }, [])
 
   const setDisplayModeWithStorage = (mode: DisplayMode) => {
-    setStorageData('displayMode', mode).then(() => setDisplayMode(mode))
+    displayModeFromLocalStorage.set(mode).then(() => setDisplayMode(mode))
   }
 
   // useEffect(() => {

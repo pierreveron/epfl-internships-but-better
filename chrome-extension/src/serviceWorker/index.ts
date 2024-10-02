@@ -1,8 +1,8 @@
 import { auth, signIn } from './firebase/firebaseAuth'
-import { resetUserData } from '../content/utils/userUtils'
-import { fetchUserData, storeOffersInLocalStorage } from './helpers/userData'
+import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
+import { jobOffersFromLocalStorage, userDataFromLocalStorage } from '../localStorage'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -75,7 +75,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     auth
       .signOut()
       .then(() => {
-        resetUserData().then(() => console.log('User data reset on sign out'))
+        userDataFromLocalStorage.reset().then(() => console.log('User data reset on sign out'))
         console.log('User signed out')
       })
       .catch((error) => {
@@ -94,7 +94,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     const { email, offers } = request
     formatOffersInWorker(email, offers)
       .then((formattedOffers) => {
-        storeOffersInLocalStorage(formattedOffers)
+        jobOffersFromLocalStorage.set({ offers: formattedOffers, lastUpdated: Date.now() })
         sendResponse(formattedOffers)
       })
       .catch((error) => {

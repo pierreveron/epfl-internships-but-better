@@ -1,8 +1,8 @@
 import { Button } from '@mantine/core'
-import { resetUserData } from '../utils/userUtils'
 import { getUpgradeUrl } from '../../serviceWorker/firebase/firebaseFunctions'
 import { IconCrown } from '@tabler/icons-react'
 import { useState } from 'react'
+import { userDataFromLocalStorage } from '../../localStorage'
 
 export default function UpgradeButton({ email, fullWidth = false }: { email: string; fullWidth?: boolean }) {
   const [isLoading, setIsLoading] = useState(false)
@@ -27,7 +27,9 @@ export default function UpgradeButton({ email, fullWidth = false }: { email: str
       return
     }
     const checkoutUrl = `${url}?checkout[email]=${email}`
-    resetUserData()
+    await userDataFromLocalStorage.reset().then(() => {
+      console.log('User data reset on opening checkout URL')
+    })
     console.log('Opening checkout URL:', checkoutUrl)
     window.open(checkoutUrl, '_blank')!.focus()
   }

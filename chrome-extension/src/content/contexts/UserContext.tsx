@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useCallback } from 'react'
 import { incrementFormattingCountInStorage } from '../utils/userUtils'
 import { UserWithData, UserData } from '../../types'
-import { getUserDataFromStorage } from '../../serviceWorker/helpers/userData'
+import { userDataFromLocalStorage } from '../../localStorage'
 import { User } from 'firebase/auth'
 
 interface UserContextType {
@@ -17,7 +17,7 @@ const MAX_CACHE_TIME = 1000 * 60 * 60 * 24 * 7 // 1 week
 
 const getUserData = async (): Promise<UserData> => {
   console.log('Getting first user data from storage')
-  const userDataFromStorage = await getUserDataFromStorage()
+  const userDataFromStorage = await userDataFromLocalStorage.get()
   if (userDataFromStorage && Date.now() - userDataFromStorage.timestamp < MAX_CACHE_TIME) {
     console.log('Got user data from storage', userDataFromStorage)
 

@@ -4,12 +4,11 @@ import { detectNewJobs, scrapeJobs } from '../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
 import { SelectableCity } from '../types'
 import { useUser } from '../hooks/useUser'
-import { getStorageData, setStorageData } from '../utils/storage'
-
-type JobOffers = {
-  offers: Offer[]
-  lastUpdated: number
-}
+import {
+  jobOffersFromLocalStorage,
+  hiddenOffersFromLocalStorage,
+  favoriteOffersFromLocalStorage,
+} from '../../localStorage'
 
 interface DataContextType {
   favoriteOffers: string[]
@@ -32,30 +31,6 @@ interface DataContextType {
 
 export const DataContext = createContext<DataContextType | undefined>(undefined)
 
-const getOffersFromLocalStorage = async (): Promise<JobOffers> => {
-  const result = (await chrome.storage.local.get('jobOffers')) as { jobOffers?: JobOffers }
-  return (
-    result.jobOffers || {
-      offers: [],
-      lastUpdated: Date.now(),
-    }
-  )
-}
-
-const storeOffersInLocalStorage = (offers: Offer[]) => {
-  chrome.storage.local.set({
-    jobOffers: {
-      offers: offers,
-      lastUpdated: Date.now(),
-    },
-  })
-}
-
-const getHiddenOffersNumbers = async (): Promise<string[]> => {
-  const result = await chrome.storage.local.get('hidden-offers')
-  return result['hidden-offers'] || []
-}
-
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<Offer[]>([])
   const [dataDate, setDataDate] = useState<string>('')
@@ -70,15 +45,15 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [hiddenOffers, setHiddenOffers] = useState<string[]>([])
 
   useEffect(() => {
-    getStorageData('favorite-offers', []).then(setFavoriteOffers)
-    getStorageData('hidden-offers', []).then(setHiddenOffers)
+    favoriteOffersFromLocalStorage.get().then(setFavoriteOffers)
+    hiddenOffersFromLocalStorage.get().then(setHiddenOffers)
   }, [])
 
   const toggleFavoriteOffer = (offer: Offer) => {
     const id = offer.number
     setFavoriteOffers((ids) => {
       const newIds = ids.includes(id) ? ids.filter((currentId) => currentId !== id) : [...ids, id]
-      setStorageData('favorite-offers', newIds)
+      favoriteOffersFromLocalStorage.set(newIds)
       return newIds
     })
   }
@@ -89,7 +64,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const id = offer.number
     setHiddenOffers((ids) => {
       const newIds = ids.includes(id) ? ids.filter((currentId) => currentId !== id) : [...ids, id]
-      setStorageData('hidden-offers', newIds)
+      hiddenOffersFromLocalStorage.set(newIds)
       return newIds
     })
   }
@@ -104,7 +79,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true)
 
     try {
-      const { offers } = await getOffersFromLocalStorage()
+      const { offers } = await jobOffersFromLocalStorage.get()
 
       const newJobsIds = await detectNewJobs(offers.map((o) => o.id))
 
@@ -121,7 +96,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       const refreshedOffers = offers.concat(newFormattedOffers)
 
-      const hiddenOffersNumbers = await getHiddenOffersNumbers()
+      const hiddenOffersNumbers = await hiddenOffersFromLocalStorage.get()
 
       setData(refreshedOffers.filter((d) => !hiddenOffersNumbers.includes(d.number)))
       setDataDate(new Date(Date.now()).toLocaleDateString('fr-CH'))
@@ -141,7 +116,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('initializeOffers', user)
       if (user.email) {
         try {
-          const { offers } = await getOffersFromLocalStorage()
+          const { offers } = await jobOffersFromLocalStorage.get()
 
           const newJobsIds = await detectNewJobs(offers.map((o) => o.id))
 

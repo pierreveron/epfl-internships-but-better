@@ -95,3 +95,10 @@ export type UserData = {
 }
 
 export type UserWithData = User & UserData
+
+export type JobOffers = {
+  offers: Offer[]
+  lastUpdated: number
+}
+
+export type DisplayMode = 'list' | 'table'

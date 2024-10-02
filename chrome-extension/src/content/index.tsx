@@ -4,6 +4,7 @@ import App from './App.tsx'
 import '../styles/index.css'
 import ErrorBoundary from './components/ErrorBoundary'
 import { User } from 'firebase/auth'
+import { isExtensionEnabledFromLocalStorage } from '../localStorage.ts'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -62,8 +63,8 @@ function injectReactApp() {
       const shadowRoot = root.attachShadow({ mode: 'open' })
 
       // Hide the target element only if the extension is disabled
-      chrome.storage.local.get('isEnabled', (result) => {
-        if (result.isEnabled === false) {
+      isExtensionEnabledFromLocalStorage.get().then((isEnabled) => {
+        if (!isEnabled) {
           switchElementsDisplay(targetElement, root)
         } else {
           switchElementsDisplay(root, targetElement)

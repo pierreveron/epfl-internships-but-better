@@ -1,38 +1,6 @@
-import { Offer, UserData } from '../../types'
+import { UserData } from '../../types'
 import { getUserData } from '../firebase/firebaseFunctions'
-
-export const incrementFormattingCountInStorage = async (): Promise<number | undefined> => {
-  const result = await chrome.storage.local.get('userData')
-  const userData = result.userData
-  if (userData) {
-    userData.formattingCount = userData.formattingCount + 1
-    await chrome.storage.local.set({ userData })
-    return userData.formattingCount
-  }
-}
-
-export const storeOffersInLocalStorage = (offers: Offer[]) => {
-  chrome.storage.local.set({
-    jobOffers: {
-      offers: offers,
-      lastUpdated: Date.now(),
-    },
-  })
-}
-
-export const getUserDataFromStorage = async (): Promise<{
-  isPremium: boolean
-  formattingCount: number
-  timestamp: number
-} | null> => {
-  const result = await chrome.storage.local.get('userData')
-  return result.userData || null
-}
-
-export const resetUserData = async () => {
-  await chrome.storage.local.remove('userData')
-  console.log('User data reset')
-}
+import { userDataFromLocalStorage } from '../../localStorage'
 
 export const fetchUserData = async (email: string): Promise<UserData> => {
   console.log('fetching user data')
@@ -48,7 +16,7 @@ export const fetchUserData = async (email: string): Promise<UserData> => {
     }
 
     // Save user data to Chrome extension storage
-    await chrome.storage.local.set({ userData: { ...userData, timestamp: Date.now() } })
+    await userDataFromLocalStorage.set({ ...userData, timestamp: Date.now() })
 
     return userData
   } catch (error) {
@@ -56,7 +24,7 @@ export const fetchUserData = async (email: string): Promise<UserData> => {
     const defaultUserData = { isPremium: false, formattingCount: 0 }
 
     // Save default user data to Chrome extension storage
-    await chrome.storage.local.set({ userData: defaultUserData })
+    await userDataFromLocalStorage.set({ ...defaultUserData, timestamp: Date.now() })
 
     return defaultUserData
   }

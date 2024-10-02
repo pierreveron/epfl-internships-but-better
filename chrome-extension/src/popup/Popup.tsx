@@ -12,6 +12,7 @@ import {
 } from '@tabler/icons-react'
 import { useUser } from '../content/hooks/useUser'
 import UpgradeButton from '../content/components/UpgradeButton'
+import { isExtensionEnabledFromLocalStorage } from '../localStorage'
 
 export default function Popup() {
   const { user, isLoading } = useUser()
@@ -27,8 +28,8 @@ export default function Popup() {
     })
 
     // Get the current state of the extension
-    chrome.storage.local.get('isEnabled', (result) => {
-      setIsEnabled(result.isEnabled !== false)
+    isExtensionEnabledFromLocalStorage.get().then((isEnabled) => {
+      setIsEnabled(isEnabled)
     })
   }, [])
 
@@ -67,7 +68,7 @@ export default function Popup() {
 
   const handleToggle = (checked: boolean) => {
     setIsEnabled(checked)
-    chrome.storage.local.set({ isEnabled: checked })
+    isExtensionEnabledFromLocalStorage.set(checked)
     changeState(checked)
   }
 
