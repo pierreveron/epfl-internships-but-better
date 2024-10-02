@@ -88,17 +88,27 @@ export default function Popup() {
       </header>
 
       <main className="tw-space-y-4">
-        <div className="tw-space-y-1">
+        <div>
           <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
-            Enjoy a better internship search on IS-Academia job board. Experience an improved UI and advanced filters.
+            Enjoy a better internship search on IS-Academia job board. Experience an improved UI and advanced filters
+            (location, salary, ...).{' '}
+            {!user && (
+              <>
+                <span className="tw-font-bold">Sign in with a Google account</span> to start using the extension.
+              </>
+            )}
           </p>
           {!user?.isPremium && (
             <>
+              <h2 className="tw-text-base tw-text-gray-600 tw-font-semibold tw-mt-2 tw-flex tw-items-center">
+                Unlock all features
+              </h2>
               <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
-                <span className="tw-font-bold">Free</span> version includes location filtering and 3 manual offers
-                refreshes.
-                <span className="tw-font-bold tw-ml-1">Upgrade to Premium</span> for unlimited refreshes and salary
-                filtering.
+                <span className="tw-font-bold">Free</span> version includes location filtering and offers need to be
+                refreshed manually up to 3 times. <span className="tw-font-bold">Premium</span> version unlocks
+                automatic and unlimited refreshes and salary filtering. You can{' '}
+                <span className="tw-font-bold">upgrade after signing in</span> for only a{' '}
+                <span className="tw-font-bold">10 CHF</span> one-time payment. No subscription, no hidden fees.
               </p>
             </>
           )}
