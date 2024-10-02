@@ -13,7 +13,7 @@ import classNames from 'classnames'
 import { useAside } from '../hooks/useAside'
 import { useData } from '../hooks/useData'
 
-const EPFL_PORTAL_URL = 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290'
+const EPFL_PORTAL_URL = 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'
 
 // https://stackoverflow.com/questions/9515704/access-variables-and-functions-defined-in-page-context-using-a-content-script
 const injectScript = (newWindow: Window, id: string, offerId: string) => {
