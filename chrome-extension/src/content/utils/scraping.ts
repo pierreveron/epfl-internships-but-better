@@ -112,11 +112,10 @@ export async function detectNewJobs(existingOffers: string[], portalCell?: HTMLE
 }
 
 export async function scrapeJobs(
-  existingOffers: string[],
+  jobsIds: string[],
   callback: (offersCount: number, offersLoaded: number) => void,
 ): Promise<OfferToBeFormatted[]> {
   const portalCell = await fetchPortalCell()
-  const jobsIds = await detectNewJobs(existingOffers, portalCell)
 
   const jobs = jobsIds.map((id) => fetchAndExtract(portalCell, id))
 

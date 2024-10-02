@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Offer, Location, UserWithData } from '../../types'
-import { scrapeJobs } from '../utils/scraping'
+import { detectNewJobs, scrapeJobs } from '../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
 import { SelectableCity } from '../types'
 import { useUser } from '../hooks/useUser'
@@ -21,6 +21,8 @@ interface DataContextType {
   data: Offer[]
   dataDate: string
   isLoading: boolean
+  isFormatting: boolean
+  offersLoaded: number
   locations: Location[][]
   citiesByCountry: Record<string, SelectableCity[]>
   companies: string[]
@@ -58,6 +60,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [data, setData] = useState<Offer[]>([])
   const [dataDate, setDataDate] = useState<string>('')
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isFormatting, setIsFormatting] = useState<boolean>(false)
+  const [offersLoaded, setOffersLoaded] = useState<number>(0)
   const [error, setError] = useState<Error | null>(null)
   const [newOffersCount, setNewOffersCount] = useState<number>(0)
   const { user, increaseFormattingCount } = useUser()
@@ -101,19 +105,21 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     try {
       const { offers } = await getOffersFromLocalStorage()
-      // Get the offers that are not in the stored offers
-      const newOffers = await scrapeJobs(
-        offers.map((o) => o.id),
-        (offersCount, offersLoaded) => {
-          console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
-        },
-      )
 
+      const newJobsIds = await detectNewJobs(offers.map((o) => o.id))
+
+      setNewOffersCount(newJobsIds.length)
+
+      // Get the offers that are not in the stored offers
+      const newOffers = await scrapeJobs(newJobsIds, (offersCount, offersLoaded) => {
+        console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
+        setOffersLoaded(offersLoaded)
+      })
+
+      setIsFormatting(true)
       const newFormattedOffers = await formatOffers(user.email, newOffers)
 
       const refreshedOffers = offers.concat(newFormattedOffers)
-
-      storeOffersInLocalStorage(refreshedOffers)
 
       const hiddenOffersNumbers = await getHiddenOffersNumbers()
 
@@ -127,6 +133,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     setIsLoading(false)
+    setIsFormatting(false)
   }, [increaseFormattingCount, user])
 
   useEffect(() => {
@@ -136,15 +143,15 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         try {
           const { offers } = await getOffersFromLocalStorage()
 
-          // Get the offers that are not in the stored offers
-          const newOffers = await scrapeJobs(
-            offers.map((o) => o.id),
-            (offersCount, offersLoaded) => {
-              console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
-            },
-          )
+          const newJobsIds = await detectNewJobs(offers.map((o) => o.id))
 
-          setNewOffersCount(newOffers.length)
+          setNewOffersCount(newJobsIds.length)
+
+          // Get the offers that are not in the stored offers
+          const newOffers = await scrapeJobs(newJobsIds, (offersCount, offersLoaded) => {
+            console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
+            setOffersLoaded(offersLoaded)
+          })
 
           if (user.isPremium || user.formattingCount == 0) {
             // Skip the next condition and proceed with formatting
@@ -161,13 +168,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
           if (newOffers.length > 0) {
             console.log('New offers found, formatting...')
+            setIsFormatting(true)
             const formattedOffers = await formatOffers(user.email, newOffers)
             console.log('New offers formatted', formattedOffers)
             increaseFormattingCount()
 
             const refreshedOffers = offers.concat(formattedOffers)
-
-            storeOffersInLocalStorage(refreshedOffers)
 
             data = refreshedOffers
           } else {
@@ -193,6 +199,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setData(data)
         setDataDate(dataDate)
         setIsLoading(false)
+        setIsFormatting(false)
       })
     }
   }, [user, increaseFormattingCount])
@@ -226,6 +233,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     data,
     dataDate,
     isLoading,
+    isFormatting,
+    offersLoaded,
     locations,
     citiesByCountry,
     companies,

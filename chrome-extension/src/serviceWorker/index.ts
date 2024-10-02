@@ -1,6 +1,6 @@
 import { auth, signIn } from './firebase/firebaseAuth'
 import { resetUserData } from '../content/utils/userUtils'
-import { fetchUserData } from './helpers/userData'
+import { fetchUserData, storeOffersInLocalStorage } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
 
@@ -94,6 +94,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     const { email, offers } = request
     formatOffersInWorker(email, offers)
       .then((formattedOffers) => {
+        storeOffersInLocalStorage(formattedOffers)
         sendResponse(formattedOffers)
       })
       .catch((error) => {

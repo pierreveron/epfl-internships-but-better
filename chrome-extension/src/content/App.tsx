@@ -30,7 +30,7 @@ import { useDisplay } from './hooks/useDisplay'
 
 function AppContent() {
   const { displayMode } = useDisplay()
-  const { isLoading, newOffersCount } = useData()
+  const { isLoading, newOffersCount, isFormatting, offersLoaded } = useData()
 
   if (isLoading) {
     return (
@@ -38,10 +38,18 @@ function AppContent() {
         <div className="tw-flex tw-flex-col tw-items-center">
           <div className="loader"></div>
           {newOffersCount > 0 ? (
-            <p className="tw-mt-4 tw-text-gray-700">
-              Found <span className="tw-font-semibold">{newOffersCount}</span> new offer
-              {newOffersCount !== 1 ? 's' : ''}. Processing...
-            </p>
+            isFormatting ? (
+              <p className="tw-mt-4 tw-text-gray-700">
+                Processing the <span className="tw-font-semibold">{newOffersCount}</span> offers... This should take a
+                few seconds.
+              </p>
+            ) : (
+              <p className="tw-mt-4 tw-text-gray-700">
+                Found <span className="tw-font-semibold">{newOffersCount}</span> new offer
+                {newOffersCount !== 1 ? 's' : ''}. <span className="tw-font-semibold">{offersLoaded}</span> offers
+                loaded.
+              </p>
+            )
           ) : (
             <p className="tw-mt-4 tw-text-gray-700">Looking for new offers...</p>
           )}

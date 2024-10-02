@@ -1,4 +1,4 @@
-import { UserData } from '../../types'
+import { Offer, UserData } from '../../types'
 import { getUserData } from '../firebase/firebaseFunctions'
 
 export const incrementFormattingCountInStorage = async (): Promise<number | undefined> => {
@@ -9,6 +9,15 @@ export const incrementFormattingCountInStorage = async (): Promise<number | unde
     await chrome.storage.local.set({ userData })
     return userData.formattingCount
   }
+}
+
+export const storeOffersInLocalStorage = (offers: Offer[]) => {
+  chrome.storage.local.set({
+    jobOffers: {
+      offers: offers,
+      lastUpdated: Date.now(),
+    },
+  })
 }
 
 export const getUserDataFromStorage = async (): Promise<{
