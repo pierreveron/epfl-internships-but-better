@@ -89,6 +89,7 @@ export default function ActionBar() {
         <CompanySelect companies={companies} />
 
         <NumberInput
+          suffix=" CHF"
           placeholder="Minimum salary"
           value={minimumSalary}
           onChange={(value) => {
