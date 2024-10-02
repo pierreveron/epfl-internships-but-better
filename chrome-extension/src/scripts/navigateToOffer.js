@@ -19,9 +19,11 @@ function pollForPrtl(callback) {
     // eslint-disable-next-line no-undef
     if (typeof prtl !== 'undefined' && typeof prtl.synchronize === 'function') {
       clearInterval(pollInterval)
-      logger('prtl is defined, executing callback')
+      logger('prtl is defined, executing callback in 1 second')
       clearTimeout(timeoutId)
-      callback()
+      setTimeout(() => {
+        callback()
+      }, 1000)
     } else {
       logger('Waiting for prtl to be defined...')
     }
