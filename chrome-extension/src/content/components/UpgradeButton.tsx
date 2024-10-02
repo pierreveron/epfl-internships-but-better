@@ -41,7 +41,7 @@ export default function UpgradeButton({ email, fullWidth = false }: { email: str
       loading={isLoading}
       fullWidth={fullWidth}
     >
-      Upgrade to Premium
+      Upgrade to Premium for only 10 CHF
     </Button>
   )
 }
