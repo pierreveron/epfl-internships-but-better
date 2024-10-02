@@ -52,11 +52,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (user) {
         getUserData().then((userData) => {
           setUser({ ...user, ...userData })
+          setIsLoading(false)
         })
       } else {
         setUser(null)
+        setIsLoading(false)
       }
-      setIsLoading(false)
     }
 
     chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response: { user: User | null }) => {

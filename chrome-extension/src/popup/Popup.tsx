@@ -72,7 +72,11 @@ export default function Popup() {
   }
 
   if (isLoading) {
-    return <div className="loader"></div>
+    return (
+      <div className="tw-w-96 tw-p-6 tw-bg-white tw-flex tw-items-center tw-justify-center">
+        <div className="loader"></div>
+      </div>
+    )
   }
 
   return (
