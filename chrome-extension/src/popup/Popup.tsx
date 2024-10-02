@@ -1,157 +1,213 @@
-import { useEffect, useState } from 'react'
-import { ISA_JOB_BOARD_URL } from '../utils/constants'
-import classNames from 'classnames'
-import { getCurrentTab } from '../utils/chrome-helpers'
-import { fetchPortalCell } from '../utils/scraping'
+import { useState, useEffect } from 'react'
+import { Button, Switch } from '@mantine/core'
+import {
+  IconExternalLink,
+  IconBrandLinkedin,
+  IconBrandGithub,
+  IconCheck,
+  IconCrown,
+  IconLogout,
+  IconBrandGoogleFilled,
+  IconHeart,
+} from '@tabler/icons-react'
+import { useUser } from '../content/hooks/useUser'
+import UpgradeButton from '../content/components/UpgradeButton'
+import { isExtensionEnabledFromLocalStorage } from '../localStorage'
 
 export default function Popup() {
-  const [isError, setIsError] = useState(false)
-  const [isOnIsaJobBoard, setIsOnIsaJobBoard] = useState(false)
-
-  const [offersCount, setOffersCount] = useState<number | null>(null)
-
-  const [offersLoaded, setOffersLoaded] = useState<number | null>(null)
+  const { user, isLoading } = useUser()
+  const [isOnJobBoard, setIsOnJobBoard] = useState(false)
+  const [isEnabled, setIsEnabled] = useState(true)
+  const [isSigningIn, setIsSigningIn] = useState(false)
 
   useEffect(() => {
-    async function fetchOffersCount() {
-      const portalCell = await fetchPortalCell()
+    // Check if the current tab is on the IS-Academia job board
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const currentUrl = tabs[0].url
+      setIsOnJobBoard(currentUrl?.includes('isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290') || false)
+    })
 
-      const offers = portalCell.querySelectorAll('tr').slice(1)
-
-      setOffersCount(offers.length)
-    }
-
-    if (!isOnIsaJobBoard) return
-
-    fetchOffersCount()
-  }, [isOnIsaJobBoard])
-
-  useEffect(() => {
-    chrome.runtime.onMessage.addListener(function (request) {
-      if (request.error) {
-        setIsError(true)
-      }
-
-      if (request.offersCount) {
-        setOffersCount(request.offersCount)
-      }
-
-      if (request.offersLoaded) {
-        setOffersLoaded(request.offersLoaded)
-      }
+    // Get the current state of the extension
+    isExtensionEnabledFromLocalStorage.get().then((isEnabled) => {
+      setIsEnabled(isEnabled)
     })
   }, [])
 
-  useEffect(() => {
-    async function checkIfOnIsaJobBoard() {
-      const tab = await getCurrentTab()
-
-      if (tab?.url === ISA_JOB_BOARD_URL) {
-        setIsOnIsaJobBoard(true)
+  const handleSignIn = async () => {
+    setIsSigningIn(true)
+    chrome.runtime.sendMessage({ type: 'SIGN_IN' }, (response) => {
+      if (response && response.error) {
+        console.error('Sign-in failed:', response.error)
+        alert('Sign-in failed')
       }
-    }
+      setIsSigningIn(false)
+    })
+  }
 
-    checkIfOnIsaJobBoard()
-  }, [])
+  const handleSignOut = async () => {
+    chrome.runtime.sendMessage({ type: 'SIGN_OUT' }, (response) => {
+      if (response && response.error) {
+        console.error('Sign-out failed:', response.error)
+        alert('Sign-out failed')
+      }
+    })
+  }
+
+  const navigateToJobBoard = () => {
+    chrome.tabs.create({ url: 'https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm#tab290' })
+  }
+
+  const changeState = (enabled: boolean) => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const tab = tabs.find((tab) => tab.url?.startsWith('https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm'))
+      if (tab?.id) {
+        chrome.tabs.sendMessage(tab.id, { type: 'CHANGE_STATE', state: enabled ? 'ENABLED' : 'DISABLED' })
+      }
+    })
+  }
+
+  const handleToggle = (checked: boolean) => {
+    setIsEnabled(checked)
+    isExtensionEnabledFromLocalStorage.set(checked)
+    changeState(checked)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="tw-w-96 tw-p-6 tw-bg-white tw-flex tw-items-center tw-justify-center">
+        <div className="loader"></div>
+      </div>
+    )
+  }
 
   return (
-    <div className="tw-space-y-4">
-      <h1 className="tw-text-2xl tw-whitespace-nowrap">
-        <span className="tw-text-[red]">EPFL</span> internships but better
-      </h1>
+    <div className="tw-w-96 tw-p-6 tw-bg-white tw-text-black">
+      <header className="tw-mb-4">
+        <h1 className="tw-text-2xl tw-font-bold">
+          <span className="tw-text-red-500">EPFL</span> internships but better
+        </h1>
+      </header>
 
-      <div className="tw-space-y-2">
-        <p className="tw-text-sm tw-text-gray-500 tw-text-left">
-          This extension will automatically export the job offers from IS-Academia and display them in a more
-          user-friendly way.
-        </p>
-
-        <p className="tw-text-sm tw-text-gray-500 tw-text-left">
-          You will be able to filter them correctly by location, period, duration, salary, etc.
-        </p>
-
-        <p className="tw-text-sm tw-text-gray-500 tw-text-left">You will also be able to save your favorite offers.</p>
-      </div>
-
-      <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-font-semibold">
-        {!isOnIsaJobBoard
-          ? 'Reopen the extension after clicking on the button below.'
-          : offersCount
-          ? `${offersCount} offers found`
-          : "Let's see how many offers you have..."}
-      </p>
-
-      {isError ? (
-        <p className="tw-text-sm tw-text-red-500 tw-text-left">An error occurred, please reload the page.</p>
-      ) : (
+      <main className="tw-space-y-4">
         <div>
-          <div className="tw-flex tw-flex-col tw-gap-7">
-            <div className="tw-flex tw-flex-row tw-gap-4">
-              <label
-                className={classNames(
-                  'tw-text-sm tw-font-semibold tw-text-gray-900 tw-border-2 tw-border-[red] tw-rounded-full tw-h-8 tw-aspect-square tw-flex tw-justify-center tw-items-center',
-                  isOnIsaJobBoard && 'tw-bg-[red] tw-text-white tw-opacity-40',
-                )}
-              >
-                1
-              </label>
-              <div aria-disabled={isOnIsaJobBoard} className="tw-group tw-relative tw-flex-1">
-                <input
-                  disabled={isOnIsaJobBoard}
-                  className={classNames(
-                    'tw-rounded-md tw-bg-[red] tw-px-2.5 tw-py-1.5 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm hover:tw-opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[red] tw-cursor-pointer tw-w-full',
-                    'disabled:tw-cursor-not-allowed disabled:tw-opacity-40',
-                  )}
-                  type="button"
-                  value="Go to IS-Academia job board"
-                  onClick={() => chrome.tabs.create({ url: ISA_JOB_BOARD_URL })}
-                />
-
-                <span className="tw-pointer-events-none tw-absolute tw--bottom-5 tw-left-0 tw-right-0 tw-w-full tw-opacity-0 tw-transition-opacity group-hover:tw-opacity-100 group-aria-disabled:tw-opacity-0">
-                  You may need to login.
-                </span>
-              </div>
-            </div>
-
-            <div className="tw-flex tw-flex-row tw-gap-4">
-              <label className="tw-text-sm tw-font-semibold tw-text-gray-900 tw-border-2 tw-border-[red] tw-rounded-full tw-w-8 tw-h-8 tw-flex tw-justify-center tw-items-center">
-                2
-              </label>
-
-              <div aria-disabled={isOnIsaJobBoard} className="tw-group tw-relative tw-flex-1">
-                <button
-                  disabled={!isOnIsaJobBoard || offersLoaded !== null}
-                  className={classNames(
-                    'tw-rounded-md tw-bg-[red] tw-px-2.5 tw-py-1.5 tw-text-sm tw-font-semibold tw-text-white tw-shadow-sm hover:tw-bg-[red] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[red] tw-w-full',
-                    'disabled:tw-cursor-not-allowed disabled:tw-opacity-40',
-                    'tw-h-8',
-                    offersLoaded != null ? 'tw-cursor-wait' : 'tw-cursor-pointer',
-                  )}
-                  onClick={async () => {
-                    setOffersLoaded(0)
-
-                    chrome.runtime.sendMessage({ message: 'init' })
-                  }}
-                >
-                  {offersLoaded !== null ? (
-                    offersLoaded > 0 ? (
-                      `${offersLoaded}/${offersCount} offers exported`
-                    ) : (
-                      <div className="dot-flashing tw-mx-auto" />
-                    )
-                  ) : (
-                    'Let the magic happen'
-                  )}
-                </button>
-
-                <span className="tw-pointer-events-none tw-absolute tw--bottom-5 tw-left-0 tw-right-0 tw-w-full tw-opacity-0 tw-transition-opacity group-hover:tw-opacity-100 group-aria-disabled:tw-opacity-0">
-                  Click on the button above first.
-                </span>
-              </div>
-            </div>
-          </div>
+          <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
+            Enjoy a better internship search on IS-Academia job board. Experience an improved UI and advanced filters
+            (location, salary, ...).{' '}
+            {!user && (
+              <>
+                <span className="tw-font-bold">Sign in with a Google account</span> to start using the extension.
+              </>
+            )}
+          </p>
+          {!user?.isPremium && (
+            <>
+              <h2 className="tw-text-base tw-text-gray-600 tw-font-semibold tw-mt-2 tw-flex tw-items-center">
+                Unlock all features
+              </h2>
+              <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
+                <span className="tw-font-bold">Free</span> version includes location filtering and offers need to be
+                refreshed manually up to 3 times. <span className="tw-font-bold">Premium</span> version unlocks
+                automatic and unlimited refreshes and salary filtering. You can{' '}
+                <span className="tw-font-bold">upgrade after signing in</span> for only a{' '}
+                <span className="tw-font-bold">10 CHF</span> one-time payment. No subscription, no hidden fees.
+              </p>
+            </>
+          )}
         </div>
-      )}
+
+        {user ? (
+          <>
+            <Button w="100%" variant="outline" color="red" onClick={navigateToJobBoard} disabled={isOnJobBoard}>
+              <IconExternalLink className="tw-w-4 tw-h-4 tw-mr-2" />
+              {isOnJobBoard ? 'Currently on Job Board' : 'Open IS-Academia Job Board'}
+            </Button>
+
+            <div className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
+              Logged in as <span className="tw-font-bold">{user.email}</span>
+            </div>
+
+            {user.isPremium ? (
+              <div className="tw-bg-gradient-to-r tw-from-red-500/30 tw-to-yellow-500/30 tw-p-4 tw-rounded-lg tw-text-gray-800 tw-border tw-border-red-200">
+                <h2 className="tw-text-lg tw-font-semibold tw-mb-2 tw-flex tw-items-center">
+                  <IconHeart className="tw-w-5 tw-h-5 tw-mr-2 tw-text-red-500" />
+                  Thank You for Being Premium!
+                </h2>
+                <p className="tw-text-sm tw-text-left">
+                  I appreciate your support. Enjoy unlimited refreshes and salary filtering! <br />
+                  Good luck with your job search!
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="tw-bg-gray-100 tw-p-4 tw-rounded-lg">
+                  <h2 className="tw-text-lg tw-font-semibold tw-mb-2 tw-flex tw-items-center">
+                    <IconCrown className="tw-w-5 tw-h-5 tw-mr-2 tw-text-yellow-500" />
+                    Premium Features
+                  </h2>
+                  <ul className="tw-space-y-2">
+                    <li className="tw-flex tw-items-center tw-text-sm">
+                      <IconCheck className="tw-w-4 tw-h-4 tw-mr-2 tw-text-green-500" />
+                      Filter and sort offers by salary
+                    </li>
+                    <li className="tw-flex tw-items-center tw-text-sm">
+                      <IconCheck className="tw-w-4 tw-h-4 tw-mr-2 tw-text-green-500" />
+                      Unlimited and automatic offers refreshes
+                    </li>
+                  </ul>
+                </div>
+
+                <UpgradeButton email={user.email ?? ''} fullWidth />
+              </>
+            )}
+
+            <div className="tw-flex tw-items-center tw-justify-between">
+              <span className="tw-text-sm tw-font-medium">Enable extension</span>
+              <Switch
+                color="red"
+                checked={isEnabled}
+                onChange={(event) => handleToggle(event.currentTarget.checked)}
+                aria-label="Toggle extension"
+              />
+            </div>
+
+            <Button variant="filled" color="red" w="100%" onClick={handleSignOut}>
+              <IconLogout className="tw-w-4 tw-h-4 tw-mr-2" />
+              Sign Out
+            </Button>
+          </>
+        ) : (
+          <Button variant="filled" color="red" w="100%" onClick={handleSignIn} loading={isSigningIn}>
+            <IconBrandGoogleFilled className="tw-w-4 tw-h-4 tw-mr-2" />
+            Sign In with Google
+          </Button>
+        )}
+      </main>
+
+      <footer className="tw-mt-6 tw-pt-4 tw-border-t tw-border-gray-200">
+        <div className="tw-flex tw-justify-between tw-items-center">
+          <a
+            href="https://github.com/pierreveron/epfl-internships-but-better"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tw-flex tw-items-center tw-text-sm tw-text-gray-600 hover:tw-text-black tw-transition-colors"
+          >
+            <IconBrandGithub className="tw-w-4 tw-h-4 tw-mr-1" />
+            GitHub
+          </a>
+          <span className="tw-flex tw-items-center tw-text-sm tw-text-gray-600">
+            Made by
+            <a
+              href="https://www.linkedin.com/in/pierre-veron/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="tw-ml-1 tw-flex tw-items-center hover:tw-text-red-500 tw-transition-colors tw-text-red-400"
+            >
+              Pierre Véron
+              <IconBrandLinkedin className="tw-w-4 tw-h-4 tw-ml-1" />
+            </a>
+          </span>
+        </div>
+      </footer>
     </div>
   )
 }

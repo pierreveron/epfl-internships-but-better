@@ -5,3 +5,7 @@
 service_account.json
 
 data/records/
+
+website copy/
+
+*.log

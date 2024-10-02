@@ -1,32 +1,37 @@
 {
   "manifest_version": 3,
   "name": "EPFL internships but better",
-  "version": "0.0.0.8",
-  "description": "An extension to export jobs offers from EPFL IS-Academia platform to a more user-friendly website.",
+  "version": "0.0.0.12",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwJNHrtKj5/jkvT2N/ExE5h520XLchk8MQsgH+Km3nUysNgOUVLf7tBfBD6fvHXeu6kW97AJhIl5UXTAhBlaVrtmVxmz7Npz6DUz3V4xq7wc5+WJma9D+J8kpyY+UdBZUEXxbcVbZ7Efl22HT7hsALSkQxtMre7BF9/rEurF87LBfeTp+oEusWCRE37I7QylMxGAmvZqk0N1c2ax1akQKQ6qBCbpVmUZ4qo2Rs2v4eoyX3+EFoELNtU1Ctn2heRUdk1xL9RPh9A5E/gkglA769Y4goYZxCkNkMRAnElq/NerN/p4izGr6TsYhIEXqkaMoyvUaXelBPRA3meuf7z7OqwIDAQAB",
+  "description": "An extension to improve job search on EPFL IS-Academia platform.",
   "icons": { "48": "icon48.png", "128": "icon128.png", "500": "icon.png" },
   "action": { "default_popup": "index.html" },
-  "permissions": ["storage"],
+  "permissions": ["storage", "identity"],
+  "oauth2": {
+    "client_id": "150257566382-5jl2lfi02tks35574au0j33hq7ts9o3o.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"]
+  },
   "background": {
-    "service_worker": "src/scripts/serviceWorker.ts"
+    "service_worker": "src/serviceWorker/index.ts"
   },
   "content_scripts": [
     {
-      "js": ["src/scripts/contentScript.ts"],
-      "matches": ["https://epfl-internships-but-better.vercel.app/*"]
-    },
-    {
-      "js": ["src/scripts/isaContentScript.ts"],
-      "matches": ["https://isa.epfl.ch/*"]
+      "js": ["src/content/index.tsx"],
+      "matches": ["https://isa.epfl.ch/imoniteur_ISAP/PORTAL14S.htm"]
     }
   ],
-  "externally_connectable": {
-    "matches": ["https://epfl-internships-but-better.vercel.app/*"]
-  },
   "web_accessible_resources": [
     {
       "resources": ["src/scripts/navigateToOffer.js"],
       "matches": ["https://isa.epfl.ch/*"]
+    },
+    {
+      "resources": ["src/content/App.tsx"],
+      "matches": ["https://isa.epfl.ch/*"]
     }
   ],
-  "host_permissions": ["https://isa.epfl.ch/*"]
+  "host_permissions": ["https://isa.epfl.ch/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://*.googleapis.com https://*.firebaseio.com https://*.firebase.com http://localhost:5001 https://us-central1-epfl-internships-but-better-ch.cloudfunctions.net;"
+  }
 }

@@ -14,7 +14,14 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@mantine/core": "^7.13.0",
+    "@mantine/form": "^7.13.0",
+    "@mantine/hooks": "^7.13.0",
+    "@tabler/icons": "^1.115.0",
+    "@tabler/icons-react": "^3.15.0",
     "classnames": "^2.3.2",
+    "firebase": "^10.13.2",
+    "mantine-datatable": "^7.1.6",
     "node-html-parser": "^6.1.10",
     "postcss-prefix-selector": "^1.16.0",
     "react": "^18.2.0",
@@ -33,6 +40,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "postcss": "^8.4.31",
+    "postcss-preset-mantine": "^1.11.0",
+    "postcss-simple-vars": "^7.0.1",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
