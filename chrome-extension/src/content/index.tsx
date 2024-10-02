@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 import '../styles/index.css'
 import ErrorBoundary from './components/ErrorBoundary'
-import { UserWithPremium } from '../types.ts'
+import { User } from 'firebase/auth'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -133,7 +133,7 @@ chrome.runtime.onMessage.addListener((request) => {
 })
 
 // Function to handle auth state changes
-function handleAuthStateChanged(user: UserWithPremium) {
+function handleAuthStateChanged(user: User | null) {
   console.log('handleAuthStateChanged', user)
   if (user && !isReactAppInjected) {
     console.log('injecting React app on AUTH_STATE_CHANGED')
@@ -159,7 +159,7 @@ function removeReactApp() {
 }
 
 // Listen for messages from the service worker
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message: { type: string; user: User | null }) => {
   console.log('AUTH_STATE_CHANGED in content:', message)
   if (message.type === 'AUTH_STATE_CHANGED') {
     handleAuthStateChanged(message.user)

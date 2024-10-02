@@ -1,8 +1,8 @@
 import { auth, signIn } from './firebase/firebaseAuth'
 import { resetUserData } from '../content/utils/userUtils'
-import { fetchUserData } from './helpers/userData' // Make sure to create this function in userUtils.ts
-import { UserWithPremium } from '../types'
+import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
+import { User } from 'firebase/auth'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -18,37 +18,28 @@ if (constants.consoleLog !== 'true') {
   }
 }
 
-let currentUser: UserWithPremium | null = null
+let currentUser: User | null = null
 
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
 
-  if (user && user.email) {
-    fetchUserData(user.email)
-      .then((userPremiumStatus) => {
-        currentUser = { ...user, ...userPremiumStatus }
-        sendUserUpdateMessages(currentUser)
-      })
-      .catch((error) => {
-        console.error('Error fetching user data:', error)
-        currentUser = null
-        sendUserUpdateMessages(null)
-      })
-  } else {
-    currentUser = null
-    sendUserUpdateMessages(null)
-    // Remove all storage
+  currentUser = user
+
+  sendUserUpdateMessages(user)
+
+  if (!user) {
+    // Remove all storage if user is not logged in
     chrome.storage.local.clear(() => {
       console.log('All chrome.storage.local data cleared when user changes')
     })
   }
 })
 
-function sendUserUpdateMessages(user: UserWithPremium | null) {
+function sendUserUpdateMessages(user: User | null) {
   chrome.runtime
     .sendMessage({ type: 'AUTH_STATE_CHANGED', user })
-    .then(() => console.log('Message sent successfully to popup'))
-    .catch((error) => console.log('Error sending message to popup:', error))
+    .then(() => console.log('AUTH_STATE_CHANGED sent successfully to popup'))
+    .catch((error) => console.log('Error sending AUTH_STATE_CHANGED to popup:', error))
 
   // Send message to content script
   chrome.tabs.query({}, function (tabs) {
@@ -57,8 +48,8 @@ function sendUserUpdateMessages(user: UserWithPremium | null) {
     if (tab?.id) {
       chrome.tabs
         .sendMessage(tab.id, { type: 'AUTH_STATE_CHANGED', user })
-        .then(() => console.log('Message sent successfully to content script'))
-        .catch((error) => console.log(`Error sending message to content script in tab ${tab.id}:`, error))
+        .then(() => console.log('AUTH_STATE_CHANGED sent successfully to content script'))
+        .catch((error) => console.log(`Error sending AUTH_STATE_CHANGED to content script in tab ${tab.id}:`, error))
     }
   })
 }
@@ -109,6 +100,22 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
         console.error('Error formatting offers:', error)
         sendResponse({ error: 'Offer formatting error' })
       })
+    return true // Indicates that the response is sent asynchronously
+  }
+
+  if (request.type === 'FETCH_USER_DATA') {
+    if (currentUser && currentUser.email) {
+      fetchUserData(currentUser.email)
+        .then((userData) => {
+          sendResponse({ userData })
+        })
+        .catch((error) => {
+          console.error('Error fetching user data:', error)
+          sendResponse({ error: 'Failed to fetch user data' })
+        })
+    } else {
+      sendResponse({ error: 'No current user' })
+    }
     return true // Indicates that the response is sent asynchronously
   }
 })

@@ -89,7 +89,9 @@ export type Offer = {
   creationDate: string
 } & Omit<PageData, 'salary'>
 
-export type UserWithPremium = User & {
+export type UserData = {
   isPremium: boolean
   formattingCount: number
 }
+
+export type UserWithData = User & UserData

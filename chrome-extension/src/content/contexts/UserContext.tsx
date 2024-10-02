@@ -1,41 +1,71 @@
 import { createContext, useState, useEffect, useCallback } from 'react'
 import { incrementFormattingCountInStorage } from '../utils/userUtils'
-import { UserWithPremium } from '../../types'
+import { UserWithData, UserData } from '../../types'
+import { getUserDataFromStorage } from '../../serviceWorker/helpers/userData'
+import { User } from 'firebase/auth'
 
 interface UserContextType {
-  user: UserWithPremium | null
-  setUser: React.Dispatch<React.SetStateAction<UserWithPremium | null>>
+  user: UserWithData | null
+  setUser: React.Dispatch<React.SetStateAction<UserWithData | null>>
   isLoading: boolean
   increaseFormattingCount: () => void
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
 
+const MAX_CACHE_TIME = 1000 * 60 * 60 * 24 * 7 // 1 week
+
+const getUserData = async (): Promise<UserData> => {
+  console.log('Getting first user data from storage')
+  const userDataFromStorage = await getUserDataFromStorage()
+  if (userDataFromStorage && Date.now() - userDataFromStorage.timestamp < MAX_CACHE_TIME) {
+    console.log('Got user data from storage', userDataFromStorage)
+
+    return {
+      isPremium: userDataFromStorage.isPremium,
+      formattingCount: userDataFromStorage.formattingCount,
+    }
+  }
+  console.log('Fetching user data from firestore via service worker')
+
+  return new Promise((resolve) => {
+    chrome.runtime.sendMessage({ type: 'FETCH_USER_DATA' }, (response: { userData: UserData }) => {
+      resolve(response.userData)
+    })
+  })
+}
+
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<UserWithPremium | null>(null)
+  const [user, setUser] = useState<UserWithData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const increaseFormattingCount = useCallback(() => {
     incrementFormattingCountInStorage().then((formattingCount) => {
       if (formattingCount) {
-        setUser((user) => {
-          if (user) return { ...user, formattingCount }
-          return user
-        })
+        setUser((user) => (user ? { ...user, formattingCount } : user))
       }
     })
   }, [])
 
   useEffect(() => {
-    chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response: { user: UserWithPremium | null }) => {
-      setUser(response.user)
+    const updateUser = (user: User | null) => {
+      if (user) {
+        getUserData().then((userData) => {
+          setUser({ ...user, ...userData })
+        })
+      } else {
+        setUser(null)
+      }
       setIsLoading(false)
+    }
+
+    chrome.runtime.sendMessage({ type: 'GET_CURRENT_USER' }, (response: { user: User | null }) => {
+      updateUser(response.user)
     })
 
-    const listener = (request: { type: string; user: UserWithPremium | null }) => {
+    const listener = (request: { type: string; user: User | null }) => {
       if (request.type === 'AUTH_STATE_CHANGED') {
-        setUser(request.user)
-        setIsLoading(false)
+        updateUser(request.user)
       }
     }
 

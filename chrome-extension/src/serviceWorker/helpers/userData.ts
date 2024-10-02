@@ -1,3 +1,4 @@
+import { UserData } from '../../types'
 import { getUserData } from '../firebase/firebaseFunctions'
 
 export const incrementFormattingCountInStorage = async (): Promise<number | undefined> => {
@@ -10,7 +11,7 @@ export const incrementFormattingCountInStorage = async (): Promise<number | unde
   }
 }
 
-const getUserDataFromStorage = async (): Promise<{
+export const getUserDataFromStorage = async (): Promise<{
   isPremium: boolean
   formattingCount: number
   timestamp: number
@@ -24,22 +25,11 @@ export const resetUserData = async () => {
   console.log('User data reset')
 }
 
-const MAX_CACHE_TIME = 1000 * 60 * 60 * 24 * 7 // 1 week
+export const fetchUserData = async (email: string): Promise<UserData> => {
+  console.log('fetching user data')
 
-export const fetchUserData = async (
-  email: string,
-): Promise<{
-  isPremium: boolean
-  formattingCount: number
-}> => {
   try {
-    const userDataFromStorage = await getUserDataFromStorage()
-    if (userDataFromStorage && Date.now() - userDataFromStorage.timestamp < MAX_CACHE_TIME) {
-      return {
-        isPremium: userDataFromStorage.isPremium,
-        formattingCount: userDataFromStorage.formattingCount,
-      }
-    }
+    console.log('fetching user data from firestore')
 
     const response = await getUserData(email)
     const data = response.data as { has_payment: boolean; formatting_count: number }

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useMemo, useCallback, useRef } from 'react'
-import { Offer, Location, UserWithPremium } from '../../types'
+import { Offer, Location, UserWithData } from '../../types'
 import { scrapeJobs } from '../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
 import { SelectableCity } from '../types'
@@ -130,7 +130,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [increaseFormattingCount, user])
 
   useEffect(() => {
-    const initializeOffers = async (user: UserWithPremium): Promise<{ data: Offer[]; dataDate: string }> => {
+    const initializeOffers = async (user: UserWithData): Promise<{ data: Offer[]; dataDate: string }> => {
       console.log('initializeOffers', user)
       if (user.email) {
         try {
