@@ -22,6 +22,8 @@ from firestore_helper import (
     increment_formatting_count,
 )
 
+from functions.types.Offer import Location, Offer, OfferToFormat, Salary
+
 app = initialize_app()
 
 
@@ -33,6 +35,138 @@ WEBHOOK_SECRET = os.environ["LEMON_SQUEEZY_SIGNING_SECRET"]
 
 ISA_ORIGIN = "https://isa.epfl.ch"
 EXTENSION_ORIGIN = "chrome-extension://cgdpalglfipokmbjbofifdlhlkpcipnk"
+
+
+async def clean_locations_and_salaries_in_parallel(
+    locations: list[str], salaries: list[str]
+) -> tuple[dict[str, list[Location]], dict[str, Salary]]:
+    clean_locations_task = clean_locations_openai(locations)
+    clean_salaries_task = clean_salaries_openai(salaries)
+    clean_locations, clean_salaries = await asyncio.gather(
+        clean_locations_task, clean_salaries_task
+    )
+    return clean_locations.model_dump()["locations"], clean_salaries.model_dump()[
+        "salaries"
+    ]
+
+
+def merge_formatted_data_into_offer(
+    offer: OfferToFormat,
+    salariesMap: dict[str, Salary],
+    locationsMap: dict[str, list[Location]],
+) -> Offer:
+    default_location: list[Location] = [Location(city="Unknown", country=None)]
+    non_formatted_salary: str = offer["salary"]
+    non_formatted_location: str = offer["location"]
+
+    salary = salariesMap.get(non_formatted_salary, non_formatted_salary)
+
+    location = locationsMap.get(non_formatted_location, default_location)
+
+    formatted_offer: Offer = offer.copy()  # type: ignore
+    formatted_offer["salary"] = salary
+    formatted_offer["location"] = location
+
+    return formatted_offer
+
+
+@https_fn.on_request(
+    cors=options.CorsOptions(
+        cors_origins=[EXTENSION_ORIGIN],
+        cors_methods=["POST"],
+    ),
+    timeout_sec=120,
+)
+# pyright: reportUnknownMemberType=false
+def format_offers(req: https_fn.Request) -> https_fn.Response:
+    if req.method != "POST":
+        return https_fn.Response("Method not allowed", status=405)
+
+    try:
+        json_data: dict[str, Any] = req.get_json()
+        print("json_data:", json_data)
+        data = json_data.get("data", {})
+        email: str = data.get("email", "")
+        offers: list[OfferToFormat] = data.get("offers", [])
+
+        if not email:
+            return https_fn.Response(
+                json.dumps({"error": "Email parameter is required"}), status=400
+            )
+
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return https_fn.Response("Invalid email", status=400)
+
+        print("Offer 0", offers[0])
+
+        # Stocker les offres à formater
+        db = get_db()
+        offers_to_format_collection = db.collection("offers_to_format")
+        offers_collection = db.collection("offers")
+        formatted_offers: list[Offer] = []
+        offers_to_format: list[OfferToFormat] = []
+
+        # Create a new batch
+        batch = db.batch()
+
+        for offer in offers:
+            # Vérifier si l'offre à formater existe déjà et la mettre à jour si nécessaire
+            offer_to_format_doc = offers_to_format_collection.document(
+                offer["number"]
+            ).get()
+            existing_offer = offer_to_format_doc.to_dict()
+            if not existing_offer or existing_offer != offer:
+                batch.set(
+                    offers_to_format_collection.document(offer["number"]),
+                    offer,  # type: ignore
+                    merge=True,
+                )
+                offers_to_format.append(offer)
+            else:
+                # Vérifier si l'offre formatée existe déjà
+                formatted_offer_doc = offers_collection.document(offer["number"]).get()
+                if formatted_offer_doc.exists:
+                    formatted_offer: Offer = formatted_offer_doc.to_dict()  # type:ignore
+                    formatted_offers.append(formatted_offer)
+                else:
+                    print(
+                        "Error: Formatted offer not found for existing offer",
+                        offer["number"],
+                    )
+
+            print("Need to update", len(offers_to_format), "offers")
+
+            locationsMap, salariesMap = asyncio.run(
+                clean_locations_and_salaries_in_parallel(
+                    [o["location"] for o in offers_to_format],
+                    [o["salary"] for o in offers_to_format],
+                )
+            )
+
+            # Create a new batch for formatted offers
+            batch = db.batch()
+
+            # Update formatted_offers with cleaned data
+            for offer in offers_to_format:
+                new_formatted_offer = merge_formatted_data_into_offer(
+                    offer, salariesMap, locationsMap
+                )
+                batch.set(
+                    offers_collection.document(offer["number"]),
+                    new_formatted_offer,  # type:ignore
+                    merge=True,
+                )
+                formatted_offers.append(new_formatted_offer)
+
+            # Commit the batch write for formatted offers
+            batch.commit()
+
+        return https_fn.Response(
+            json.dumps({"data": formatted_offers}),
+            content_type="application/json",
+        )
+    except Exception as e:
+        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
 
 
 @https_fn.on_request(
