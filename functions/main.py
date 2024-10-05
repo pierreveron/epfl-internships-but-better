@@ -36,19 +36,6 @@ ISA_ORIGIN = "https://isa.epfl.ch"
 EXTENSION_ORIGIN = "chrome-extension://cgdpalglfipokmbjbofifdlhlkpcipnk"
 
 
-async def clean_locations_and_salaries_in_parallel(
-    locations: list[str], salaries: list[str]
-) -> tuple[dict[str, list[Location]], dict[str, Salary]]:
-    clean_locations_task = clean_locations_openai(locations)
-    clean_salaries_task = clean_salaries_openai(salaries)
-    clean_locations, clean_salaries = await asyncio.gather(
-        clean_locations_task, clean_salaries_task
-    )
-    return clean_locations.model_dump()["locations"], clean_salaries.model_dump()[
-        "salaries"
-    ]
-
-
 def merge_formatted_data_into_offer(
     offer: OfferToFormat,
     salariesMap: dict[str, Salary],
@@ -83,7 +70,6 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
 
     try:
         json_data: dict[str, Any] = req.get_json()
-        print("json_data:", json_data)
         data = json_data.get("data", {})
         email: str = data.get("email", "")
         offers: list[OfferToFormat] = data.get("offers", [])
@@ -95,8 +81,6 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
 
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return https_fn.Response("Invalid email", status=400)
-
-        print("Offer 0", offers[0])
 
         # Stocker les offres à formater
         db = get_db()
@@ -133,32 +117,46 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
                         offer["number"],
                     )
 
-            print("Need to update", len(offers_to_format), "offers")
+        print("Need to update", len(offers_to_format), "offers")
 
-            locationsMap, salariesMap = asyncio.run(
-                clean_locations_and_salaries_in_parallel(
-                    [o["location"] for o in offers_to_format],
-                    [o["salary"] for o in offers_to_format],
-                )
+        batch.commit()
+
+        async def clean_locations_and_salaries_in_parallel(
+            locations: list[str], salaries: list[str]
+        ) -> tuple[dict[str, list[Location]], dict[str, Salary]]:
+            clean_locations_task = clean_locations_openai(locations)
+            clean_salaries_task = clean_salaries_openai(salaries)
+            clean_locations, clean_salaries = await asyncio.gather(
+                clean_locations_task, clean_salaries_task
             )
+            return clean_locations.model_dump()[
+                "locations"
+            ], clean_salaries.model_dump()["salaries"]
 
-            # Create a new batch for formatted offers
-            batch = db.batch()
+        locationsMap, salariesMap = asyncio.run(
+            clean_locations_and_salaries_in_parallel(
+                [o["location"] for o in offers_to_format],
+                [o["salary"] for o in offers_to_format],
+            )
+        )
 
-            # Update formatted_offers with cleaned data
-            for offer in offers_to_format:
-                new_formatted_offer = merge_formatted_data_into_offer(
-                    offer, salariesMap, locationsMap
-                )
-                batch.set(
-                    offers_collection.document(offer["number"]),
-                    new_formatted_offer,  # type:ignore
-                    merge=True,
-                )
-                formatted_offers.append(new_formatted_offer)
+        # Create a new batch for formatted offers
+        batch = db.batch()
 
-            # Commit the batch write for formatted offers
-            batch.commit()
+        # Update formatted_offers with cleaned data
+        for offer in offers_to_format:
+            new_formatted_offer = merge_formatted_data_into_offer(
+                offer, salariesMap, locationsMap
+            )
+            batch.set(
+                offers_collection.document(offer["number"]),
+                new_formatted_offer,  # type:ignore
+                merge=True,
+            )
+            formatted_offers.append(new_formatted_offer)
+
+        # Commit the batch write for formatted offers
+        batch.commit()
 
         return https_fn.Response(
             json.dumps({"data": formatted_offers}),
