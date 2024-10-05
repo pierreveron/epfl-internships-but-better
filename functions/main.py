@@ -9,6 +9,7 @@ from typing import Any
 import google.cloud.firestore  # type: ignore
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salaries_openai
+from data_types.Offer import Location, Offer, OfferToFormat, Salary
 
 # The Firebase Admin SDK to access Cloud Firestore.
 from firebase_admin import firestore, initialize_app  # type: ignore
@@ -21,8 +22,6 @@ from firestore_helper import (
     get_formatting_count,
     increment_formatting_count,
 )
-
-from functions.types.Offer import Location, Offer, OfferToFormat, Salary
 
 app = initialize_app()
 
