@@ -97,6 +97,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const newFormattedOffers = await formatOffers(user.email, newOffers)
 
       const refreshedOffers = currentOffers.concat(newFormattedOffers)
+      await jobOffersFromLocalStorage.set({ offers: refreshedOffers, lastUpdated: Date.now() })
 
       const hiddenOffersNumbers = await hiddenOffersFromLocalStorage.get()
 
@@ -119,6 +120,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (user.email) {
         try {
           const { offers: currentOffers } = await jobOffersFromLocalStorage.get()
+
+          console.log('currentOffers', currentOffers.length)
 
           const currentJobsIds = currentOffers.map((o) => o.id)
 
@@ -153,6 +156,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             increaseFormattingCount()
 
             const refreshedOffers = currentOffers.concat(formattedOffers)
+            await jobOffersFromLocalStorage.set({ offers: refreshedOffers, lastUpdated: Date.now() })
 
             data = refreshedOffers
           } else {
