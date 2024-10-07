@@ -20,6 +20,7 @@ from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
     add_payment,
     check_payment_status,
+    check_referral_status,
     get_affiliate_code,
     get_formatting_count,
     increment_formatting_count,
@@ -337,9 +338,11 @@ def get_user_data(req: https_fn.Request) -> https_fn.Response:
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
         return https_fn.Response("Invalid email", status=400)
 
-    payment_status = check_payment_status(get_db(), email)
-    formatting_count = get_formatting_count(get_db(), email)
-    affiliate_code = get_affiliate_code(get_db(), email)
+    db = get_db()
+    payment_status = check_payment_status(db, email)
+    formatting_count = get_formatting_count(db, email)
+    affiliate_code = get_affiliate_code(db, email)
+    referral_status = check_referral_status(db, email)
 
     return https_fn.Response(
         json.dumps(
@@ -348,6 +351,7 @@ def get_user_data(req: https_fn.Request) -> https_fn.Response:
                     "has_payment": payment_status,
                     "formatting_count": formatting_count,
                     "affiliate_code": affiliate_code,
+                    "referral_completed": referral_status,
                 }
             }
         ),

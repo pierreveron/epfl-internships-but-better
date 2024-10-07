@@ -1,4 +1,4 @@
-import { DisplayMode, JobOffers } from './types'
+import { DisplayMode, JobOffers, UserData } from './types'
 
 // Generic helper functions
 const getStorageData = <T>(key: string, defaultValue: T): Promise<T> => {
@@ -39,13 +39,14 @@ export const hiddenOffersFromLocalStorage = createStorageHelpers<string[]>('hidd
 
 export const favoriteOffersFromLocalStorage = createStorageHelpers<string[]>('favorite-offers', [])
 
-export const userDataFromLocalStorage = createStorageHelpers<{
-  isPremium: boolean
-  formattingCount: number
-  timestamp: number
-}>('userData', {
+export const userDataFromLocalStorage = createStorageHelpers<
+  UserData & {
+    timestamp: number
+  }
+>('userData', {
   isPremium: false,
   formattingCount: 0,
+  affiliateCode: '',
   timestamp: 0,
 })
 

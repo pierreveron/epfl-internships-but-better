@@ -85,5 +85,23 @@ def get_affiliate_code(db: google.cloud.firestore.Client, email: str) -> str:
     return new_code
 
 
-# Export functions
-__all__ = ["check_payment_status", "add_payment", "get_affiliate_code"]
+def check_referral_status(db: google.cloud.firestore.Client, email: str) -> bool:
+    try:
+        users_collection = db.collection("users")
+        doc_ref = users_collection.document(email)
+        doc = doc_ref.get()
+        if doc.exists:
+            user_data = doc.to_dict()
+            return user_data.get("referral_completed", False) if user_data else False
+        return False
+    except Exception as error:
+        print("Error checking referral status:", error)
+        return False
+
+
+__all__ = [
+    "check_payment_status",
+    "add_payment",
+    "get_affiliate_code",
+    "check_referral_status",
+]

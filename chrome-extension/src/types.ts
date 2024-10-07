@@ -90,6 +90,7 @@ export type Offer = {
 export type UserData = {
   isPremium: boolean
   formattingCount: number
+  affiliateCode: string
 }
 
 export type UserWithData = User & UserData

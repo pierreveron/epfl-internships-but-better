@@ -21,10 +21,7 @@ const getUserData = async (): Promise<UserData> => {
   if (userDataFromStorage && Date.now() - userDataFromStorage.timestamp < MAX_CACHE_TIME) {
     console.log('Got user data from storage', userDataFromStorage)
 
-    return {
-      isPremium: userDataFromStorage.isPremium,
-      formattingCount: userDataFromStorage.formattingCount,
-    }
+    return userDataFromStorage
   }
   console.log('Fetching user data from firestore via service worker')
 

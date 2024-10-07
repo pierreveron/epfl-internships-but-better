@@ -108,7 +108,7 @@ export default function ActionBar() {
           title={!user?.isPremium ? 'Premium feature: Upgrade to filter by salary' : undefined}
         />
 
-        {!user?.isPremium && <UpgradeButton email={user?.email ?? ''} />}
+        {/* {!user?.isPremium && <UpgradeButton email={user?.email ?? ''} />} */}
       </Group>
 
       <Group>
