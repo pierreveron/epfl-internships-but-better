@@ -57,6 +57,12 @@ def merge_formatted_data_into_offer(
     return formatted_offer
 
 
+def chunk_list(lst: list[Any], n: int):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i : i + n]
+
+
 @https_fn.on_request(
     cors=options.CorsOptions(
         cors_origins=[EXTENSION_ORIGIN],
@@ -92,20 +98,25 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
         formatted_offers: list[Offer] = []
         offers_to_format: list[OfferToFormat] = []
 
-        # Fetch all existing offers in a single query
-        existing_offers = {
-            doc.id: doc.to_dict()
-            for doc in offers_to_format_collection.where(
-                "number", "in", [offer["number"] for offer in offers]
-            ).stream()
-        }
+        # Fetch all existing offers in multiple queries
+        existing_offers = {}
+        existing_formatted_offers = {}
+        offer_numbers = [offer["number"] for offer in offers]
 
-        existing_formatted_offers = {
-            doc.id: doc.to_dict()
-            for doc in offers_collection.where(
-                "number", "in", [offer["number"] for offer in offers]
+        for chunk in chunk_list(offer_numbers, 30):
+            chunk_existing_offers = offers_to_format_collection.where(
+                "number", "in", chunk
             ).stream()
-        }
+            existing_offers.update(
+                {doc.id: doc.to_dict() for doc in chunk_existing_offers}
+            )
+
+            chunk_existing_formatted_offers = offers_collection.where(
+                "number", "in", chunk
+            ).stream()
+            existing_formatted_offers.update(
+                {doc.id: doc.to_dict() for doc in chunk_existing_formatted_offers}
+            )
 
         batch = db.batch()
 
