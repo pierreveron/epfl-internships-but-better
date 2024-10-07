@@ -92,36 +92,46 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
         formatted_offers: list[Offer] = []
         offers_to_format: list[OfferToFormat] = []
 
-        # Create a new batch
+        # Fetch all existing offers in a single query
+        existing_offers = {
+            doc.id: doc.to_dict()
+            for doc in offers_to_format_collection.where(
+                "number", "in", [offer["number"] for offer in offers]
+            ).stream()
+        }
+
+        existing_formatted_offers = {
+            doc.id: doc.to_dict()
+            for doc in offers_collection.where(
+                "number", "in", [offer["number"] for offer in offers]
+            ).stream()
+        }
+
         batch = db.batch()
 
         for offer in offers:
-            # Vérifier si l'offre à formater existe déjà et la mettre à jour si nécessaire
-            offer_to_format_doc = offers_to_format_collection.document(
-                offer["number"]
-            ).get()
-            existing_offer = offer_to_format_doc.to_dict()
+            offer_number = offer["number"]
+            existing_offer = existing_offers.get(offer_number)
+
             if not existing_offer or existing_offer != offer:
                 batch.set(
-                    offers_to_format_collection.document(offer["number"]),
+                    offers_to_format_collection.document(offer_number),
                     offer,  # type: ignore
                     merge=True,
                 )
                 offers_to_format.append(offer)
             else:
-                # Vérifier si l'offre formatée existe déjà
-                formatted_offer_doc = offers_collection.document(offer["number"]).get()
-                if formatted_offer_doc.exists:
-                    formatted_offer: Offer = formatted_offer_doc.to_dict()  # type:ignore
+                formatted_offer = existing_formatted_offers.get(offer_number)
+                if formatted_offer:
                     formatted_offers.append(formatted_offer)
                 else:
                     print(
-                        "Error: Formatted offer not found for existing offer",
-                        offer["number"],
+                        f"Error: Formatted offer not found for existing offer {offer_number}"
                     )
 
         print("Need to update", len(offers_to_format), "offers")
 
+        # Commit the batch write
         batch.commit()
 
         async def clean_locations_and_salaries_in_parallel(
