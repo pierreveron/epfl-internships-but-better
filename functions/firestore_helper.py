@@ -1,5 +1,7 @@
 # pyright: reportUnknownMemberType=false
 
+import random
+import string
 import time
 from typing import Any
 
@@ -61,5 +63,27 @@ def get_formatting_count(db: google.cloud.firestore.Client, email: str) -> int:
         return 0
 
 
+def generate_affiliate_code(length: int = 8) -> str:
+    """Generate a random affiliate code."""
+    characters = string.ascii_letters + string.digits
+    return "".join(random.choice(characters) for _ in range(length))
+
+
+def get_affiliate_code(db: google.cloud.firestore.Client, email: str) -> str:
+    users_collection = db.collection("users")
+    doc_ref = users_collection.document(email)
+    doc = doc_ref.get()
+
+    if doc.exists:
+        user_data = doc.to_dict()
+        if user_data and "affiliate_code" in user_data:
+            return user_data["affiliate_code"]
+
+    # If no affiliate code exists, create a new one
+    new_code = generate_affiliate_code()
+    doc_ref.set({"affiliate_code": new_code}, merge=True)
+    return new_code
+
+
 # Export functions
-__all__ = ["check_payment_status", "add_payment"]
+__all__ = ["check_payment_status", "add_payment", "get_affiliate_code"]

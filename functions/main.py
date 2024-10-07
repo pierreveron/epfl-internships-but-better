@@ -20,6 +20,7 @@ from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
     add_payment,
     check_payment_status,
+    get_affiliate_code,
     get_formatting_count,
     increment_formatting_count,
 )
@@ -338,12 +339,15 @@ def get_user_data(req: https_fn.Request) -> https_fn.Response:
 
     payment_status = check_payment_status(get_db(), email)
     formatting_count = get_formatting_count(get_db(), email)
+    affiliate_code = get_affiliate_code(get_db(), email)
+
     return https_fn.Response(
         json.dumps(
             {
                 "data": {
                     "has_payment": payment_status,
                     "formatting_count": formatting_count,
+                    "affiliate_code": affiliate_code,
                 }
             }
         ),
