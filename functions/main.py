@@ -4,6 +4,7 @@ import hmac
 import json
 import os
 import re
+import time
 from typing import Any
 
 import google.cloud.firestore  # type: ignore
@@ -65,6 +66,8 @@ def merge_formatted_data_into_offer(
 )
 # pyright: reportUnknownMemberType=false
 def format_offers(req: https_fn.Request) -> https_fn.Response:
+    start_time = time.time()
+
     if req.method != "POST":
         return https_fn.Response("Method not allowed", status=405)
 
@@ -158,11 +161,20 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
         # Commit the batch write for formatted offers
         batch.commit()
 
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f"format_offers execution time: {execution_time:.2f} seconds")
+
         return https_fn.Response(
             json.dumps({"data": formatted_offers}),
             content_type="application/json",
         )
     except Exception as e:
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(
+            f"format_offers execution time (with error): {execution_time:.2f} seconds"
+        )
         return https_fn.Response(json.dumps({"error": str(e)}), status=500)
 
 
