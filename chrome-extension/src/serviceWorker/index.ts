@@ -2,7 +2,7 @@ import { auth, signIn } from './firebase/firebaseAuth'
 import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
-import { jobOffersFromLocalStorage, userDataFromLocalStorage } from '../localStorage'
+import { userDataFromLocalStorage } from '../localStorage'
 import { Offer, UserData } from '../types'
 
 const constants = {
@@ -110,10 +110,6 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     } else {
       // Start a new formatting operation
       formattingPromise = formatOffersInWorker(email, offers)
-        .then((formattedOffers) => {
-          jobOffersFromLocalStorage.set({ offers: formattedOffers, lastUpdated: Date.now() })
-          return formattedOffers
-        })
         .catch((error) => {
           console.error('Error formatting offers:', error)
           throw error
