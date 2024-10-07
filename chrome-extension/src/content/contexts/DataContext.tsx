@@ -79,9 +79,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(true)
 
     try {
-      const { offers } = await jobOffersFromLocalStorage.get()
+      const { offers: currentOffers } = await jobOffersFromLocalStorage.get()
 
-      const newJobsIds = await detectNewJobs(offers.map((o) => o.id))
+      const currentJobsIds = currentOffers.map((o) => o.id)
+
+      const newJobsIds = await detectNewJobs(currentJobsIds)
 
       setNewOffersCount(newJobsIds.length)
 
@@ -94,7 +96,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIsFormatting(true)
       const newFormattedOffers = await formatOffers(user.email, newOffers)
 
-      const refreshedOffers = offers.concat(newFormattedOffers)
+      const refreshedOffers = currentOffers.concat(newFormattedOffers)
 
       const hiddenOffersNumbers = await hiddenOffersFromLocalStorage.get()
 
@@ -116,9 +118,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log('initializeOffers', user)
       if (user.email) {
         try {
-          const { offers } = await jobOffersFromLocalStorage.get()
+          const { offers: currentOffers } = await jobOffersFromLocalStorage.get()
 
-          const newJobsIds = await detectNewJobs(offers.map((o) => o.id))
+          const currentJobsIds = currentOffers.map((o) => o.id)
+
+          const newJobsIds = await detectNewJobs(currentJobsIds)
 
           setNewOffersCount(newJobsIds.length)
 
@@ -131,12 +135,12 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (user.isPremium || user.formattingCount == 0) {
             // Skip the next condition and proceed with formatting
             // This is because the user is premium and can format offers automatically
-          } else if (offers.length === 0 && newOffers.length !== 0 && user.formattingCount < 4) {
+          } else if (currentOffers.length === 0 && newOffers.length !== 0 && user.formattingCount < 4) {
             // Skip the next condition and proceed with formatting
             // This can happen if the user has deleted local storage but still having formatting credits
           } else {
             console.log('User is not premium and has already formatted before, skipping automatic formatting')
-            return { data: offers, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
+            return { data: currentOffers, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
           }
 
           let data: Offer[] = []
@@ -148,11 +152,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log('New offers formatted', formattedOffers)
             increaseFormattingCount()
 
-            const refreshedOffers = offers.concat(formattedOffers)
+            const refreshedOffers = currentOffers.concat(formattedOffers)
 
             data = refreshedOffers
           } else {
-            data = offers
+            data = currentOffers
           }
 
           setNewOffersCount(0)
