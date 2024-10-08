@@ -10,9 +10,12 @@ import {
   IconHeart,
   IconCopy,
   IconTicket,
+  IconAdjustmentsHorizontal,
+  IconCurrencyDollar,
+  IconKey,
+  IconBriefcase,
 } from '@tabler/icons-react'
 import { useUser } from '../content/hooks/useUser'
-import UpgradeButton from '../content/components/UpgradeButton'
 import { isExtensionEnabledFromLocalStorage } from '../localStorage'
 
 export default function Popup() {
@@ -76,7 +79,7 @@ export default function Popup() {
 
   if (isLoading) {
     return (
-      <div className="tw-w-96 tw-p-6 tw-bg-white tw-flex tw-items-center tw-justify-center">
+      <div className="tw-w-auto tw-p-6 tw-bg-white tw-flex tw-items-center tw-justify-center">
         <div className="loader"></div>
       </div>
     )
@@ -95,19 +98,33 @@ export default function Popup() {
           <div>
             <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
               Enjoy a better internship search on IS-Academia job board. Experience an improved UI and advanced filters
-              (location, salary, ...). <span className="tw-font-bold">Sign in with a Google account</span> to start
-              using the extension.
+              (location, salary, keywords, sector...).{' '}
             </p>
-            <h2 className="tw-text-base tw-text-gray-600 tw-font-semibold tw-mt-2 tw-flex tw-items-center">
-              Unlock all features
-            </h2>
-            <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
-              <span className="tw-font-bold">Free</span> version includes location filtering and offers need to be
-              refreshed manually up to 3 times. <span className="tw-font-bold">Premium</span> version unlocks automatic
-              and unlimited refreshes and salary filtering. You can{' '}
-              <span className="tw-font-bold">upgrade after signing in</span> for only a{' '}
-              <span className="tw-font-bold">10 CHF</span> one-time payment. No subscription, no hidden fees.
-            </p>
+
+            <div className="tw-bg-gray-100 tw-border tw-p-4 tw-rounded-lg tw-my-4 tw-overflow-hidden">
+              <h2 className="tw-text-xl tw-font-bold tw-flex tw-items-center tw-text-gray-800">
+                <IconAdjustmentsHorizontal className="tw-w-6 tw-h-6 tw-mr-2" />
+                Premium filters
+              </h2>
+              <ul className="tw-space-y-2 tw-mt-4">
+                <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold">
+                  <IconCurrencyDollar className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500" />
+                  Filter and sort offers by salary
+                </li>
+                <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
+                  <IconKey className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                  Filter by keywords (coming soon)
+                </li>
+                <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
+                  <IconBriefcase className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                  Filter by sector (coming soon)
+                </li>
+              </ul>
+              <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-mt-4">
+                Unlock these features for 3 days with a referral code – and keep them forever when you share your own
+                code with another friend!
+              </p>
+            </div>
           </div>
         )}
 
@@ -174,16 +191,6 @@ export default function Popup() {
                     </CopyButton>
                   </div>
                 </div>
-
-                <div className="tw-flex tw-items-center tw-justify-center tw-text-gray-600 tw-my-4">
-                  {/* <div className="tw-flex-grow tw-h-px tw-bg-white"></div> */}
-                  <p className="tw-mx-4">OR</p>
-                  {/* <div className="tw-flex-grow tw-h-px tw-bg-white/30"></div> */}
-                </div>
-
-                <div className="tw-mx-4 tw-mb-4">
-                  <UpgradeButton email={user.email ?? ''} fullWidth />
-                </div>
               </div>
             )}
 
@@ -203,19 +210,29 @@ export default function Popup() {
             </Button>
           </>
         ) : (
-          <>
-            <TextInput
-              leftSection={<IconTicket size={16} />}
-              placeholder="Enter referral code (optional)"
-              value={referralCode}
-              onChange={(event) => setReferralCode(event.currentTarget.value)}
-              className="tw-mb-2"
-            />
-            <Button variant="filled" color="red" w="100%" onClick={handleSignIn} loading={isSigningIn}>
-              <IconBrandGoogleFilled className="tw-w-4 tw-h-4 tw-mr-2" />
-              Sign In with Google
-            </Button>
-          </>
+          <div>
+            <div>
+              <TextInput
+                leftSection={<IconTicket size={16} />}
+                placeholder="Enter referral code (optional)"
+                value={referralCode}
+                onChange={(event) => setReferralCode(event.currentTarget.value)}
+              />
+              <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-whitespace-nowrap tw-mt-2 tw-mb-4">
+                Using a referral code will unlock all filters for 3 days!
+              </p>
+              <Button variant="filled" color="red" w="100%" onClick={handleSignIn} loading={isSigningIn}>
+                <IconBrandGoogleFilled className="tw-w-4 tw-h-4 tw-mr-2" />
+                Sign Up with your EPFL Google account
+              </Button>
+            </div>
+            <p className="tw-text-sm tw-text-gray-600 tw-text-center tw-mt-4">
+              Already have an account?{' '}
+              <button onClick={handleSignIn} className="tw-text-red-500">
+                Sign In
+              </button>
+            </p>
+          </div>
         )}
       </main>
 
