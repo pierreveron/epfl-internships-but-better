@@ -4,7 +4,6 @@ import {
   IconExternalLink,
   IconBrandLinkedin,
   IconCheck,
-  IconCrown,
   IconLogout,
   IconBrandGoogleFilled,
   IconHeart,
@@ -140,38 +139,62 @@ export default function Popup() {
             </div>
 
             {user.isPremium ? (
-              <div className="tw-bg-gradient-to-r tw-from-red-500/30 tw-to-yellow-500/30 tw-p-4 tw-rounded-lg tw-text-gray-800 tw-border tw-border-red-200">
+              <div className="tw-bg-gray-100 tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4">
                 <h2 className="tw-text-lg tw-font-semibold tw-mb-2 tw-flex tw-items-center">
-                  <IconHeart className="tw-w-5 tw-h-5 tw-mr-2 tw-text-red-500" />
-                  Thank You for Being Premium!
+                  <IconCheck className="tw-w-5 tw-h-5 tw-mr-2" />
+                  All Filters Unlocked
                 </h2>
-                <p className="tw-text-sm tw-text-left">
-                  I appreciate your support. Enjoy unlimited refreshes and salary filtering! <br />
-                  Good luck with your job search!
-                </p>
-              </div>
-            ) : (
-              <div className="tw-border-yellow-500 tw-border-2 tw-rounded-lg tw-mb-4 tw-overflow-hidden">
-                <h2 className="tw-bg-gradient-to-r tw-from-yellow-400 tw-to-orange-500 tw-p-4 tw-text-xl tw-font-bold tw-flex tw-items-center tw-text-white">
-                  <IconCrown className="tw-w-6 tw-h-6 tw-mr-2" />
-                  Premium Features
-                </h2>
-                <ul className="tw-p-4 tw-space-y-2 tw-bg-gray-100">
+                <ul className="tw-space-y-2 tw-mt-4">
                   <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold">
-                    <IconCheck className="tw-w-5 tw-h-5 tw-mr-2 tw-text-green-500" />
+                    <IconCurrencyDollar className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500" />
                     Filter and sort offers by salary
                   </li>
                   <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                    <IconCheck className="tw-w-5 tw-h-5 tw-mr-2 tw-text-green-500 " />
-                    Unlimited and automatic offers updates
+                    <IconKey className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                    Filter by keywords (coming soon)
                   </li>
                   <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                    <IconCheck className="tw-w-5 tw-h-5 tw-mr-2 tw-text-green-500 " />
-                    New upcoming features (email summary, etc.)
+                    <IconBriefcase className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                    Filter by sector (coming soon)
                   </li>
                 </ul>
-
-                <div className="tw-bg-blue-50 tw-p-3 tw-border-y tw-border-y-blue-200 ">
+                <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-mt-4">
+                  Thanks for sharing. Enjoy full access to all filters. You can still share your code with your friends
+                  to unlock premium features for them!
+                </p>
+                <div className="tw-mt-2 tw-bg-white tw-border tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
+                  <p className="tw-text-sm">{user.affiliateCode}</p>
+                  <CopyButton value={user.affiliateCode}>
+                    {({ copied, copy }) => (
+                      <Button color={copied ? 'gray' : 'red'} onClick={copy} size="xs" variant="subtle">
+                        {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+                        <span className="tw-ml-1">{copied ? 'Copied' : 'Copy'}</span>
+                      </Button>
+                    )}
+                  </CopyButton>
+                </div>
+              </div>
+            ) : (
+              <div className="tw-bg-gray-100 tw-border tw-p-4 tw-rounded-lg tw-my-4 tw-overflow-hidden">
+                <h2 className="tw-text-xl tw-font-bold tw-flex tw-items-center tw-text-gray-800">
+                  <IconAdjustmentsHorizontal className="tw-w-6 tw-h-6 tw-mr-2" />
+                  Premium filters
+                </h2>
+                <ul className="tw-space-y-2 tw-mt-4">
+                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold">
+                    <IconCurrencyDollar className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500" />
+                    Filter and sort offers by salary
+                  </li>
+                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
+                    <IconKey className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                    Filter by keywords (coming soon)
+                  </li>
+                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
+                    <IconBriefcase className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                    Filter by sector (coming soon)
+                  </li>
+                </ul>
+                <div className="tw-bg-blue-50 tw-p-3 tw-border-y tw-border-y-blue-200 tw-mt-4">
                   <h3 className="tw-text-md tw-font-semibold tw-mb-2 tw-flex tw-items-center tw-text-blue-600">
                     <IconTicket className="tw-w-5 tw-h-5 tw-mr-2 tw-text-blue-600" />
                     Refer a Friend to unlock
