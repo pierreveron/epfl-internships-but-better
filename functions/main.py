@@ -1,7 +1,5 @@
 import asyncio
 import datetime
-import hashlib
-import hmac
 import json
 import os
 import re
@@ -20,7 +18,11 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
+    generate_affiliate_code,
     increment_formatting_count,
+)
+from firestore_helper import (
+    get_user_data as get_user_data_from_db,
 )
 
 app = initialize_app()
@@ -281,43 +283,16 @@ def get_user_data(req: https_fn.Request) -> https_fn.Response:
         return https_fn.Response("Invalid email", status=400)
 
     db = get_db()
-    payment_status = check_payment_status(db, email)
-    formatting_count = get_formatting_count(db, email)
-    affiliate_code = get_affiliate_code(db, email)
-    referral_status = check_referral_status(db, email)
 
-    return https_fn.Response(
-        json.dumps(
-            {
-                "data": {
-                    "has_payment": payment_status,
-                    "formatting_count": formatting_count,
-                    "affiliate_code": affiliate_code,
-                    "referral_completed": referral_status,
-                }
-            }
-        ),
-        content_type="application/json",
-    )
+    try:
+        user_data = get_user_data_from_db(db, email)
 
-
-@https_fn.on_request(
-    cors=options.CorsOptions(
-        cors_origins=[ISA_ORIGIN, EXTENSION_ORIGIN],
-        cors_methods=["POST"],
-    ),
-)
-def get_upgrade_url(req: https_fn.Request) -> https_fn.Response:
-    if req.method != "POST":
-        return https_fn.Response("Method not allowed", status=405)
-
-    # Generate or retrieve the upgrade URL
-    upgrade_url = os.getenv("LEMON_SQUEEZY_STORE_URL")
-
-    return https_fn.Response(
-        json.dumps({"data": {"url": upgrade_url}}),
-        content_type="application/json",
-    )
+        return https_fn.Response(
+            json.dumps({"data": user_data}),
+            content_type="application/json",
+        )
+    except Exception as e:
+        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
 
 
 @https_fn.on_request(
@@ -416,11 +391,6 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
     except Exception as e:
         print(f"Error handling sign-up: {str(e)}")
         return https_fn.Response(json.dumps({"error": str(e)}), status=500)
-
-
-def generate_affiliate_code(email: str) -> str:
-    # Generate a unique affiliate code based on the user's email
-    return hashlib.md5(email.encode()).hexdigest()[:8]
 
 
 @https_fn.on_request(
