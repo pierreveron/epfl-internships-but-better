@@ -6,12 +6,11 @@ import {
   IconCheck,
   IconLogout,
   IconBrandGoogleFilled,
-  IconHeart,
   IconCopy,
   IconTicket,
   IconAdjustmentsHorizontal,
   IconCurrencyDollar,
-  IconKey,
+  IconSearch,
   IconBriefcase,
 } from '@tabler/icons-react'
 import { useUser } from '../content/hooks/useUser'
@@ -100,7 +99,7 @@ export default function Popup() {
               (location, salary, keywords, sector...).{' '}
             </p>
 
-            <div className="tw-bg-gray-100 tw-border tw-p-4 tw-rounded-lg tw-my-4 tw-overflow-hidden">
+            <div className="tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4 tw-overflow-hidden">
               <h2 className="tw-text-xl tw-font-bold tw-flex tw-items-center tw-text-gray-800">
                 <IconAdjustmentsHorizontal className="tw-w-6 tw-h-6 tw-mr-2" />
                 Premium filters
@@ -111,7 +110,7 @@ export default function Popup() {
                   Filter and sort offers by salary
                 </li>
                 <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                  <IconKey className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                  <IconSearch className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
                   Filter by keywords (coming soon)
                 </li>
                 <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
@@ -139,7 +138,7 @@ export default function Popup() {
             </div>
 
             {user.isPremium ? (
-              <div className="tw-bg-gray-100 tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4">
+              <div className="tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4">
                 <h2 className="tw-text-lg tw-font-semibold tw-mb-2 tw-flex tw-items-center">
                   <IconCheck className="tw-w-5 tw-h-5 tw-mr-2" />
                   All Filters Unlocked
@@ -150,7 +149,7 @@ export default function Popup() {
                     Filter and sort offers by salary
                   </li>
                   <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                    <IconKey className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                    <IconSearch className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
                     Filter by keywords (coming soon)
                   </li>
                   <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
@@ -158,24 +157,26 @@ export default function Popup() {
                     Filter by sector (coming soon)
                   </li>
                 </ul>
-                <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-mt-4">
-                  Thanks for sharing. Enjoy full access to all filters. You can still share your code with your friends
-                  to unlock premium features for them!
-                </p>
-                <div className="tw-mt-2 tw-bg-white tw-border tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
-                  <p className="tw-text-sm">{user.affiliateCode}</p>
-                  <CopyButton value={user.affiliateCode}>
-                    {({ copied, copy }) => (
-                      <Button color={copied ? 'gray' : 'red'} onClick={copy} size="xs" variant="subtle">
-                        {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-                        <span className="tw-ml-1">{copied ? 'Copied' : 'Copy'}</span>
-                      </Button>
-                    )}
-                  </CopyButton>
+                <div className="tw-bg-gray-50 tw-p-3 tw-rounded-md tw-mt-4">
+                  <p className="tw-text-sm tw-text-gray-700 tw-text-left">
+                    Thanks for sharing. Enjoy full access to all filters. You can still share your code with your
+                    friends to unlock premium features for them!
+                  </p>
+                  <div className="tw-mt-2 tw-border tw-bg-white tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
+                    <p className="tw-text-sm">{user.affiliateCode}</p>
+                    <CopyButton value={user.affiliateCode}>
+                      {({ copied, copy }) => (
+                        <Button color={copied ? 'gray' : 'red'} onClick={copy} size="xs" variant="subtle">
+                          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
+                          <span className="tw-ml-1">{copied ? 'Copied' : 'Copy'}</span>
+                        </Button>
+                      )}
+                    </CopyButton>
+                  </div>
                 </div>
               </div>
             ) : (
-              <div className="tw-bg-gray-100 tw-border tw-p-4 tw-rounded-lg tw-my-4 tw-overflow-hidden">
+              <div className="tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4 tw-overflow-hidden">
                 <h2 className="tw-text-xl tw-font-bold tw-flex tw-items-center tw-text-gray-800">
                   <IconAdjustmentsHorizontal className="tw-w-6 tw-h-6 tw-mr-2" />
                   Premium filters
@@ -186,7 +187,7 @@ export default function Popup() {
                     Filter and sort offers by salary
                   </li>
                   <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                    <IconKey className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
+                    <IconSearch className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
                     Filter by keywords (coming soon)
                   </li>
                   <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
@@ -194,19 +195,19 @@ export default function Popup() {
                     Filter by sector (coming soon)
                   </li>
                 </ul>
-                <div className="tw-bg-blue-50 tw-p-3 tw-border-y tw-border-y-blue-200 tw-mt-4">
-                  <h3 className="tw-text-md tw-font-semibold tw-mb-2 tw-flex tw-items-center tw-text-blue-600">
-                    <IconTicket className="tw-w-5 tw-h-5 tw-mr-2 tw-text-blue-600" />
+                <div className="tw-bg-red-50 tw-p-3 tw-rounded-md tw-mt-4">
+                  <h3 className="tw-text-md tw-font-semibold tw-mb-2 tw-flex tw-items-center tw-text-red-600">
+                    <IconTicket className="tw-w-5 tw-h-5 tw-mr-2 tw-text-red-600" />
                     Refer a Friend to unlock
                   </h3>
                   <p className="tw-mb-3 tw-text-sm tw-text-gray-800 tw-text-left">
-                    Share your code below and unlock premium features when a friend uses it at signin!
+                    Share your referral code below and unlock premium features when a friend uses it at sign-in!
                   </p>
-                  <div className="tw-bg-white tw-border tw-border-blue-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
+                  <div className="tw-bg-white tw-border tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
                     <p className="tw-text-sm">{user.affiliateCode}</p>
                     <CopyButton value={user.affiliateCode}>
                       {({ copied, copy }) => (
-                        <Button color={copied ? 'teal' : 'blue'} onClick={copy} size="xs" variant="subtle">
+                        <Button color={copied ? 'gray' : 'red'} onClick={copy} size="xs" variant="subtle">
                           {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
                           <span className="tw-ml-1">{copied ? 'Copied' : 'Copy'}</span>
                         </Button>
