@@ -86,7 +86,7 @@ export default function Popup() {
   return (
     <div className="tw-w-96 tw-p-6 tw-bg-white tw-text-black">
       <header className="tw-mb-4">
-        <h1 className="tw-text-2xl tw-font-bold">
+        <h1 className="tw-text-2xl tw-font-bold tw-text-center">
           <span className="tw-text-red-500">EPFL</span> internships but better
         </h1>
       </header>
