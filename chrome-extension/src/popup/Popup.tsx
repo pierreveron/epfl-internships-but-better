@@ -20,7 +20,6 @@ export default function Popup() {
   const { user, isLoading } = useUser()
   const [isOnJobBoard, setIsOnJobBoard] = useState(false)
   const [isEnabled, setIsEnabled] = useState(true)
-  const [isSigningIn, setIsSigningIn] = useState(false)
   const [referralCode, setReferralCode] = useState('')
 
   useEffect(() => {
@@ -37,13 +36,20 @@ export default function Popup() {
   }, [])
 
   const handleSignIn = async () => {
-    setIsSigningIn(true)
-    chrome.runtime.sendMessage({ type: 'SIGN_IN', referralCode }, (response) => {
+    chrome.runtime.sendMessage({ type: 'SIGN_IN' }, (response) => {
       if (response && response.error) {
         console.error('Sign-in failed:', response.error)
         alert('Sign-in failed')
       }
-      setIsSigningIn(false)
+    })
+  }
+
+  const handleSignUp = async () => {
+    chrome.runtime.sendMessage({ type: 'SIGN_UP', referralCode }, (response) => {
+      if (response && response.error) {
+        console.error('Sign-in failed:', response.error)
+        alert('Sign-in failed')
+      }
     })
   }
 
@@ -119,7 +125,7 @@ export default function Popup() {
                 </li>
               </ul>
               <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-mt-4">
-                Unlock these features for 3 days with a referral code – and keep them forever when you share your own
+                Unlock these features for 3 days with a referral code – and unlock them forever when you share your own
                 code with another friend!
               </p>
             </div>
@@ -242,10 +248,10 @@ export default function Popup() {
                 value={referralCode}
                 onChange={(event) => setReferralCode(event.currentTarget.value)}
               />
-              <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-whitespace-nowrap tw-mt-1 tw-mb-4">
+              <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-whitespace-nowrap tw-mt-1 tw-mb-3">
                 Using a referral code will unlock all filters for 3 days!
               </p>
-              <Button variant="filled" color="red" w="100%" onClick={handleSignIn} loading={isSigningIn}>
+              <Button variant="filled" color="red" w="100%" onClick={handleSignUp}>
                 <IconBrandGoogleFilled className="tw-w-4 tw-h-4 tw-mr-2" />
                 Sign Up with your EPFL Google account
               </Button>
