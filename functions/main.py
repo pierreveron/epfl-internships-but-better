@@ -20,7 +20,6 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
-    get_formatting_count,
     increment_formatting_count,
 )
 
@@ -225,13 +224,6 @@ def clean_data(req: https_fn.Request) -> https_fn.Response:
 
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return https_fn.Response("Invalid email", status=400)
-
-        formatting_count = get_formatting_count(get_db(), email)
-
-        if formatting_count >= 4:
-            return https_fn.Response(
-                json.dumps({"error": "Too many formatting requests"}), status=400
-            )
 
         print("locations:", len(locations))
         print("salaries:", len(salaries))
