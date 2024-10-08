@@ -1,47 +1,10 @@
 # pyright: reportUnknownMemberType=false
 
 import hashlib
-import time
-from typing import Any
 
 import google.cloud.firestore  # type: ignore
 from firebase_admin import firestore  # type: ignore
 from google.cloud.firestore import Increment  # type: ignore
-
-
-def check_payment_status(db: google.cloud.firestore.Client, email: str) -> bool:
-    # Add a 5 sec timeout to make sure payment status has been update after checkout and prevent race conditions
-    time.sleep(5)
-    try:
-        users_collection = db.collection("users")
-        doc_ref = users_collection.document(email)
-        doc = doc_ref.get()
-        if doc.exists:
-            return doc.get("payment") is not None
-        return False
-    except Exception as error:
-        print("Error checking payment status:", error)
-        return False
-
-
-def add_payment(
-    db: google.cloud.firestore.Client,
-    processor: str,
-    user_email: str,
-    data: dict[str, Any],
-):
-    users_collection = db.collection("users")
-    result = users_collection.document(user_email).set(
-        {
-            "payment": {
-                "processor": processor,
-                "data": data,
-            }
-        },
-        merge=True,
-    )
-
-    print("Payment added to Firestore", user_email, result)  # type: ignore
 
 
 def increment_formatting_count(db: google.cloud.firestore.Client, email: str):

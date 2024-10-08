@@ -20,10 +20,6 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
-    add_payment,
-    check_payment_status,
-    check_referral_status,
-    get_affiliate_code,
     get_formatting_count,
     increment_formatting_count,
 )
@@ -230,11 +226,9 @@ def clean_data(req: https_fn.Request) -> https_fn.Response:
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return https_fn.Response("Invalid email", status=400)
 
-        payment_status = check_payment_status(get_db(), email)
-
         formatting_count = get_formatting_count(get_db(), email)
 
-        if not payment_status and formatting_count >= 4:
+        if formatting_count >= 4:
             return https_fn.Response(
                 json.dumps({"error": "Too many formatting requests"}), status=400
             )
@@ -274,52 +268,6 @@ def clean_data(req: https_fn.Request) -> https_fn.Response:
         )
     except Exception as e:
         return https_fn.Response(json.dumps({"error": str(e)}), status=500)
-
-
-@https_fn.on_request()
-def webhook(request: https_fn.Request) -> https_fn.Response:
-    def fulfill_checkout(order_payload: dict[str, Any]) -> https_fn.Response:
-        print(f"Fulfilling order: {order_payload}")
-        attributes = order_payload["attributes"]
-
-        email = attributes.get("user_email")
-        payment_status = attributes.get("status")
-
-        if payment_status == "paid" and email:
-            try:
-                add_payment(get_db(), "lemon-squeezy", email, order_payload)
-                return https_fn.Response("Payment fulfilled", status=200)
-            except Exception as e:
-                print(f"Error fulfilling payment: {e}")
-                return https_fn.Response("Error fulfilling payment", status=500)
-
-        return https_fn.Response("Payment not fulfilled", status=200)
-
-    if request.method != "POST":
-        return https_fn.Response("Method not allowed", status=405)
-
-    print(f"Received POST request on /webhook: {request.data}, {request.headers}")
-    body = request.data
-    signature = request.headers.get("X-Signature")
-    event_name = request.headers.get("X-Event-Name")
-
-    if event_name != "order_created":
-        return https_fn.Response("Invalid event name", status=400)
-
-    if not signature:
-        return https_fn.Response("No signature provided", status=400)
-
-    computed_signature = hmac.new(
-        WEBHOOK_SECRET.encode(), body, hashlib.sha256
-    ).hexdigest()
-
-    if computed_signature != signature:
-        return https_fn.Response("Invalid signature", status=401)
-
-    order = json.loads(body)
-    print(f"Received webhook: {order}")
-
-    return fulfill_checkout(order["data"])
 
 
 @https_fn.on_request(
