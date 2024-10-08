@@ -1,6 +1,7 @@
-import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithCredential, User } from 'firebase/auth'
 import { getAuth } from 'firebase/auth'
 import { app } from './firebaseApp'
+import { handleSignUp, handleSignIn } from './firebaseFunctions'
 
 export const auth = getAuth(app)
 
@@ -37,15 +38,63 @@ const getGoogleAuthCredential = () => {
   })
 }
 
-export const signIn = async () => {
+export const signIn = async (): Promise<User | null> => {
   try {
     const credential = await getGoogleAuthCredential()
     console.log('credential', credential)
     const result = await signInWithCredential(auth, credential)
     console.log('result', result)
-    return result.user
-  } catch (e) {
-    console.error(e)
+
+    if (result.user && result.user.email) {
+      const response = (await handleSignIn({ email: result.user.email })) as {
+        data: {
+          success: boolean
+          error: string | null
+        }
+      }
+      console.log('Sign-in response:', response.data)
+
+      if (response.data.success) {
+        return result.user
+      } else {
+        throw new Error(response.data.error || 'Sign-up failed')
+      }
+    }
     return null
+  } catch (e) {
+    console.error('Error during sign-in:', e)
+    throw e
+  }
+}
+
+export const signUp = async (referralCode?: string): Promise<User | null> => {
+  try {
+    const credential = await getGoogleAuthCredential()
+    console.log('credential', credential)
+    const result = await signInWithCredential(auth, credential)
+    console.log('result', result)
+
+    if (result.user) {
+      // Call the Cloud Function to handle the sign-up process
+      const response = (await handleSignUp({ email: result.user.email, referralCode })) as {
+        data: {
+          success: boolean
+          error: string | null
+        }
+      }
+      console.log('Sign-up response:', response.data)
+
+      if (!response.data.success) {
+        throw new Error(response.data.error || 'Sign-up failed')
+      }
+
+      // Refresh the user to get the latest custom claims
+      await result.user.getIdToken(true)
+      return result.user
+    }
+    return null
+  } catch (e) {
+    console.error('Error during sign-up:', e)
+    throw e // Re-throw the error to be handled by the caller
   }
 }

@@ -1,4 +1,4 @@
-import { auth, signIn } from './firebase/firebaseAuth'
+import { auth, signIn, signUp } from './firebase/firebaseAuth'
 import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
@@ -60,6 +60,23 @@ function sendUserUpdateMessages(user: User | null) {
 }
 
 chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
+  if (request.type === 'SIGN_UP') {
+    signUp(request.referralCode)
+      .then((user) => {
+        if (user) {
+          console.log('User signed up')
+          sendResponse({ success: true, user })
+        } else {
+          sendResponse({ error: 'Sign-up failed' })
+        }
+      })
+      .catch((error) => {
+        console.error('Error signing up:', error)
+        sendResponse({ error: 'Sign-up error: ' + error.message })
+      })
+    return true // Indicates that the response is sent asynchronously
+  }
+
   if (request.type === 'SIGN_IN') {
     signIn()
       .then((user) => {

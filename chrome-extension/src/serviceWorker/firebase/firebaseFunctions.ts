@@ -19,3 +19,5 @@ const functions = initializeFunctions()
 
 export const formatOffers = httpsCallable(functions, 'format_offers')
 export const getUserData = httpsCallable(functions, 'get_user_data')
+export const handleSignUp = httpsCallable(functions, 'handle_sign_up')
+export const handleSignIn = httpsCallable(functions, 'handle_sign_in')

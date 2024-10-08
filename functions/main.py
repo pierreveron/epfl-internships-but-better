@@ -1,11 +1,12 @@
 import asyncio
+import datetime
 import hashlib
 import hmac
 import json
 import os
 import re
 import time
-from typing import Any
+from typing import Any, TypedDict
 
 import google.cloud.firestore  # type: ignore
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
@@ -25,6 +26,17 @@ from firestore_helper import (
     get_formatting_count,
     increment_formatting_count,
 )
+
+
+class UserData(TypedDict):
+    email: str
+    createdAt: Any  # Using Any for SERVER_TIMESTAMP
+    hasReferredSomeone: bool
+    formattingCount: int
+    referredBy: str | None
+    premiumUntil: Any | None  # Using Any for datetime
+    affiliateCode: str
+
 
 app = initialize_app()
 
@@ -376,3 +388,153 @@ def get_upgrade_url(req: https_fn.Request) -> https_fn.Response:
         json.dumps({"data": {"url": upgrade_url}}),
         content_type="application/json",
     )
+
+
+@https_fn.on_request(
+    cors=options.CorsOptions(
+        cors_origins=[EXTENSION_ORIGIN],
+        cors_methods=["POST"],
+    ),
+)
+def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
+    if req.method != "POST":
+        return https_fn.Response("Method not allowed", status=405)
+
+    try:
+        data: dict[str, Any] = req.get_json()
+        user_email: str | None = data.get("email")
+        referral_code: str | None = data.get("referralCode")
+
+        if not user_email:
+            return https_fn.Response("Email is required", status=400)
+
+        if not re.match(r"[^@]+@epfl\.ch$", user_email):
+            return https_fn.Response(
+                "Invalid email domain. Must be an EPFL email.", status=400
+            )
+
+        db = get_db()
+        users_ref = db.collection("users")
+        user_doc = users_ref.document(user_email)
+
+        # Check if user already exists
+        if user_doc.get().exists:
+            return https_fn.Response("User already exists", status=400)
+
+        createdAt = firestore.SERVER_TIMESTAMP  # type: ignore
+
+        user_data: UserData = {
+            "email": user_email,
+            "createdAt": createdAt,
+            "hasReferredSomeone": False,
+            "formattingCount": 0,
+            "referredBy": None,
+            "premiumUntil": None,
+            "affiliateCode": generate_affiliate_code(user_email),
+        }
+
+        # Handle referral code if provided
+        if referral_code:
+            referral_doc = db.collection("referralCodes").document(referral_code).get()
+            referral_data = referral_doc.to_dict()
+            if referral_data:
+                referrer_email = referral_data.get("email")
+                user_data["referredBy"] = referrer_email
+                user_data["premiumUntil"] = createdAt + datetime.timedelta(days=3)
+
+                # Update the referrer's document to mark that they've referred someone
+                db.collection("users").document(referrer_email).set(
+                    {"hasReferredSomeone": True}, merge=True
+                )
+
+                print(
+                    f"Referral code {referral_code} from {referrer_email} applied for user {user_email}"
+                )
+            else:
+                return https_fn.Response(
+                    json.dumps(
+                        {
+                            "data": {
+                                "success": False,
+                                "error": "Invalid referral code",
+                            }
+                        }
+                    ),
+                    status=400,
+                )
+
+        # Create the user document
+        user_doc.set(user_data)  # type: ignore
+
+        # Create a referral code document
+        db.collection("referralCodes").document(user_data["affiliateCode"]).set(
+            {
+                "email": user_email,
+                "createdAt": createdAt,
+            }
+        )
+
+        return https_fn.Response(
+            json.dumps(
+                {
+                    "data": {
+                        "success": True,
+                    }
+                }
+            ),
+            content_type="application/json",
+        )
+    except Exception as e:
+        print(f"Error handling sign-up: {str(e)}")
+        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
+
+
+def generate_affiliate_code(email: str) -> str:
+    # Generate a unique affiliate code based on the user's email
+    return hashlib.md5(email.encode()).hexdigest()[:8]
+
+
+@https_fn.on_request(
+    cors=options.CorsOptions(
+        cors_origins=[EXTENSION_ORIGIN],
+        cors_methods=["POST"],
+    ),
+)
+def handle_sign_in(req: https_fn.Request) -> https_fn.Response:
+    if req.method != "POST":
+        return https_fn.Response("Method not allowed", status=405)
+
+    try:
+        data: dict[str, Any] = req.get_json()
+        user_email: str | None = data.get("email")
+
+        if not user_email:
+            return https_fn.Response("Email is required", status=400)
+
+        if not re.match(r"[^@]+@epfl\.ch$", user_email):
+            return https_fn.Response(
+                "Invalid email domain. Must be an EPFL email.", status=400
+            )
+
+        db = get_db()
+        user_doc = db.collection("users").document(user_email).get()
+
+        if user_doc.exists:
+            return https_fn.Response(
+                json.dumps(
+                    {
+                        "success": True,
+                    }
+                ),
+                content_type="application/json",
+            )
+        else:
+            return https_fn.Response(
+                json.dumps({"success": False, "error": "User not found"}),
+                status=404,
+                content_type="application/json",
+            )
+
+    except Exception as e:
+        print(f"Error handling sign-in: {str(e)}")
+        return https_fn.Response(json.dumps({"error": str(e)}), status=500)

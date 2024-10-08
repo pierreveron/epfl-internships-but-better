@@ -1,11 +1,11 @@
 # pyright: reportUnknownMemberType=false
 
-import random
-import string
+import hashlib
 import time
 from typing import Any
 
 import google.cloud.firestore  # type: ignore
+from firebase_admin import firestore  # type: ignore
 from google.cloud.firestore import Increment  # type: ignore
 
 
@@ -63,10 +63,9 @@ def get_formatting_count(db: google.cloud.firestore.Client, email: str) -> int:
         return 0
 
 
-def generate_affiliate_code(length: int = 8) -> str:
-    """Generate a random affiliate code."""
-    characters = string.ascii_letters + string.digits
-    return "".join(random.choice(characters) for _ in range(length))
+def generate_affiliate_code(email: str) -> str:
+    # Generate a unique affiliate code based on the user's email
+    return hashlib.md5(email.encode()).hexdigest()[:8]
 
 
 def get_affiliate_code(db: google.cloud.firestore.Client, email: str) -> str:
@@ -76,12 +75,21 @@ def get_affiliate_code(db: google.cloud.firestore.Client, email: str) -> str:
 
     if doc.exists:
         user_data = doc.to_dict()
-        if user_data and "affiliate_code" in user_data:
-            return user_data["affiliate_code"]
+        if user_data and "affiliateCode" in user_data:
+            return user_data["affiliateCode"]
 
     # If no affiliate code exists, create a new one
-    new_code = generate_affiliate_code()
-    doc_ref.set({"affiliate_code": new_code}, merge=True)
+    new_code = generate_affiliate_code(email)
+    doc_ref.set({"affiliateCode": new_code}, merge=True)
+
+    # Create a referral code document
+    db.collection("referralCodes").document(new_code).set(
+        {
+            "email": email,
+            "createdAt": firestore.SERVER_TIMESTAMP,  # type: ignore
+        }
+    )
+
     return new_code
 
 

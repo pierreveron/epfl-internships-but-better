@@ -47,8 +47,8 @@ export default function Popup() {
   const handleSignUp = async () => {
     chrome.runtime.sendMessage({ type: 'SIGN_UP', referralCode }, (response) => {
       if (response && response.error) {
-        console.error('Sign-in failed:', response.error)
-        alert('Sign-in failed')
+        console.error('Sign-up failed:', response.error)
+        alert('Sign-up failed')
       }
     })
   }
