@@ -8,7 +8,7 @@ const clientId = chrome.runtime.getManifest().oauth2?.client_id ?? ''
 
 const getGoogleAuthCredential = () => {
   return new Promise<ReturnType<typeof GoogleAuthProvider.credential>>((resolve, reject) => {
-    const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&response_type=token&scope=email%20profile&redirect_uri=${chrome.identity.getRedirectURL()}&prompt=select_account`
+    const authUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${clientId}&response_type=token&scope=email%20profile&redirect_uri=${chrome.identity.getRedirectURL()}&prompt=select_account&hd=epfl.ch`
 
     chrome.identity.launchWebAuthFlow({ url: authUrl, interactive: true }, (responseUrl) => {
       if (chrome.runtime.lastError) {
