@@ -218,7 +218,7 @@ export default function Popup() {
                 value={referralCode}
                 onChange={(event) => setReferralCode(event.currentTarget.value)}
               />
-              <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-whitespace-nowrap tw-mt-2 tw-mb-4">
+              <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-whitespace-nowrap tw-mt-1 tw-mb-4">
                 Using a referral code will unlock all filters for 3 days!
               </p>
               <Button variant="filled" color="red" w="100%" onClick={handleSignIn} loading={isSigningIn}>
