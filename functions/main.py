@@ -6,12 +6,13 @@ import json
 import os
 import re
 import time
-from typing import Any, TypedDict
+from typing import Any
 
 import google.cloud.firestore  # type: ignore
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salaries_openai
 from data_types.Offer import Location, Offer, OfferToFormat, Salary
+from data_types.UserData import UserData
 
 # The Firebase Admin SDK to access Cloud Firestore.
 from firebase_admin import firestore, initialize_app  # type: ignore
@@ -26,17 +27,6 @@ from firestore_helper import (
     get_formatting_count,
     increment_formatting_count,
 )
-
-
-class UserData(TypedDict):
-    email: str
-    createdAt: Any  # Using Any for SERVER_TIMESTAMP
-    hasReferredSomeone: bool
-    formattingCount: int
-    referredBy: str | None
-    premiumUntil: Any | None  # Using Any for datetime
-    affiliateCode: str
-
 
 app = initialize_app()
 
@@ -424,7 +414,6 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
         createdAt = firestore.SERVER_TIMESTAMP  # type: ignore
 
         user_data: UserData = {
-            "email": user_email,
             "createdAt": createdAt,
             "hasReferredSomeone": False,
             "formattingCount": 0,
