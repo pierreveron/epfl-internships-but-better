@@ -238,15 +238,6 @@ export default function Popup() {
 
       <footer className="tw-mt-4 tw-pt-4 tw-border-t tw-border-gray-200">
         <div className="tw-flex tw-justify-end tw-items-center">
-          {/* <a
-            href="https://github.com/pierreveron/epfl-internships-but-better"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="tw-flex tw-items-center tw-text-sm tw-text-gray-600 hover:tw-text-black tw-transition-colors"
-          >
-            <IconBrandGithub className="tw-w-4 tw-h-4 tw-mr-1" />
-            GitHub
-          </a> */}
           <span className="tw-flex tw-items-center tw-text-sm tw-text-gray-600">
             Made by
             <a
