@@ -166,4 +166,15 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     }
     return true // Indicates that the response is sent asynchronously
   }
+
+  if (request.action === 'openPopup') {
+    try {
+      chrome.action.openPopup()
+      sendResponse({ success: true })
+    } catch (error) {
+      console.error('Error opening popup:', error)
+      sendResponse({ error: 'Failed to open popup' })
+    }
+    return true // Indicates that the response is sent asynchronously
+  }
 })

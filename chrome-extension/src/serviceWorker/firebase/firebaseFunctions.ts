@@ -19,4 +19,3 @@ const functions = initializeFunctions()
 
 export const formatOffers = httpsCallable(functions, 'format_offers')
 export const getUserData = httpsCallable(functions, 'get_user_data')
-export const getUpgradeUrl = httpsCallable(functions, 'get_upgrade_url')

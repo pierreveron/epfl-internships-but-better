@@ -9,7 +9,7 @@ import DisplayModeSegmentedControl from './DisplayModeSegmentedControl'
 import { FilterContext } from '../contexts/FilterContext'
 import { useData } from '../hooks/useData'
 import { useUser } from '../hooks/useUser'
-import UpgradeButton from './UpgradeButton'
+import UnlockButton from './UnlockButton'
 
 export default function ActionBar() {
   const { companies, newOffersCount, refreshData } = useData()
@@ -107,8 +107,7 @@ export default function ActionBar() {
           disabled={!user?.isPremium}
           title={!user?.isPremium ? 'Premium feature: Upgrade to filter by salary' : undefined}
         />
-
-        {/* {!user?.isPremium && <UpgradeButton email={user?.email ?? ''} />} */}
+        {!user?.isPremium && <UnlockButton />}
       </Group>
 
       <Group>
