@@ -95,12 +95,15 @@ def get_affiliate_code(db: google.cloud.firestore.Client, email: str) -> str:
 
 def check_referral_status(db: google.cloud.firestore.Client, email: str) -> bool:
     try:
-        users_collection = db.collection("users")
-        doc_ref = users_collection.document(email)
-        doc = doc_ref.get()
-        if doc.exists:
-            user_data = doc.to_dict()
-            return user_data.get("referral_completed", False) if user_data else False
+        referral_codes_collection = db.collection("referralCodes")
+        query = referral_codes_collection.where("email", "==", email).limit(1)
+        docs = query.get()
+
+        for doc in docs:
+            referral_data = doc.to_dict()
+            if referral_data:
+                return referral_data.get("used", False)
+
         return False
     except Exception as error:
         print("Error checking referral status:", error)
