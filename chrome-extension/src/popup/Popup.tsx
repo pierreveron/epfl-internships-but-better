@@ -236,7 +236,7 @@ export default function Popup() {
         )}
       </main>
 
-      <footer className="tw-mt-6 tw-pt-4 tw-border-t tw-border-gray-200">
+      <footer className="tw-mt-4 tw-pt-4 tw-border-t tw-border-gray-200">
         <div className="tw-flex tw-justify-end tw-items-center">
           {/* <a
             href="https://github.com/pierreveron/epfl-internships-but-better"
