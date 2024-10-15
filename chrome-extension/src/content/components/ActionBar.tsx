@@ -107,7 +107,7 @@ export default function ActionBar() {
           disabled={!user?.hasFiltersUnlocked}
           title={
             !user?.hasFiltersUnlocked
-              ? 'Lock filter: Share the extension with your friends to unlock filters'
+              ? 'Locked filter: Share the extension with your friends to unlock all filters'
               : undefined
           }
         />
