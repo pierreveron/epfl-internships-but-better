@@ -17,6 +17,7 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
     generate_referral_code,
+    increment_formatting_count,
 )
 from firestore_helper import (
     get_user_data as get_user_data_from_db,
@@ -183,6 +184,8 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
         end_time = time.time()
         execution_time = end_time - start_time
         print(f"format_offers execution time: {execution_time:.2f} seconds")
+
+        increment_formatting_count(db, email)
 
         return https_fn.Response(
             json.dumps({"data": formatted_offers}),

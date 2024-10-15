@@ -4,6 +4,12 @@ import hashlib
 
 import google.cloud.firestore  # type: ignore
 from data_types.UserData import UserData
+from google.cloud.firestore import Increment  # type: ignore
+
+
+def increment_formatting_count(db: google.cloud.firestore.Client, email: str):
+    users_collection = db.collection("users")
+    users_collection.document(email).set({"formattingCount": Increment(1)}, merge=True)
 
 
 def generate_referral_code(email: str) -> str:
