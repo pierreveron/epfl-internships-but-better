@@ -13,20 +13,6 @@ def increment_formatting_count(db: google.cloud.firestore.Client, email: str):
     users_collection.document(email).set({"formattingCount": Increment(1)}, merge=True)
 
 
-def get_formatting_count(db: google.cloud.firestore.Client, email: str) -> int:
-    try:
-        users_collection = db.collection("users")
-        doc_ref = users_collection.document(email)
-        doc = doc_ref.get()
-        if doc.exists:
-            doc_dict = doc.to_dict()
-            return doc_dict.get("formattingCount", 0) if doc_dict else 0
-        return 0
-    except Exception as error:
-        print("Error getting formatting count:", error)
-        return 0
-
-
 def generate_affiliate_code(email: str) -> str:
     # Generate a unique affiliate code based on the user's email
     return hashlib.md5(email.encode()).hexdigest()[:8]
