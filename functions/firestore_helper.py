@@ -4,7 +4,6 @@ import hashlib
 
 import google.cloud.firestore  # type: ignore
 from data_types.UserData import UserData
-from firebase_admin import firestore  # type: ignore
 from google.cloud.firestore import Increment  # type: ignore
 
 
@@ -35,7 +34,7 @@ def get_referral_code(db: google.cloud.firestore.Client, email: str) -> str:
     raise ValueError(f"User data not found for {email}")
 
 
-def check_referral_status(db: google.cloud.firestore.Client, email: str) -> bool:
+def get_referrer_status(db: google.cloud.firestore.Client, email: str) -> bool:
     try:
         referral_codes_collection = db.collection("referralCodes")
         query = referral_codes_collection.where("referrer", "==", email).limit(1)
@@ -50,6 +49,23 @@ def check_referral_status(db: google.cloud.firestore.Client, email: str) -> bool
     except Exception as error:
         print("Error checking referral status:", error)
         return False
+
+
+def get_referral_date(db: google.cloud.firestore.Client, email: str) -> int | None:
+    try:
+        referral_codes_collection = db.collection("referralCodes")
+        query = referral_codes_collection.where("referee", "==", email).limit(1)
+        docs = query.get()
+
+        for doc in docs:
+            referral_data = doc.to_dict()
+            if referral_data:
+                return referral_data.get("createdAt", None)
+
+        return None
+    except Exception as error:
+        print("Error checking referree status:", error)
+        return None
 
 
 def get_user_data(db: google.cloud.firestore.Client, email: str) -> UserData:
@@ -67,8 +83,8 @@ def get_user_data(db: google.cloud.firestore.Client, email: str) -> UserData:
         )
 
         return UserData(
-            referredAt=referred_at,
-            hasReferredSomeone=check_referral_status(db, email),
+            referredAt=get_referral_date(db, email),
+            hasReferredSomeone=get_referrer_status(db, email),
             referralCode=referral_code,
         )
     except Exception as error:
