@@ -9,7 +9,6 @@ import google.cloud.firestore  # type: ignore
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salaries_openai
 from data_types.Offer import Location, Offer, OfferToFormat, Salary
-from data_types.UserData import UserData
 
 # The Firebase Admin SDK to access Cloud Firestore.
 from firebase_admin import firestore, initialize_app  # type: ignore
@@ -263,9 +262,6 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
         if user_doc.get().exists:
             return https_fn.Response("User already exists", status=400)
 
-        current_timestamp = firestore.SERVER_TIMESTAMP  # type: ignore
-
-        referred_at: int | None = None
         # Handle referral code if provided
         if referral_code:
             referrer_query = users_ref.where("referralCode", "==", referral_code).limit(
@@ -279,7 +275,7 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
                 break
 
             if referrer_email:
-                referred_at = current_timestamp  # type: ignore
+                current_timestamp: int = firestore.SERVER_TIMESTAMP  # type: ignore
 
                 db.collection("referrals").add(
                     {
@@ -306,12 +302,11 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
                 )
 
         # Create the user document
-        user_data: UserData = {
-            "hasReferredSomeone": False,
-            "referredAt": referred_at,
-            "referralCode": generate_referral_code(user_email),
-        }
-        user_doc.set(user_data)  # type: ignore
+        user_doc.set(
+            {
+                "referralCode": generate_referral_code(user_email),
+            }
+        )
 
         return https_fn.Response(
             json.dumps(
