@@ -38,7 +38,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const updateUser = (user: User | null) => {
       if (user) {
         getUserData().then((userData) => {
-          setUser({ ...user, ...userData })
+          setUser({
+            ...user,
+            ...userData,
+            hasFiltersUnlocked:
+              userData.hasReferredSomeone ||
+              (userData.referredAt !== null && userData.referredAt < Date.now() - 3 * 24 * 60 * 60 * 1000),
+          })
           setIsLoading(false)
         })
       } else {

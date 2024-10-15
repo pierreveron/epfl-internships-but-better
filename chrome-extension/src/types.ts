@@ -88,12 +88,15 @@ export type Offer = {
 } & Omit<PageData, 'salary'>
 
 export type UserData = {
-  isPremium: boolean
-  formattingCount: number
+  hasReferredSomeone: boolean
+  referredAt: number | null
   affiliateCode: string
 }
 
-export type UserWithData = User & UserData
+export type UserWithData = User &
+  UserData & {
+    hasFiltersUnlocked: boolean
+  }
 
 export type JobOffers = {
   offers: Offer[]

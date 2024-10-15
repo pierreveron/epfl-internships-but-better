@@ -44,8 +44,8 @@ export const userDataFromLocalStorage = createStorageHelpers<
     timestamp: number
   }
 >('userData', {
-  isPremium: false,
-  formattingCount: 0,
+  hasReferredSomeone: false,
+  referredAt: null,
   affiliateCode: '',
   timestamp: 0,
 })

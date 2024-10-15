@@ -21,8 +21,8 @@ export default function SortDropdown() {
     { value: 'creationDate-asc', label: 'Creation date (oldest first)' },
     { value: 'company-asc', label: 'Company (A-Z)' },
     { value: 'company-desc', label: 'Company (Z-A)' },
-    { value: 'salary-desc', label: 'Salary (high to low)', disabled: !user?.isPremium },
-    { value: 'salary-asc', label: 'Salary (low to high)', disabled: !user?.isPremium },
+    { value: 'salary-desc', label: 'Salary (high to low)', disabled: !user?.hasFiltersUnlocked },
+    { value: 'salary-asc', label: 'Salary (low to high)', disabled: !user?.hasFiltersUnlocked },
     { value: 'registered-desc', label: 'Number of candidates (high to low)' },
     { value: 'registered-asc', label: 'Number of candidates (low to high)' },
   ]

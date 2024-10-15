@@ -143,7 +143,7 @@ export default function Popup() {
               Logged in as <span className="tw-font-bold">{user.email}</span>
             </div>
 
-            {user.isPremium ? (
+            {user.hasReferredSomeone ? (
               <div className="tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4">
                 <h2 className="tw-text-lg tw-font-semibold tw-mb-2 tw-flex tw-items-center">
                   <IconCheck className="tw-w-5 tw-h-5 tw-mr-2" />

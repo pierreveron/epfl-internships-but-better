@@ -104,10 +104,14 @@ export default function ActionBar() {
           }}
           step={500}
           min={0}
-          disabled={!user?.isPremium}
-          title={!user?.isPremium ? 'Premium feature: Upgrade to filter by salary' : undefined}
+          disabled={!user?.hasFiltersUnlocked}
+          title={
+            !user?.hasFiltersUnlocked
+              ? 'Lock filter: Share the extension with your friends to unlock filters'
+              : undefined
+          }
         />
-        {!user?.isPremium && <UnlockButton />}
+        {!user?.hasReferredSomeone && <UnlockButton />}
       </Group>
 
       <Group>

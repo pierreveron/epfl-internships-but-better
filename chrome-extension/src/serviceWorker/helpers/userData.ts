@@ -8,15 +8,15 @@ export const fetchUserData = async (email: string): Promise<UserData> => {
   try {
     const response = await getUserData(email)
     const data = response.data as {
-      has_payment: boolean
-      formatting_count: number
-      affiliate_code: string
-      referral_completed: boolean
+      hasReferredSomeone: boolean
+      referredAt: number | null
+      affiliateCode: string
     }
+
     const userData = {
-      isPremium: data.has_payment || data.referral_completed,
-      formattingCount: data.formatting_count,
-      affiliateCode: data.affiliate_code,
+      hasReferredSomeone: data.hasReferredSomeone,
+      referredAt: data.referredAt,
+      affiliateCode: data.affiliateCode,
     }
 
     // Save user data to Chrome extension storage
@@ -25,7 +25,11 @@ export const fetchUserData = async (email: string): Promise<UserData> => {
     return userData
   } catch (error) {
     console.error('Error getting user data:', error)
-    const defaultUserData = { isPremium: false, formattingCount: 0, affiliateCode: '' }
+    const defaultUserData = {
+      hasReferredSomeone: false,
+      referredAt: null,
+      affiliateCode: '',
+    }
 
     // Save default user data to Chrome extension storage
     await userDataFromLocalStorage.set({ ...defaultUserData, timestamp: Date.now() })
