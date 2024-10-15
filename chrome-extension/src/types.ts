@@ -4,7 +4,7 @@ export type OriginalPortalCellRowData = {
   title: string
   company: string
   location: string
-  // sustainabilityLabel: string
+  sustainabilityLabel: string
   number: string
   format: string
   registered: string
@@ -13,16 +13,14 @@ export type OriginalPortalCellRowData = {
   creationDate: string
 }
 
-export type FormattedPortalCellRowData = {
-  title: string
-  company: string
-  location: string
-  number: string
+export type FormattedPortalCellRowData = Omit<
+  OriginalPortalCellRowData,
+  'format' | 'professor' | 'registered' | 'positions'
+> & {
   format: Format[]
+  professor: string | null
   registered: number
   positions: number
-  professor: string | null
-  creationDate: string
 }
 
 export type Location = {
@@ -80,7 +78,7 @@ export type Offer = {
   company: string
   location: Location[]
   salary: string | number | null
-  //   sustainabilityLabel: string
+  sustainabilityLabel: string
   number: string
   format: Format[]
   registered: number
@@ -90,11 +88,15 @@ export type Offer = {
 } & Omit<PageData, 'salary'>
 
 export type UserData = {
-  isPremium: boolean
-  formattingCount: number
+  hasReferredSomeone: boolean
+  referredAt: number | null
+  referralCode: string
 }
 
-export type UserWithData = User & UserData
+export type UserWithData = User &
+  UserData & {
+    hasFiltersUnlocked: boolean
+  }
 
 export type JobOffers = {
   offers: Offer[]

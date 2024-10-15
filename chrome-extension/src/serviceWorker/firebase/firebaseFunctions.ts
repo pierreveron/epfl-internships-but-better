@@ -17,6 +17,7 @@ function initializeFunctions(): Functions {
 
 const functions = initializeFunctions()
 
-export const cleanData = httpsCallable(functions, 'clean_data')
+export const formatOffers = httpsCallable(functions, 'format_offers')
 export const getUserData = httpsCallable(functions, 'get_user_data')
-export const getUpgradeUrl = httpsCallable(functions, 'get_upgrade_url')
+export const handleSignUp = httpsCallable(functions, 'handle_sign_up')
+export const handleSignIn = httpsCallable(functions, 'handle_sign_in')

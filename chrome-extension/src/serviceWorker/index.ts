@@ -1,8 +1,8 @@
-import { auth, signIn } from './firebase/firebaseAuth'
+import { auth, signIn, signUp } from './firebase/firebaseAuth'
 import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
-import { jobOffersFromLocalStorage, userDataFromLocalStorage } from '../localStorage'
+import { userDataFromLocalStorage } from '../localStorage'
 import { Offer, UserData } from '../types'
 
 const constants = {
@@ -60,6 +60,23 @@ function sendUserUpdateMessages(user: User | null) {
 }
 
 chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
+  if (request.type === 'SIGN_UP') {
+    signUp(request.referralCode)
+      .then((user) => {
+        if (user) {
+          console.log('User signed up')
+          sendResponse({ success: true, user })
+        } else {
+          sendResponse({ error: 'Sign-up failed' })
+        }
+      })
+      .catch((error) => {
+        console.error('Error signing up:', error)
+        sendResponse({ error: 'Sign-up error: ' + error.message })
+      })
+    return true // Indicates that the response is sent asynchronously
+  }
+
   if (request.type === 'SIGN_IN') {
     signIn()
       .then((user) => {
@@ -110,10 +127,6 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
     } else {
       // Start a new formatting operation
       formattingPromise = formatOffersInWorker(email, offers)
-        .then((formattedOffers) => {
-          jobOffersFromLocalStorage.set({ offers: formattedOffers, lastUpdated: Date.now() })
-          return formattedOffers
-        })
         .catch((error) => {
           console.error('Error formatting offers:', error)
           throw error
@@ -167,6 +180,17 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       }
     } else {
       sendResponse({ error: 'No current user' })
+    }
+    return true // Indicates that the response is sent asynchronously
+  }
+
+  if (request.action === 'openPopup') {
+    try {
+      chrome.action.openPopup()
+      sendResponse({ success: true })
+    } catch (error) {
+      console.error('Error opening popup:', error)
+      sendResponse({ error: 'Failed to open popup' })
     }
     return true // Indicates that the response is sent asynchronously
   }
