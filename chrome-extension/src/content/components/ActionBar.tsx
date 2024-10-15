@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { Button, Group, NumberInput, Popover, Stack, Switch } from '@mantine/core'
-import { IconChevronDown, IconRefresh } from '@tabler/icons-react'
+import { IconChevronDown } from '@tabler/icons-react'
 import CompanySelect from './CompanySelect'
 import FormatsSegmentedControl from './FormatsSegmentedControl'
 import LengthsCheckboxes from './LengthsCheckboxes'
@@ -12,7 +12,7 @@ import { useUser } from '../hooks/useUser'
 import UnlockButton from './UnlockButton'
 
 export default function ActionBar() {
-  const { companies, newOffersCount, refreshData } = useData()
+  const { companies } = useData()
   const { user } = useUser()
 
   const {
@@ -130,29 +130,6 @@ export default function ActionBar() {
           }}
         />
       </Group>
-
-      {!user?.isPremium && (
-        <Button
-          variant="light"
-          color="red"
-          leftSection={<IconRefresh size={18} />}
-          onClick={() => {
-            refreshData()
-          }}
-          disabled={newOffersCount === 0 || (user?.formattingCount ?? 0) >= 4}
-          rightSection={
-            (user?.formattingCount ?? 0) >= 4
-              ? '(No refresh left, please upgrade to premium)'
-              : `(${4 - (user?.formattingCount ?? 1)} refresh${(user?.formattingCount ?? 0) === 3 ? '' : 's'} left)`
-          }
-        >
-          {newOffersCount === 0
-            ? 'No new offers'
-            : newOffersCount === 1
-            ? '1 new offer'
-            : `${newOffersCount} new offers`}
-        </Button>
-      )}
 
       {/* <Group gap="xs">
         <Text c="dimmed">Last data update: {dataDate}</Text>

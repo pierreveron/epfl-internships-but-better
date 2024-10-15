@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useMemo, useCallback, useRef } from 'react'
+import React, { createContext, useState, useEffect, useMemo, useRef } from 'react'
 import { Offer, Location, UserWithData } from '../../types'
 import { detectNewJobs, scrapeJobs } from '../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
@@ -26,7 +26,6 @@ interface DataContextType {
   citiesByCountry: Record<string, SelectableCity[]>
   companies: string[]
   newOffersCount: number
-  refreshData: () => void
 }
 
 export const DataContext = createContext<DataContextType | undefined>(undefined)
@@ -71,48 +70,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const isOfferHidden = (offer: Offer) => hiddenOffers.includes(offer.number)
 
-  const refreshData = useCallback(async () => {
-    if (!user || !user.email) {
-      return
-    }
-
-    setIsLoading(true)
-
-    try {
-      const { offers: currentOffers } = await jobOffersFromLocalStorage.get()
-
-      const currentJobsIds = currentOffers.map((o) => o.id)
-
-      const newJobsIds = await detectNewJobs(currentJobsIds)
-
-      setNewOffersCount(newJobsIds.length)
-
-      // Get the offers that are not in the stored offers
-      const newOffers = await scrapeJobs(newJobsIds, (offersCount, offersLoaded) => {
-        console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
-        setOffersLoaded(offersLoaded)
-      })
-
-      setIsFormatting(true)
-      const newFormattedOffers = await formatOffers(user.email, newOffers)
-
-      const refreshedOffers = currentOffers.concat(newFormattedOffers)
-      await jobOffersFromLocalStorage.set({ offers: refreshedOffers, lastUpdated: Date.now() })
-
-      const hiddenOffersNumbers = await hiddenOffersFromLocalStorage.get()
-
-      setData(refreshedOffers.filter((d) => !hiddenOffersNumbers.includes(d.number)))
-      setDataDate(new Date(Date.now()).toLocaleDateString('fr-CH'))
-      setNewOffersCount(0)
-    } catch (error) {
-      console.error('Error refreshing data:', error)
-      setError(new Error('Error refreshing data'))
-    }
-
-    setIsLoading(false)
-    setIsFormatting(false)
-  }, [user])
-
   useEffect(() => {
     const initializeOffers = async (user: UserWithData): Promise<{ data: Offer[]; dataDate: string }> => {
       console.log('initializeOffers', user)
@@ -133,17 +90,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             console.log(`Loaded ${offersLoaded} of ${offersCount} offers`)
             setOffersLoaded(offersLoaded)
           })
-
-          if (user.isPremium || user.formattingCount == 0) {
-            // Skip the next condition and proceed with formatting
-            // This is because the user is premium and can format offers automatically
-          } else if (currentOffers.length === 0 && newOffers.length !== 0 && user.formattingCount < 4) {
-            // Skip the next condition and proceed with formatting
-            // This can happen if the user has deleted local storage but still having formatting credits
-          } else {
-            console.log('User is not premium and has already formatted before, skipping automatic formatting')
-            return { data: currentOffers, dataDate: new Date(Date.now()).toLocaleDateString('fr-CH') }
-          }
 
           let data: Offer[] = []
 
@@ -220,7 +166,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     citiesByCountry,
     companies,
     newOffersCount,
-    refreshData,
     favoriteOffers,
     toggleFavoriteOffer,
     isOfferFavorite,
