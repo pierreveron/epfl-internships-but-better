@@ -30,8 +30,8 @@ def get_referral_code(db: google.cloud.firestore.Client, email: str) -> str:
 
 def get_referrer_status(db: google.cloud.firestore.Client, email: str) -> bool:
     try:
-        referral_codes_collection = db.collection("referralCodes")
-        query = referral_codes_collection.where("referrer", "==", email).limit(1)
+        referrals_collection = db.collection("referrals")
+        query = referrals_collection.where("referrer", "==", email).limit(1)
         docs = query.get()
 
         for doc in docs:
@@ -47,8 +47,8 @@ def get_referrer_status(db: google.cloud.firestore.Client, email: str) -> bool:
 
 def get_referral_date(db: google.cloud.firestore.Client, email: str) -> int | None:
     try:
-        referral_codes_collection = db.collection("referralCodes")
-        query = referral_codes_collection.where("referee", "==", email).limit(1)
+        referrals_collection = db.collection("referrals")
+        query = referrals_collection.where("referee", "==", email).limit(1)
         docs = query.get()
 
         for doc in docs:

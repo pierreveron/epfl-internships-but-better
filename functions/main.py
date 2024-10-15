@@ -281,7 +281,7 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
             if referrer_email:
                 referred_at = current_timestamp  # type: ignore
 
-                db.collection("referralCodes").add(
+                db.collection("referrals").add(
                     {
                         "referrer": referrer_email,
                         "referee": user_email,
