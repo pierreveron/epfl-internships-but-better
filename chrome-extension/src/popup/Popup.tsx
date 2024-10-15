@@ -207,7 +207,7 @@ export default function Popup() {
                     Refer a Friend to unlock
                   </h3>
                   <p className="tw-mb-3 tw-text-sm tw-text-gray-800 tw-text-left">
-                    Share your referral code below and unlock premium features when a friend uses it at sign-in!
+                    Share your referral code below and unlock premium features when a friend uses it at sign-up.
                   </p>
                   <div className="tw-bg-white tw-border tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
                     <p className="tw-text-sm">{user.referralCode}</p>
