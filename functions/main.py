@@ -18,7 +18,6 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
     generate_referral_code,
-    increment_formatting_count,
 )
 from firestore_helper import (
     get_user_data as get_user_data_from_db,
@@ -68,7 +67,7 @@ def chunk_list(lst: list[Any], n: int):
         cors_origins=[EXTENSION_ORIGIN],
         cors_methods=["POST"],
     ),
-    timeout_sec=120,
+    timeout_sec=180,
 )
 # pyright: reportUnknownMemberType=false
 def format_offers(req: https_fn.Request) -> https_fn.Response:
@@ -196,70 +195,6 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
         print(
             f"format_offers execution time (with error): {execution_time:.2f} seconds"
         )
-        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
-
-
-@https_fn.on_request(
-    cors=options.CorsOptions(
-        cors_origins=[EXTENSION_ORIGIN],
-        cors_methods=["POST"],
-    ),
-    timeout_sec=120,
-)
-def clean_data(req: https_fn.Request) -> https_fn.Response:
-    if req.method != "POST":
-        return https_fn.Response("Method not allowed", status=405)
-
-    try:
-        json_data: dict[str, dict[str, Any]] = req.get_json()
-        print("json_data:", json_data)
-        data = json_data.get("data", {})
-        email: str = data.get("email", "")
-        locations: list[str] = data.get("locations", [])
-        salaries: list[str] = data.get("salaries", [])
-
-        if not email:
-            return https_fn.Response(
-                json.dumps({"error": "Email parameter is required"}), status=400
-            )
-
-        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-            return https_fn.Response("Invalid email", status=400)
-
-        print("locations:", len(locations))
-        print("salaries:", len(salaries))
-
-        if len(locations) > 500:
-            return https_fn.Response(
-                json.dumps({"error": "Too many locations"}), status=400
-            )
-        if len(salaries) > 700:
-            return https_fn.Response(
-                json.dumps({"error": "Too many salaries"}), status=400
-            )
-
-        async def process_data():
-            clean_locations_task = clean_locations_openai(locations)
-            clean_salaries_task = clean_salaries_openai(salaries)
-            clean_locations, clean_salaries = await asyncio.gather(
-                clean_locations_task, clean_salaries_task
-            )
-            return {
-                "locations": clean_locations.model_dump()["locations"],
-                "salaries": clean_salaries.model_dump()["salaries"],
-            }
-
-        result = asyncio.run(process_data())
-
-        print("clean_data result:", result)
-
-        increment_formatting_count(get_db(), email)
-
-        return https_fn.Response(
-            json.dumps({"data": result}),
-            content_type="application/json",
-        )
-    except Exception as e:
         return https_fn.Response(json.dumps({"error": str(e)}), status=500)
 
 
