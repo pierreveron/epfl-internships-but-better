@@ -1,10 +1,7 @@
-from typing import Any, TypedDict
+from typing import TypedDict
 
 
 class UserData(TypedDict):
-    createdAt: Any  # Using Any for SERVER_TIMESTAMP
     hasReferredSomeone: bool
-    formattingCount: int
-    referredBy: str | None
-    premiumUntil: Any | None  # Using Any for datetime
-    affiliateCode: str
+    referredAt: int | None
+    referralCode: str
