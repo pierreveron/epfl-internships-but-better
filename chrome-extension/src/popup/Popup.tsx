@@ -48,7 +48,7 @@ export default function Popup() {
     chrome.runtime.sendMessage({ type: 'SIGN_UP', referralCode }, (response) => {
       if (response && response.error) {
         console.error('Sign-up failed:', response.error)
-        alert('Sign-up failed')
+        alert('Sign-up failed. Make sure you are not already signed up.')
       }
     })
   }
