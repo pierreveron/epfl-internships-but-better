@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 import json
 import os
 import re
@@ -18,7 +17,7 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
-    generate_affiliate_code,
+    generate_referral_code,
     increment_formatting_count,
 )
 from firestore_helper import (
@@ -326,15 +325,12 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
         if user_doc.get().exists:
             return https_fn.Response("User already exists", status=400)
 
-        createdAt = firestore.SERVER_TIMESTAMP  # type: ignore
+        current_timestamp = firestore.SERVER_TIMESTAMP  # type: ignore
 
         user_data: UserData = {
-            "createdAt": createdAt,
             "hasReferredSomeone": False,
-            "formattingCount": 0,
-            "referredBy": None,
-            "premiumUntil": None,
-            "affiliateCode": generate_affiliate_code(user_email),
+            "referredAt": None,
+            "referralCode": generate_referral_code(user_email),
         }
 
         # Handle referral code if provided
@@ -343,8 +339,7 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
             referral_data = referral_doc.to_dict()
             if referral_data:
                 referrer_email = referral_data.get("email")
-                user_data["referredBy"] = referrer_email
-                user_data["premiumUntil"] = createdAt + datetime.timedelta(days=3)
+                user_data["referredAt"] = current_timestamp
 
                 # Update the referrer's document to mark that they've referred someone
                 db.collection("users").document(referrer_email).set(
@@ -371,10 +366,10 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
         user_doc.set(user_data)  # type: ignore
 
         # Create a referral code document
-        db.collection("referralCodes").document(user_data["affiliateCode"]).set(
+        db.collection("referralCodes").document(user_data["referralCode"]).set(
             {
                 "email": user_email,
-                "createdAt": createdAt,
+                "createdAt": current_timestamp,
             }
         )
 

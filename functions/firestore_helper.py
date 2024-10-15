@@ -13,24 +13,24 @@ def increment_formatting_count(db: google.cloud.firestore.Client, email: str):
     users_collection.document(email).set({"formattingCount": Increment(1)}, merge=True)
 
 
-def generate_affiliate_code(email: str) -> str:
+def generate_referral_code(email: str) -> str:
     # Generate a unique affiliate code based on the user's email
     return hashlib.md5(email.encode()).hexdigest()[:8]
 
 
-def get_affiliate_code(db: google.cloud.firestore.Client, email: str) -> str:
+def get_referral_code(db: google.cloud.firestore.Client, email: str) -> str:
     users_collection = db.collection("users")
     doc_ref = users_collection.document(email)
     doc = doc_ref.get()
 
     if doc.exists:
         user_data = doc.to_dict()
-        if user_data and "affiliateCode" in user_data:
-            return user_data["affiliateCode"]
+        if user_data and "referralCode" in user_data:
+            return user_data["referralCode"]
 
     # If no affiliate code exists, create a new one
-    new_code = generate_affiliate_code(email)
-    doc_ref.set({"affiliateCode": new_code}, merge=True)
+    new_code = generate_referral_code(email)
+    doc_ref.set({"referralCode": new_code}, merge=True)
 
     # Create a referral code document
     db.collection("referralCodes").document(new_code).set(
@@ -70,18 +70,14 @@ def get_user_data(db: google.cloud.firestore.Client, email: str) -> UserData:
         if not user_data:
             raise ValueError(f"User data not found for {email}")
 
-        formatting_count: int = user_data.get("formattingCount", 0)
-        affiliate_code: str = user_data.get("affiliateCode") or get_affiliate_code(
+        referral_code: str = user_data.get("referralCode") or get_referral_code(
             db, email
         )
 
         return UserData(
-            createdAt=user_data.get("createdAt", firestore.SERVER_TIMESTAMP),  # type: ignore
+            referredAt=referred_at,
             hasReferredSomeone=user_data.get("hasReferredSomeone", False),
-            formattingCount=formatting_count,
-            referredBy=user_data.get("referredBy"),
-            premiumUntil=user_data.get("premiumUntil"),
-            affiliateCode=affiliate_code,
+            referralCode=referral_code,
         )
     except Exception as error:
         print(f"Error getting user data for {email}:", error)
@@ -89,6 +85,7 @@ def get_user_data(db: google.cloud.firestore.Client, email: str) -> UserData:
 
 
 __all__ = [
-    "get_affiliate_code",
+    "get_referral_code",
     "get_user_data",
+    "generate_referral_code",
 ]
