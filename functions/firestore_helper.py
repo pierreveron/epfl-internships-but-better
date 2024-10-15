@@ -23,36 +23,28 @@ def get_referral_code(db: google.cloud.firestore.Client, email: str) -> str:
     doc_ref = users_collection.document(email)
     doc = doc_ref.get()
 
-    if doc.exists:
-        user_data = doc.to_dict()
-        if user_data and "referralCode" in user_data:
+    user_data = doc.to_dict()
+    if user_data:
+        if "referralCode" in user_data:
             return user_data["referralCode"]
+        else:
+            new_code = generate_referral_code(email)
+            doc_ref.set({"referralCode": new_code}, merge=True)
+            return new_code
 
-    # If no affiliate code exists, create a new one
-    new_code = generate_referral_code(email)
-    doc_ref.set({"referralCode": new_code}, merge=True)
-
-    # Create a referral code document
-    db.collection("referralCodes").document(new_code).set(
-        {
-            "email": email,
-            "createdAt": firestore.SERVER_TIMESTAMP,  # type: ignore
-        }
-    )
-
-    return new_code
+    raise ValueError(f"User data not found for {email}")
 
 
 def check_referral_status(db: google.cloud.firestore.Client, email: str) -> bool:
     try:
         referral_codes_collection = db.collection("referralCodes")
-        query = referral_codes_collection.where("email", "==", email).limit(1)
+        query = referral_codes_collection.where("referrer", "==", email).limit(1)
         docs = query.get()
 
         for doc in docs:
             referral_data = doc.to_dict()
             if referral_data:
-                return referral_data.get("used", False)
+                return True
 
         return False
     except Exception as error:
@@ -76,7 +68,7 @@ def get_user_data(db: google.cloud.firestore.Client, email: str) -> UserData:
 
         return UserData(
             referredAt=referred_at,
-            hasReferredSomeone=user_data.get("hasReferredSomeone", False),
+            hasReferredSomeone=check_referral_status(db, email),
             referralCode=referral_code,
         )
     except Exception as error:
