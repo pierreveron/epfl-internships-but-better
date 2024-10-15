@@ -10,13 +10,13 @@ export const fetchUserData = async (email: string): Promise<UserData> => {
     const data = response.data as {
       hasReferredSomeone: boolean
       referredAt: number | null
-      affiliateCode: string
+      referralCode: string
     }
 
     const userData = {
       hasReferredSomeone: data.hasReferredSomeone,
       referredAt: data.referredAt,
-      affiliateCode: data.affiliateCode,
+      referralCode: data.referralCode,
     }
 
     // Save user data to Chrome extension storage
@@ -28,7 +28,7 @@ export const fetchUserData = async (email: string): Promise<UserData> => {
     const defaultUserData = {
       hasReferredSomeone: false,
       referredAt: null,
-      affiliateCode: '',
+      referralCode: '',
     }
 
     // Save default user data to Chrome extension storage

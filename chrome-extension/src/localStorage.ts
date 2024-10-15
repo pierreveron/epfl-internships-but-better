@@ -46,7 +46,7 @@ export const userDataFromLocalStorage = createStorageHelpers<
 >('userData', {
   hasReferredSomeone: false,
   referredAt: null,
-  affiliateCode: '',
+  referralCode: '',
   timestamp: 0,
 })
 

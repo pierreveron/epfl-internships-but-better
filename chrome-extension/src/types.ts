@@ -90,7 +90,7 @@ export type Offer = {
 export type UserData = {
   hasReferredSomeone: boolean
   referredAt: number | null
-  affiliateCode: string
+  referralCode: string
 }
 
 export type UserWithData = User &

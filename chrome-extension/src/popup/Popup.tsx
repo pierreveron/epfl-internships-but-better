@@ -169,8 +169,8 @@ export default function Popup() {
                     friends to unlock premium features for them!
                   </p>
                   <div className="tw-mt-2 tw-border tw-bg-white tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
-                    <p className="tw-text-sm">{user.affiliateCode}</p>
-                    <CopyButton value={user.affiliateCode}>
+                    <p className="tw-text-sm">{user.referralCode}</p>
+                    <CopyButton value={user.referralCode}>
                       {({ copied, copy }) => (
                         <Button color={copied ? 'gray' : 'red'} onClick={copy} size="xs" variant="subtle">
                           {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
@@ -210,8 +210,8 @@ export default function Popup() {
                     Share your referral code below and unlock premium features when a friend uses it at sign-in!
                   </p>
                   <div className="tw-bg-white tw-border tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
-                    <p className="tw-text-sm">{user.affiliateCode}</p>
-                    <CopyButton value={user.affiliateCode}>
+                    <p className="tw-text-sm">{user.referralCode}</p>
+                    <CopyButton value={user.referralCode}>
                       {({ copied, copy }) => (
                         <Button color={copied ? 'gray' : 'red'} onClick={copy} size="xs" variant="subtle">
                           {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
