@@ -305,7 +305,8 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
         return https_fn.Response("Method not allowed", status=405)
 
     try:
-        data: dict[str, Any] = req.get_json()
+        json_data: dict[str, Any] = req.get_json()
+        data: dict[str, Any] = json_data.get("data", {})
         user_email: str | None = data.get("email")
         referral_code: str | None = data.get("referralCode")
 
@@ -316,6 +317,8 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
             return https_fn.Response(
                 "Invalid email domain. Must be an EPFL email.", status=400
             )
+
+        print("New user sign-up with email:", user_email)
 
         db = get_db()
         users_ref = db.collection("users")
@@ -401,7 +404,8 @@ def handle_sign_in(req: https_fn.Request) -> https_fn.Response:
         return https_fn.Response("Method not allowed", status=405)
 
     try:
-        data: dict[str, Any] = req.get_json()
+        json_data: dict[str, Any] = req.get_json()
+        data: dict[str, Any] = json_data.get("data", {})
         user_email: str | None = data.get("email")
 
         if not user_email:
@@ -412,6 +416,8 @@ def handle_sign_in(req: https_fn.Request) -> https_fn.Response:
                 "Invalid email domain. Must be an EPFL email.", status=400
             )
 
+        print("User sign-in with email:", user_email)
+
         db = get_db()
         user_doc = db.collection("users").document(user_email).get()
 
@@ -419,14 +425,23 @@ def handle_sign_in(req: https_fn.Request) -> https_fn.Response:
             return https_fn.Response(
                 json.dumps(
                     {
-                        "success": True,
+                        "data": {
+                            "success": True,
+                        }
                     }
                 ),
                 content_type="application/json",
             )
         else:
             return https_fn.Response(
-                json.dumps({"success": False, "error": "User not found"}),
+                json.dumps(
+                    {
+                        "data": {
+                            "success": False,
+                            "error": "User not found",
+                        }
+                    }
+                ),
                 status=404,
                 content_type="application/json",
             )
