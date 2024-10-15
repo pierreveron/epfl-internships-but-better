@@ -1,5 +1,4 @@
-import { createContext, useState, useEffect, useCallback } from 'react'
-import { incrementFormattingCountInStorage } from '../utils/userUtils'
+import { createContext, useState, useEffect } from 'react'
 import { UserWithData, UserData } from '../../types'
 import { userDataFromLocalStorage } from '../../localStorage'
 import { User } from 'firebase/auth'
@@ -8,7 +7,6 @@ interface UserContextType {
   user: UserWithData | null
   setUser: React.Dispatch<React.SetStateAction<UserWithData | null>>
   isLoading: boolean
-  increaseFormattingCount: () => void
 }
 
 export const UserContext = createContext<UserContextType | undefined>(undefined)
@@ -35,14 +33,6 @@ const getUserData = async (): Promise<UserData> => {
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserWithData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-
-  const increaseFormattingCount = useCallback(() => {
-    incrementFormattingCountInStorage().then((formattingCount) => {
-      if (formattingCount) {
-        setUser((user) => (user ? { ...user, formattingCount } : user))
-      }
-    })
-  }, [])
 
   useEffect(() => {
     const updateUser = (user: User | null) => {
@@ -78,7 +68,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     user,
     setUser,
     isLoading,
-    increaseFormattingCount,
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>

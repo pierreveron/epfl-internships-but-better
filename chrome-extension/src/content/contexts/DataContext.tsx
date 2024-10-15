@@ -39,7 +39,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [offersLoaded, setOffersLoaded] = useState<number>(0)
   const [error, setError] = useState<Error | null>(null)
   const [newOffersCount, setNewOffersCount] = useState<number>(0)
-  const { user, increaseFormattingCount } = useUser()
+  const { user } = useUser()
   const userInitializedRef = useRef(false)
   const [favoriteOffers, setFavoriteOffers] = useState<string[]>([])
   const [hiddenOffers, setHiddenOffers] = useState<string[]>([])
@@ -104,7 +104,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setData(refreshedOffers.filter((d) => !hiddenOffersNumbers.includes(d.number)))
       setDataDate(new Date(Date.now()).toLocaleDateString('fr-CH'))
       setNewOffersCount(0)
-      increaseFormattingCount()
     } catch (error) {
       console.error('Error refreshing data:', error)
       setError(new Error('Error refreshing data'))
@@ -112,7 +111,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     setIsLoading(false)
     setIsFormatting(false)
-  }, [increaseFormattingCount, user])
+  }, [user])
 
   useEffect(() => {
     const initializeOffers = async (user: UserWithData): Promise<{ data: Offer[]; dataDate: string }> => {
@@ -153,7 +152,6 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setIsFormatting(true)
             const formattedOffers = await formatOffers(user.email, newOffers)
             console.log('New offers formatted', formattedOffers)
-            increaseFormattingCount()
 
             const refreshedOffers = currentOffers.concat(formattedOffers)
             await jobOffersFromLocalStorage.set({ offers: refreshedOffers, lastUpdated: Date.now() })
@@ -185,7 +183,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setIsFormatting(false)
       })
     }
-  }, [user, increaseFormattingCount])
+  }, [user])
 
   const locations = useMemo(() => data.map((d) => d.location), [data])
 
