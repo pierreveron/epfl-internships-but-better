@@ -62,6 +62,7 @@ export const signIn = async (): Promise<User | null> => {
     }
     return null
   } catch (e) {
+    auth.signOut()
     console.error('Error during sign-in:', e)
     throw e
   }
@@ -94,6 +95,7 @@ export const signUp = async (referralCode?: string): Promise<User | null> => {
     }
     return null
   } catch (e) {
+    auth.signOut()
     console.error('Error during sign-up:', e)
     throw e // Re-throw the error to be handled by the caller
   }
