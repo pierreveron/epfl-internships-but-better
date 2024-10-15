@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { Button, Group, NumberInput, Popover, Stack, Switch } from '@mantine/core'
-import { IconChevronDown, IconRefresh } from '@tabler/icons-react'
+import { IconChevronDown } from '@tabler/icons-react'
 import CompanySelect from './CompanySelect'
 import FormatsSegmentedControl from './FormatsSegmentedControl'
 import LengthsCheckboxes from './LengthsCheckboxes'
@@ -9,10 +9,10 @@ import DisplayModeSegmentedControl from './DisplayModeSegmentedControl'
 import { FilterContext } from '../contexts/FilterContext'
 import { useData } from '../hooks/useData'
 import { useUser } from '../hooks/useUser'
-import UpgradeButton from './UpgradeButton'
+import UnlockButton from './UnlockButton'
 
 export default function ActionBar() {
-  const { companies, newOffersCount, refreshData } = useData()
+  const { companies } = useData()
   const { user } = useUser()
 
   const {
@@ -104,11 +104,14 @@ export default function ActionBar() {
           }}
           step={500}
           min={0}
-          disabled={!user?.isPremium}
-          title={!user?.isPremium ? 'Premium feature: Upgrade to filter by salary' : undefined}
+          disabled={!user?.hasFiltersUnlocked}
+          title={
+            !user?.hasFiltersUnlocked
+              ? 'Locked filter: Share the extension with your friends to unlock all filters'
+              : undefined
+          }
         />
-
-        {!user?.isPremium && <UpgradeButton email={user?.email ?? ''} />}
+        {!user?.hasReferredSomeone && <UnlockButton />}
       </Group>
 
       <Group>
@@ -131,29 +134,6 @@ export default function ActionBar() {
           }}
         />
       </Group>
-
-      {!user?.isPremium && (
-        <Button
-          variant="light"
-          color="red"
-          leftSection={<IconRefresh size={18} />}
-          onClick={() => {
-            refreshData()
-          }}
-          disabled={newOffersCount === 0 || (user?.formattingCount ?? 0) >= 4}
-          rightSection={
-            (user?.formattingCount ?? 0) >= 4
-              ? '(No refresh left, please upgrade to premium)'
-              : `(${4 - (user?.formattingCount ?? 1)} refresh${(user?.formattingCount ?? 0) === 3 ? '' : 's'} left)`
-          }
-        >
-          {newOffersCount === 0
-            ? 'No new offers'
-            : newOffersCount === 1
-            ? '1 new offer'
-            : `${newOffersCount} new offers`}
-        </Button>
-      )}
 
       {/* <Group gap="xs">
         <Text c="dimmed">Last data update: {dataDate}</Text>

@@ -1,6 +1,4 @@
 import asyncio
-import hashlib
-import hmac
 import json
 import os
 import re
@@ -11,6 +9,7 @@ import google.cloud.firestore  # type: ignore
 from clean_bad_locations_openai import clean_locations as clean_locations_openai
 from clean_salaries_openai import clean_salaries as clean_salaries_openai
 from data_types.Offer import Location, Offer, OfferToFormat, Salary
+from data_types.UserData import UserData
 
 # The Firebase Admin SDK to access Cloud Firestore.
 from firebase_admin import firestore, initialize_app  # type: ignore
@@ -18,10 +17,11 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
 from firestore_helper import (
-    add_payment,
-    check_payment_status,
-    get_formatting_count,
+    generate_referral_code,
     increment_formatting_count,
+)
+from firestore_helper import (
+    get_user_data as get_user_data_from_db,
 )
 
 app = initialize_app()
@@ -226,15 +226,6 @@ def clean_data(req: https_fn.Request) -> https_fn.Response:
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return https_fn.Response("Invalid email", status=400)
 
-        payment_status = check_payment_status(get_db(), email)
-
-        formatting_count = get_formatting_count(get_db(), email)
-
-        if not payment_status and formatting_count >= 4:
-            return https_fn.Response(
-                json.dumps({"error": "Too many formatting requests"}), status=400
-            )
-
         print("locations:", len(locations))
         print("salaries:", len(salaries))
 
@@ -272,52 +263,6 @@ def clean_data(req: https_fn.Request) -> https_fn.Response:
         return https_fn.Response(json.dumps({"error": str(e)}), status=500)
 
 
-@https_fn.on_request()
-def webhook(request: https_fn.Request) -> https_fn.Response:
-    def fulfill_checkout(order_payload: dict[str, Any]) -> https_fn.Response:
-        print(f"Fulfilling order: {order_payload}")
-        attributes = order_payload["attributes"]
-
-        email = attributes.get("user_email")
-        payment_status = attributes.get("status")
-
-        if payment_status == "paid" and email:
-            try:
-                add_payment(get_db(), "lemon-squeezy", email, order_payload)
-                return https_fn.Response("Payment fulfilled", status=200)
-            except Exception as e:
-                print(f"Error fulfilling payment: {e}")
-                return https_fn.Response("Error fulfilling payment", status=500)
-
-        return https_fn.Response("Payment not fulfilled", status=200)
-
-    if request.method != "POST":
-        return https_fn.Response("Method not allowed", status=405)
-
-    print(f"Received POST request on /webhook: {request.data}, {request.headers}")
-    body = request.data
-    signature = request.headers.get("X-Signature")
-    event_name = request.headers.get("X-Event-Name")
-
-    if event_name != "order_created":
-        return https_fn.Response("Invalid event name", status=400)
-
-    if not signature:
-        return https_fn.Response("No signature provided", status=400)
-
-    computed_signature = hmac.new(
-        WEBHOOK_SECRET.encode(), body, hashlib.sha256
-    ).hexdigest()
-
-    if computed_signature != signature:
-        return https_fn.Response("Invalid signature", status=401)
-
-    order = json.loads(body)
-    print(f"Received webhook: {order}")
-
-    return fulfill_checkout(order["data"])
-
-
 @https_fn.on_request(
     cors=options.CorsOptions(
         cors_origins=[EXTENSION_ORIGIN],
@@ -336,35 +281,171 @@ def get_user_data(req: https_fn.Request) -> https_fn.Response:
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
         return https_fn.Response("Invalid email", status=400)
 
-    payment_status = check_payment_status(get_db(), email)
-    formatting_count = get_formatting_count(get_db(), email)
-    return https_fn.Response(
-        json.dumps(
-            {
-                "data": {
-                    "has_payment": payment_status,
-                    "formatting_count": formatting_count,
-                }
-            }
-        ),
-        content_type="application/json",
-    )
+    db = get_db()
+
+    try:
+        user_data = get_user_data_from_db(db, email)
+
+        return https_fn.Response(
+            json.dumps({"data": user_data}),
+            content_type="application/json",
+        )
+    except Exception as e:
+        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
 
 
 @https_fn.on_request(
     cors=options.CorsOptions(
-        cors_origins=[ISA_ORIGIN, EXTENSION_ORIGIN],
+        cors_origins=[EXTENSION_ORIGIN],
         cors_methods=["POST"],
     ),
 )
-def get_upgrade_url(req: https_fn.Request) -> https_fn.Response:
+def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
     if req.method != "POST":
         return https_fn.Response("Method not allowed", status=405)
 
-    # Generate or retrieve the upgrade URL
-    upgrade_url = os.getenv("LEMON_SQUEEZY_STORE_URL")
+    try:
+        json_data: dict[str, Any] = req.get_json()
+        data: dict[str, Any] = json_data.get("data", {})
+        user_email: str | None = data.get("email")
+        referral_code: str | None = data.get("referralCode")
 
-    return https_fn.Response(
-        json.dumps({"data": {"url": upgrade_url}}),
-        content_type="application/json",
-    )
+        if not user_email:
+            return https_fn.Response("Email is required", status=400)
+
+        if not re.match(r"[^@]+@epfl\.ch$", user_email):
+            return https_fn.Response(
+                "Invalid email domain. Must be an EPFL email.", status=400
+            )
+
+        print("New user sign-up with email:", user_email)
+
+        db = get_db()
+        users_ref = db.collection("users")
+        user_doc = users_ref.document(user_email)
+
+        # Check if user already exists
+        if user_doc.get().exists:
+            return https_fn.Response("User already exists", status=400)
+
+        current_timestamp = firestore.SERVER_TIMESTAMP  # type: ignore
+
+        referred_at: int | None = None
+        # Handle referral code if provided
+        if referral_code:
+            referrer_query = users_ref.where("referralCode", "==", referral_code).limit(
+                1
+            )
+            referrer_docs = referrer_query.get()
+
+            referrer_email: str | None = None
+            for doc in referrer_docs:
+                referrer_email = doc.id  # type: ignore
+                break
+
+            if referrer_email:
+                referred_at = current_timestamp  # type: ignore
+
+                db.collection("referralCodes").add(
+                    {
+                        "referrer": referrer_email,
+                        "referee": user_email,
+                        "createdAt": current_timestamp,
+                    }
+                )
+
+                print(
+                    f"Referral code {referral_code} from {referrer_email} applied for user {user_email}"
+                )
+            else:
+                return https_fn.Response(
+                    json.dumps(
+                        {
+                            "data": {
+                                "success": False,
+                                "error": "Invalid referral code",
+                            }
+                        }
+                    ),
+                    status=400,
+                )
+
+        # Create the user document
+        user_data: UserData = {
+            "hasReferredSomeone": False,
+            "referredAt": referred_at,
+            "referralCode": generate_referral_code(user_email),
+        }
+        user_doc.set(user_data)  # type: ignore
+
+        return https_fn.Response(
+            json.dumps(
+                {
+                    "data": {
+                        "success": True,
+                    }
+                }
+            ),
+            content_type="application/json",
+        )
+    except Exception as e:
+        print(f"Error handling sign-up: {str(e)}")
+        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
+
+
+@https_fn.on_request(
+    cors=options.CorsOptions(
+        cors_origins=[EXTENSION_ORIGIN],
+        cors_methods=["POST"],
+    ),
+)
+def handle_sign_in(req: https_fn.Request) -> https_fn.Response:
+    if req.method != "POST":
+        return https_fn.Response("Method not allowed", status=405)
+
+    try:
+        json_data: dict[str, Any] = req.get_json()
+        data: dict[str, Any] = json_data.get("data", {})
+        user_email: str | None = data.get("email")
+
+        if not user_email:
+            return https_fn.Response("Email is required", status=400)
+
+        if not re.match(r"[^@]+@epfl\.ch$", user_email):
+            return https_fn.Response(
+                "Invalid email domain. Must be an EPFL email.", status=400
+            )
+
+        print("User sign-in with email:", user_email)
+
+        db = get_db()
+        user_doc = db.collection("users").document(user_email).get()
+
+        if user_doc.exists:
+            return https_fn.Response(
+                json.dumps(
+                    {
+                        "data": {
+                            "success": True,
+                        }
+                    }
+                ),
+                content_type="application/json",
+            )
+        else:
+            return https_fn.Response(
+                json.dumps(
+                    {
+                        "data": {
+                            "success": False,
+                            "error": "User not found",
+                        }
+                    }
+                ),
+                status=404,
+                content_type="application/json",
+            )
+
+    except Exception as e:
+        print(f"Error handling sign-in: {str(e)}")
+        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
