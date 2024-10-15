@@ -327,23 +327,28 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
 
         current_timestamp = firestore.SERVER_TIMESTAMP  # type: ignore
 
-        user_data: UserData = {
-            "hasReferredSomeone": False,
-            "referredAt": None,
-            "referralCode": generate_referral_code(user_email),
-        }
-
+        referred_at: int | None = None
         # Handle referral code if provided
         if referral_code:
-            referral_doc = db.collection("referralCodes").document(referral_code).get()
-            referral_data = referral_doc.to_dict()
-            if referral_data:
-                referrer_email = referral_data.get("email")
-                user_data["referredAt"] = current_timestamp
+            referrer_query = users_ref.where("referralCode", "==", referral_code).limit(
+                1
+            )
+            referrer_docs = referrer_query.get()
 
-                # Update the referrer's document to mark that they've referred someone
-                db.collection("users").document(referrer_email).set(
-                    {"hasReferredSomeone": True}, merge=True
+            referrer_email: str | None = None
+            for doc in referrer_docs:
+                referrer_email = doc.id  # type: ignore
+                break
+
+            if referrer_email:
+                referred_at = current_timestamp  # type: ignore
+
+                db.collection("referralCodes").add(
+                    {
+                        "referrer": referrer_email,
+                        "referee": user_email,
+                        "createdAt": current_timestamp,
+                    }
                 )
 
                 print(
@@ -363,15 +368,12 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
                 )
 
         # Create the user document
+        user_data: UserData = {
+            "hasReferredSomeone": False,
+            "referredAt": referred_at,
+            "referralCode": generate_referral_code(user_email),
+        }
         user_doc.set(user_data)  # type: ignore
-
-        # Create a referral code document
-        db.collection("referralCodes").document(user_data["referralCode"]).set(
-            {
-                "email": user_email,
-                "createdAt": current_timestamp,
-            }
-        )
 
         return https_fn.Response(
             json.dumps(
