@@ -25,7 +25,7 @@ import { PaginationProvider } from './contexts/PaginationContext'
 import { UserProvider } from './contexts/UserContext'
 import Table from './components/Table'
 import { useData } from './hooks/useData'
-import { DisplayProvider } from './providers/DisplayProvider'
+import { DisplayProvider } from './contexts/DisplayContext'
 import { useDisplay } from './hooks/useDisplay'
 
 function AppContent() {

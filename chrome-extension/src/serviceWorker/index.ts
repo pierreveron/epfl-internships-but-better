@@ -3,7 +3,7 @@ import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
 import { userDataFromLocalStorage } from '../localStorage'
-import { Offer, UserData } from '../types'
+import { Offer, UserWithData } from '../types'
 
 const constants = {
   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -19,18 +19,20 @@ if (constants.consoleLog !== 'true') {
   }
 }
 
-let currentUser: User | null = null
+let currentUser: UserWithData | null = null
 let formattingPromise: Promise<Offer[]> | null = null
-let fetchUserDataPromise: Promise<UserData> | null = null
 
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
 
-  currentUser = user
-
-  sendUserUpdateMessages(user)
-
-  if (!user) {
+  if (user) {
+    getFullUser(user).then((fullUser) => {
+      currentUser = fullUser
+      sendUserUpdateMessages(fullUser)
+    })
+  } else {
+    currentUser = null
+    sendUserUpdateMessages(null)
     // Remove all storage if user is not logged in
     chrome.storage.local.clear(() => {
       console.log('All chrome.storage.local data cleared when user changes')
@@ -59,13 +61,36 @@ function sendUserUpdateMessages(user: User | null) {
   })
 }
 
-chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
+async function getFullUser(user: User | null): Promise<UserWithData | null> {
+  if (!user) return null
+
+  try {
+    const storedData = await fetchUserData(user.email!)
+
+    return {
+      ...user,
+      ...storedData,
+      hasFiltersUnlocked:
+        storedData.hasReferredSomeone ||
+        (storedData.referredAt !== null && storedData.referredAt < Date.now() - 3 * 24 * 60 * 60 * 1000),
+    }
+  } catch (error) {
+    console.error('Error getting full user data:', error)
+    return null
+  }
+}
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  console.log('Message received from:', sender, request)
   if (request.type === 'SIGN_UP') {
     signUp(request.referralCode)
       .then((user) => {
         if (user) {
           console.log('User signed up')
-          sendResponse({ success: true, user })
+          getFullUser(user).then((fullUser) => {
+            currentUser = fullUser
+            sendUserUpdateMessages(fullUser)
+          })
         } else {
           sendResponse({ error: 'Sign-up failed' })
         }
@@ -82,6 +107,10 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
       .then((user) => {
         if (user) {
           console.log('User signed in')
+          getFullUser(user).then((fullUser) => {
+            currentUser = fullUser
+            sendUserUpdateMessages(fullUser)
+          })
         } else {
           sendResponse({ error: 'Sign-in failed' })
         }
@@ -108,6 +137,7 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
   }
 
   if (request.type === 'GET_CURRENT_USER') {
+    console.log('Getting current user:', currentUser)
     sendResponse({ user: currentUser })
   }
 
@@ -145,42 +175,6 @@ chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
         })
     }
 
-    return true // Indicates that the response is sent asynchronously
-  }
-
-  if (request.type === 'FETCH_USER_DATA') {
-    if (currentUser && currentUser.email) {
-      if (fetchUserDataPromise) {
-        fetchUserDataPromise
-          .then((userData) => {
-            sendResponse({ userData })
-          })
-          .catch((error) => {
-            console.error('Error fetching user data:', error)
-            sendResponse({ error: 'Failed to fetch user data' })
-          })
-      } else {
-        fetchUserDataPromise = fetchUserData(currentUser.email)
-          .catch((error) => {
-            console.error('Error fetching user data:', error)
-            throw error
-          })
-          .finally(() => {
-            fetchUserDataPromise = null
-          })
-
-        fetchUserDataPromise
-          .then((userData) => {
-            sendResponse({ userData })
-          })
-          .catch((error) => {
-            console.error('Error fetching user data:', error)
-            sendResponse({ error: 'Failed to fetch user data' })
-          })
-      }
-    } else {
-      sendResponse({ error: 'No current user' })
-    }
     return true // Indicates that the response is sent asynchronously
   }
 

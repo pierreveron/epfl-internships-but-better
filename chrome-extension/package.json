@@ -4,10 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "tsc && vite build --watch",
     "build": "tsc && vite build",
     "package": "tsc && vite build && zip -r ~/Downloads/epfl-internships-but-better-extension.zip dist",
-    "watch": "tsc && vite build --watch",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -28,7 +27,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@crxjs/vite-plugin": "^2.0.0-beta.19",
+    "@crxjs/vite-plugin": "^2.0.0-beta.28",
     "@types/chrome": "^0.0.246",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
