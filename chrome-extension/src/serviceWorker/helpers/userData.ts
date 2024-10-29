@@ -19,15 +19,6 @@ export const fetchUserData = async (email: string): Promise<UserData> => {
     return userData
   } catch (error) {
     console.error('Error getting user data:', error)
-    const defaultUserData = {
-      hasReferredSomeone: false,
-      referredAt: null,
-      referralCode: '',
-    }
-
-    // Save default user data to Chrome extension storage
-    await userDataFromLocalStorage.set({ ...defaultUserData, timestamp: Date.now() })
-
-    return defaultUserData
+    throw new Error(`Error getting user data: ${error}`)
   }
 }
