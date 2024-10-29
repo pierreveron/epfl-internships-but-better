@@ -7,16 +7,10 @@ export const fetchUserData = async (email: string): Promise<UserData> => {
 
   try {
     const response = await getUserData(email)
-    const data = response.data as {
+    const userData = response.data as {
       hasReferredSomeone: boolean
       referredAt: number | null
       referralCode: string
-    }
-
-    const userData = {
-      hasReferredSomeone: data.hasReferredSomeone,
-      referredAt: data.referredAt,
-      referralCode: data.referralCode,
     }
 
     // Save user data to Chrome extension storage
