@@ -25,7 +25,12 @@ let formattingPromise: Promise<Offer[]> | null = null
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
 
-  if (!user) {
+  if (user) {
+    getFullUser(user).then((fullUser) => {
+      currentUser = fullUser
+      sendUserUpdateMessages(fullUser)
+    })
+  } else {
     currentUser = null
     sendUserUpdateMessages(null)
     // Remove all storage if user is not logged in
