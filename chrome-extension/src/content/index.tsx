@@ -25,6 +25,15 @@ import { isExtensionEnabledFromLocalStorage } from '../localStorage.ts'
 //   }
 // }
 
+const originalConsoleLog = console.log
+console.log = (...args) => {
+  originalConsoleLog('[EPFL-INTERNSHIPS-BUT-BETTER]', ...args)
+}
+const originalConsoleError = console.error
+console.error = (...args) => {
+  originalConsoleError('[EPFL-INTERNSHIPS-BUT-BETTER]', ...args)
+}
+
 let isReactAppInjected = false
 
 function checkForElement(): Promise<HTMLElement | null> {

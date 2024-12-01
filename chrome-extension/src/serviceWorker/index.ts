@@ -19,6 +19,15 @@ import { Offer, UserWithData } from '../types'
 //   }
 // }
 
+const originalConsoleLog = console.log
+console.log = (...args) => {
+  originalConsoleLog('[EPFL-INTERNSHIPS-BUT-BETTER]', ...args)
+}
+const originalConsoleError = console.error
+console.error = (...args) => {
+  originalConsoleError('[EPFL-INTERNSHIPS-BUT-BETTER]', ...args)
+}
+
 let formattingPromise: Promise<Offer[]> | null = null
 
 async function getCurrentUser(): Promise<UserWithData | null> {
