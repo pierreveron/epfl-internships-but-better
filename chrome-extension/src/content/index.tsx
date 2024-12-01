@@ -6,24 +6,24 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { User } from 'firebase/auth'
 import { isExtensionEnabledFromLocalStorage } from '../localStorage.ts'
 
-const constants = {
-  consoleLog: import.meta.env.VITE_CONSOLE_LOG,
-}
+// const constants = {
+//   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
+// }
 
-// Override console.log
-if (constants.consoleLog !== 'true') {
-  console.log = () => {}
-  console.error = () => {}
-} else {
-  const originalConsoleLog = console.log
-  console.log = (...args) => {
-    originalConsoleLog('[DEV]', ...args)
-  }
-  const originalConsoleError = console.error
-  console.error = (...args) => {
-    originalConsoleError('[DEV]', ...args)
-  }
-}
+// // Override console.log
+// if (constants.consoleLog !== 'true') {
+//   console.log = () => {}
+//   console.error = () => {}
+// } else {
+//   const originalConsoleLog = console.log
+//   console.log = (...args) => {
+//     originalConsoleLog('[DEV]', ...args)
+//   }
+//   const originalConsoleError = console.error
+//   console.error = (...args) => {
+//     originalConsoleError('[DEV]', ...args)
+//   }
+// }
 
 let isReactAppInjected = false
 

@@ -5,19 +5,19 @@ import { User } from 'firebase/auth'
 import { userDataFromLocalStorage } from '../localStorage'
 import { Offer, UserWithData } from '../types'
 
-const constants = {
-  consoleLog: import.meta.env.VITE_CONSOLE_LOG,
-}
+// const constants = {
+//   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
+// }
 
-// Override console.log
-if (constants.consoleLog !== 'true') {
-  console.log = () => {}
-} else {
-  const originalConsoleLog = console.log
-  console.log = (...args) => {
-    originalConsoleLog('[DEV]', ...args)
-  }
-}
+// // Override console.log
+// if (constants.consoleLog !== 'true') {
+//   console.log = () => {}
+// } else {
+//   const originalConsoleLog = console.log
+//   console.log = (...args) => {
+//     originalConsoleLog('[DEV]', ...args)
+//   }
+// }
 
 let formattingPromise: Promise<Offer[]> | null = null
 
