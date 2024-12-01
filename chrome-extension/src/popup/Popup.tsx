@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Button, Switch, CopyButton, TextInput } from '@mantine/core'
+import { Button, Switch, CopyButton, TextInput, Loader } from '@mantine/core'
 import {
   IconExternalLink,
   IconBrandLinkedin,
@@ -17,7 +17,8 @@ import { useUser } from '../content/hooks/useUser'
 import { isExtensionEnabledFromLocalStorage } from '../localStorage'
 
 export default function Popup() {
-  const { user, isLoading } = useUser()
+  const { user, isLoading: isUserLoading } = useUser()
+  const [isAuthLoading, setIsAuthLoading] = useState(false)
   const [isOnJobBoard, setIsOnJobBoard] = useState(false)
   const [isEnabled, setIsEnabled] = useState(true)
   const [referralCode, setReferralCode] = useState('')
@@ -36,7 +37,9 @@ export default function Popup() {
   }, [])
 
   const handleSignIn = async () => {
+    setIsAuthLoading(true)
     chrome.runtime.sendMessage({ type: 'SIGN_IN' }, (response) => {
+      setIsAuthLoading(false)
       if (response && response.error) {
         console.error('Sign-in failed:', response.error)
         alert('Sign-in failed')
@@ -45,7 +48,9 @@ export default function Popup() {
   }
 
   const handleSignUp = async () => {
+    setIsAuthLoading(true)
     chrome.runtime.sendMessage({ type: 'SIGN_UP', referralCode }, (response) => {
+      setIsAuthLoading(false)
       if (response && response.error) {
         console.error('Sign-up failed:', response.error)
         alert('Sign-up failed. Make sure you are not already signed up.')
@@ -81,10 +86,15 @@ export default function Popup() {
     changeState(checked)
   }
 
-  if (isLoading) {
+  if (isUserLoading || isAuthLoading) {
     return (
-      <div className="tw-w-auto tw-p-6 tw-bg-white tw-flex tw-items-center tw-justify-center">
-        <div className="loader"></div>
+      <div className="tw-w-96 tw-p-6 tw-bg-white tw-flex tw-flex-col tw-gap-4 tw-items-center tw-justify-center tw-min-h-[200px]">
+        <Loader color="red" size="md" className="tw-mb-4" />
+        {isAuthLoading && (
+          <p className="tw-text-sm tw-text-gray-600 tw-text-center tw-max-w-[80%]">
+            Please wait while we connect to Google...
+          </p>
+        )}
       </div>
     )
   }

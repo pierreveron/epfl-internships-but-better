@@ -19,15 +19,17 @@ if (constants.consoleLog !== 'true') {
   }
 }
 
-let currentUser: UserWithData | null = null
 let formattingPromise: Promise<Offer[]> | null = null
 
-chrome.storage.local.get(['currentUser'], (result) => {
-  currentUser = result.currentUser || null
-})
+async function getCurrentUser(): Promise<UserWithData | null> {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(['currentUser'], (result) => {
+      resolve(result.currentUser || null)
+    })
+  })
+}
 
 async function persistCurrentUser(user: UserWithData | null) {
-  currentUser = user
   await chrome.storage.local.set({ currentUser: user })
 }
 
@@ -135,7 +137,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     auth
       .signOut()
       .then(() => {
-        userDataFromLocalStorage.reset().then(() => console.log('User data reset on sign out'))
+        userDataFromLocalStorage.reset().then(() => {
+          console.log('User data reset on sign out')
+          sendResponse({ success: true })
+        })
         console.log('User signed out')
       })
       .catch((error) => {
@@ -146,8 +151,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.type === 'GET_CURRENT_USER') {
-    console.log('Getting current user:', currentUser)
-    sendResponse({ user: currentUser })
+    getCurrentUser().then((user) => {
+      console.log('Getting current user from storage:', user)
+      sendResponse({ user })
+    })
+    return true // Indicates async response
   }
 
   if (request.action === 'formatOffers') {
