@@ -22,16 +22,25 @@ if (constants.consoleLog !== 'true') {
 let currentUser: UserWithData | null = null
 let formattingPromise: Promise<Offer[]> | null = null
 
+chrome.storage.local.get(['currentUser'], (result) => {
+  currentUser = result.currentUser || null
+})
+
+async function persistCurrentUser(user: UserWithData | null) {
+  currentUser = user
+  await chrome.storage.local.set({ currentUser: user })
+}
+
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
 
   if (user) {
     getFullUser(user).then((fullUser) => {
-      currentUser = fullUser
+      persistCurrentUser(fullUser)
       sendUserUpdateMessages(fullUser)
     })
   } else {
-    currentUser = null
+    persistCurrentUser(null)
     sendUserUpdateMessages(null)
     // Remove all storage if user is not logged in
     chrome.storage.local.clear(() => {
@@ -88,7 +97,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (user) {
           console.log('User signed up')
           getFullUser(user).then((fullUser) => {
-            currentUser = fullUser
+            persistCurrentUser(fullUser)
             sendUserUpdateMessages(fullUser)
           })
         } else {
@@ -108,7 +117,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (user) {
           console.log('User signed in')
           getFullUser(user).then((fullUser) => {
-            currentUser = fullUser
+            persistCurrentUser(fullUser)
             sendUserUpdateMessages(fullUser)
           })
         } else {
