@@ -5,33 +5,53 @@ import { User } from 'firebase/auth'
 import { userDataFromLocalStorage } from '../localStorage'
 import { Offer, UserWithData } from '../types'
 
-const constants = {
-  consoleLog: import.meta.env.VITE_CONSOLE_LOG,
+// const constants = {
+//   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
+// }
+
+// // Override console.log
+// if (constants.consoleLog !== 'true') {
+//   console.log = () => {}
+// } else {
+//   const originalConsoleLog = console.log
+//   console.log = (...args) => {
+//     originalConsoleLog('[DEV]', ...args)
+//   }
+// }
+
+const originalConsoleLog = console.log
+console.log = (...args) => {
+  originalConsoleLog('[EPFL-INTERNSHIPS-BUT-BETTER]', ...args)
+}
+const originalConsoleError = console.error
+console.error = (...args) => {
+  originalConsoleError('[EPFL-INTERNSHIPS-BUT-BETTER]', ...args)
 }
 
-// Override console.log
-if (constants.consoleLog !== 'true') {
-  console.log = () => {}
-} else {
-  const originalConsoleLog = console.log
-  console.log = (...args) => {
-    originalConsoleLog('[DEV]', ...args)
-  }
-}
-
-let currentUser: UserWithData | null = null
 let formattingPromise: Promise<Offer[]> | null = null
+
+async function getCurrentUser(): Promise<UserWithData | null> {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(['currentUser'], (result) => {
+      resolve(result.currentUser || null)
+    })
+  })
+}
+
+async function persistCurrentUser(user: UserWithData | null) {
+  await chrome.storage.local.set({ currentUser: user })
+}
 
 auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
 
   if (user) {
     getFullUser(user).then((fullUser) => {
-      currentUser = fullUser
+      persistCurrentUser(fullUser)
       sendUserUpdateMessages(fullUser)
     })
   } else {
-    currentUser = null
+    persistCurrentUser(null)
     sendUserUpdateMessages(null)
     // Remove all storage if user is not logged in
     chrome.storage.local.clear(() => {
@@ -88,7 +108,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (user) {
           console.log('User signed up')
           getFullUser(user).then((fullUser) => {
-            currentUser = fullUser
+            persistCurrentUser(fullUser)
             sendUserUpdateMessages(fullUser)
           })
         } else {
@@ -108,7 +128,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (user) {
           console.log('User signed in')
           getFullUser(user).then((fullUser) => {
-            currentUser = fullUser
+            persistCurrentUser(fullUser)
             sendUserUpdateMessages(fullUser)
           })
         } else {
@@ -126,7 +146,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     auth
       .signOut()
       .then(() => {
-        userDataFromLocalStorage.reset().then(() => console.log('User data reset on sign out'))
+        userDataFromLocalStorage.reset().then(() => {
+          console.log('User data reset on sign out')
+          sendResponse({ success: true })
+        })
         console.log('User signed out')
       })
       .catch((error) => {
@@ -137,8 +160,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 
   if (request.type === 'GET_CURRENT_USER') {
-    console.log('Getting current user:', currentUser)
-    sendResponse({ user: currentUser })
+    getCurrentUser().then((user) => {
+      console.log('Getting current user from storage:', user)
+      sendResponse({ user })
+    })
+    return true // Indicates async response
   }
 
   if (request.action === 'formatOffers') {
