@@ -1,9 +1,7 @@
 import { auth, signIn, signUp } from './firebase/firebaseAuth'
-import { fetchUserData } from './helpers/userData'
 import { formatOffersInWorker } from './helpers/offerFormatting'
 import { User } from 'firebase/auth'
-import { userDataFromLocalStorage } from '../localStorage'
-import { Offer, UserWithData } from '../types'
+import { Offer } from '../types'
 
 // const constants = {
 //   consoleLog: import.meta.env.VITE_CONSOLE_LOG,
@@ -30,7 +28,7 @@ console.error = (...args) => {
 
 let formattingPromise: Promise<Offer[]> | null = null
 
-async function getCurrentUser(): Promise<UserWithData | null> {
+async function getCurrentUser(): Promise<User | null> {
   return new Promise((resolve) => {
     chrome.storage.local.get(['currentUser'], (result) => {
       resolve(result.currentUser || null)
@@ -38,7 +36,7 @@ async function getCurrentUser(): Promise<UserWithData | null> {
   })
 }
 
-async function persistCurrentUser(user: UserWithData | null) {
+async function persistCurrentUser(user: User | null) {
   await chrome.storage.local.set({ currentUser: user })
 }
 
@@ -46,10 +44,8 @@ auth.onAuthStateChanged((user) => {
   console.log('auth.onAuthStateChanged', user)
 
   if (user) {
-    getFullUser(user).then((fullUser) => {
-      persistCurrentUser(fullUser)
-      sendUserUpdateMessages(fullUser)
-    })
+    persistCurrentUser(user)
+    sendUserUpdateMessages(user)
   } else {
     persistCurrentUser(null)
     sendUserUpdateMessages(null)
@@ -81,36 +77,15 @@ function sendUserUpdateMessages(user: User | null) {
   })
 }
 
-async function getFullUser(user: User | null): Promise<UserWithData | null> {
-  if (!user) return null
-
-  try {
-    const storedData = await fetchUserData(user.email!)
-
-    return {
-      ...user,
-      ...storedData,
-      hasFiltersUnlocked:
-        storedData.hasReferredSomeone ||
-        (storedData.referredAt !== null && storedData.referredAt < Date.now() - 3 * 24 * 60 * 60 * 1000),
-    }
-  } catch (error) {
-    console.error('Error getting full user data:', error)
-    return null
-  }
-}
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Message received from:', sender, request)
   if (request.type === 'SIGN_UP') {
-    signUp(request.referralCode)
+    signUp()
       .then((user) => {
         if (user) {
           console.log('User signed up')
-          getFullUser(user).then((fullUser) => {
-            persistCurrentUser(fullUser)
-            sendUserUpdateMessages(fullUser)
-          })
+          persistCurrentUser(user)
+          sendUserUpdateMessages(user)
         } else {
           sendResponse({ error: 'Sign-up failed' })
         }
@@ -127,10 +102,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       .then((user) => {
         if (user) {
           console.log('User signed in')
-          getFullUser(user).then((fullUser) => {
-            persistCurrentUser(fullUser)
-            sendUserUpdateMessages(fullUser)
-          })
+          persistCurrentUser(user)
+          sendUserUpdateMessages(user)
         } else {
           sendResponse({ error: 'Sign-in failed' })
         }
@@ -146,10 +119,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     auth
       .signOut()
       .then(() => {
-        userDataFromLocalStorage.reset().then(() => {
-          console.log('User data reset on sign out')
-          sendResponse({ success: true })
-        })
         console.log('User signed out')
       })
       .catch((error) => {

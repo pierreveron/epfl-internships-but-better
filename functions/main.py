@@ -15,13 +15,7 @@ from firebase_admin import firestore, initialize_app  # type: ignore
 
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 from firebase_functions import https_fn, options  # type: ignore
-from firestore_helper import (
-    generate_referral_code,
-    increment_formatting_count,
-)
-from firestore_helper import (
-    get_user_data as get_user_data_from_db,
-)
+from firestore_helper import increment_formatting_count
 
 app = initialize_app()
 
@@ -206,37 +200,6 @@ def format_offers(req: https_fn.Request) -> https_fn.Response:
         cors_methods=["POST"],
     ),
 )
-def get_user_data(req: https_fn.Request) -> https_fn.Response:
-    if req.method != "POST":
-        return https_fn.Response("Method not allowed", status=405)
-
-    data: dict[str, Any] = req.get_json()
-    email: str = data.get("data", "")
-    if not email:
-        return https_fn.Response("Email parameter is required", status=400)
-
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        return https_fn.Response("Invalid email", status=400)
-
-    db = get_db()
-
-    try:
-        user_data = get_user_data_from_db(db, email)
-
-        return https_fn.Response(
-            json.dumps({"data": user_data}),
-            content_type="application/json",
-        )
-    except Exception as e:
-        return https_fn.Response(json.dumps({"error": str(e)}), status=500)
-
-
-@https_fn.on_request(
-    cors=options.CorsOptions(
-        cors_origins=[EXTENSION_ORIGIN],
-        cors_methods=["POST"],
-    ),
-)
 def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
     if req.method != "POST":
         return https_fn.Response("Method not allowed", status=405)
@@ -245,7 +208,6 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
         json_data: dict[str, Any] = req.get_json()
         data: dict[str, Any] = json_data.get("data", {})
         user_email: str | None = data.get("email")
-        referral_code: str | None = data.get("referralCode")
 
         if not user_email:
             return https_fn.Response("Email is required", status=400)
@@ -265,51 +227,8 @@ def handle_sign_up(req: https_fn.Request) -> https_fn.Response:
         if user_doc.get().exists:
             return https_fn.Response("User already exists", status=400)
 
-        # Handle referral code if provided
-        if referral_code:
-            referrer_query = users_ref.where("referralCode", "==", referral_code).limit(
-                1
-            )
-            referrer_docs = referrer_query.get()
-
-            referrer_email: str | None = None
-            for doc in referrer_docs:
-                referrer_email = doc.id  # type: ignore
-                break
-
-            if referrer_email:
-                current_timestamp: int = firestore.SERVER_TIMESTAMP  # type: ignore
-
-                db.collection("referrals").add(
-                    {
-                        "referrer": referrer_email,
-                        "referee": user_email,
-                        "createdAt": current_timestamp,
-                    }
-                )
-
-                print(
-                    f"Referral code {referral_code} from {referrer_email} applied for user {user_email}"
-                )
-            else:
-                return https_fn.Response(
-                    json.dumps(
-                        {
-                            "data": {
-                                "success": False,
-                                "error": "Invalid referral code",
-                            }
-                        }
-                    ),
-                    status=400,
-                )
-
         # Create the user document
-        user_doc.set(
-            {
-                "referralCode": generate_referral_code(user_email),
-            }
-        )
+        user_doc.set({})
 
         return https_fn.Response(
             json.dumps(
