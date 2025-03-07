@@ -86,6 +86,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           console.log('User signed up')
           persistCurrentUser(user)
           sendUserUpdateMessages(user)
+          sendResponse({ success: true })
         } else {
           sendResponse({ error: 'Sign-up failed' })
         }
@@ -104,6 +105,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           console.log('User signed in')
           persistCurrentUser(user)
           sendUserUpdateMessages(user)
+          sendResponse({ success: true })
         } else {
           sendResponse({ error: 'Sign-in failed' })
         }
@@ -120,6 +122,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       .signOut()
       .then(() => {
         console.log('User signed out')
+        sendResponse({ success: true })
       })
       .catch((error) => {
         console.error('Error signing out:', error)
