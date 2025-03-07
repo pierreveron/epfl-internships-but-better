@@ -70,7 +70,7 @@ export const signIn = async (): Promise<User | null> => {
   }
 }
 
-export const signUp = async (referralCode?: string): Promise<User | null> => {
+export const signUp = async (): Promise<User | null> => {
   try {
     const credential = await getGoogleAuthCredential()
     console.log('credential', credential)
@@ -81,7 +81,7 @@ export const signUp = async (referralCode?: string): Promise<User | null> => {
       throw new Error('No email found in Firebase user')
     }
 
-    const response = (await handleSignUp({ email: result.user.email, referralCode })) as {
+    const response = (await handleSignUp({ email: result.user.email })) as {
       data: {
         success: boolean
         error: string | null

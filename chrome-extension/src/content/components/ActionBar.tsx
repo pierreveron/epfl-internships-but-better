@@ -8,12 +8,9 @@ import LocationsCheckbox from './LocationsCheckbox'
 import DisplayModeSegmentedControl from './DisplayModeSegmentedControl'
 import { FilterContext } from '../contexts/FilterContext'
 import { useData } from '../hooks/useData'
-import { useUser } from '../hooks/useUser'
-import UnlockButton from './UnlockButton'
 
 export default function ActionBar() {
   const { companies } = useData()
-  const { user } = useUser()
 
   const {
     selectableLocations,
@@ -104,14 +101,7 @@ export default function ActionBar() {
           }}
           step={500}
           min={0}
-          disabled={!user?.hasFiltersUnlocked}
-          title={
-            !user?.hasFiltersUnlocked
-              ? 'Locked filter: Share the extension with your friends to unlock all filters'
-              : undefined
-          }
         />
-        {!user?.hasReferredSomeone && <UnlockButton />}
       </Group>
 
       <Group>

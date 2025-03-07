@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useMemo, useRef } from 'react'
-import { Offer, Location, UserWithData } from '../../types'
+import { Offer, Location } from '../../types'
 import { detectNewJobs, scrapeJobs } from '../utils/scraping'
 import { formatOffers } from '../utils/offerFormatting'
 import { SelectableCity } from '../types'
@@ -9,7 +9,7 @@ import {
   hiddenOffersFromLocalStorage,
   favoriteOffersFromLocalStorage,
 } from '../../localStorage'
-
+import { User } from 'firebase/auth'
 interface DataContextType {
   favoriteOffers: string[]
   toggleFavoriteOffer: (offer: Offer) => void
@@ -71,7 +71,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isOfferHidden = (offer: Offer) => hiddenOffers.includes(offer.number)
 
   useEffect(() => {
-    const initializeOffers = async (user: UserWithData): Promise<{ data: Offer[]; dataDate: string }> => {
+    const initializeOffers = async (user: User): Promise<{ data: Offer[]; dataDate: string }> => {
       console.log('initializeOffers', user)
       if (user.email) {
         try {
