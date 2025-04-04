@@ -1,18 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Button, Switch, CopyButton, TextInput, Loader } from '@mantine/core'
-import {
-  IconExternalLink,
-  IconBrandLinkedin,
-  IconCheck,
-  IconLogout,
-  IconBrandGoogleFilled,
-  IconCopy,
-  IconTicket,
-  IconAdjustmentsHorizontal,
-  IconCurrencyDollar,
-  IconSearch,
-  IconBriefcase,
-} from '@tabler/icons-react'
+import { Button, Switch, Loader } from '@mantine/core'
+import { IconExternalLink, IconBrandLinkedin, IconLogout, IconBrandGoogleFilled } from '@tabler/icons-react'
 import { useUser } from '../content/hooks/useUser'
 import { isExtensionEnabledFromLocalStorage } from '../localStorage'
 
@@ -21,7 +9,6 @@ export default function Popup() {
   const [isAuthLoading, setIsAuthLoading] = useState(false)
   const [isOnJobBoard, setIsOnJobBoard] = useState(false)
   const [isEnabled, setIsEnabled] = useState(true)
-  const [referralCode, setReferralCode] = useState('')
 
   useEffect(() => {
     // Check if the current tab is on the IS-Academia job board
@@ -49,7 +36,7 @@ export default function Popup() {
 
   const handleSignUp = async () => {
     setIsAuthLoading(true)
-    chrome.runtime.sendMessage({ type: 'SIGN_UP', referralCode }, (response) => {
+    chrome.runtime.sendMessage({ type: 'SIGN_UP' }, (response) => {
       setIsAuthLoading(false)
       if (response && response.error) {
         console.error('Sign-up failed:', response.error)
@@ -112,33 +99,8 @@ export default function Popup() {
           <div>
             <p className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
               Enjoy a better internship search on IS-Academia job board. Experience an improved UI and advanced filters
-              (location, salary, keywords, sector...).{' '}
+              (location, salary, keywords, sector...).
             </p>
-
-            <div className="tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4 tw-overflow-hidden">
-              <h2 className="tw-text-xl tw-font-bold tw-flex tw-items-center tw-text-gray-800">
-                <IconAdjustmentsHorizontal className="tw-w-6 tw-h-6 tw-mr-2" />
-                Premium filters
-              </h2>
-              <ul className="tw-space-y-2 tw-mt-4">
-                <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold">
-                  <IconCurrencyDollar className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500" />
-                  Filter and sort offers by salary
-                </li>
-                <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                  <IconSearch className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
-                  Filter by keywords (coming soon)
-                </li>
-                <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                  <IconBriefcase className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
-                  Filter by sector (coming soon)
-                </li>
-              </ul>
-              <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-mt-4">
-                Unlock these features for 3 days with a referral code – and unlock them forever when you share your own
-                code with another friend!
-              </p>
-            </div>
           </div>
         )}
 
@@ -152,87 +114,6 @@ export default function Popup() {
             <div className="tw-w-full tw-text-sm tw-text-gray-600 tw-text-left">
               Logged in as <span className="tw-font-bold">{user.email}</span>
             </div>
-
-            {user.hasReferredSomeone ? (
-              <div className="tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4">
-                <h2 className="tw-text-lg tw-font-semibold tw-mb-2 tw-flex tw-items-center">
-                  <IconCheck className="tw-w-5 tw-h-5 tw-mr-2" />
-                  All Filters Unlocked
-                </h2>
-                <ul className="tw-space-y-2 tw-mt-4">
-                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold">
-                    <IconCurrencyDollar className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500" />
-                    Filter and sort offers by salary
-                  </li>
-                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                    <IconSearch className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
-                    Filter by keywords (coming soon)
-                  </li>
-                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                    <IconBriefcase className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
-                    Filter by sector (coming soon)
-                  </li>
-                </ul>
-                <div className="tw-bg-gray-50 tw-p-3 tw-rounded-md tw-mt-4">
-                  <p className="tw-text-sm tw-text-gray-700 tw-text-left">
-                    Thanks for sharing. Enjoy full access to all filters. You can still share your code with your
-                    friends to unlock premium features for them!
-                  </p>
-                  <div className="tw-mt-2 tw-border tw-bg-white tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
-                    <p className="tw-text-sm">{user.referralCode}</p>
-                    <CopyButton value={user.referralCode}>
-                      {({ copied, copy }) => (
-                        <Button color={copied ? 'gray' : 'red'} onClick={copy} size="xs" variant="subtle">
-                          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-                          <span className="tw-ml-1">{copied ? 'Copied' : 'Copy'}</span>
-                        </Button>
-                      )}
-                    </CopyButton>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="tw-border tw-border-gray-200 tw-p-4 tw-rounded-lg tw-my-4 tw-overflow-hidden">
-                <h2 className="tw-text-xl tw-font-bold tw-flex tw-items-center tw-text-gray-800">
-                  <IconAdjustmentsHorizontal className="tw-w-6 tw-h-6 tw-mr-2" />
-                  Premium filters
-                </h2>
-                <ul className="tw-space-y-2 tw-mt-4">
-                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold">
-                    <IconCurrencyDollar className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500" />
-                    Filter and sort offers by salary
-                  </li>
-                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                    <IconSearch className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
-                    Filter by keywords (coming soon)
-                  </li>
-                  <li className="tw-flex tw-items-center tw-text-sm tw-text-gray-800 tw-font-semibold tw-text-left">
-                    <IconBriefcase className="tw-w-5 tw-h-5 tw-mr-2 tw-text-gray-500 " />
-                    Filter by sector (coming soon)
-                  </li>
-                </ul>
-                <div className="tw-bg-red-50 tw-p-3 tw-rounded-md tw-mt-4">
-                  <h3 className="tw-text-md tw-font-semibold tw-mb-2 tw-flex tw-items-center tw-text-red-600">
-                    <IconTicket className="tw-w-5 tw-h-5 tw-mr-2 tw-text-red-600" />
-                    Refer a Friend to unlock
-                  </h3>
-                  <p className="tw-mb-3 tw-text-sm tw-text-gray-800 tw-text-left">
-                    Share your referral code below and unlock premium features when a friend uses it at sign-up.
-                  </p>
-                  <div className="tw-bg-white tw-border tw-border-gray-200 tw-p-2 tw-rounded-md tw-flex tw-items-center tw-justify-between">
-                    <p className="tw-text-sm">{user.referralCode}</p>
-                    <CopyButton value={user.referralCode}>
-                      {({ copied, copy }) => (
-                        <Button color={copied ? 'gray' : 'red'} onClick={copy} size="xs" variant="subtle">
-                          {copied ? <IconCheck size={14} /> : <IconCopy size={14} />}
-                          <span className="tw-ml-1">{copied ? 'Copied' : 'Copy'}</span>
-                        </Button>
-                      )}
-                    </CopyButton>
-                  </div>
-                </div>
-              </div>
-            )}
 
             <div className="tw-flex tw-items-center tw-justify-between">
               <span className="tw-text-sm tw-font-medium">Enable extension</span>
@@ -251,21 +132,10 @@ export default function Popup() {
           </>
         ) : (
           <div>
-            <div>
-              <TextInput
-                leftSection={<IconTicket size={16} />}
-                placeholder="Enter referral code (optional)"
-                value={referralCode}
-                onChange={(event) => setReferralCode(event.currentTarget.value)}
-              />
-              <p className="tw-text-sm tw-text-gray-600 tw-text-left tw-whitespace-nowrap tw-mt-1 tw-mb-3">
-                Using a referral code will unlock all filters for 3 days!
-              </p>
-              <Button variant="filled" color="red" w="100%" onClick={handleSignUp}>
-                <IconBrandGoogleFilled className="tw-w-4 tw-h-4 tw-mr-2" />
-                Sign Up with your EPFL Google account
-              </Button>
-            </div>
+            <Button variant="filled" color="red" w="100%" onClick={handleSignUp}>
+              <IconBrandGoogleFilled className="tw-w-4 tw-h-4 tw-mr-2" />
+              Sign Up with your EPFL Google account
+            </Button>
             <p className="tw-text-sm tw-text-gray-600 tw-text-center tw-mt-4">
               Already have an account?{' '}
               <button onClick={handleSignIn} className="tw-text-red-500">

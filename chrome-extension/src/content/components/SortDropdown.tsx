@@ -1,8 +1,7 @@
-import { Group, Select, SelectProps } from '@mantine/core'
+import { ComboboxItem, Group, Select, SelectProps } from '@mantine/core'
 import { IconArrowsSort, IconCheck, IconCrown } from '@tabler/icons-react'
 import { useContext } from 'react'
 import { SortContext } from '../contexts/SortContext'
-import { useUser } from '../hooks/useUser'
 
 const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) => (
   <Group flex="1" gap="0.5rem" wrap="nowrap">
@@ -14,15 +13,14 @@ const renderSelectOption: SelectProps['renderOption'] = ({ option, checked }) =>
 
 export default function SortDropdown() {
   const { sortStatus, setSortStatus } = useContext(SortContext)!
-  const { user } = useUser()
 
-  const sortOptions = [
+  const sortOptions: ComboboxItem[] = [
     { value: 'creationDate-desc', label: 'Creation date (newest first)' },
     { value: 'creationDate-asc', label: 'Creation date (oldest first)' },
     { value: 'company-asc', label: 'Company (A-Z)' },
     { value: 'company-desc', label: 'Company (Z-A)' },
-    { value: 'salary-desc', label: 'Salary (high to low)', disabled: !user?.hasFiltersUnlocked },
-    { value: 'salary-asc', label: 'Salary (low to high)', disabled: !user?.hasFiltersUnlocked },
+    { value: 'salary-desc', label: 'Salary (high to low)' },
+    { value: 'salary-asc', label: 'Salary (low to high)' },
     { value: 'registered-desc', label: 'Number of candidates (high to low)' },
     { value: 'registered-asc', label: 'Number of candidates (low to high)' },
   ]

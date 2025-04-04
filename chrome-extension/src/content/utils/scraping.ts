@@ -104,10 +104,6 @@ export async function detectNewJobs(existingOffers: string[], portalCell?: HTMLE
     .slice(1)
     .map((e) => e.id)
 
-  if (jobsIds.length === 0) {
-    throw new Error('No jobs found')
-  }
-
   return jobsIds.filter((id) => !existingOffers.includes(id))
 }
 

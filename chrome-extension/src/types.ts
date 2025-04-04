@@ -1,5 +1,3 @@
-import { User } from 'firebase/auth'
-
 export type OriginalPortalCellRowData = {
   title: string
   company: string
@@ -86,17 +84,6 @@ export type Offer = {
   professor: string | null
   creationDate: string
 } & Omit<PageData, 'salary'>
-
-export type UserData = {
-  hasReferredSomeone: boolean
-  referredAt: number | null
-  referralCode: string
-}
-
-export type UserWithData = User &
-  UserData & {
-    hasFiltersUnlocked: boolean
-  }
 
 export type JobOffers = {
   offers: Offer[]
